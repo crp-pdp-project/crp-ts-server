@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  app:
+    container_name: crp-ts-app
+    build:
+      context: .
+    working_dir: /app
+    command: ./scripts/docker.entrypoint.sh
+    env_file:
+      - .env
+    environment:
+      DB_HOST: db
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - '3000:3000'
+    depends_on:
+      - db
+
+  db:
+    container_name: crp-ts-db
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: crp-ts-db
+      MYSQL_USER: devuser
+      MYSQL_PASSWORD: devpassword
+    ports:
+      - '3306:3306'
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:

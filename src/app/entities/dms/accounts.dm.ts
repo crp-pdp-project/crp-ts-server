@@ -1,0 +1,40 @@
+import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
+import { z } from 'zod';
+extendZodWithOpenApi(z);
+
+export const AccountDMSchema = z.object({
+  id: z.number().int().positive().openapi({
+    description: 'Unique ID of the account',
+    example: 1,
+  }),
+  patientId: z.number().int().positive().openapi({
+    description: 'Unique ID of the patient',
+    example: 1,
+  }),
+  passwordHash: z.string().openapi({
+    description: 'Hashed Passowrd of the patient',
+    example: 'AnyHash',
+  }),
+  passwordSalt: z.string().openapi({
+    description: 'Salt using for the hashing of the patients password',
+    example: 'AnySalt',
+  }),
+  biometricHash: z.string().nullable().openapi({
+    description: 'Hashed biometricUUID of the patient',
+    example: 'AnyHash',
+  }),
+  biometricSalt: z.string().nullable().openapi({
+    description: 'Salt using for the hashing of the patients biometric UUID',
+    example: 'AnySalt',
+  }),
+  createdAt: z.string().openapi({
+    description: 'Creation date of the account in DD-MM-YYYY HH:mm:ss',
+    example: '01-01-2025 00:00:00',
+  }),
+  updatedAt: z.string().openapi({
+    description: 'Last update of the account in DD-MM-YYYY HH:mm:ss',
+    example: '01-01-2025 00:00:00',
+  }),
+});
+
+export type AccountDM = z.infer<typeof AccountDMSchema>;
