@@ -4,9 +4,14 @@ import importPlugin from 'eslint-plugin-import';
 import prettierPlugin from 'eslint-plugin-prettier';
 import prettierConfig from 'eslint-config-prettier';
 
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 export default [
   js.configs.recommended,
-  ...tseslint.configs.recommended,
+  ...tseslint.configs.recommendedTypeChecked,
   ...tseslint.configs.stylistic,
   prettierConfig,
   {
@@ -17,9 +22,11 @@ export default [
       sourceType: 'module',
       parserOptions: {
         project: './tsconfig.json',
+        tsconfigRootDir: __dirname,
       },
     },
     plugins: {
+      '@typescript-eslint': tseslint.plugin,
       import: importPlugin,
       prettier: prettierPlugin,
     },
@@ -32,12 +39,9 @@ export default [
       },
     },
     rules: {
+      '@typescript-eslint/require-await': 'off',
       '@typescript-eslint/consistent-type-definitions': 'off',
-      '@typescript-eslint/explicit-module-boundary-types': 'off',
-      '@typescript-eslint/no-inferrable-types': 'off',
-      'import/prefer-default-export': 'off',
       'no-console': 'warn',
-      '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/prefer-readonly': ['warn', {
         onlyInlineLambdas: true,
       }],
@@ -51,18 +55,14 @@ export default [
         alphabetize: { order: 'asc', caseInsensitive: true },
         'newlines-between': 'always',
       }],
-      'prettier/prettier': 'error',
       '@typescript-eslint/no-useless-constructor': 'error',
-      '@typescript-eslint/no-invalid-this': 'error',
+      'prettier/prettier': 'error',
       '@typescript-eslint/prefer-function-type': 'error',
       '@typescript-eslint/no-floating-promises': 'error',
       'import/no-unresolved': 'error',
       'eol-last': ['error', 'always'],
       '@typescript-eslint/no-misused-promises': ['error', {
         checksVoidReturn: false,
-      }],
-      '@typescript-eslint/no-empty-function': ['error', {
-        allow: ['constructors']
       }],
       'import/no-extraneous-dependencies': ['error', {
         devDependencies: true,

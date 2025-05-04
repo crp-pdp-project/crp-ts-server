@@ -9,10 +9,14 @@ type EmailOptions = {
   from?: string;
 };
 
+type MailResponse = {
+  messageId: string;
+};
+
 export class EmailClient {
   static readonly instance = new EmailClient();
   private readonly logger = LoggerClient.instance;
-  private readonly transporter: Transporter;
+  private readonly transporter: Transporter<MailResponse>;
 
   private constructor() {
     this.transporter = nodemailer.createTransport({

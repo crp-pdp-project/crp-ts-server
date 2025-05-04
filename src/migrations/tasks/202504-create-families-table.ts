@@ -1,6 +1,6 @@
 import { Kysely, sql } from 'kysely';
 
-const tableName: string = 'Families';
+const tableName = 'Families';
 
 export async function up(db: Kysely<unknown>): Promise<void> {
   await db.schema

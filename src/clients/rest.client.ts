@@ -11,7 +11,7 @@ type RestRequestOptions = {
   url: string;
   headers?: Record<string, string>;
   body?: Record<string, unknown>;
-  query?: Record<string, unknown>;
+  query?: Record<string, string | number | boolean>;
 };
 
 export class RestClient {
@@ -68,9 +68,9 @@ export class RestClient {
 
   private buildUrlWithQuery(base: string, query: RestRequestOptions['query'] = {}): string {
     const url = new URL(base);
-    for (const [key, value] of Object.entries(query)) {
-      if (value !== undefined) url.searchParams.append(key, String(value));
-    }
+    Object.entries(query).forEach(([key, value]) => {
+      url.searchParams.append(key, String(value));
+    });
     return url.toString();
   }
 }

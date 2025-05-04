@@ -13,9 +13,9 @@ import { Database } from 'src/clients/mysql.client';
 
 type AnyExpression = ExpressionWrapper<Database, never, unknown> | AliasedRawBuilder<unknown, string>;
 
-interface JsonArrayOptions {
+type JsonArrayOptions = {
   checkNull?: AnyExpression;
-}
+};
 
 export class SqlJSONHelper {
   static jsonArrayObject(refs: AnyExpression[], options?: JsonArrayOptions): RawBuilder<unknown> {

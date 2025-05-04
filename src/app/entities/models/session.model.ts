@@ -27,10 +27,9 @@ export class SessionModel extends BaseModel {
     this.createdAt = session.createdAt;
     this.updatedAt = session.updatedAt;
     this.patient = session.patient ? new PatientModel(session.patient) : session.patient;
-    this.account = session.account ? { id: session.account.id } : session.payload;
+    this.account = session.account ? { id: session.account.id } : session.account;
     this.payload = session.payload
       ? {
-          id: session.payload.id,
           email: session.payload.email,
           phone: session.payload.phone,
         }

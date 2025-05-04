@@ -7,7 +7,7 @@ export const EnrollPatientOutputDTOSchema = z
   .object({
     patientEnroll: z.object({
       id: z.number().int().positive().openapi({
-        description: 'Unique ID of the patient',
+        description: 'Unique ID of the new patient',
         example: 1,
       }),
       email: z.coerce.string().email().nullable().openapi({

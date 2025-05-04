@@ -24,6 +24,19 @@ export class AuthenticationDocs {
 
     this.manager.registerRoute({
       method: HttpSpecMethod.POST,
+      path: `/patients/biometric/sign-in`,
+      description: 'Sign in a patient with biometric authentication',
+      tags: ['patients', 'authentication'],
+      body: SignInPatientBodyDTOSchema,
+      responses: {
+        200: SuccessResponseDTOSchema.extend({
+          data: SignInPatientOutputDTOSchema,
+        }),
+      },
+    });
+
+    this.manager.registerRoute({
+      method: HttpSpecMethod.POST,
       path: `/patients/sign-out`,
       description: 'Sign out a patient',
       tags: ['patients', 'authentication'],

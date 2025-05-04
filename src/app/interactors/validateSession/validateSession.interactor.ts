@@ -13,6 +13,7 @@ import { EnrichedPayload, IJWTManager, ValidationResponse } from 'src/general/ma
 export interface IValidateSessionStrategy {
   validateSession(session: SessionDTO, newExpireAt: string): Promise<void>;
 }
+
 export interface IValidateSessionInteractor {
   execute(input: FastifyRequest): Promise<SessionModel | ErrorModel>;
 }
@@ -50,7 +51,7 @@ export class ValidateSessionInteractor implements IValidateSessionInteractor {
   private async decodeJWEToken(token: string): Promise<ValidationResponse<SessionPayloadDTO>> {
     const result = await this.jwtManager.verifyToken(token);
 
-    if (!result.payload?.jti || !result.payload?.id) {
+    if (!result.payload || !result.payload?.jti) {
       throw ErrorModel.unauthorized(ClientErrorMessages.JWE_TOKEN_INVALID);
     }
 
@@ -65,7 +66,6 @@ export class ValidateSessionInteractor implements IValidateSessionInteractor {
     }
 
     session.payload = {
-      id: payload.id,
       email: payload.email,
       phone: payload.phone,
     };

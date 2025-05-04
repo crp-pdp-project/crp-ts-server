@@ -6,26 +6,34 @@ import { SignOutPatientBuilder } from 'src/app/controllers/signOutPatient/signOu
 import { ISignOutPatientController } from 'src/app/controllers/signOutPatient/signOutPatient.controller';
 import { ValidateSessionBuilder } from 'src/app/controllers/validateSession/validateSession.builder';
 import { IValidateSessionController } from 'src/app/controllers/validateSession/validateSession.controller';
+import { HttpMethod } from 'src/general/enums/methods.enum';
 
 export class AuthenticationRouter {
-  private readonly signInPatientController: ISignInPatientController;
+  private readonly signInPatientRegularController: ISignInPatientController;
+  private readonly signInPatientBiometricController: ISignInPatientController;
   private readonly signOutPatientController: ISignOutPatientController;
   private readonly validateSessionController: IValidateSessionController;
 
   constructor(private readonly fastify: FastifyInstance) {
-    this.signInPatientController = SignInPatientBuilder.build();
+    this.signInPatientRegularController = SignInPatientBuilder.buildRegular();
+    this.signInPatientBiometricController = SignInPatientBuilder.buildBiometric();
     this.signOutPatientController = SignOutPatientBuilder.build();
     this.validateSessionController = ValidateSessionBuilder.buildSession();
   }
 
   registerRouter(): void {
     this.fastify.route({
-      method: 'POST',
+      method: HttpMethod.POST,
       url: '/patients/sign-in',
-      handler: this.signInPatientController.handle.bind(this.signInPatientController),
+      handler: this.signInPatientRegularController.handle.bind(this.signInPatientRegularController),
     });
     this.fastify.route({
-      method: 'POST',
+      method: HttpMethod.POST,
+      url: '/patients/biometric/sign-in',
+      handler: this.signInPatientBiometricController.handle.bind(this.signInPatientBiometricController),
+    });
+    this.fastify.route({
+      method: HttpMethod.POST,
       url: '/patients/sign-out',
       preHandler: this.validateSessionController.validate.bind(this.validateSessionController),
       handler: this.signOutPatientController.handle.bind(this.signOutPatientController),

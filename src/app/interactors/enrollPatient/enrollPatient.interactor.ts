@@ -40,7 +40,7 @@ export class EnrollPatientInteractor implements IEnrollPatientInteractor {
         id = await this.persistPatient(patientToSave);
       }
 
-      return new PatientEnrollModel(id, searchResult.email, searchResult.phone);
+      return new PatientEnrollModel(id, searchResult);
     } catch (error) {
       return ErrorModel.fromError(error);
     }

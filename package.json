@@ -15,7 +15,8 @@
     "init": "tsx src/entrypoints/server.entrypoint.ts",
     "migrate": "tsx src/entrypoints/migrate.entrypoint.ts",
     "build": "rm -rf ./dist && node esbuild.config.mjs",
-    "lint": "eslint 'src/**/*.ts'"
+    "lint": "eslint --cache 'src/**/*.ts'",
+    "typecheck": "tsc"
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^7.3.0",
@@ -38,7 +39,7 @@
     "@types/node": "^22.15.3",
     "@types/nodemailer": "^6.4.17",
     "esbuild": "^0.25.3",
-    "eslint": "^9.25.1",
+    "eslint": "^9.26.0",
     "eslint-config-prettier": "^10.1.2",
     "eslint-import-resolver-typescript": "^4.3.4",
     "eslint-plugin-import": "^2.31.0",

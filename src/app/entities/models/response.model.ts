@@ -54,7 +54,7 @@ export class ResponseModel<T> {
     }
   }
 
-  private transformData(data: T | ErrorModel): T {
+  private transformData(data: T): T {
     if (data instanceof BaseModel) {
       return data.toPlainObject() as T;
     }

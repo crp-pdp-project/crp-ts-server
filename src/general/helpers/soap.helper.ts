@@ -5,6 +5,8 @@ import { Client, createClientAsync } from 'soap';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { LoggerClient } from 'src/clients/logger.client';
 
+type GenericSoapFunction<T> = (payload: Record<string, unknown>) => Promise<[T, unknown]>;
+
 export class SoapHelper {
   private constructor(private readonly client: Client) {}
   private logger: LoggerClient = LoggerClient.instance;
@@ -28,18 +30,20 @@ export class SoapHelper {
   }
 
   async call<T = unknown>(methodName: string, payload: Record<string, unknown> = {}): Promise<T> {
-    const fn = this.client[`${methodName}Async`];
+    const rawFn = this.client[`${methodName}Async`] as unknown;
 
-    if (typeof fn !== 'function') {
+    if (typeof rawFn !== 'function') {
       this.logger.error('SOAP Method Not Found', { methodName });
       throw ErrorModel.notFound();
     }
+
+    const fn = rawFn as GenericSoapFunction<T>;
 
     this.logger.debug(`Calling SOAP method "${methodName}"`, { payload });
 
     const [result, rawResponse] = await fn(payload);
     this.logger.debug('SOAP Response Received', { result, rawResponse });
 
-    return result as T;
+    return result;
   }
 }

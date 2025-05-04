@@ -254,3 +254,4 @@ This will:
 | Run database migrations manually     | yarn migrate    | Run Kysely migrations                    |
 | Build project for production         | yarn build      | Clean and build into dist/               |
 | Lint code                            | yarn lint       | Run ESLint on TypeScript files           |
+| Check type safety                    | yarn typecheck  | Run TypeScript compiler                  |

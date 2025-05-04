@@ -1,5 +1,4 @@
 import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
-import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
 import { BaseModel } from 'src/app/entities/models/base.model';
 import { RelationshipModel } from 'src/app/entities/models/relationship.model';
 
@@ -32,9 +31,5 @@ export class PatientModel extends BaseModel {
     this.updatedAt = patient.updatedAt;
     this.relationship = patient.relationship ? new RelationshipModel(patient.relationship) : patient.relationship;
     this.relatives = patient.relatives ? patient.relatives.map((r) => new PatientModel(r)) : patient.relatives;
-  }
-
-  toSessionPayload(): SessionPayloadDTO {
-    return { id: this.id };
   }
 }

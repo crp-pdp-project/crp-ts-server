@@ -4,7 +4,7 @@ import { RecoverPasswordInputDTO } from 'src/app/entities/dtos/input/recoverPass
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { PatientRecoverSessionModel } from 'src/app/entities/models/patientRecoverSession.model';
 import { IRecoverPasswordInteractor } from 'src/app/interactors/recoverPassword/recoverPassword.interactor';
-import { IRecoverSessionInteractor } from 'src/app/interactors/recoverSession/enrollSession.interactor';
+import { IRecoverSessionInteractor } from 'src/app/interactors/recoverSession/recoverSession.interactor';
 import { IResponseInteractor } from 'src/app/interactors/response/response.interactor';
 
 export interface IRecoverPasswordController {

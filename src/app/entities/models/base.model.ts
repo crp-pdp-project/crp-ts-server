@@ -7,10 +7,12 @@ export abstract class BaseModel {
           plainObject[key] = value.toPlainObject();
           break;
         case Array.isArray(value):
-          plainObject[key] = value.map((item) => (item instanceof BaseModel ? item.toPlainObject() : item));
+          plainObject[key] = value.map((item) =>
+            item instanceof BaseModel ? item.toPlainObject() : (item as unknown),
+          );
           break;
         default:
-          plainObject[key] = value;
+          plainObject[key] = value as unknown;
           break;
       }
     });
