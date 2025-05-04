@@ -2,15 +2,17 @@ import { build } from 'esbuild';
 import { resolve, join } from 'path';
 import { readdir } from 'fs/promises'
 
-const findMigrations = async (folderName) => {
+const findFiles = async (folderName) => {
   const dir = resolve(`src/${folderName}`);
   const files = await readdir(dir);
-  return files.map((file) => join(dir, file));
+  return files
+    .filter((file) => file.endsWith('.ts'))
+    .map((file) => join(dir, file));
 }
 
 const bundle = async () => {
   await build({
-    entryPoints: await findMigrations('entrypoints'),
+    entryPoints: await findFiles('entrypoints'),
     outdir: 'dist',
     platform: 'node',
     format: 'cjs',
@@ -23,8 +25,8 @@ const bundle = async () => {
 }
 
 await build({
-  entryPoints: await findMigrations('migrations'),
-  outdir: 'dist/migrations',
+  entryPoints: await findFiles('migrations/tasks'),
+  outdir: 'dist/tasks',
   platform: 'node',
   format: 'cjs',
   target: ['node22'],

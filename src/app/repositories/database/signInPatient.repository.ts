@@ -23,8 +23,6 @@ export class SignInPatientRepository implements ISignInPatientRepository {
         'Accounts.id',
         'Accounts.passwordHash',
         'Accounts.passwordSalt',
-        'Accounts.biometricHash',
-        'Accounts.biometricSalt',
         SqlJSONHelper.jsonObject(
           [
             eb.ref('Patients.id'),

@@ -52,7 +52,7 @@ export class SendEnrollOTPInteractor implements ISendEnrollOTPInteractor {
       await this.emailClient.send({
         to: session.payload.email,
         subject: process.env.EMAIL_ENROLL_SUBJECT ?? '',
-        html: await ejs.render(emailTemplate, {
+        html: ejs.render(emailTemplate, {
           name: session.patient?.firstName,
           otp,
         }),
@@ -65,7 +65,7 @@ export class SendEnrollOTPInteractor implements ISendEnrollOTPInteractor {
       await this.infobipClient.sendSms({
         from: process.env.INFOBIP_SENDER ?? '',
         to: session.payload.phone,
-        text: await ejs.render(smsTemplate, {
+        text: ejs.render(smsTemplate, {
           name: session.patient?.firstName,
           otp,
         }),

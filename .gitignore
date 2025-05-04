@@ -35,6 +35,9 @@ Thumbs.db
 # TypeScript output
 *.tsbuildinfo
 
+# ESLint cache output
+.eslintcache
+
 # Temporary files
 tmp/
 temp/

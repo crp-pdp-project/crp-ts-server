@@ -9,6 +9,7 @@ import { ValidateRecoverOTPBuilder } from 'src/app/controllers/validateRecoverOt
 import { IValidateRecoverOTPController } from 'src/app/controllers/validateRecoverOtp/validateRecoverOtp.controller';
 import { ValidateSessionBuilder } from 'src/app/controllers/validateSession/validateSession.builder';
 import { IValidateSessionController } from 'src/app/controllers/validateSession/validateSession.controller';
+import { HttpMethod } from 'src/general/enums/methods.enum';
 
 export class RecoverRouter {
   private readonly recoverPasswordController: IRecoverPasswordController;
@@ -27,24 +28,24 @@ export class RecoverRouter {
 
   registerRouter(): void {
     this.fastify.route({
-      method: 'POST',
+      method: HttpMethod.POST,
       url: '/patients/recover',
       handler: this.recoverPasswordController.handle.bind(this.recoverPasswordController),
     });
     this.fastify.route({
-      method: 'POST',
+      method: HttpMethod.POST,
       url: '/patients/recover/send',
       preHandler: this.validateSessionController.validate.bind(this.validateSessionController),
       handler: this.sendRecoverOTPController.handle.bind(this.sendRecoverOTPController),
     });
     this.fastify.route({
-      method: 'POST',
+      method: HttpMethod.POST,
       url: '/patients/recover/validate',
       preHandler: this.validateSessionController.validate.bind(this.validateSessionController),
       handler: this.validateRecoverOTPController.handle.bind(this.validateRecoverOTPController),
     });
     this.fastify.route({
-      method: 'PATCH',
+      method: HttpMethod.PATCH,
       url: '/patients/recover/update',
       preHandler: this.validateSessionController.validate.bind(this.validateSessionController),
       handler: this.updatePatientPasswordController.handle.bind(this.updatePatientPasswordController),

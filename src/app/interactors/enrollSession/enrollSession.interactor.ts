@@ -35,7 +35,7 @@ export class EnrollSessionInteractor implements IEnrollSessionInteractor {
     return {
       jwt,
       newSession: {
-        patientId: payload.id,
+        patientId: model.id,
         jti,
         expiresAt,
       },

@@ -1,23 +1,24 @@
 import { errors as joseErrors } from 'jose';
 import { ZodError } from 'zod';
 
-import { BaseModel } from 'src/app/entities/models/base.model';
 import { LoggerClient } from 'src/clients/logger.client';
 import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
 import { StatusCode } from 'src/general/enums/status.enum';
 
-export class ErrorModel extends BaseModel {
+export class ErrorModel extends Error {
   private static readonly logger = LoggerClient.instance;
   readonly statusCode: StatusCode;
-  readonly message: string;
   readonly detail: ClientErrorMessages;
 
-  constructor(statusCode: StatusCode, message?: string, detail?: ClientErrorMessages) {
-    super();
+  constructor(
+    statusCode: StatusCode,
+    message = 'Custom handled error',
+    detail: ClientErrorMessages = ClientErrorMessages.DEFAULT,
+  ) {
+    super(message);
 
     this.statusCode = statusCode;
-    this.message = message ?? 'Custom handled error';
-    this.detail = detail ?? ClientErrorMessages.DEFAULT;
+    this.detail = detail;
   }
 
   static fromError(error: unknown): ErrorModel {

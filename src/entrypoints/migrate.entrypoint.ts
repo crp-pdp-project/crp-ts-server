@@ -1,17 +1,15 @@
 import 'dotenv/config';
-import fs from 'fs/promises';
-import path from 'path';
-import { resolve } from 'path';
 
-import { Migrator, FileMigrationProvider, Kysely } from 'kysely';
+import { Migrator, Kysely } from 'kysely';
 
 import { LoggerClient } from 'src/clients/logger.client';
 import { Database, MysqlClient } from 'src/clients/mysql.client';
+import { MigrationLoader } from 'src/migrations/migrations.loader';
 
 export class Migrate {
   private static readonly db: Kysely<Database> = MysqlClient.instance.getDb();
   private static readonly logger: LoggerClient = LoggerClient.instance;
-  private static readonly migrationFolder: string = resolve(__dirname, './migrations');
+  private static readonly migrationLoader: MigrationLoader = new MigrationLoader();
 
   static async start(): Promise<void> {
     try {
@@ -26,11 +24,7 @@ export class Migrate {
 
     const migrator = new Migrator({
       db: this.db,
-      provider: new FileMigrationProvider({
-        fs,
-        path,
-        migrationFolder: this.migrationFolder,
-      }),
+      provider: this.migrationLoader.getProvider(),
     });
 
     const { error, results } = await migrator.migrateToLatest();

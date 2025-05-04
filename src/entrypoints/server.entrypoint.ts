@@ -6,12 +6,14 @@ import Fastify, { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 
 import { AuthenticationRouter } from 'src/app/routers/authentication.router';
 import { EnrollRouter } from 'src/app/routers/enroll.router';
+import { ProfileRouter } from 'src/app/routers/profile.router';
 import { RecoverRouter } from 'src/app/routers/recover.router';
 import { LoggerClient } from 'src/clients/logger.client';
 import { AuthenticationDocs } from 'src/docs/authentication.docs';
 import { DMDocs } from 'src/docs/dataModels.docs';
 import { EnrollDocs } from 'src/docs/enroll.docs';
 import { swaggerMeta } from 'src/docs/meta/swagger.meta';
+import { ProfileDocs } from 'src/docs/profile.docs';
 import { RecoverDocs } from 'src/docs/recover.docs';
 import { OpenApiManager } from 'src/general/managers/openapi.manager';
 import swaggerTemplate from 'src/general/templates/swagger.template';
@@ -68,6 +70,7 @@ export class Server {
     new EnrollDocs(this.manager).registerDocs();
     new RecoverDocs(this.manager).registerDocs();
     new AuthenticationDocs(this.manager).registerDocs();
+    new ProfileDocs(this.manager).registerDocs();
     new DMDocs(this.manager).registerDocs();
   }
 
@@ -75,6 +78,7 @@ export class Server {
     new EnrollRouter(this.app).registerRouter();
     new RecoverRouter(this.app).registerRouter();
     new AuthenticationRouter(this.app).registerRouter();
+    new ProfileRouter(this.app).registerRouter();
   }
 
   private static async setupDocsEndpoint(): Promise<void> {
@@ -84,7 +88,7 @@ export class Server {
       const spec = generator.generateDocument(swaggerMeta);
       const encodedSpec = encodeURIComponent(JSON.stringify(spec));
 
-      const html = await ejs.render(swaggerTemplate, {
+      const html = ejs.render(swaggerTemplate, {
         openApi: encodedSpec,
         title: `${swaggerMeta.info.title} - Docs`,
       });

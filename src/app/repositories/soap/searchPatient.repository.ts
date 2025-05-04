@@ -39,7 +39,8 @@ type SearchPatientOutput = {
       IdTipoViaDomicilio: string | null;
       PacienteCentro: {
         PacienteCentro: {
-          Origen: string | null;
+          Centro?: { CodCentroIdc?: string | null };
+          Origen?: string | null;
           Nhc: string | null;
         }[];
       };
@@ -75,9 +76,11 @@ export class SearchPatientRepository implements ISearchPatientRepository {
 
   private parseOutput(rawResult: SearchPatientOutput): PatientExternalDTO {
     const basePatient = rawResult?.ConsultaPacientesResult?.Paciente?.[0];
+    const firstCenter = basePatient?.PacienteCentro?.PacienteCentro?.[0];
+
     return {
       fmpId: String(basePatient?.Id),
-      nhcId: basePatient?.PacienteCentro?.PacienteCentro?.[0]?.Nhc ?? '',
+      nhcId: firstCenter?.Nhc ?? '',
       firstName: basePatient?.Nombre,
       lastName: basePatient?.Apellido1,
       secondLastName: basePatient?.Apellido2 ?? null,
@@ -89,7 +92,7 @@ export class SearchPatientRepository implements ISearchPatientRepository {
       // phone: TextHelper.normalizePhoneNumber(basePatient?.Telefono3),
       email: 'renarux.92@gmail.com',
       phone: TextHelper.normalizePhoneNumber('962943323'),
-      centerId: basePatient?.PacienteCentro?.PacienteCentro?.[0]?.Origen ?? '',
+      centerId: firstCenter?.Centro?.CodCentroIdc ?? firstCenter?.Origen ?? '',
       address: basePatient?.Direccion ?? null,
       addressAditional: basePatient?.Observaciones ?? null,
       addressNumber: basePatient?.NumDomicilio ? String(basePatient?.NumDomicilio) : null,

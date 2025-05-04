@@ -3,5 +3,5 @@
   "ext": "ts",
   "exec": "tsx src/entrypoints/server.entrypoint.ts",
   "legacyWatch": true,
-  "delay": "200"
+  "delay": "100"
 }

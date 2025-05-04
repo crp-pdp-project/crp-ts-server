@@ -35,7 +35,7 @@ export class RecoverSessionInteractor implements IRecoverSessionInteractor {
     return {
       jwt,
       newSession: {
-        patientId: payload.id,
+        patientId: model.id,
         jti,
         expiresAt,
       },

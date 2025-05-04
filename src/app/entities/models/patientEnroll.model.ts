@@ -1,6 +1,8 @@
 import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
 import { BaseModel } from 'src/app/entities/models/base.model';
 
+import { PatientExternalDTO } from '../dtos/service/patientExternal.dto';
+
 export class PatientEnrollModel extends BaseModel {
   readonly id: number;
   readonly email: string | null;
@@ -8,14 +10,14 @@ export class PatientEnrollModel extends BaseModel {
   readonly phone: string | null;
   readonly maskedPhone: string | null;
 
-  constructor(id: number, email: string | null, phone: string | null) {
+  constructor(patientId: number, patient: PatientExternalDTO) {
     super();
 
-    this.id = id;
-    this.email = email;
-    this.maskedEmail = this.maskEmail(email);
-    this.phone = phone;
-    this.maskedPhone = this.maskPhone(phone);
+    this.id = patientId;
+    this.email = patient.email;
+    this.maskedEmail = this.maskEmail(patient.email);
+    this.phone = patient.phone;
+    this.maskedPhone = this.maskPhone(patient.phone);
   }
 
   private maskPhone(phone: string | null): string | null {
@@ -44,7 +46,6 @@ export class PatientEnrollModel extends BaseModel {
 
   toSessionPayload(): SessionPayloadDTO {
     return {
-      id: this.id,
       email: this.email,
       phone: this.phone,
     };

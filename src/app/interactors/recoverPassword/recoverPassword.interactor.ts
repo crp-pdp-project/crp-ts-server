@@ -28,7 +28,7 @@ export class RecoverPasswordInteractor implements IRecoverPasswordInteractor {
       const patientId = await this.getPatientAccount(body);
       const searchResult = await this.searchPatient(body);
 
-      return new PatientRecoverModel(patientId, searchResult.email, searchResult.phone);
+      return new PatientRecoverModel(patientId, searchResult);
     } catch (error) {
       return ErrorModel.fromError(error);
     }

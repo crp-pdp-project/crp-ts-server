@@ -12,8 +12,8 @@ RUN yarn global add tsx nodemon
 
 COPY . .
 
-RUN chmod +x scripts/docker-entrypoint.sh
+RUN chmod +x scripts/docker.entrypoint.sh
 
 EXPOSE 3000
 
-CMD ["./scripts/docker-entrypoint.sh"]
+CMD ["./scripts/docker.entrypoint.sh"]

@@ -15,7 +15,7 @@ export class TextHelper {
     }
   }
 
-  static generateOtp(length: number = 5): string {
+  static generateOtp(length = 5): string {
     const max = 10 ** length;
     let randomNumber: number;
     do {

@@ -28,14 +28,12 @@ export class SignInSessionInteractor implements ISignInSessionInteractor {
   }
 
   private async generateJwtToken(model: PatientModel): Promise<{ jwt: string; newSession: SessionDTO }> {
-    const payload = model.toSessionPayload();
-
-    const { jwt, jti, expiresAt } = await this.jwtManager.generateToken(payload);
+    const { jwt, jti, expiresAt } = await this.jwtManager.generateToken();
 
     return {
       jwt,
       newSession: {
-        patientId: payload.id,
+        patientId: model.id,
         jti,
         expiresAt,
       },

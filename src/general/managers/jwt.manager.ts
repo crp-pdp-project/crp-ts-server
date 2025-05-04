@@ -17,7 +17,7 @@ export type ValidationResponse<T> = {
   payload: EnrichedPayload<T>;
 };
 export interface IJWTManager<T extends JWTPayload> {
-  generateToken(payload: T): Promise<GenerationResponse>;
+  generateToken(payload?: T): Promise<GenerationResponse>;
   verifyToken(token: string): Promise<ValidationResponse<T>>;
 }
 
@@ -36,7 +36,7 @@ export class JWTManager<T extends JWTPayload> implements IJWTManager<T> {
     this.sessionExpTime = jwtConfig.SessionExpTime;
   }
 
-  async generateToken(payload: T): Promise<GenerationResponse> {
+  async generateToken(payload: T = {} as T): Promise<GenerationResponse> {
     const jti = randomUUID();
     const expiresAt = DateHelper.tokenRefreshTime(this.sessionExpTime);
 
