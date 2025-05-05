@@ -1,4 +1,4 @@
-## v0.2.1
+## v0.3.0
 
-- Merge branch 'master' of github.com:Belo-RenaruX/crp-ts-server ([`eaf58e3`](https://github.com/https://github.com/Belo-RenaruX/crp-ts-server/commit/eaf58e3))
+- Add doctors routes, refactor enroll and recover endpoints ([`b12f5ef`](https://github.com/https://github.com/Belo-RenaruX/crp-ts-server/commit/b12f5ef))
 
