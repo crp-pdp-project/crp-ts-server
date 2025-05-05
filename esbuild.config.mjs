@@ -30,7 +30,7 @@ await build({
   platform: 'node',
   format: 'cjs',
   target: ['node22'],
-  bundle: false,
+  bundle: true,
   sourcemap: false,
   minify: true,
   treeShaking: false,
