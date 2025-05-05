@@ -48,6 +48,7 @@ export class GetSpecialtiesRepository implements IGetSpecialtiesRepository {
     const specialties: SpecialtyDTO[] =
       rawResult.ListadoEspecialidadesResult?.Especialidades?.Especialidad?.map((specialty) => ({
         id: String(specialty.IdEspecialidad),
+        groupId: String(specialty.IdEspecialidad).slice(0, -2) || '0',
         name: specialty.Nombre,
       })) || [];
 

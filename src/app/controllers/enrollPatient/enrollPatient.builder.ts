@@ -1,7 +1,7 @@
 import { EnrollPatientController } from 'src/app/controllers/enrollPatient/enrollPatient.controller';
-import { EnrollPatientOutputDTOSchema } from 'src/app/entities/dtos/output/enrollPatient.output.dto';
+import { PatientVerificationOutputDTOSchema } from 'src/app/entities/dtos/output/patientVerification.output.dto';
 import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
-import { PatientEnrollSessionModel } from 'src/app/entities/models/patientEnrollSession.model';
+import { PatientExternalSessionModel } from 'src/app/entities/models/patientExternalSession.model';
 import { EnrollPatientInteractor } from 'src/app/interactors/enrollPatient/enrollPatient.interactor';
 import { EnrollSessionInteractor } from 'src/app/interactors/enrollSession/enrollSession.interactor';
 import { ResponseInteractor } from 'src/app/interactors/response/response.interactor';
@@ -23,10 +23,10 @@ export class EnrollPatientBuilder {
     const saveSession = new SaveSessionRepository();
     const jwtConfig = new JWTConfigEnroll();
     const jwtManager = new JWTManager<SessionPayloadDTO>(jwtConfig);
-    const responseStrategy = new SuccessResponseStrategy(EnrollPatientOutputDTOSchema);
+    const responseStrategy = new SuccessResponseStrategy(PatientVerificationOutputDTOSchema);
     const enrollInteractor = new EnrollPatientInteractor(getPatientAccount, searchPatient, confirmPatient, savePatient);
     const sessionInteractor = new EnrollSessionInteractor(saveSession, jwtManager);
-    const responseInteractor = new ResponseInteractor<PatientEnrollSessionModel>(responseStrategy);
+    const responseInteractor = new ResponseInteractor<PatientExternalSessionModel>(responseStrategy);
 
     return new EnrollPatientController(enrollInteractor, sessionInteractor, responseInteractor);
   }

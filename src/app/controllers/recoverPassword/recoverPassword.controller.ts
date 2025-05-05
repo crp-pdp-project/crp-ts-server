@@ -1,24 +1,24 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { RecoverPasswordInputDTO } from 'src/app/entities/dtos/input/recoverPassword.input.dto';
+import { PatientVerificationInputDTO } from 'src/app/entities/dtos/input/patientVerification.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error.model';
-import { PatientRecoverSessionModel } from 'src/app/entities/models/patientRecoverSession.model';
+import { PatientExternalSessionModel } from 'src/app/entities/models/patientExternalSession.model';
 import { IRecoverPasswordInteractor } from 'src/app/interactors/recoverPassword/recoverPassword.interactor';
 import { IRecoverSessionInteractor } from 'src/app/interactors/recoverSession/recoverSession.interactor';
 import { IResponseInteractor } from 'src/app/interactors/response/response.interactor';
 
 export interface IRecoverPasswordController {
-  handle(input: FastifyRequest<RecoverPasswordInputDTO>, reply: FastifyReply): Promise<void>;
+  handle(input: FastifyRequest<PatientVerificationInputDTO>, reply: FastifyReply): Promise<void>;
 }
 
 export class RecoverPasswordController implements IRecoverPasswordController {
   constructor(
     private readonly recoverInteractor: IRecoverPasswordInteractor,
     private readonly sessionInteractor: IRecoverSessionInteractor,
-    private readonly responseInteractor: IResponseInteractor<PatientRecoverSessionModel>,
+    private readonly responseInteractor: IResponseInteractor<PatientExternalSessionModel>,
   ) {}
 
-  async handle(input: FastifyRequest<RecoverPasswordInputDTO>, reply: FastifyReply): Promise<void> {
+  async handle(input: FastifyRequest<PatientVerificationInputDTO>, reply: FastifyReply): Promise<void> {
     const patient = await this.recoverInteractor.recover(input);
     if (patient instanceof ErrorModel) {
       const partialErrorResponse = this.responseInteractor.execute(patient);

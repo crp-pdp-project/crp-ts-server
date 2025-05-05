@@ -1,8 +1,8 @@
 import { CreateEnrolledAccountBodyDTOSchema } from 'src/app/entities/dtos/input/createEnrolledAccount.input.dto';
-import { EnrollPatientBodyDTOSchema } from 'src/app/entities/dtos/input/enrollPatient.input.dto';
+import { PatientVerificationBodyDTOSchema } from 'src/app/entities/dtos/input/patientVerification.input.dto';
 import { ValidateEnrollOTPBodyDTOSchema } from 'src/app/entities/dtos/input/validateEnrollOtp.input.dto';
 import { EmptyResponseDTOSchema } from 'src/app/entities/dtos/output/emptyResponse.output.dto';
-import { EnrollPatientOutputDTOSchema } from 'src/app/entities/dtos/output/enrollPatient.output.dto';
+import { PatientVerificationOutputDTOSchema } from 'src/app/entities/dtos/output/patientVerification.output.dto';
 import { SuccessResponseDTOSchema } from 'src/app/entities/dtos/output/successResponse.output.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { IOpenApiManager } from 'src/general/managers/openapi.manager';
@@ -16,10 +16,10 @@ export class EnrollDocs {
       path: `/patients/enroll`,
       description: 'Start enroll process for new patient found in FMP',
       tags: ['patients', 'enroll'],
-      body: EnrollPatientBodyDTOSchema,
+      body: PatientVerificationBodyDTOSchema,
       responses: {
         200: SuccessResponseDTOSchema.extend({
-          data: EnrollPatientOutputDTOSchema,
+          data: PatientVerificationOutputDTOSchema,
         }),
       },
     });

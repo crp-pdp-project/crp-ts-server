@@ -21,6 +21,8 @@ import { ProfileDocs } from 'src/docs/profile.docs';
 import { RecoverDocs } from 'src/docs/recover.docs';
 import { OpenApiManager } from 'src/general/managers/openapi.manager';
 import swaggerTemplate from 'src/general/templates/swagger.template';
+import { CitationDocs } from 'src/docs/citation.docs';
+import { CitationRouter } from 'src/app/routers/citation.router';
 
 export class Server {
   private static readonly app: FastifyInstance = Fastify({ logger: false });
@@ -91,6 +93,7 @@ export class Server {
     new AuthenticationDocs(this.manager).registerDocs();
     new ProfileDocs(this.manager).registerDocs();
     new DashboardDocs(this.manager).registerDocs();
+    new CitationDocs(this.manager).registerDocs();
     new DMDocs(this.manager).registerDocs();
   }
 
@@ -100,6 +103,7 @@ export class Server {
     new AuthenticationRouter(this.app).registerRouter();
     new ProfileRouter(this.app).registerRouter();
     new DashboardRouter(this.app).registerRouter();
+    new CitationRouter(this.app).registerRouter();
   }
 
   private static async setupDocsEndpoint(): Promise<void> {

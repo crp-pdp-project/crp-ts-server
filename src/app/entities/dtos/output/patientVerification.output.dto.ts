@@ -3,12 +3,20 @@ import { z } from 'zod';
 
 extendZodWithOpenApi(z);
 
-export const RecoverPasswordOutputDTOSchema = z
+export const PatientVerificationOutputDTOSchema = z
   .object({
-    patientRecover: z.object({
+    patientExternal: z.object({
       id: z.number().int().positive().openapi({
-        description: 'Unique ID of the patient',
+        description: 'Unique ID of the new patient',
         example: 1,
+      }),
+      firstName: z.string().openapi({
+        description: 'First Name of the patient',
+        example: 'Renato',
+      }),
+      lastName: z.string().openapi({
+        description: 'Last Name of the patient',
+        example: 'Berrocal',
       }),
       email: z.string().email().nullable().openapi({
         description: 'Email of the patient if available',
@@ -36,4 +44,4 @@ export const RecoverPasswordOutputDTOSchema = z
     description: 'Enroll Patient Response Body',
   });
 
-export type RecoverPasswordOutputDTO = z.infer<typeof RecoverPasswordOutputDTOSchema>;
+export type PatientVerificationOutputDTO = z.infer<typeof PatientVerificationOutputDTOSchema>;
