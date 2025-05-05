@@ -56,7 +56,7 @@ export class ConfirmPatientRepository implements IConfirmPatientRepository {
         Nombre: patient.firstName,
         Apellido1: patient.lastName,
         Apellido2: patient.secondLastName ?? undefined,
-        FechaNacimiento: DateHelper.toInetumDate(patient.birthDate),
+        FechaNacimiento: DateHelper.toFormatDate(patient.birthDate, 'inetumDate'),
         IdTipoDocIdentidad: String(patient.documentType),
         DocIdentidad: patient.documentNumber,
         Sexo: patient.gender,
@@ -78,8 +78,8 @@ export class ConfirmPatientRepository implements IConfirmPatientRepository {
 
   private parseOutput(rawResult: ConfirmPatientOutput): PatientConfirmationDTO {
     return {
-      fmpId: String(rawResult.AltaResult.IdPaciente),
-      confirmInCenter: rawResult.AltaResult.AcudirCentro !== 'N',
+      fmpId: String(rawResult.AltaResult?.IdPaciente),
+      confirmInCenter: rawResult.AltaResult?.AcudirCentro !== 'N',
     };
   }
 }

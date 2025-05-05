@@ -6,7 +6,7 @@ extendZodWithOpenApi(z);
 export const UpdateBiometricPasswordBodyDTOSchema = z
   .object({
     password: z.string().uuid().openapi({
-      description: 'New biometricpassword of the patient as UUID',
+      description: 'New biometric password of the patient as UUID',
       example: 'UUID',
     }),
   })

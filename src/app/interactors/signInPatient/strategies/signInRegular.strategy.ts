@@ -1,4 +1,4 @@
-import { SignInPatientBodyDTO } from 'src/app/entities/dtos/input/signInPatient.input.dto';
+import { SignInPatientBodyDTO, SignInPatientBodyDTOSchema } from 'src/app/entities/dtos/input/signInPatient.input.dto';
 import { AccountDTO } from 'src/app/entities/dtos/service/account.dto';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { ISignInPatientRepository } from 'src/app/repositories/database/signInPatient.repository';
@@ -14,10 +14,15 @@ export class SignInRegularStrategy implements ISignInStrategy {
   ) {}
 
   async validateAccount(body: SignInPatientBodyDTO): Promise<AccountDTO> {
-    const account = await this.getPatientAccount(body);
-    await this.validatePassword(body, account);
+    const validatedBody = this.validateInput(body);
+    const account = await this.getPatientAccount(validatedBody);
+    await this.validatePassword(validatedBody, account);
 
     return account;
+  }
+
+  private validateInput(body: SignInPatientBodyDTO): SignInPatientBodyDTO {
+    return SignInPatientBodyDTOSchema.parse(body);
   }
 
   private async getPatientAccount(body: SignInPatientBodyDTO): Promise<AccountDTO> {

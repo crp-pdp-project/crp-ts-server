@@ -10,24 +10,24 @@ export const RecoverPasswordOutputDTOSchema = z
         description: 'Unique ID of the patient',
         example: 1,
       }),
-      email: z.coerce.string().email().nullable().openapi({
+      email: z.string().email().nullable().openapi({
         description: 'Email of the patient if available',
         example: 'email@email.com',
       }),
-      maskedEmail: z.coerce.string().nullable().openapi({
+      maskedEmail: z.string().nullable().openapi({
         description: 'Masked email of the patient if available',
         example: '**ail@email.com',
       }),
-      phone: z.coerce.string().nullable().openapi({
+      phone: z.string().nullable().openapi({
         description: 'Phone of the patient if available',
         example: '999999999',
       }),
-      maskedPhone: z.coerce.string().nullable().openapi({
+      maskedPhone: z.string().nullable().openapi({
         description: 'Masked phone of the patient if available',
         example: '******999',
       }),
     }),
-    token: z.coerce.string().openapi({
+    token: z.string().openapi({
       description: 'JWE Token for enroll session',
       example: 'Valid JWE',
     }),

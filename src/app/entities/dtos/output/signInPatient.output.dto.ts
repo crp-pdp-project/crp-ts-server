@@ -17,7 +17,7 @@ export const SignInPatientOutputDTOSchema = z
       documentNumber: true,
       documentType: true,
     }),
-    token: z.coerce.string().openapi({
+    token: z.string().openapi({
       description: 'JWE Token for enroll session',
       example: 'Valid JWE',
     }),

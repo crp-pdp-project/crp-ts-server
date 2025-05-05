@@ -3,14 +3,9 @@ import { z } from 'zod';
 extendZodWithOpenApi(z);
 
 export const SpecialtyDTOSchema = z.object({
-  id: z.string().optional().openapi({
-    description: 'Unique ID of the specialty',
-    example: '2600',
-  }),
-  name: z.string().optional().openapi({
-    description: 'Name of the specialty',
-    example: 'Cardiologia',
-  }),
+  id: z.string().optional(),
+  groupId: z.string().optional(),
+  name: z.string().optional(),
 });
 
 export type SpecialtyDTO = z.infer<typeof SpecialtyDTOSchema>;

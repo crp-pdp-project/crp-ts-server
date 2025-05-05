@@ -25,4 +25,24 @@ export class TextHelper {
     const otp = randomNumber.toString().padStart(length, '0');
     return otp;
   }
+
+  static cleanTextParentheses(text?: string): string | undefined {
+    if (!text) return text;
+
+    const cleanText = text.replace(/\s*\([^)]*\)/g, '').trim();
+    return cleanText;
+  }
+
+  static titleCase(text?: string): string | undefined {
+    if (!text) return text;
+
+    const properText = text
+      .toLowerCase()
+      .split(' ')
+      .filter(Boolean)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+
+    return properText;
+  }
 }

@@ -1,15 +1,19 @@
 import 'dotenv/config';
+import https from 'https';
+
 import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi';
 import cors from '@fastify/cors';
 import ejs from 'ejs';
 import Fastify, { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
 import { AuthenticationRouter } from 'src/app/routers/authentication.router';
+import { DashboardRouter } from 'src/app/routers/dashboard.router';
 import { EnrollRouter } from 'src/app/routers/enroll.router';
 import { ProfileRouter } from 'src/app/routers/profile.router';
 import { RecoverRouter } from 'src/app/routers/recover.router';
 import { LoggerClient } from 'src/clients/logger.client';
 import { AuthenticationDocs } from 'src/docs/authentication.docs';
+import { DashboardDocs } from 'src/docs/dashboard.docs';
 import { DMDocs } from 'src/docs/dataModels.docs';
 import { EnrollDocs } from 'src/docs/enroll.docs';
 import { swaggerMeta } from 'src/docs/meta/swagger.meta';
@@ -39,10 +43,25 @@ export class Server {
     }
   }
 
+  static async shutdown(): Promise<void> {
+    try {
+      await this.app.close();
+      this.logger.info('Server closed gracefully');
+      process.exit(0);
+    } catch (error) {
+      this.logger.error('Error during shutdown', {
+        message: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+      });
+      process.exit(1);
+    }
+  }
+
   private static async setup(): Promise<void> {
     this.registerHooks();
     this.registerDocs();
     this.registerRoutes();
+    this.setupHttpClient();
     await this.setupDocsEndpoint();
     await this.app.register(cors);
   }
@@ -71,6 +90,7 @@ export class Server {
     new RecoverDocs(this.manager).registerDocs();
     new AuthenticationDocs(this.manager).registerDocs();
     new ProfileDocs(this.manager).registerDocs();
+    new DashboardDocs(this.manager).registerDocs();
     new DMDocs(this.manager).registerDocs();
   }
 
@@ -79,6 +99,7 @@ export class Server {
     new RecoverRouter(this.app).registerRouter();
     new AuthenticationRouter(this.app).registerRouter();
     new ProfileRouter(this.app).registerRouter();
+    new DashboardRouter(this.app).registerRouter();
   }
 
   private static async setupDocsEndpoint(): Promise<void> {
@@ -96,6 +117,14 @@ export class Server {
       reply.type('text/html').send(html);
     });
   }
+
+  private static setupHttpClient(): void {
+    https.globalAgent.options.rejectUnauthorized = false;
+    https.globalAgent.options.checkServerIdentity = () => undefined;
+  }
 }
 
 void Server.start();
+
+process.once('SIGINT', () => Server.shutdown());
+process.once('SIGTERM', () => Server.shutdown());

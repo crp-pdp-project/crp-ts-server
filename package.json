@@ -11,7 +11,7 @@
   "scripts": {
     "local": "docker compose up --build",
     "local:down": "docker compose down -v --remove-orphans",
-    "dev": "nodemon",
+    "dev": "nodemon src/entrypoints/server.entrypoint.ts",
     "init": "tsx src/entrypoints/server.entrypoint.ts",
     "migrate": "tsx src/entrypoints/migrate.entrypoint.ts",
     "build": "rm -rf ./dist && node esbuild.config.mjs",

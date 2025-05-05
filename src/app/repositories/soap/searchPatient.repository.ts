@@ -2,7 +2,6 @@ import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExternal.dto';
 import { InetumClient } from 'src/clients/inetum.client';
 import { DateHelper } from 'src/general/helpers/date.helper';
-import { TextHelper } from 'src/general/helpers/text.helper';
 
 type SearchPatientInput = {
   paciente: {
@@ -69,13 +68,13 @@ export class SearchPatientRepository implements ISearchPatientRepository {
         DocIdentidad: patient.documentNumber,
         IdTipoDocIdentidad: patient.documentType ? String(patient.documentType) : undefined,
         Identificador: patient.fmpId ? String(patient.fmpId) : undefined,
-        FechaNacimiento: patient.birthDate ? DateHelper.toInetumDate(patient.birthDate) : undefined,
+        FechaNacimiento: patient.birthDate ? DateHelper.toFormatDate(patient.birthDate, 'inetumDate') : undefined,
       },
     };
   }
 
   private parseOutput(rawResult: SearchPatientOutput): PatientExternalDTO {
-    const basePatient = rawResult?.ConsultaPacientesResult?.Paciente?.[0];
+    const basePatient = rawResult.ConsultaPacientesResult?.Paciente?.[0];
     const firstCenter = basePatient?.PacienteCentro?.PacienteCentro?.[0];
 
     return {
@@ -85,13 +84,13 @@ export class SearchPatientRepository implements ISearchPatientRepository {
       lastName: basePatient?.Apellido1,
       secondLastName: basePatient?.Apellido2 ?? null,
       gender: basePatient?.IdSexo,
-      birthDate: DateHelper.toDbDate(basePatient?.FechaNacimiento),
+      birthDate: basePatient?.FechaNacimiento,
       documentNumber: basePatient?.DocIdentidad,
       documentType: Number(basePatient?.IdTipoDocIdentidad),
       // email: basePatient?.Email ?? null,
-      // phone: TextHelper.normalizePhoneNumber(basePatient?.Telefono3),
+      // phone: basePatient?.Telefono3,
       email: 'renarux.92@gmail.com',
-      phone: TextHelper.normalizePhoneNumber('962943323'),
+      phone: '962943323',
       centerId: firstCenter?.Centro?.CodCentroIdc ?? firstCenter?.Origen ?? '',
       address: basePatient?.Direccion ?? null,
       addressAditional: basePatient?.Observaciones ?? null,

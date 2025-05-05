@@ -1,9 +1,9 @@
 import { RecoverPasswordBodyDTOSchema } from 'src/app/entities/dtos/input/recoverPassword.input.dto';
 import { UpdatePatientPasswordBodyDTOSchema } from 'src/app/entities/dtos/input/updatePatientPassword.input.dto';
 import { ValidateRecoverOTPBodyDTOSchema } from 'src/app/entities/dtos/input/validateRecoverOtp.input.dto';
+import { EmptyResponseDTOSchema } from 'src/app/entities/dtos/output/emptyResponse.output.dto';
 import { RecoverPasswordOutputDTOSchema } from 'src/app/entities/dtos/output/recoverPassword.output.dto';
-import { EmptyResponseDTOSchema } from 'src/app/entities/dtos/service/emptyResponse.dto';
-import { SuccessResponseDTOSchema } from 'src/app/entities/dtos/service/successResponse.dto';
+import { SuccessResponseDTOSchema } from 'src/app/entities/dtos/output/successResponse.output.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { IOpenApiManager } from 'src/general/managers/openapi.manager';
 

@@ -1,9 +1,9 @@
 import { CreateEnrolledAccountBodyDTOSchema } from 'src/app/entities/dtos/input/createEnrolledAccount.input.dto';
 import { EnrollPatientBodyDTOSchema } from 'src/app/entities/dtos/input/enrollPatient.input.dto';
 import { ValidateEnrollOTPBodyDTOSchema } from 'src/app/entities/dtos/input/validateEnrollOtp.input.dto';
+import { EmptyResponseDTOSchema } from 'src/app/entities/dtos/output/emptyResponse.output.dto';
 import { EnrollPatientOutputDTOSchema } from 'src/app/entities/dtos/output/enrollPatient.output.dto';
-import { EmptyResponseDTOSchema } from 'src/app/entities/dtos/service/emptyResponse.dto';
-import { SuccessResponseDTOSchema } from 'src/app/entities/dtos/service/successResponse.dto';
+import { SuccessResponseDTOSchema } from 'src/app/entities/dtos/output/successResponse.output.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { IOpenApiManager } from 'src/general/managers/openapi.manager';
 
