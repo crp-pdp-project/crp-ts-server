@@ -1,5 +1,6 @@
 import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
 import { BaseModel } from 'src/app/entities/models/base.model';
+import { TextHelper } from 'src/general/helpers/text.helper';
 
 import { PatientExternalDTO } from '../dtos/service/patientExternal.dto';
 
@@ -16,7 +17,7 @@ export class PatientEnrollModel extends BaseModel {
     this.id = patientId;
     this.email = patient.email;
     this.maskedEmail = this.maskEmail(patient.email);
-    this.phone = patient.phone;
+    this.phone = TextHelper.normalizePhoneNumber(patient.phone);
     this.maskedPhone = this.maskPhone(patient.phone);
   }
 

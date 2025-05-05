@@ -14,6 +14,8 @@ import { ISavePatientRepository } from 'src/app/repositories/database/savePatien
 import { IConfirmPatientRepository } from 'src/app/repositories/soap/confirmPatient.repository';
 import { ISearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
 import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
+import { DateHelper } from 'src/general/helpers/date.helper';
+import { TextHelper } from 'src/general/helpers/text.helper';
 
 export interface IEnrollPatientInteractor {
   enroll(input: FastifyRequest<EnrollPatientInputDTO>): Promise<PatientEnrollModel | ErrorModel>;
@@ -77,10 +79,10 @@ export class EnrollPatientInteractor implements IEnrollPatientInteractor {
     const patientToSave: PatientDTO = {
       fmpId: searchResult.fmpId,
       nhcId: searchResult.nhcId,
-      firstName: searchResult.firstName,
-      lastName: searchResult.lastName,
-      secondLastName: searchResult.secondLastName,
-      birthDate: searchResult.birthDate,
+      firstName: TextHelper.titleCase(searchResult.firstName),
+      lastName: TextHelper.titleCase(searchResult.lastName),
+      secondLastName: searchResult.secondLastName ? TextHelper.titleCase(searchResult.secondLastName) : null,
+      birthDate: DateHelper.toFormatDate(searchResult.birthDate, 'dbDate'),
       documentNumber: searchResult.documentNumber,
       documentType: searchResult.documentType,
     };
@@ -92,7 +94,7 @@ export class EnrollPatientInteractor implements IEnrollPatientInteractor {
     const confirmationResult = await this.confirmPatientRepository.execute(searchResult);
 
     if (confirmationResult.fmpId !== searchResult.fmpId) {
-      throw ErrorModel.badRequest();
+      throw ErrorModel.unprocessable(ClientErrorMessages.UNPROCESSABLE_PATIENT);
     }
   }
 

@@ -1,7 +1,7 @@
 import { UpdateBiometricPasswordBodyDTOSchema } from 'src/app/entities/dtos/input/updateBiometricPassword.input.dto';
+import { EmptyResponseDTOSchema } from 'src/app/entities/dtos/output/emptyResponse.output.dto';
 import { PatientProfileOutputDTOSchema } from 'src/app/entities/dtos/output/patientProfile.output.dto';
-import { EmptyResponseDTOSchema } from 'src/app/entities/dtos/service/emptyResponse.dto';
-import { SuccessResponseDTOSchema } from 'src/app/entities/dtos/service/successResponse.dto';
+import { SuccessResponseDTOSchema } from 'src/app/entities/dtos/output/successResponse.output.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { IOpenApiManager } from 'src/general/managers/openapi.manager';
 

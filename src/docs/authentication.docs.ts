@@ -1,7 +1,8 @@
+import { SignInBiometricBodyDTOSchema } from 'src/app/entities/dtos/input/signInBiometric.input.dto';
 import { SignInPatientBodyDTOSchema } from 'src/app/entities/dtos/input/signInPatient.input.dto';
+import { EmptyResponseDTOSchema } from 'src/app/entities/dtos/output/emptyResponse.output.dto';
 import { SignInPatientOutputDTOSchema } from 'src/app/entities/dtos/output/signInPatient.output.dto';
-import { EmptyResponseDTOSchema } from 'src/app/entities/dtos/service/emptyResponse.dto';
-import { SuccessResponseDTOSchema } from 'src/app/entities/dtos/service/successResponse.dto';
+import { SuccessResponseDTOSchema } from 'src/app/entities/dtos/output/successResponse.output.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { IOpenApiManager } from 'src/general/managers/openapi.manager';
 
@@ -27,7 +28,7 @@ export class AuthenticationDocs {
       path: `/patients/biometric/sign-in`,
       description: 'Sign in a patient with biometric authentication',
       tags: ['patients', 'authentication'],
-      body: SignInPatientBodyDTOSchema,
+      body: SignInBiometricBodyDTOSchema,
       responses: {
         200: SuccessResponseDTOSchema.extend({
           data: SignInPatientOutputDTOSchema,

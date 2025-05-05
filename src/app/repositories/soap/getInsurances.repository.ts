@@ -46,13 +46,12 @@ export class GetInsurancesRepository implements IGetInsurancesRepository {
   }
 
   private parseOutput(rawResult: GetInsurancesOutput): InsuranceDTO[] {
-    const insurances: InsuranceDTO[] = rawResult.ListadoSociedadesResult.Sociedades.SociedadRespuesta.map(
-      (insurance) => ({
-        id: insurance.IdSociedad,
-        inspectionId: insurance.CodInspeccion,
+    const insurances: InsuranceDTO[] =
+      rawResult.ListadoSociedadesResult?.Sociedades?.SociedadRespuesta?.map((insurance) => ({
+        id: String(insurance.IdSociedad),
+        inspectionId: String(insurance.CodInspeccion),
         name: insurance.Nombre,
-      }),
-    );
+      })) || [];
 
     return insurances;
   }

@@ -1,7 +1,7 @@
 import { z, ZodSchema, ZodType } from 'zod';
 
-import { ErrorResponseDTOSchema } from 'src/app/entities/dtos/service/errorResponse.dto';
-import { SuccessResponseDTOSchema } from 'src/app/entities/dtos/service/successResponse.dto';
+import { ErrorResponseDTOSchema } from 'src/app/entities/dtos/output/errorResponse.output.dto';
+import { SuccessResponseDTOSchema } from 'src/app/entities/dtos/output/successResponse.output.dto';
 import { IResponseStrategy } from 'src/app/interactors/response/response.interactor';
 
 export class SuccessResponseStrategy<T> implements IResponseStrategy {

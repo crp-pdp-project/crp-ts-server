@@ -1,7 +1,7 @@
 import { OpenAPIRegistry, RouteConfig } from '@asteasolutions/zod-to-openapi';
 import { ZodObject, ZodRawShape, ZodSchema } from 'zod';
 
-import { ErrorResponseDTOSchema } from 'src/app/entities/dtos/service/errorResponse.dto';
+import { ErrorResponseDTOSchema } from 'src/app/entities/dtos/output/errorResponse.output.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 
 type ZodSchemaObject = ZodObject<ZodRawShape>;

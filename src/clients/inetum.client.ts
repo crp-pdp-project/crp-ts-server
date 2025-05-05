@@ -4,7 +4,7 @@ export class InetumClient {
   private static instance: InetumClient;
   readonly catalog: SoapHelper;
   readonly user: SoapHelper;
-  readonly citation: SoapHelper;
+  readonly appointment: SoapHelper;
   readonly history: SoapHelper;
   readonly auth: SoapHelper;
   readonly fmp: SoapHelper;
@@ -13,7 +13,7 @@ export class InetumClient {
   private constructor(
     catalogClient: SoapHelper,
     userClient: SoapHelper,
-    citationClient: SoapHelper,
+    appointmentClient: SoapHelper,
     historyClient: SoapHelper,
     authClient: SoapHelper,
     fmpClient: SoapHelper,
@@ -21,7 +21,7 @@ export class InetumClient {
   ) {
     this.catalog = catalogClient;
     this.user = userClient;
-    this.citation = citationClient;
+    this.appointment = appointmentClient;
     this.history = historyClient;
     this.auth = authClient;
     this.fmp = fmpClient;
@@ -38,7 +38,7 @@ export class InetumClient {
         process.env.INETUM_USER_URL ?? '',
         process.env.INETUM_USER_BINDING_URL ?? '',
       );
-      const citationClient = await SoapHelper.initClient(
+      const appointmentClient = await SoapHelper.initClient(
         process.env.INETUM_CITATION_URL ?? '',
         process.env.INETUM_CITATION_BINDING_URL ?? '',
       );
@@ -62,7 +62,7 @@ export class InetumClient {
       this.instance = new InetumClient(
         catalogClient,
         userClient,
-        citationClient,
+        appointmentClient,
         historyClient,
         authClient,
         fmpClient,

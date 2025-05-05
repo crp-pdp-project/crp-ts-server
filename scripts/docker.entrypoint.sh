@@ -11,4 +11,4 @@ echo "✅ MySQL is ready, running migrations..."
 yarn migrate
 
 echo "🚀 Starting server..."
-yarn dev
+exec yarn dev

@@ -1,4 +1,7 @@
-import { SignInPatientBodyDTO } from 'src/app/entities/dtos/input/signInPatient.input.dto';
+import {
+  SignInBiometricBodyDTO,
+  SignInBiometricBodyDTOSchema,
+} from 'src/app/entities/dtos/input/signInBiometric.input.dto';
 import { AccountDTO } from 'src/app/entities/dtos/service/account.dto';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { ISignInBiometricRepository } from 'src/app/repositories/database/signInBiometric.repository';
@@ -13,14 +16,19 @@ export class SignInBiometricStrategy implements ISignInStrategy {
     private readonly encryptionManager: IEncryptionManager,
   ) {}
 
-  async validateAccount(body: SignInPatientBodyDTO): Promise<AccountDTO> {
-    const account = await this.getPatientAccount(body);
-    await this.validatePassword(body, account);
+  async validateAccount(body: SignInBiometricBodyDTO): Promise<AccountDTO> {
+    const validatedBody = this.validateInput(body);
+    const account = await this.getPatientAccount(validatedBody);
+    await this.validatePassword(validatedBody, account);
 
     return account;
   }
 
-  private async getPatientAccount(body: SignInPatientBodyDTO): Promise<AccountDTO> {
+  private validateInput(body: SignInBiometricBodyDTO): SignInBiometricBodyDTO {
+    return SignInBiometricBodyDTOSchema.parse(body);
+  }
+
+  private async getPatientAccount(body: SignInBiometricBodyDTO): Promise<AccountDTO> {
     const account = await this.signInBiometric.execute(body.documentType, body.documentNumber);
 
     if (!account || !account?.patient) {
@@ -30,7 +38,7 @@ export class SignInBiometricStrategy implements ISignInStrategy {
     return account;
   }
 
-  private async validatePassword(body: SignInPatientBodyDTO, account: AccountDTO): Promise<void> {
+  private async validatePassword(body: SignInBiometricBodyDTO, account: AccountDTO): Promise<void> {
     const isValidPassword = await this.encryptionManager.comparePassword(
       body.password,
       account.biometricHash!,

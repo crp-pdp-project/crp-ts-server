@@ -45,12 +45,11 @@ export class GetSpecialtiesRepository implements IGetSpecialtiesRepository {
   }
 
   private parseOutput(rawResult: GetSpecialtiesOutput): SpecialtyDTO[] {
-    const specialties: SpecialtyDTO[] = rawResult.ListadoEspecialidadesResult.Especialidades.Especialidad.map(
-      (specialty) => ({
-        id: specialty.IdEspecialidad,
+    const specialties: SpecialtyDTO[] =
+      rawResult.ListadoEspecialidadesResult?.Especialidades?.Especialidad?.map((specialty) => ({
+        id: String(specialty.IdEspecialidad),
         name: specialty.Nombre,
-      }),
-    );
+      })) || [];
 
     return specialties;
   }

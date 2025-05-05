@@ -1,4 +1,5 @@
 import { BaseModel } from 'src/app/entities/models/base.model';
+import { TextHelper } from 'src/general/helpers/text.helper';
 
 import { PatientExternalDTO } from '../dtos/service/patientExternal.dto';
 
@@ -31,7 +32,7 @@ export class PatientProfileModel extends BaseModel {
     this.documentType = patient.documentType ?? 0;
     this.email = external.email;
     this.maskedEmail = this.maskEmail(external.email);
-    this.phone = external.phone;
+    this.phone = TextHelper.normalizePhoneNumber(external.phone);
     this.maskedPhone = this.maskPhone(external.phone);
   }
 
