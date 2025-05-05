@@ -57,7 +57,7 @@ export class RestClient {
       responseData = (await response.body.text()) as T;
     }
 
-    this.logger.info('HTTP Response Received', {
+    this.logger.debug('HTTP Response Received', {
       statusCode: response.statusCode,
       url: fullUrl,
       response: responseData,

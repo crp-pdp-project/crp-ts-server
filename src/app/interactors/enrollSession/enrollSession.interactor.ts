@@ -1,13 +1,13 @@
 import { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
 import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
 import { ErrorModel } from 'src/app/entities/models/error.model';
-import { PatientEnrollModel } from 'src/app/entities/models/patientEnroll.model';
-import { PatientEnrollSessionModel } from 'src/app/entities/models/patientEnrollSession.model';
+import { PatientExternalModel } from 'src/app/entities/models/patientExternal.model';
+import { PatientExternalSessionModel } from 'src/app/entities/models/patientExternalSession.model';
 import { ISaveSessionRepository } from 'src/app/repositories/database/saveSession.respository';
 import { IJWTManager } from 'src/general/managers/jwt.manager';
 
 export interface IEnrollSessionInteractor {
-  session(model: PatientEnrollModel): Promise<PatientEnrollSessionModel | ErrorModel>;
+  session(model: PatientExternalModel): Promise<PatientExternalSessionModel | ErrorModel>;
 }
 
 export class EnrollSessionInteractor implements IEnrollSessionInteractor {
@@ -16,18 +16,18 @@ export class EnrollSessionInteractor implements IEnrollSessionInteractor {
     private readonly jwtManager: IJWTManager<SessionPayloadDTO>,
   ) {}
 
-  async session(model: PatientEnrollModel): Promise<PatientEnrollSessionModel | ErrorModel> {
+  async session(model: PatientExternalModel): Promise<PatientExternalSessionModel | ErrorModel> {
     try {
       const { jwt, newSession } = await this.generateJwtToken(model);
       await this.persistSession(newSession);
 
-      return new PatientEnrollSessionModel(model, jwt);
+      return new PatientExternalSessionModel(model, jwt);
     } catch (error) {
       return ErrorModel.fromError(error);
     }
   }
 
-  private async generateJwtToken(model: PatientEnrollModel): Promise<{ jwt: string; newSession: SessionDTO }> {
+  private async generateJwtToken(model: PatientExternalModel): Promise<{ jwt: string; newSession: SessionDTO }> {
     const payload = model.toSessionPayload();
 
     const { jwt, jti, expiresAt } = await this.jwtManager.generateToken(payload);

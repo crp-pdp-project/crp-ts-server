@@ -55,6 +55,7 @@ export class GetDoctorsRepository implements IGetDoctorsRepository {
         name: professional.Nombre ?? '',
         specialty: {
           id: String(professional.IdEspecialidad),
+          groupId: String(professional.IdEspecialidad).slice(0, -2) || '0',
           name: professional.DescEspecialidad ?? '',
         },
       })) || [];

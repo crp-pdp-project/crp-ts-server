@@ -1,0 +1,64 @@
+import { FastifyRequest } from 'fastify';
+
+import { DoctorsListInputDTO, DoctorsListQueryDTO, DoctorsListQueryDTOSchema } from 'src/app/entities/dtos/input/doctorsList.input.dto';
+import { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
+import { DoctorDTO } from 'src/app/entities/dtos/service/doctor.dto';
+import { SpecialtyDTO } from 'src/app/entities/dtos/service/specialty.dto';
+import { DoctorModel } from 'src/app/entities/models/doctor.model';
+import { ErrorModel } from 'src/app/entities/models/error.model';
+import { SessionModel } from 'src/app/entities/models/session.model';
+import { IGetDoctorImagesRepository } from 'src/app/repositories/rest/getDoctorImages.repository';
+import { IGetDoctorsRepository } from 'src/app/repositories/soap/getDoctors.repository';
+import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
+
+export interface IDoctorsListInteractor {
+  list(input: FastifyRequest<DoctorsListInputDTO>): Promise<DoctorModel[] | ErrorModel>;
+}
+
+export class DoctorsListInteractor implements IDoctorsListInteractor {
+  constructor(
+    private readonly getDoctors: IGetDoctorsRepository,
+    private readonly getImages: IGetDoctorImagesRepository,
+  ) {}
+
+  async list(input: FastifyRequest<DoctorsListInputDTO>): Promise<DoctorModel[] | ErrorModel> {
+    try {
+      this.validateSession(input.session);
+      const specialtyId = await this.validateInput(input.query);
+      const doctorsList = await this.getDoctorsList(specialtyId);
+      const imagesList = await this.getImagesList(specialtyId);
+      return this.generateModels(doctorsList, imagesList);
+    } catch (error) {
+      return ErrorModel.fromError(error);
+    }
+  }
+
+  private validateInput(query?: DoctorsListQueryDTO): SpecialtyDTO['id'] {
+      const { specialtyId } = DoctorsListQueryDTOSchema.parse(query);
+  
+      return specialtyId;
+    }
+
+  private validateSession(session?: SessionModel): void {
+    if (!session) {
+      throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
+    }
+  }
+
+  private async getDoctorsList(specialtyId?: SpecialtyDTO['id']): Promise<AppointmentDTO[]> {
+    const doctorsList = await this.getDoctors.execute(specialtyId);
+
+    return doctorsList;
+  }
+
+  private async getImagesList(specialtyId?: SpecialtyDTO['id']): Promise<AppointmentDTO[]> {
+    const imagesList = await this.getImages.execute(specialtyId);
+
+    return imagesList;
+  }
+
+  private generateModels(doctorsList: DoctorDTO[], imagesList?: DoctorDTO[]): DoctorModel[] {
+    const models = doctorsList.map((doctor) => new DoctorModel(doctor, imagesList));
+    return models;
+  }
+}

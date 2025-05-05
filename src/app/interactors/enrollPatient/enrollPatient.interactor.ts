@@ -1,14 +1,14 @@
 import { FastifyRequest } from 'fastify';
 
 import {
-  EnrollPatientBodyDTO,
-  EnrollPatientBodyDTOSchema,
-  EnrollPatientInputDTO,
-} from 'src/app/entities/dtos/input/enrollPatient.input.dto';
+  PatientVerificationBodyDTO,
+  PatientVerificationBodyDTOSchema,
+  PatientVerificationInputDTO,
+} from 'src/app/entities/dtos/input/patientVerification.input.dto';
 import { PatientDTO, PatientDTOSchema } from 'src/app/entities/dtos/service/patient.dto';
 import { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExternal.dto';
 import { ErrorModel } from 'src/app/entities/models/error.model';
-import { PatientEnrollModel } from 'src/app/entities/models/patientEnroll.model';
+import { PatientExternalModel } from 'src/app/entities/models/patientExternal.model';
 import { IGetPatientAccountRepository } from 'src/app/repositories/database/getPatientAccount.repository';
 import { ISavePatientRepository } from 'src/app/repositories/database/savePatient.repository';
 import { IConfirmPatientRepository } from 'src/app/repositories/soap/confirmPatient.repository';
@@ -18,7 +18,7 @@ import { DateHelper } from 'src/general/helpers/date.helper';
 import { TextHelper } from 'src/general/helpers/text.helper';
 
 export interface IEnrollPatientInteractor {
-  enroll(input: FastifyRequest<EnrollPatientInputDTO>): Promise<PatientEnrollModel | ErrorModel>;
+  enroll(input: FastifyRequest<PatientVerificationInputDTO>): Promise<PatientExternalModel | ErrorModel>;
 }
 
 export class EnrollPatientInteractor implements IEnrollPatientInteractor {
@@ -29,7 +29,7 @@ export class EnrollPatientInteractor implements IEnrollPatientInteractor {
     private readonly savePatientRepository: ISavePatientRepository,
   ) {}
 
-  async enroll(input: FastifyRequest<EnrollPatientInputDTO>): Promise<PatientEnrollModel | ErrorModel> {
+  async enroll(input: FastifyRequest<PatientVerificationInputDTO>): Promise<PatientExternalModel | ErrorModel> {
     try {
       const body = this.validateInput(input.body);
       const existingAccount = await this.getPatientAccount(body);
@@ -42,17 +42,17 @@ export class EnrollPatientInteractor implements IEnrollPatientInteractor {
         id = await this.persistPatient(patientToSave);
       }
 
-      return new PatientEnrollModel(id, searchResult);
+      return new PatientExternalModel(id, searchResult);
     } catch (error) {
       return ErrorModel.fromError(error);
     }
   }
 
-  private validateInput(body: EnrollPatientBodyDTO): EnrollPatientBodyDTO {
-    return EnrollPatientBodyDTOSchema.parse(body);
+  private validateInput(body: PatientVerificationBodyDTO): PatientVerificationBodyDTO {
+    return PatientVerificationBodyDTOSchema.parse(body);
   }
 
-  private async getPatientAccount(body: EnrollPatientBodyDTO): Promise<PatientDTO | null> {
+  private async getPatientAccount(body: PatientVerificationBodyDTO): Promise<PatientDTO | null> {
     const existingAccount = await this.getPatientAccountRepository.execute(body.documentType, body.documentNumber);
 
     if (existingAccount?.account) {
@@ -62,7 +62,7 @@ export class EnrollPatientInteractor implements IEnrollPatientInteractor {
     return existingAccount;
   }
 
-  private async searchPatient(body: EnrollPatientBodyDTO): Promise<PatientExternalDTO> {
+  private async searchPatient(body: PatientVerificationBodyDTO): Promise<PatientExternalDTO> {
     const searchResult = await this.searchPatientRepository.execute(body);
 
     if (searchResult?.centerId !== process.env.CRP_CENTER_ID) {

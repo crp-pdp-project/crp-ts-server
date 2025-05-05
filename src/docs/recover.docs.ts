@@ -1,8 +1,8 @@
-import { RecoverPasswordBodyDTOSchema } from 'src/app/entities/dtos/input/recoverPassword.input.dto';
+import { PatientVerificationBodyDTOSchema } from 'src/app/entities/dtos/input/patientVerification.input.dto';
 import { UpdatePatientPasswordBodyDTOSchema } from 'src/app/entities/dtos/input/updatePatientPassword.input.dto';
 import { ValidateRecoverOTPBodyDTOSchema } from 'src/app/entities/dtos/input/validateRecoverOtp.input.dto';
 import { EmptyResponseDTOSchema } from 'src/app/entities/dtos/output/emptyResponse.output.dto';
-import { RecoverPasswordOutputDTOSchema } from 'src/app/entities/dtos/output/recoverPassword.output.dto';
+import { PatientVerificationOutputDTOSchema } from 'src/app/entities/dtos/output/patientVerification.output.dto';
 import { SuccessResponseDTOSchema } from 'src/app/entities/dtos/output/successResponse.output.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { IOpenApiManager } from 'src/general/managers/openapi.manager';
@@ -16,10 +16,10 @@ export class RecoverDocs {
       path: `/patients/recover`,
       description: 'Start recover process for new patient found in FMP',
       tags: ['patients', 'recover'],
-      body: RecoverPasswordBodyDTOSchema,
+      body: PatientVerificationBodyDTOSchema,
       responses: {
         200: SuccessResponseDTOSchema.extend({
-          data: RecoverPasswordOutputDTOSchema,
+          data: PatientVerificationOutputDTOSchema,
         }),
       },
     });

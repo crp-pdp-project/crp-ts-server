@@ -4,8 +4,10 @@ import { TextHelper } from 'src/general/helpers/text.helper';
 
 import { PatientExternalDTO } from '../dtos/service/patientExternal.dto';
 
-export class PatientEnrollModel extends BaseModel {
+export class PatientExternalModel extends BaseModel {
   readonly id: number;
+  readonly firstName: string;
+  readonly lastName: string;
   readonly email: string | null;
   readonly maskedEmail: string | null;
   readonly phone: string | null;
@@ -15,6 +17,8 @@ export class PatientEnrollModel extends BaseModel {
     super();
 
     this.id = patientId;
+    this.firstName = TextHelper.titleCase(patient.firstName) ?? '',
+    this.lastName = TextHelper.titleCase(patient.lastName) ?? '',
     this.email = patient.email;
     this.maskedEmail = this.maskEmail(patient.email);
     this.phone = TextHelper.normalizePhoneNumber(patient.phone);
