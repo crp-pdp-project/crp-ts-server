@@ -10,7 +10,7 @@ export class SoapHelper {
   private logger: LoggerClient = LoggerClient.instance;
 
   private constructor(private readonly client: Client) {}
-  
+
   static async initClient(wsdlUrl: string, bindingUrl: string): Promise<SoapHelper> {
     const client = await createClientAsync(wsdlUrl, {
       endpoint: bindingUrl,

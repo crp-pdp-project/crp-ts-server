@@ -27,13 +27,13 @@ export class PatientVerificationEnrollStrategy implements IPatientVerificationSt
 
     return id;
   }
-  
+
   private accountCheck(patient?: PatientDTO | null): void {
     if (patient?.account) {
       throw ErrorModel.badRequest(ClientErrorMessages.PATIENT_REGISTERED);
     }
   }
-  
+
   private createPatientDTO(searchResult: PatientExternalDTO): PatientDTO {
     const patientToSave: PatientDTO = {
       fmpId: searchResult.fmpId,
