@@ -11,7 +11,7 @@ export const DoctorsListQueryDTOSchema = z
     }),
   })
   .openapi({
-    description: 'Patient Historic appointment query strings',
+    description: 'Doctors List Query Strings',
   });
 
 export type DoctorsListQueryDTO = z.infer<typeof DoctorsListQueryDTOSchema>;

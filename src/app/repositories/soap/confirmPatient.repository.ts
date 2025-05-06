@@ -53,6 +53,7 @@ export class ConfirmPatientRepository implements IConfirmPatientRepository {
       usuario: process.env.INETUM_USER ?? '',
       contrasena: process.env.INETUM_PASSWORD ?? '',
       peticionAltaUsuario: {
+        IdCentro: patient.centerId,
         Nombre: patient.firstName,
         Apellido1: patient.lastName,
         Apellido2: patient.secondLastName ?? undefined,
@@ -70,7 +71,6 @@ export class ConfirmPatientRepository implements IConfirmPatientRepository {
         Numero: patient.addressNumber ?? undefined,
         Otros: patient.addressAditional ?? undefined,
         Movil: patient.phone ?? undefined,
-        IdCentro: patient.centerId,
         CanalEntrada: 'PERU',
       },
     };

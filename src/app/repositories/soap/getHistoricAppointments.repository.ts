@@ -54,11 +54,11 @@ export class GetHistoricAppointmentsRepository implements IGetHistoricAppointmen
       usuario: process.env.INETUM_USER ?? '',
       contrasena: process.env.INETUM_PASSWORD ?? '',
       peticionListadoConsultas: {
-        IdPaciente: fmpId,
         IdCentro: process.env.CRP_CENTER_ID ?? '',
-        CanalEntrada: 'PERU',
+        IdPaciente: fmpId,
         FechaInicio: monthsToList ? DateHelper.subtractMonths(monthsToList, 'inetumDate') : undefined,
         FechaFinal: monthsToList ? DateHelper.currentDate('inetumDate') : undefined,
+        CanalEntrada: 'PERU',
       },
     };
   }

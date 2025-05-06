@@ -5,7 +5,6 @@ import {
   DoctorsListQueryDTO,
   DoctorsListQueryDTOSchema,
 } from 'src/app/entities/dtos/input/doctorsList.input.dto';
-import { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
 import { DoctorDTO } from 'src/app/entities/dtos/service/doctor.dto';
 import { SpecialtyDTO } from 'src/app/entities/dtos/service/specialty.dto';
 import { DoctorModel } from 'src/app/entities/models/doctor.model';
@@ -49,13 +48,13 @@ export class DoctorsListInteractor implements IDoctorsListInteractor {
     }
   }
 
-  private async getDoctorsList(specialtyId?: SpecialtyDTO['id']): Promise<AppointmentDTO[]> {
+  private async getDoctorsList(specialtyId?: SpecialtyDTO['id']): Promise<DoctorDTO[]> {
     const doctorsList = await this.getDoctors.execute(specialtyId);
 
     return doctorsList;
   }
 
-  private async getImagesList(specialtyId?: SpecialtyDTO['id']): Promise<AppointmentDTO[]> {
+  private async getImagesList(specialtyId?: SpecialtyDTO['id']): Promise<DoctorDTO[]> {
     const imagesList = await this.getImages.execute(specialtyId);
 
     return imagesList;
