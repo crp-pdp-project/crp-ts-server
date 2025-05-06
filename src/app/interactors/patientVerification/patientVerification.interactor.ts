@@ -48,10 +48,6 @@ export class PatientVerificationInteractor implements IPatientVerificationIntera
   private async getPatientAccount(body: PatientVerificationBodyDTO): Promise<PatientDTO | null> {
     const existingAccount = await this.getPatientAccountRepository.execute(body.documentType, body.documentNumber);
 
-    if (existingAccount?.account) {
-      throw ErrorModel.badRequest(ClientErrorMessages.PATIENT_REGISTERED);
-    }
-
     return existingAccount;
   }
 

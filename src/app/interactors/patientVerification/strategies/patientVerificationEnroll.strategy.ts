@@ -21,11 +21,19 @@ export class PatientVerificationEnrollStrategy implements IPatientVerificationSt
       const patientToSave = this.createPatientDTO(searchResult);
       await this.confirmPatientCreation(searchResult);
       id = await this.persistPatient(patientToSave);
+    } else {
+      this.accountCheck(patient);
     }
 
     return id;
   }
-
+  
+  private accountCheck(patient?: PatientDTO | null): void {
+    if (patient?.account) {
+      throw ErrorModel.badRequest(ClientErrorMessages.PATIENT_REGISTERED);
+    }
+  }
+  
   private createPatientDTO(searchResult: PatientExternalDTO): PatientDTO {
     const patientToSave: PatientDTO = {
       fmpId: searchResult.fmpId,
