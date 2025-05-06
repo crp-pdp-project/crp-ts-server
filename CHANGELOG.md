@@ -1,4 +1,4 @@
-## v0.3.0
+## v0.3.1
 
-- Add doctors routes, refactor enroll and recover endpoints ([`b12f5ef`](https://github.com/https://github.com/Belo-RenaruX/crp-ts-server/commit/b12f5ef))
+- Feat refactor (#6) ([`441ba1d`](https://github.com/https://github.com/Belo-RenaruX/crp-ts-server/commit/441ba1d))
 
