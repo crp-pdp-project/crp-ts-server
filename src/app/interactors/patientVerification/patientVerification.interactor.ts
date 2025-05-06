@@ -5,6 +5,7 @@ import {
   PatientVerificationBodyDTOSchema,
   PatientVerificationInputDTO,
 } from 'src/app/entities/dtos/input/patientVerification.input.dto';
+import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExternal.dto';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { PatientExternalModel } from 'src/app/entities/models/patientExternal.model';
@@ -12,21 +13,27 @@ import { IGetPatientAccountRepository } from 'src/app/repositories/database/getP
 import { ISearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
 import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
 
-export interface IRecoverPasswordInteractor {
-  recover(input: FastifyRequest<PatientVerificationInputDTO>): Promise<PatientExternalModel | ErrorModel>;
+export interface IPatientVerificationStrategy {
+  persisVerification(searchResult: PatientExternalDTO, patient?: PatientDTO | null): Promise<number>;
 }
 
-export class RecoverPasswordInteractor implements IRecoverPasswordInteractor {
+export interface IPatientVerificationInteractor {
+  verify(input: FastifyRequest<PatientVerificationInputDTO>): Promise<PatientExternalModel | ErrorModel>;
+}
+
+export class PatientVerificationInteractor implements IPatientVerificationInteractor {
   constructor(
     private readonly getPatientAccountRepository: IGetPatientAccountRepository,
     private readonly searchPatientRepository: ISearchPatientRepository,
+    private readonly verificationStrategy: IPatientVerificationStrategy,
   ) {}
 
-  async recover(input: FastifyRequest<PatientVerificationInputDTO>): Promise<PatientExternalModel | ErrorModel> {
+  async verify(input: FastifyRequest<PatientVerificationInputDTO>): Promise<PatientExternalModel | ErrorModel> {
     try {
       const body = this.validateInput(input.body);
-      const patientId = await this.getPatientAccount(body);
+      const existingAccount = await this.getPatientAccount(body);
       const searchResult = await this.searchPatient(body);
+      const patientId = await this.verificationStrategy.persisVerification(searchResult, existingAccount);
 
       return new PatientExternalModel(patientId, searchResult);
     } catch (error) {
@@ -38,14 +45,14 @@ export class RecoverPasswordInteractor implements IRecoverPasswordInteractor {
     return PatientVerificationBodyDTOSchema.parse(body);
   }
 
-  private async getPatientAccount(body: PatientVerificationBodyDTO): Promise<number> {
+  private async getPatientAccount(body: PatientVerificationBodyDTO): Promise<PatientDTO | null> {
     const existingAccount = await this.getPatientAccountRepository.execute(body.documentType, body.documentNumber);
 
-    if (!existingAccount?.id || !existingAccount?.account) {
-      throw ErrorModel.badRequest(ClientErrorMessages.PATIENT_NOT_REGISTERED);
+    if (existingAccount?.account) {
+      throw ErrorModel.badRequest(ClientErrorMessages.PATIENT_REGISTERED);
     }
 
-    return existingAccount.id;
+    return existingAccount;
   }
 
   private async searchPatient(body: PatientVerificationBodyDTO): Promise<PatientExternalDTO> {

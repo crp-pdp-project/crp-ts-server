@@ -1,6 +1,10 @@
 import { FastifyRequest } from 'fastify';
 
-import { DoctorsListInputDTO, DoctorsListQueryDTO, DoctorsListQueryDTOSchema } from 'src/app/entities/dtos/input/doctorsList.input.dto';
+import {
+  DoctorsListInputDTO,
+  DoctorsListQueryDTO,
+  DoctorsListQueryDTOSchema,
+} from 'src/app/entities/dtos/input/doctorsList.input.dto';
 import { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
 import { DoctorDTO } from 'src/app/entities/dtos/service/doctor.dto';
 import { SpecialtyDTO } from 'src/app/entities/dtos/service/specialty.dto';
@@ -24,7 +28,7 @@ export class DoctorsListInteractor implements IDoctorsListInteractor {
   async list(input: FastifyRequest<DoctorsListInputDTO>): Promise<DoctorModel[] | ErrorModel> {
     try {
       this.validateSession(input.session);
-      const specialtyId = await this.validateInput(input.query);
+      const specialtyId = this.validateInput(input.query);
       const doctorsList = await this.getDoctorsList(specialtyId);
       const imagesList = await this.getImagesList(specialtyId);
       return this.generateModels(doctorsList, imagesList);
@@ -34,10 +38,10 @@ export class DoctorsListInteractor implements IDoctorsListInteractor {
   }
 
   private validateInput(query?: DoctorsListQueryDTO): SpecialtyDTO['id'] {
-      const { specialtyId } = DoctorsListQueryDTOSchema.parse(query);
-  
-      return specialtyId;
-    }
+    const { specialtyId } = DoctorsListQueryDTOSchema.parse(query);
+
+    return specialtyId;
+  }
 
   private validateSession(session?: SessionModel): void {
     if (!session) {

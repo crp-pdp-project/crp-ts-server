@@ -1,23 +1,23 @@
 import { FastifyRequest } from 'fastify';
 
 import {
-  ValidateRecoverOTPBodyDTO,
-  ValidateRecoverOTPBodyDTOSchema,
-  ValidateRecoverOTPInputDTO,
-} from 'src/app/entities/dtos/input/validateRecoverOtp.input.dto';
+  ValidateVerificationOTPBodyDTO,
+  ValidateVerificationOTPBodyDTOSchema,
+  ValidateVerificationOTPInputDTO,
+} from 'src/app/entities/dtos/input/validateVerificationOtp.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { SessionModel } from 'src/app/entities/models/session.model';
 import { IValidateSessionOTPRepository } from 'src/app/repositories/database/validateSessionOTP.repository';
 import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
 
-export interface IValidateRecoverOTPInteractor {
+export interface IValidateVerificationOTPInteractor {
   validate(input: FastifyRequest): Promise<void | ErrorModel>;
 }
 
-export class ValidateRecoverOTPInteractor implements IValidateRecoverOTPInteractor {
+export class ValidateVerificationOTPInteractor implements IValidateVerificationOTPInteractor {
   constructor(private readonly validateSessionOtp: IValidateSessionOTPRepository) {}
 
-  async validate(input: FastifyRequest<ValidateRecoverOTPInputDTO>): Promise<void | ErrorModel> {
+  async validate(input: FastifyRequest<ValidateVerificationOTPInputDTO>): Promise<void | ErrorModel> {
     try {
       const session = this.validateSession(input.session);
       const body = this.validateInput(input.body);
@@ -36,11 +36,11 @@ export class ValidateRecoverOTPInteractor implements IValidateRecoverOTPInteract
     return session;
   }
 
-  private validateInput(body: ValidateRecoverOTPBodyDTO): ValidateRecoverOTPBodyDTO {
-    return ValidateRecoverOTPBodyDTOSchema.parse(body);
+  private validateInput(body: ValidateVerificationOTPBodyDTO): ValidateVerificationOTPBodyDTO {
+    return ValidateVerificationOTPBodyDTOSchema.parse(body);
   }
 
-  private validateOtpInSession(session: SessionModel, body: ValidateRecoverOTPBodyDTO): void {
+  private validateOtpInSession(session: SessionModel, body: ValidateVerificationOTPBodyDTO): void {
     if (session.otp !== body.otp) {
       throw ErrorModel.forbidden(ClientErrorMessages.WRONG_OTP);
     }
