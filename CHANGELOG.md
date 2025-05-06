@@ -1,4 +1,4 @@
-## v0.3.1
+## v0.3.2
 
-- Feat refactor (#6) ([`441ba1d`](https://github.com/https://github.com/Belo-RenaruX/crp-ts-server/commit/441ba1d))
+- Hot Fix Enroll ([`5c4b80b`](https://github.com/https://github.com/Belo-RenaruX/crp-ts-server/commit/5c4b80b))
 
