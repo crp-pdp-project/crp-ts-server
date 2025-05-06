@@ -7,12 +7,14 @@ import ejs from 'ejs';
 import Fastify, { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
 import { AuthenticationRouter } from 'src/app/routers/authentication.router';
+import { CitationRouter } from 'src/app/routers/citation.router';
 import { DashboardRouter } from 'src/app/routers/dashboard.router';
 import { EnrollRouter } from 'src/app/routers/enroll.router';
 import { ProfileRouter } from 'src/app/routers/profile.router';
 import { RecoverRouter } from 'src/app/routers/recover.router';
 import { LoggerClient } from 'src/clients/logger.client';
 import { AuthenticationDocs } from 'src/docs/authentication.docs';
+import { CitationDocs } from 'src/docs/citation.docs';
 import { DashboardDocs } from 'src/docs/dashboard.docs';
 import { DMDocs } from 'src/docs/dataModels.docs';
 import { EnrollDocs } from 'src/docs/enroll.docs';
@@ -21,8 +23,6 @@ import { ProfileDocs } from 'src/docs/profile.docs';
 import { RecoverDocs } from 'src/docs/recover.docs';
 import { OpenApiManager } from 'src/general/managers/openapi.manager';
 import swaggerTemplate from 'src/general/templates/swagger.template';
-import { CitationDocs } from 'src/docs/citation.docs';
-import { CitationRouter } from 'src/app/routers/citation.router';
 
 export class Server {
   private static readonly app: FastifyInstance = Fastify({ logger: false });

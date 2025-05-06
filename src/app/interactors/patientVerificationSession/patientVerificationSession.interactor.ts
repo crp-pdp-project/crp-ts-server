@@ -6,11 +6,11 @@ import { PatientExternalSessionModel } from 'src/app/entities/models/patientExte
 import { ISaveSessionRepository } from 'src/app/repositories/database/saveSession.respository';
 import { IJWTManager } from 'src/general/managers/jwt.manager';
 
-export interface IEnrollSessionInteractor {
+export interface IPatientVefiricationSessionInteractor {
   session(model: PatientExternalModel): Promise<PatientExternalSessionModel | ErrorModel>;
 }
 
-export class EnrollSessionInteractor implements IEnrollSessionInteractor {
+export class PatientVefiricationSessionInteractor implements IPatientVefiricationSessionInteractor {
   constructor(
     private readonly saveSessionRepository: ISaveSessionRepository,
     private readonly jwtManager: IJWTManager<SessionPayloadDTO>,

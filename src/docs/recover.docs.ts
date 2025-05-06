@@ -1,6 +1,6 @@
 import { PatientVerificationBodyDTOSchema } from 'src/app/entities/dtos/input/patientVerification.input.dto';
 import { UpdatePatientPasswordBodyDTOSchema } from 'src/app/entities/dtos/input/updatePatientPassword.input.dto';
-import { ValidateRecoverOTPBodyDTOSchema } from 'src/app/entities/dtos/input/validateRecoverOtp.input.dto';
+import { ValidateVerificationOTPBodyDTOSchema } from 'src/app/entities/dtos/input/validateVerificationOtp.input.dto';
 import { EmptyResponseDTOSchema } from 'src/app/entities/dtos/output/emptyResponse.output.dto';
 import { PatientVerificationOutputDTOSchema } from 'src/app/entities/dtos/output/patientVerification.output.dto';
 import { SuccessResponseDTOSchema } from 'src/app/entities/dtos/output/successResponse.output.dto';
@@ -40,7 +40,7 @@ export class RecoverDocs {
       path: `/patients/recover/validate`,
       description: 'Validate Sent OTP to recovering patient ',
       tags: ['patients', 'recover'],
-      body: ValidateRecoverOTPBodyDTOSchema,
+      body: ValidateVerificationOTPBodyDTOSchema,
       responses: {
         204: EmptyResponseDTOSchema,
       },

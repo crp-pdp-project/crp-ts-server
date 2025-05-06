@@ -17,12 +17,12 @@ export class PatientExternalModel extends BaseModel {
     super();
 
     this.id = patientId;
-    this.firstName = TextHelper.titleCase(patient.firstName) ?? '',
-    this.lastName = TextHelper.titleCase(patient.lastName) ?? '',
     this.email = patient.email;
     this.maskedEmail = this.maskEmail(patient.email);
     this.phone = TextHelper.normalizePhoneNumber(patient.phone);
     this.maskedPhone = this.maskPhone(patient.phone);
+    this.firstName = TextHelper.titleCase(patient.firstName) ?? '';
+    this.lastName = TextHelper.titleCase(patient.lastName) ?? '';
   }
 
   private maskPhone(phone: string | null): string | null {

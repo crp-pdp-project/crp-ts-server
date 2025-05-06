@@ -9,13 +9,9 @@ export const SignInPatientOutputDTOSchema = z
   .object({
     patient: PatientDMSchema.pick({
       id: true,
-      fmpId: true,
-      nhcId: true,
       firstName: true,
       lastName: true,
       secondLastName: true,
-      documentNumber: true,
-      documentType: true,
     }),
     token: z.string().openapi({
       description: 'JWE Token for enroll session',

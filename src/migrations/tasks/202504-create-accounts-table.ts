@@ -11,6 +11,10 @@ export async function up(db: Kysely<unknown>): Promise<void> {
     .addColumn('passwordSalt', 'varchar(255)', (col) => col.notNull())
     .addColumn('biometricHash', 'varchar(255)')
     .addColumn('biometricSalt', 'varchar(255)')
+    .addColumn('acceptTerms', 'boolean', (col) => col.notNull())
+    .addColumn('acceptAdvertising', 'boolean', (col) => col.notNull())
+    .addColumn('blockExpiredAt', 'datetime')
+    .addColumn('tryCount', 'integer')
     .addColumn('createdAt', 'datetime', (col) => col.notNull().defaultTo(sql`NOW()`))
     .addColumn('updatedAt', 'datetime', (col) =>
       col

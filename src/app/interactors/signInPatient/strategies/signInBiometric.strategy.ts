@@ -16,12 +16,12 @@ export class SignInBiometricStrategy implements ISignInStrategy {
     private readonly encryptionManager: IEncryptionManager,
   ) {}
 
-  async validateAccount(body: SignInBiometricBodyDTO): Promise<AccountDTO> {
+  async validateAccount(body: SignInBiometricBodyDTO): Promise<{ account: AccountDTO; isValidPassword: boolean }> {
     const validatedBody = this.validateInput(body);
     const account = await this.getPatientAccount(validatedBody);
-    await this.validatePassword(validatedBody, account);
+    const isValidPassword = await this.validatePassword(validatedBody, account);
 
-    return account;
+    return { account, isValidPassword };
   }
 
   private validateInput(body: SignInBiometricBodyDTO): SignInBiometricBodyDTO {
@@ -38,15 +38,13 @@ export class SignInBiometricStrategy implements ISignInStrategy {
     return account;
   }
 
-  private async validatePassword(body: SignInBiometricBodyDTO, account: AccountDTO): Promise<void> {
+  private async validatePassword(body: SignInBiometricBodyDTO, account: AccountDTO): Promise<boolean> {
     const isValidPassword = await this.encryptionManager.comparePassword(
       body.password,
       account.biometricHash!,
       account.biometricSalt!,
     );
 
-    if (!isValidPassword) {
-      throw ErrorModel.badRequest(ClientErrorMessages.SIGN_IN_INVALID);
-    }
+    return isValidPassword;
   }
 }

@@ -1,6 +1,6 @@
 import { CreateEnrolledAccountBodyDTOSchema } from 'src/app/entities/dtos/input/createEnrolledAccount.input.dto';
 import { PatientVerificationBodyDTOSchema } from 'src/app/entities/dtos/input/patientVerification.input.dto';
-import { ValidateEnrollOTPBodyDTOSchema } from 'src/app/entities/dtos/input/validateEnrollOtp.input.dto';
+import { ValidateVerificationOTPBodyDTOSchema } from 'src/app/entities/dtos/input/validateVerificationOtp.input.dto';
 import { EmptyResponseDTOSchema } from 'src/app/entities/dtos/output/emptyResponse.output.dto';
 import { PatientVerificationOutputDTOSchema } from 'src/app/entities/dtos/output/patientVerification.output.dto';
 import { SuccessResponseDTOSchema } from 'src/app/entities/dtos/output/successResponse.output.dto';
@@ -40,7 +40,7 @@ export class EnrollDocs {
       path: `/patients/enroll/validate`,
       description: 'Validate Sent OTP to enrolling patient ',
       tags: ['patients', 'enroll'],
-      body: ValidateEnrollOTPBodyDTOSchema,
+      body: ValidateVerificationOTPBodyDTOSchema,
       responses: {
         204: EmptyResponseDTOSchema,
       },

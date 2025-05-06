@@ -7,5 +7,6 @@ export enum ClientErrorMessages {
   PATIENT_NOT_REGISTERED = 'No tienes una cuenta registrada. Registra una cuenta ingresando tus datos',
   INCONSISTENT_PATIENT = 'Hubo un problema registrando tu cuenta. Contáctate con la clínica para revisar tus datos',
   JWE_TOKEN_INVALID = 'No pudimos validar tu sesión. Prueba otra vez o inicia sesión nuevamente',
-  SIGN_IN_INVALID = 'Los datos ingresados no son correctos. Prueba otra vez',
+  SIGN_IN_INVALID = 'Datos incorrectos. Recuerda que al tercer intento erróneo de contraseña, tu acceso será bloqueado',
+  SIGN_IN_BLOCKED = 'Su cuenta se encuentra bloqueada. Intenta nuevamente más tarde',
 }
