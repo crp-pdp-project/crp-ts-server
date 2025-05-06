@@ -25,27 +25,27 @@ type GetAppointmentTypesOutput = {
 };
 
 export interface IGetAppointmentTypesRepository {
-  execute(professionalId: string, specialtyId: string, insuranceId?: string): Promise<AppointmentTypeDTO[]>;
+  execute(doctorId: string, specialtyId: string, insuranceId?: string): Promise<AppointmentTypeDTO[]>;
 }
 
 export class GetAppointmentTypesRepository implements IGetAppointmentTypesRepository {
-  async execute(professionalId: string, specialtyId: string, insuranceId?: string): Promise<AppointmentTypeDTO[]> {
-    const methodPayload = this.parseInput(professionalId, specialtyId, insuranceId);
+  async execute(doctorId: string, specialtyId: string, insuranceId?: string): Promise<AppointmentTypeDTO[]> {
+    const methodPayload = this.parseInput(doctorId, specialtyId, insuranceId);
     const instance = await InetumClient.getInstance();
-    const rawResult = await instance.catalog.call<GetAppointmentTypesOutput>('ListadoEspecialidades', methodPayload);
+    const rawResult = await instance.catalog.call<GetAppointmentTypesOutput>('ListadoPrestaciones', methodPayload);
     return this.parseOutput(rawResult);
   }
 
-  private parseInput(professionalId: string, specialtyId: string, insuranceId?: string): GetAppointmentTypesInput {
+  private parseInput(doctorId: string, specialtyId: string, insuranceId?: string): GetAppointmentTypesInput {
     return {
       usuario: process.env.INETUM_USER ?? '',
       contrasena: process.env.INETUM_PASSWORD ?? '',
       peticionListadoPrestaciones: {
         IdCentro: process.env.CRP_CENTER_ID ?? '',
-        CanalEntrada: 'PERU',
         IdEspecialidad: specialtyId,
-        IdProfesional: professionalId,
+        IdProfesional: doctorId,
         IdSociedad: insuranceId,
+        CanalEntrada: 'PERU',
       },
     };
   }

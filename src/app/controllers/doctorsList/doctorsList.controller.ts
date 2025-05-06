@@ -16,8 +16,8 @@ export class DoctorsListController implements IDoctorsListController {
   ) {}
 
   async handle(input: FastifyRequest<DoctorsListInputDTO>, reply: FastifyReply): Promise<void> {
-    const patient = await this.doctorsInteractor.list(input);
-    const response = this.responseInteractor.execute(patient);
+    const doctors = await this.doctorsInteractor.list(input);
+    const response = this.responseInteractor.execute(doctors);
     reply.code(response.statusCode).send(response.toResponseObject());
   }
 }

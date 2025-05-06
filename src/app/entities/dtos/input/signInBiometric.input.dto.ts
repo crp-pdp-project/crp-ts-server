@@ -17,7 +17,7 @@ export const SignInBiometricBodyDTOSchema = PatientDMSchema.pick({
   })
   .required()
   .openapi({
-    description: 'Enroll Patient Request Body',
+    description: 'Sign In Biometric Request Body',
   });
 
 export type SignInBiometricBodyDTO = z.infer<typeof SignInBiometricBodyDTOSchema>;

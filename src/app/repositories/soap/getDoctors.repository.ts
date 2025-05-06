@@ -41,15 +41,15 @@ export class GetDoctorsRepository implements IGetDoctorsRepository {
       usuario: process.env.INETUM_USER ?? '',
       contrasena: process.env.INETUM_PASSWORD ?? '',
       peticionListadoProfesionales: {
-        IdEspecialidad: specialtyId,
         IdCentro: process.env.CRP_CENTER_ID ?? '',
+        IdEspecialidad: specialtyId,
         CanalEntrada: 'PERU',
       },
     };
   }
 
   private parseOutput(rawResult: GetDoctorsOutput): DoctorDTO[] {
-    const professionals: DoctorDTO[] =
+    const doctors: DoctorDTO[] =
       rawResult.ListadoProfesionalesResult?.Profesionales?.Profesional?.map((professional) => ({
         id: String(professional.DniProfesional),
         name: professional.Nombre ?? '',
@@ -60,7 +60,7 @@ export class GetDoctorsRepository implements IGetDoctorsRepository {
         },
       })) || [];
 
-    return professionals;
+    return doctors;
   }
 }
 

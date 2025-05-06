@@ -13,9 +13,9 @@ export class DoctorsListBuilder {
     const getDoctors = new GetDoctorsRepository();
     const getImages = new GetDoctorImagesRepository();
     const responseStrategy = new SuccessResponseStrategy(DoctorsListOutputDTOSchema);
-    const profileInteractor = new DoctorsListInteractor(getDoctors, getImages);
+    const doctorsInteractor = new DoctorsListInteractor(getDoctors, getImages);
     const responseInteractor = new ResponseInteractor<DoctorModel[]>(responseStrategy);
 
-    return new DoctorsListController(profileInteractor, responseInteractor);
+    return new DoctorsListController(doctorsInteractor, responseInteractor);
   }
 }

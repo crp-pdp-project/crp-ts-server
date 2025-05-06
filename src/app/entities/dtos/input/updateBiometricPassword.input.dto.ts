@@ -11,7 +11,7 @@ export const UpdateBiometricPasswordBodyDTOSchema = z
     }),
   })
   .openapi({
-    description: 'Create Password Request Body',
+    description: 'Create Biometric Password Request Body',
   });
 
 export type UpdateBiometricPasswordBodyDTO = z.infer<typeof UpdateBiometricPasswordBodyDTOSchema>;
