@@ -7,6 +7,9 @@ type GenericSoapFunction<T> = (payload: Record<string, unknown>) => Promise<[T, 
 
 export class SoapHelper {
   private constructor(private readonly client: Client) {}
+  private static readonly maxRetryCount: number = Number(process.env.INETUM_MAX_RETRY ?? 3);
+  private static readonly retryTimeout: number = Number(process.env.INETUM_RETRY_TIMEOUT ?? 1000);
+  private static readonly timeout: number = Number(process.env.INETUM_TIMEOUT ?? 5000);
   private logger: LoggerClient = LoggerClient.instance;
 
   static async initClient(wsdlUrl: string, bindingUrl: string): Promise<SoapHelper> {
@@ -24,7 +27,7 @@ export class SoapHelper {
       const client = await createClientAsync(wsdlUrl, {
         endpoint: bindingUrl,
         wsdl_options: {
-          timeout: 30000,
+          timeout: this.timeout,
         },
       });
 
@@ -34,12 +37,12 @@ export class SoapHelper {
         `Attempt ${attempt} failed: ${error instanceof Error ? error.message : String(error)}`,
       );
 
-      if (attempt >= 3) {
-        LoggerClient.instance.error(`Failed after 3 attempts`);
+      if (attempt >= this.maxRetryCount) {
+        LoggerClient.instance.error(`Failed after ${this.maxRetryCount} attempts`);
         throw error;
       }
 
-      await new Promise((res) => setTimeout(res, 1000));
+      await new Promise((res) => setTimeout(res, this.retryTimeout));
       return this.tryInit(wsdlUrl, bindingUrl, attempt + 1);
     }
   }

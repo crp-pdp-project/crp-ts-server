@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { IResponseInteractor } from 'src/app/interactors/response/response.interactor';
-import { ISendRecoverOTPInteractor } from 'src/app/interactors/sendRecoverOtp/sendRecoverOtp.interactor';
+import { ISendVerificationOTPInteractor } from 'src/app/interactors/sendVerificationOtp/sendVerificationOtp.interactor';
 
 export interface ISendRecoverOTPController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;
@@ -9,7 +9,7 @@ export interface ISendRecoverOTPController {
 
 export class SendRecoverOTPController implements ISendRecoverOTPController {
   constructor(
-    private readonly sendOTPInteractor: ISendRecoverOTPInteractor,
+    private readonly sendOTPInteractor: ISendVerificationOTPInteractor,
     private readonly responseInteractor: IResponseInteractor<void>,
   ) {}
 

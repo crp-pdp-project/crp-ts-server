@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { IResponseInteractor } from 'src/app/interactors/response/response.interactor';
-import { ISendEnrollOTPInteractor } from 'src/app/interactors/sendEnrollOtp/sendEnrollOtp.interactor';
+import { ISendVerificationOTPInteractor } from 'src/app/interactors/sendVerificationOtp/sendVerificationOtp.interactor';
 
 export interface ISendEnrollOTPController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;
@@ -9,7 +9,7 @@ export interface ISendEnrollOTPController {
 
 export class SendEnrollOTPController implements ISendEnrollOTPController {
   constructor(
-    private readonly sendOTPInteractor: ISendEnrollOTPInteractor,
+    private readonly sendOTPInteractor: ISendVerificationOTPInteractor,
     private readonly responseInteractor: IResponseInteractor<void>,
   ) {}
 

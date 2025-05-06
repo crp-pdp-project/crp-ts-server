@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { DoctorsListInputDTO } from 'src/app/entities/dtos/input/doctorsList.input.dto';
 
+import { DoctorsListInputDTO } from 'src/app/entities/dtos/input/doctorsList.input.dto';
 import { DoctorModel } from 'src/app/entities/models/doctor.model';
 import { IDoctorsListInteractor } from 'src/app/interactors/doctorsList/doctorsList.interactor';
 import { IResponseInteractor } from 'src/app/interactors/response/response.interactor';

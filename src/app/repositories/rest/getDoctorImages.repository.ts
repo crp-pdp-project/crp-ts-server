@@ -24,7 +24,7 @@ type GetDoctorImagesOutput = {
   data: {
     documento: string;
     imagen: string;
-  }[]
+  }[];
 };
 
 export interface IGetDoctorImagesRepository {
@@ -32,8 +32,8 @@ export interface IGetDoctorImagesRepository {
 }
 
 export class GetDoctorImagesRepository implements IGetDoctorImagesRepository {
-  private token: string = '';
-  private tokenExpiresAt: string = '';
+  private token = '';
+  private tokenExpiresAt = '';
   private tokenPromise: Promise<string> | null = null;
   private readonly rest = RestClient.instance;
 
@@ -44,7 +44,7 @@ export class GetDoctorImagesRepository implements IGetDoctorImagesRepository {
       method: HttpMethod.POST,
       url: process.env.CRP_IMAGES_URL ?? '',
       headers: {
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
       body: methodPayload,
     });
@@ -56,7 +56,7 @@ export class GetDoctorImagesRepository implements IGetDoctorImagesRepository {
       return this.token;
     }
 
-    if(this.tokenPromise) return this.tokenPromise;
+    if (this.tokenPromise) return this.tokenPromise;
 
     this.tokenPromise = this.fetchNewToken();
     const token = await this.tokenPromise;
@@ -76,7 +76,7 @@ export class GetDoctorImagesRepository implements IGetDoctorImagesRepository {
     });
 
     this.token = tokenResponse.data;
-    this.tokenExpiresAt = DateHelper.tokenRefreshTime(Number(process.env.CRP_TOKEN_TIMEOUT));
+    this.tokenExpiresAt = DateHelper.tokenRefreshTime(Number(process.env.CRP_TOKEN_TIMEOUT ?? 55));
     return this.token;
   }
 
@@ -87,32 +87,36 @@ export class GetDoctorImagesRepository implements IGetDoctorImagesRepository {
   private parseTokenInput(): AuthTokenInput {
     return {
       Usuario: process.env.CRP_USER ?? '',
-      Contrasenia: process.env.CRP_PASSWORD ?? ''
-    }
+      Contrasenia: process.env.CRP_PASSWORD ?? '',
+    };
   }
 
   private parseInput(specialtyId?: SpecialtyDTO['id'], doctorId?: DoctorDTO['id']): GetDoctorImagesInput {
     return {
       Documento: doctorId ?? '',
-      Seccion: specialtyId ?? ''
+      Seccion: specialtyId ?? '',
     };
   }
 
   private parseOutput(rawResult: GetDoctorImagesOutput): DoctorDTO[] {
-    const images: DoctorDTO[] = rawResult?.data?.map(doctor => ({
-      id: doctor.documento,
-      profileImage: doctor.imagen
-    })) || [];
-    
+    const images: DoctorDTO[] =
+      rawResult?.data?.map((doctor) => ({
+        id: doctor.documento,
+        profileImage: doctor.imagen,
+      })) || [];
+
     return images;
   }
 }
 
 export class GetDoctorImagesRepositoryMock implements IGetDoctorImagesRepository {
   async execute(): Promise<DoctorDTO[]> {
-    return [{
-      id: '000075631',
-      profileImage: 'https://svsiwnapdev02.crp.com.pe/DatosMedicosApiRest/api/Medico/VerImagen?nombreImagen=bMgK7XmYN6gC2lPS3uC2Vg',
-    }];
+    return [
+      {
+        id: '000075631',
+        profileImage:
+          'https://svsiwnapdev02.crp.com.pe/DatosMedicosApiRest/api/Medico/VerImagen?nombreImagen=bMgK7XmYN6gC2lPS3uC2Vg',
+      },
+    ];
   }
 }

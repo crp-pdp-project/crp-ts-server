@@ -23,16 +23,14 @@ export class SignInBiometricRepository implements ISignInBiometricRepository {
         'Accounts.id',
         'Accounts.biometricHash',
         'Accounts.biometricSalt',
+        'Accounts.tryCount',
+        'Accounts.blockExpiredAt',
         SqlJSONHelper.jsonObject(
           [
             eb.ref('Patients.id'),
-            eb.ref('Patients.fmpId'),
-            eb.ref('Patients.nhcId'),
             eb.ref('Patients.firstName'),
             eb.ref('Patients.lastName'),
             eb.ref('Patients.secondLastName'),
-            eb.ref('Patients.documentType'),
-            eb.ref('Patients.documentNumber'),
           ],
           { checkNull: eb.ref('Patients.id') },
         ).as('patient'),

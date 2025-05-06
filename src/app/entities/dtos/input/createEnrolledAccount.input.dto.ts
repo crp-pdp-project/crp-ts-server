@@ -9,6 +9,14 @@ export const CreateEnrolledAccountBodyDTOSchema = z
       description: 'New password of the enrolled patient',
       example: 'ThisIsASecurePassword123',
     }),
+    acceptTerms: z.boolean().openapi({
+      description: 'The patient accepted the terms & conditions',
+      example: true,
+    }),
+    acceptAdvertising: z.boolean().openapi({
+      description: 'The patient accept to receive advertiising',
+      example: true,
+    }),
   })
   .openapi({
     description: 'Create Password Request Body',

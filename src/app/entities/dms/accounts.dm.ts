@@ -27,6 +27,22 @@ export const AccountDMSchema = z.object({
     description: 'Salt using for the hashing of the patients biometric UUID',
     example: 'AnySalt',
   }),
+  acceptTerms: z.boolean().openapi({
+    description: 'The patient accepted the terms & conditions',
+    example: true,
+  }),
+  acceptAdvertising: z.boolean().openapi({
+    description: 'The patient accept to receive advertiising',
+    example: true,
+  }),
+  blockExpiredAt: z.string().nullable().openapi({
+    description: 'Account blocked until the provided date in DD-MM-YYYY HH:mm:ss',
+    example: '01-01-2025 00:00:00',
+  }),
+  tryCount: z.number().int().nullable().openapi({
+    description: 'Failed logging attempts, if 3 is reached the account is going to be blocked for 1 hour',
+    example: 1,
+  }),
   createdAt: z.string().openapi({
     description: 'Creation date of the account in DD-MM-YYYY HH:mm:ss',
     example: '01-01-2025 00:00:00',

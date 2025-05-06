@@ -32,6 +32,8 @@ export class CreateEnrolledAccountInteractor implements ICreateEnrolledAccountIn
       await this.persistPassword({
         passwordHash: hash,
         passwordSalt: salt,
+        acceptTerms: body.acceptTerms,
+        acceptAdvertising: body.acceptAdvertising,
         patientId: session.patient?.id,
       });
       await this.endSession(session.jti!, session.patient!.id!);

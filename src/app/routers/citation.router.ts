@@ -3,8 +3,9 @@ import { FastifyInstance } from 'fastify';
 import { ValidateSessionBuilder } from 'src/app/controllers/validateSession/validateSession.builder';
 import { IValidateSessionController } from 'src/app/controllers/validateSession/validateSession.controller';
 import { HttpMethod } from 'src/general/enums/methods.enum';
-import { IDoctorsListController } from '../controllers/doctorsList/doctorsList.controller';
+
 import { DoctorsListBuilder } from '../controllers/doctorsList/doctorsList.builder';
+import { IDoctorsListController } from '../controllers/doctorsList/doctorsList.controller';
 
 export class CitationRouter {
   private readonly doctorsListController: IDoctorsListController;

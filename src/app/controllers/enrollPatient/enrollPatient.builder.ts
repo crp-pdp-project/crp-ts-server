@@ -2,8 +2,9 @@ import { EnrollPatientController } from 'src/app/controllers/enrollPatient/enrol
 import { PatientVerificationOutputDTOSchema } from 'src/app/entities/dtos/output/patientVerification.output.dto';
 import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
 import { PatientExternalSessionModel } from 'src/app/entities/models/patientExternalSession.model';
-import { EnrollPatientInteractor } from 'src/app/interactors/enrollPatient/enrollPatient.interactor';
-import { EnrollSessionInteractor } from 'src/app/interactors/enrollSession/enrollSession.interactor';
+import { PatientVerificationInteractor } from 'src/app/interactors/patientVerification/patientVerification.interactor';
+import { PatientVerificationEnrollStrategy } from 'src/app/interactors/patientVerification/strategies/patientVerificationEnroll.strategy';
+import { PatientVefiricationSessionInteractor } from 'src/app/interactors/patientVerificationSession/patientVerificationSession.interactor';
 import { ResponseInteractor } from 'src/app/interactors/response/response.interactor';
 import { SuccessResponseStrategy } from 'src/app/interactors/response/strategies/successResponse.strategy';
 import { GetPatientAccountRepository } from 'src/app/repositories/database/getPatientAccount.repository';
@@ -23,11 +24,16 @@ export class EnrollPatientBuilder {
     const saveSession = new SaveSessionRepository();
     const jwtConfig = new JWTConfigEnroll();
     const jwtManager = new JWTManager<SessionPayloadDTO>(jwtConfig);
+    const verificationStrategy = new PatientVerificationEnrollStrategy(confirmPatient, savePatient);
     const responseStrategy = new SuccessResponseStrategy(PatientVerificationOutputDTOSchema);
-    const enrollInteractor = new EnrollPatientInteractor(getPatientAccount, searchPatient, confirmPatient, savePatient);
-    const sessionInteractor = new EnrollSessionInteractor(saveSession, jwtManager);
+    const verificationInteractor = new PatientVerificationInteractor(
+      getPatientAccount,
+      searchPatient,
+      verificationStrategy,
+    );
+    const sessionInteractor = new PatientVefiricationSessionInteractor(saveSession, jwtManager);
     const responseInteractor = new ResponseInteractor<PatientExternalSessionModel>(responseStrategy);
 
-    return new EnrollPatientController(enrollInteractor, sessionInteractor, responseInteractor);
+    return new EnrollPatientController(verificationInteractor, sessionInteractor, responseInteractor);
   }
 }
