@@ -1,5 +1,5 @@
 import { AppointmentTypesListOutputDTOSchema } from 'src/app/entities/dtos/output/appointmentTypesList.output.dto';
-import { AppointmentTypeModel } from 'src/app/entities/models/appointmentType.model';
+import { AppointmentTypeListModel } from 'src/app/entities/models/appointmentTypeList.model';
 import { AppointmentTypesListInteractor } from 'src/app/interactors/appointmentTypesList/appointmentTypesList.interactor';
 import { ResponseInteractor } from 'src/app/interactors/response/response.interactor';
 import { SuccessResponseStrategy } from 'src/app/interactors/response/strategies/successResponse.strategy';
@@ -12,7 +12,7 @@ export class AppointmentTypesListBuilder {
     const getAppointmentTypes = new GetAppointmentTypesRepository();
     const responseStrategy = new SuccessResponseStrategy(AppointmentTypesListOutputDTOSchema);
     const appointmentTypesInteractor = new AppointmentTypesListInteractor(getAppointmentTypes);
-    const responseInteractor = new ResponseInteractor<AppointmentTypeModel[]>(responseStrategy);
+    const responseInteractor = new ResponseInteractor<AppointmentTypeListModel>(responseStrategy);
 
     return new AppointmentTypesListController(appointmentTypesInteractor, responseInteractor);
   }

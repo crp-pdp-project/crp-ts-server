@@ -54,7 +54,7 @@ export class SignInPatientInteractor implements ISignInPatientInteractor {
 
   private checkBlocked(account: AccountDTO): void {
     if (account.blockExpiredAt && !DateHelper.checkExpired(account.blockExpiredAt)) {
-      throw ErrorModel.badRequest(ClientErrorMessages.SIGN_IN_BLOCKED);
+      throw ErrorModel.locked(ClientErrorMessages.SIGN_IN_BLOCKED);
     }
   }
 
@@ -66,10 +66,10 @@ export class SignInPatientInteractor implements ISignInPatientInteractor {
     if ((account.tryCount ?? 0) >= this.maxTries) {
       const expiresAt = DateHelper.tokenRefreshTime(this.blockMinutes);
       await this.updateBlocked.execute(account.id!, expiresAt);
-      throw ErrorModel.badRequest(ClientErrorMessages.SIGN_IN_BLOCKED);
+      throw ErrorModel.locked(ClientErrorMessages.SIGN_IN_BLOCKED);
     }
 
     await this.updateTryCount.execute(account.id!, (account.tryCount ?? 0) + 1);
-    throw ErrorModel.badRequest(ClientErrorMessages.SIGN_IN_INVALID);
+    throw ErrorModel.unauthorized(ClientErrorMessages.SIGN_IN_INVALID);
   }
 }

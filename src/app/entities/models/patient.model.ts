@@ -2,6 +2,8 @@ import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import { BaseModel } from 'src/app/entities/models/base.model';
 import { RelationshipModel } from 'src/app/entities/models/relationship.model';
 
+import { PatientListModel } from './patientList.model';
+
 export class PatientModel extends BaseModel {
   readonly id?: number;
   readonly fmpId?: string;
@@ -13,8 +15,8 @@ export class PatientModel extends BaseModel {
   readonly documentType?: number;
   readonly createdAt?: string;
   readonly updatedAt?: string;
-  readonly relationship?: RelationshipModel | null;
-  readonly relatives?: PatientModel[] | null;
+  readonly relationship?: RelationshipModel;
+  readonly relatives?: PatientListModel;
 
   constructor(patient: PatientDTO) {
     super();
@@ -29,7 +31,18 @@ export class PatientModel extends BaseModel {
     this.documentType = patient.documentType;
     this.createdAt = patient.createdAt;
     this.updatedAt = patient.updatedAt;
-    this.relationship = patient.relationship ? new RelationshipModel(patient.relationship) : patient.relationship;
-    this.relatives = patient.relatives ? patient.relatives.map((r) => new PatientModel(r)) : patient.relatives;
+    this.relationship = this.resolveRelationship(patient);
+    this.relatives = patient.relatives ? new PatientListModel(patient.relatives) : undefined;
+  }
+
+  private resolveRelationship(patient: PatientDTO): RelationshipModel | undefined {
+    if (!patient.relationship && (patient.relatives?.length ?? 0) > 0) {
+      return new RelationshipModel({
+        id: 0,
+        name: 'Titular de la cuenta',
+      });
+    }
+
+    return patient.relationship ? new RelationshipModel(patient.relationship) : undefined;
   }
 }

@@ -30,7 +30,7 @@ export class GetPatientSessionRepository implements IGetPatientSessionRepository
             eb.ref('Patients.documentType'),
             eb.ref('Patients.documentNumber'),
           ],
-          {},
+          { checkNull: eb.ref('Patients.id') },
         ).as('patient'),
         SqlJSONHelper.jsonObject([eb.ref('Accounts.id')], { checkNull: eb.ref('Accounts.id') }).as('account'),
       ])

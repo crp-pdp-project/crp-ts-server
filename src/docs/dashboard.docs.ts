@@ -3,6 +3,7 @@ import { PatientCurrentAppointmentsOutputDTOSchema } from 'src/app/entities/dtos
 import { PatientHistoricAppointmentsOutputDTOSchema } from 'src/app/entities/dtos/output/patientHistoricAppointment.output.dto';
 import { SuccessResponseDTOSchema } from 'src/app/entities/dtos/output/successResponse.output.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
+import { StatusCode } from 'src/general/enums/status.enum';
 import { IOpenApiManager } from 'src/general/managers/openapi.manager';
 
 export class DashboardDocs {
@@ -15,7 +16,7 @@ export class DashboardDocs {
       description: 'Patient current appointment list',
       tags: ['patients', 'dashboard'],
       responses: {
-        200: SuccessResponseDTOSchema.extend({
+        [StatusCode.OK]: SuccessResponseDTOSchema.extend({
           data: PatientCurrentAppointmentsOutputDTOSchema,
         }),
       },
@@ -29,7 +30,7 @@ export class DashboardDocs {
       tags: ['patients', 'dashboard'],
       query: PatientHistoricAppointmentsQueryDTOSchema,
       responses: {
-        200: SuccessResponseDTOSchema.extend({
+        [StatusCode.OK]: SuccessResponseDTOSchema.extend({
           data: PatientHistoricAppointmentsOutputDTOSchema,
         }),
       },

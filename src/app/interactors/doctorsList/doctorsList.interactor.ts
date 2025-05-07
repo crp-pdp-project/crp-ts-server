@@ -7,7 +7,7 @@ import {
 } from 'src/app/entities/dtos/input/doctorsList.input.dto';
 import { DoctorDTO } from 'src/app/entities/dtos/service/doctor.dto';
 import { SpecialtyDTO } from 'src/app/entities/dtos/service/specialty.dto';
-import { DoctorModel } from 'src/app/entities/models/doctor.model';
+import { DoctorListModel } from 'src/app/entities/models/doctorList.model';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { SessionModel } from 'src/app/entities/models/session.model';
 import { IGetDoctorImagesRepository } from 'src/app/repositories/rest/getDoctorImages.repository';
@@ -15,7 +15,7 @@ import { IGetDoctorsRepository } from 'src/app/repositories/soap/getDoctors.repo
 import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
 
 export interface IDoctorsListInteractor {
-  list(input: FastifyRequest<DoctorsListInputDTO>): Promise<DoctorModel[] | ErrorModel>;
+  list(input: FastifyRequest<DoctorsListInputDTO>): Promise<DoctorListModel | ErrorModel>;
 }
 
 export class DoctorsListInteractor implements IDoctorsListInteractor {
@@ -24,13 +24,13 @@ export class DoctorsListInteractor implements IDoctorsListInteractor {
     private readonly getImages: IGetDoctorImagesRepository,
   ) {}
 
-  async list(input: FastifyRequest<DoctorsListInputDTO>): Promise<DoctorModel[] | ErrorModel> {
+  async list(input: FastifyRequest<DoctorsListInputDTO>): Promise<DoctorListModel | ErrorModel> {
     try {
       this.validateSession(input.session);
       const specialtyId = this.validateInput(input.query);
       const doctorsList = await this.getDoctorsList(specialtyId);
       const imagesList = await this.getImagesList(specialtyId);
-      return this.generateModels(doctorsList, imagesList);
+      return new DoctorListModel(doctorsList, imagesList);
     } catch (error) {
       return ErrorModel.fromError(error);
     }
@@ -58,10 +58,5 @@ export class DoctorsListInteractor implements IDoctorsListInteractor {
     const imagesList = await this.getImages.execute(specialtyId);
 
     return imagesList;
-  }
-
-  private generateModels(doctorsList: DoctorDTO[], imagesList?: DoctorDTO[]): DoctorModel[] {
-    const models = doctorsList.map((doctor) => new DoctorModel(doctor, imagesList));
-    return models;
   }
 }

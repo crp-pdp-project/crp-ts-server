@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { DoctorsListInputDTO } from 'src/app/entities/dtos/input/doctorsList.input.dto';
-import { DoctorModel } from 'src/app/entities/models/doctor.model';
+import { DoctorListModel } from 'src/app/entities/models/doctorList.model';
 import { IDoctorsListInteractor } from 'src/app/interactors/doctorsList/doctorsList.interactor';
 import { IResponseInteractor } from 'src/app/interactors/response/response.interactor';
 
@@ -12,7 +12,7 @@ export interface IDoctorsListController {
 export class DoctorsListController implements IDoctorsListController {
   constructor(
     private readonly doctorsInteractor: IDoctorsListInteractor,
-    private readonly responseInteractor: IResponseInteractor<DoctorModel[]>,
+    private readonly responseInteractor: IResponseInteractor<DoctorListModel>,
   ) {}
 
   async handle(input: FastifyRequest<DoctorsListInputDTO>, reply: FastifyReply): Promise<void> {

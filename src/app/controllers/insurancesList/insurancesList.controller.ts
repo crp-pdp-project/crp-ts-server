@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { InsuranceModel } from 'src/app/entities/models/insurance.model';
+import { InsuranceListModel } from 'src/app/entities/models/insuranceList.model';
 import { IInsurancesListInteractor } from 'src/app/interactors/insurancesList/insurancesList.interactor';
 import { IResponseInteractor } from 'src/app/interactors/response/response.interactor';
 
@@ -11,7 +11,7 @@ export interface IInsurancesListController {
 export class InsurancesListController implements IInsurancesListController {
   constructor(
     private readonly insurancesList: IInsurancesListInteractor,
-    private readonly responseInteractor: IResponseInteractor<InsuranceModel[]>,
+    private readonly responseInteractor: IResponseInteractor<InsuranceListModel>,
   ) {}
 
   async handle(input: FastifyRequest, reply: FastifyReply): Promise<void> {
