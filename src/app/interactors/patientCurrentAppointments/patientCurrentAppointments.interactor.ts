@@ -2,24 +2,25 @@ import { FastifyRequest } from 'fastify';
 
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
-import { AppointmentModel } from 'src/app/entities/models/appointment.mpdel';
+import { AppointmentListModel } from 'src/app/entities/models/appointmentsList.model';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { SessionModel } from 'src/app/entities/models/session.model';
 import { IGetCurrentAppointmentsRepository } from 'src/app/repositories/soap/getCurrentAppointments.repository';
 import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
+import { SortOrder } from 'src/general/enums/sort.enum';
 
 export interface IPatientCurrentAppointmentsInteractor {
-  appointments(input: FastifyRequest): Promise<AppointmentModel[] | ErrorModel>;
+  appointments(input: FastifyRequest): Promise<AppointmentListModel | ErrorModel>;
 }
 
 export class PatientCurrentAppointmentsInteractor implements IPatientCurrentAppointmentsInteractor {
   constructor(private readonly getCurrentAppointments: IGetCurrentAppointmentsRepository) {}
 
-  async appointments(input: FastifyRequest): Promise<AppointmentModel[] | ErrorModel> {
+  async appointments(input: FastifyRequest): Promise<AppointmentListModel | ErrorModel> {
     try {
       const fmpId = this.validateSession(input.session);
       const currentAppointments = await this.getAppointments(fmpId);
-      return this.generateModels(currentAppointments);
+      return new AppointmentListModel(currentAppointments, SortOrder.ASC);
     } catch (error) {
       return ErrorModel.fromError(error);
     }
@@ -37,10 +38,5 @@ export class PatientCurrentAppointmentsInteractor implements IPatientCurrentAppo
     const searchResult = await this.getCurrentAppointments.execute(fmpId);
 
     return searchResult;
-  }
-
-  private generateModels(appointments: AppointmentDTO[]): AppointmentModel[] {
-    const models = appointments.map((appointment) => new AppointmentModel(appointment));
-    return models;
   }
 }

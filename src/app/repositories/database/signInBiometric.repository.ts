@@ -31,6 +31,8 @@ export class SignInBiometricRepository implements ISignInBiometricRepository {
             eb.ref('Patients.firstName'),
             eb.ref('Patients.lastName'),
             eb.ref('Patients.secondLastName'),
+            eb.ref('Patients.documentNumber'),
+            eb.ref('Patients.documentType'),
           ],
           { checkNull: eb.ref('Patients.id') },
         ).as('patient'),
@@ -44,6 +46,20 @@ export class SignInBiometricRepository implements ISignInBiometricRepository {
 
 export class SignInBiometricRepositoryMock implements ISignInBiometricRepository {
   async execute(): Promise<AccountDTO | null> {
-    return { id: 1, patient: { id: 1 } };
+    return {
+      id: 1,
+      biometricHash: 'anyHash',
+      biometricSalt: 'anySalt',
+      tryCount: 0,
+      blockExpiredAt: '2027-05-05 12:24:23',
+      patient: {
+        id: 1,
+        firstName: 'Renato',
+        lastName: 'Berrocal',
+        secondLastName: 'Vignolo',
+        documentNumber: '88888888',
+        documentType: 14,
+      },
+    };
   }
 }

@@ -4,6 +4,8 @@ import { ZodObject, ZodRawShape, ZodSchema } from 'zod';
 import { ErrorResponseDTOSchema } from 'src/app/entities/dtos/output/errorResponse.output.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 
+import { StatusCode } from '../enums/status.enum';
+
 type ZodSchemaObject = ZodObject<ZodRawShape>;
 
 type RouteDocParams = {
@@ -31,13 +33,14 @@ export interface IOpenApiManager {
 
 export class OpenApiManager implements IOpenApiManager {
   private readonly defaultErrorResponses: Record<number, ZodSchema> = {
-    400: ErrorResponseDTOSchema,
-    401: ErrorResponseDTOSchema,
-    403: ErrorResponseDTOSchema,
-    404: ErrorResponseDTOSchema,
-    409: ErrorResponseDTOSchema,
-    422: ErrorResponseDTOSchema,
-    500: ErrorResponseDTOSchema,
+    [StatusCode.BAD_REQUEST]: ErrorResponseDTOSchema,
+    [StatusCode.UNAUTHORIZED]: ErrorResponseDTOSchema,
+    [StatusCode.FORBIDDEN]: ErrorResponseDTOSchema,
+    [StatusCode.NOT_FOUND]: ErrorResponseDTOSchema,
+    [StatusCode.CONFLICT]: ErrorResponseDTOSchema,
+    [StatusCode.UNPROCESSABLE_ENTITY]: ErrorResponseDTOSchema,
+    [StatusCode.LOCKED]: ErrorResponseDTOSchema,
+    [StatusCode.INTERNAL_SERVER_ERROR]: ErrorResponseDTOSchema,
   };
 
   constructor(private readonly registry: OpenAPIRegistry) {

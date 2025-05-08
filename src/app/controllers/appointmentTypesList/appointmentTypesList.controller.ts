@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { AppointmentTypesListInputDTO } from 'src/app/entities/dtos/input/appointmentTypesList.input.dto';
-import { AppointmentTypeModel } from 'src/app/entities/models/appointmentType.model';
+import { AppointmentTypeListModel } from 'src/app/entities/models/appointmentTypeList.model';
 import { IAppointmentTypesListInteractor } from 'src/app/interactors/appointmentTypesList/appointmentTypesList.interactor';
 import { IResponseInteractor } from 'src/app/interactors/response/response.interactor';
 
@@ -12,7 +12,7 @@ export interface IAppointmentTypesListController {
 export class AppointmentTypesListController implements IAppointmentTypesListController {
   constructor(
     private readonly appointmentTypesInteractor: IAppointmentTypesListInteractor,
-    private readonly responseInteractor: IResponseInteractor<AppointmentTypeModel[]>,
+    private readonly responseInteractor: IResponseInteractor<AppointmentTypeListModel>,
   ) {}
 
   async handle(input: FastifyRequest<AppointmentTypesListInputDTO>, reply: FastifyReply): Promise<void> {

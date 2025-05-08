@@ -7,14 +7,15 @@ import {
   PatientHistoricAppointmentsQueryDTOSchema,
 } from 'src/app/entities/dtos/input/patientHistoricAppointments.input.dto';
 import { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
-import { AppointmentModel } from 'src/app/entities/models/appointment.mpdel';
+import { AppointmentListModel } from 'src/app/entities/models/appointmentsList.model';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { SessionModel } from 'src/app/entities/models/session.model';
 import { IGetHistoricAppointmentsRepository } from 'src/app/repositories/soap/getHistoricAppointments.repository';
 import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
+import { SortOrder } from 'src/general/enums/sort.enum';
 
 export interface IPatientHistoricAppointmentsInteractor {
-  appointments(input: FastifyRequest<PatientHistoricAppointmentsInputDTO>): Promise<AppointmentModel[] | ErrorModel>;
+  appointments(input: FastifyRequest<PatientHistoricAppointmentsInputDTO>): Promise<AppointmentListModel | ErrorModel>;
 }
 
 export class PatientHistoricAppointmentsInteractor implements IPatientHistoricAppointmentsInteractor {
@@ -22,12 +23,12 @@ export class PatientHistoricAppointmentsInteractor implements IPatientHistoricAp
 
   async appointments(
     input: FastifyRequest<PatientHistoricAppointmentsInputDTO>,
-  ): Promise<AppointmentModel[] | ErrorModel> {
+  ): Promise<AppointmentListModel | ErrorModel> {
     try {
       const monthsToList = this.validateInput(input.query);
       const fmpId = this.validateSession(input.session);
       const currentAppointments = await this.getAppointments(fmpId, monthsToList);
-      return this.generateModels(currentAppointments);
+      return new AppointmentListModel(currentAppointments, SortOrder.DESC);
     } catch (error) {
       return ErrorModel.fromError(error);
     }
@@ -51,10 +52,5 @@ export class PatientHistoricAppointmentsInteractor implements IPatientHistoricAp
     const searchResult = await this.getHistoricAppointments.execute(fmpId, monthsToList);
 
     return searchResult;
-  }
-
-  private generateModels(appointments: AppointmentDTO[]): AppointmentModel[] {
-    const models = appointments.map((appointment) => new AppointmentModel(appointment));
-    return models;
   }
 }

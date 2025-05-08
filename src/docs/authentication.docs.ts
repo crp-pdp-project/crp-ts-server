@@ -4,6 +4,7 @@ import { EmptyResponseDTOSchema } from 'src/app/entities/dtos/output/emptyRespon
 import { SignInPatientOutputDTOSchema } from 'src/app/entities/dtos/output/signInPatient.output.dto';
 import { SuccessResponseDTOSchema } from 'src/app/entities/dtos/output/successResponse.output.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
+import { StatusCode } from 'src/general/enums/status.enum';
 import { IOpenApiManager } from 'src/general/managers/openapi.manager';
 
 export class AuthenticationDocs {
@@ -17,7 +18,7 @@ export class AuthenticationDocs {
       tags: ['patients', 'authentication'],
       body: SignInPatientBodyDTOSchema,
       responses: {
-        200: SuccessResponseDTOSchema.extend({
+        [StatusCode.OK]: SuccessResponseDTOSchema.extend({
           data: SignInPatientOutputDTOSchema,
         }),
       },
@@ -30,7 +31,7 @@ export class AuthenticationDocs {
       tags: ['patients', 'authentication'],
       body: SignInBiometricBodyDTOSchema,
       responses: {
-        200: SuccessResponseDTOSchema.extend({
+        [StatusCode.OK]: SuccessResponseDTOSchema.extend({
           data: SignInPatientOutputDTOSchema,
         }),
       },
@@ -42,7 +43,7 @@ export class AuthenticationDocs {
       description: 'Sign out a patient',
       tags: ['patients', 'authentication'],
       responses: {
-        204: EmptyResponseDTOSchema,
+        [StatusCode.NO_CONTENT]: EmptyResponseDTOSchema,
       },
       secure: true,
     });

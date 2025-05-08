@@ -9,20 +9,20 @@ import { AppointmentTypeDTO } from 'src/app/entities/dtos/service/appointmentTyp
 import { DoctorDTO } from 'src/app/entities/dtos/service/doctor.dto';
 import { InsuranceDTO } from 'src/app/entities/dtos/service/insurance.dto';
 import { SpecialtyDTO } from 'src/app/entities/dtos/service/specialty.dto';
-import { AppointmentTypeModel } from 'src/app/entities/models/appointmentType.model';
+import { AppointmentTypeListModel } from 'src/app/entities/models/appointmentTypeList.model';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { SessionModel } from 'src/app/entities/models/session.model';
 import { IGetAppointmentTypesRepository } from 'src/app/repositories/soap/getAppointmentTypes.repository';
 import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
 
 export interface IAppointmentTypesListInteractor {
-  list(input: FastifyRequest<AppointmentTypesListInputDTO>): Promise<AppointmentTypeModel[] | ErrorModel>;
+  list(input: FastifyRequest<AppointmentTypesListInputDTO>): Promise<AppointmentTypeListModel | ErrorModel>;
 }
 
 export class AppointmentTypesListInteractor implements IAppointmentTypesListInteractor {
   constructor(private readonly getAppointmentTypes: IGetAppointmentTypesRepository) {}
 
-  async list(input: FastifyRequest<AppointmentTypesListInputDTO>): Promise<AppointmentTypeModel[] | ErrorModel> {
+  async list(input: FastifyRequest<AppointmentTypesListInputDTO>): Promise<AppointmentTypeListModel | ErrorModel> {
     try {
       this.validateSession(input.session);
       const body = this.validateInput(input.query);
@@ -31,7 +31,7 @@ export class AppointmentTypesListInteractor implements IAppointmentTypesListInte
         body.specialtyId,
         body.insuranceId,
       );
-      return this.generateModels(appointmentTypesList);
+      return new AppointmentTypeListModel(appointmentTypesList);
     } catch (error) {
       return ErrorModel.fromError(error);
     }
@@ -57,10 +57,5 @@ export class AppointmentTypesListInteractor implements IAppointmentTypesListInte
     const appointmentTypesList = await this.getAppointmentTypes.execute(doctorId!, specialtyId!, insuranceId);
 
     return appointmentTypesList;
-  }
-
-  private generateModels(appointmentTypesList: AppointmentTypeDTO[]): AppointmentTypeModel[] {
-    const models = appointmentTypesList.map((appointmentType) => new AppointmentTypeModel(appointmentType));
-    return models;
   }
 }

@@ -90,6 +90,9 @@ export class ErrorModel extends Error {
   static unprocessable(detail?: ClientErrorMessages): ErrorModel {
     return new ErrorModel(StatusCode.UNPROCESSABLE_ENTITY, undefined, detail);
   }
+  static locked(detail?: ClientErrorMessages): ErrorModel {
+    return new ErrorModel(StatusCode.LOCKED, undefined, detail);
+  }
   static server(detail?: ClientErrorMessages): ErrorModel {
     return new ErrorModel(StatusCode.INTERNAL_SERVER_ERROR, undefined, detail);
   }

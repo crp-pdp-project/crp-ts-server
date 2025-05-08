@@ -11,6 +11,7 @@ export class StatusHelper {
     [StatusCode.NOT_FOUND]: StatusMessage.NOT_FOUND,
     [StatusCode.CONFLICT]: StatusMessage.CONFLICT,
     [StatusCode.UNPROCESSABLE_ENTITY]: StatusMessage.UNPROCESSABLE_ENTITY,
+    [StatusCode.LOCKED]: StatusMessage.LOCKED,
     [StatusCode.INTERNAL_SERVER_ERROR]: StatusMessage.INTERNAL_SERVER_ERROR,
   };
 

@@ -11,16 +11,12 @@ export class DoctorModel extends BaseModel {
   readonly profileImage?: string | null;
   readonly specialty?: SpecialtyModel;
 
-  constructor(doctor: DoctorDTO, imageMeta?: DoctorDTO[]) {
+  constructor(doctor: DoctorDTO) {
     super();
 
     this.id = doctor.id;
     this.name = TextHelper.titleCase(doctor.name);
-    this.profileImage = imageMeta ? this.resolveProfileImage(doctor.id, imageMeta) : undefined;
+    this.profileImage = doctor.profileImage;
     this.specialty = doctor.specialty ? new SpecialtyModel(doctor.specialty) : undefined;
-  }
-
-  private resolveProfileImage(id?: DoctorDTO['id'], imageMeta?: DoctorDTO[]): string | null {
-    return imageMeta?.find((meta) => meta.id === id)?.profileImage ?? null;
   }
 }

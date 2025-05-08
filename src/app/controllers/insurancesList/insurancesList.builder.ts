@@ -1,5 +1,5 @@
 import { InsurancesListOutputDTOSchema } from 'src/app/entities/dtos/output/insurancesList.output.dto';
-import { SpecialtyModel } from 'src/app/entities/models/specialty.model';
+import { InsuranceListModel } from 'src/app/entities/models/insuranceList.model';
 import { InsurancesListInteractor } from 'src/app/interactors/insurancesList/insurancesList.interactor';
 import { ResponseInteractor } from 'src/app/interactors/response/response.interactor';
 import { SuccessResponseStrategy } from 'src/app/interactors/response/strategies/successResponse.strategy';
@@ -12,7 +12,7 @@ export class InsurancesListBuilder {
     const getInsurances = new GetInsurancesRepository();
     const responseStrategy = new SuccessResponseStrategy(InsurancesListOutputDTOSchema);
     const insurancesInteractor = new InsurancesListInteractor(getInsurances);
-    const responseInteractor = new ResponseInteractor<SpecialtyModel[]>(responseStrategy);
+    const responseInteractor = new ResponseInteractor<InsuranceListModel>(responseStrategy);
 
     return new InsurancesListController(insurancesInteractor, responseInteractor);
   }

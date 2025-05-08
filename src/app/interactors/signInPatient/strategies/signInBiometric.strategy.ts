@@ -32,7 +32,7 @@ export class SignInBiometricStrategy implements ISignInStrategy {
     const account = await this.signInBiometric.execute(body.documentType, body.documentNumber);
 
     if (!account || !account?.patient) {
-      throw ErrorModel.badRequest(ClientErrorMessages.SIGN_IN_INVALID);
+      throw ErrorModel.unauthorized(ClientErrorMessages.SIGN_IN_INVALID);
     }
 
     return account;

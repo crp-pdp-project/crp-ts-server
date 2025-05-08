@@ -5,6 +5,7 @@ import { EmptyResponseDTOSchema } from 'src/app/entities/dtos/output/emptyRespon
 import { PatientVerificationOutputDTOSchema } from 'src/app/entities/dtos/output/patientVerification.output.dto';
 import { SuccessResponseDTOSchema } from 'src/app/entities/dtos/output/successResponse.output.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
+import { StatusCode } from 'src/general/enums/status.enum';
 import { IOpenApiManager } from 'src/general/managers/openapi.manager';
 
 export class EnrollDocs {
@@ -18,7 +19,7 @@ export class EnrollDocs {
       tags: ['patients', 'enroll'],
       body: PatientVerificationBodyDTOSchema,
       responses: {
-        200: SuccessResponseDTOSchema.extend({
+        [StatusCode.OK]: SuccessResponseDTOSchema.extend({
           data: PatientVerificationOutputDTOSchema,
         }),
       },
@@ -30,7 +31,7 @@ export class EnrollDocs {
       description: 'Send OTP to enrolling patient',
       tags: ['patients', 'enroll'],
       responses: {
-        204: EmptyResponseDTOSchema,
+        [StatusCode.NO_CONTENT]: EmptyResponseDTOSchema,
       },
       secure: true,
     });
@@ -42,7 +43,7 @@ export class EnrollDocs {
       tags: ['patients', 'enroll'],
       body: ValidateVerificationOTPBodyDTOSchema,
       responses: {
-        204: EmptyResponseDTOSchema,
+        [StatusCode.NO_CONTENT]: EmptyResponseDTOSchema,
       },
       secure: true,
     });
@@ -54,7 +55,7 @@ export class EnrollDocs {
       tags: ['patients', 'enroll'],
       body: CreateEnrolledAccountBodyDTOSchema,
       responses: {
-        204: EmptyResponseDTOSchema,
+        [StatusCode.NO_CONTENT]: EmptyResponseDTOSchema,
       },
       secure: true,
     });

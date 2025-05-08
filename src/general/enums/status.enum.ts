@@ -8,6 +8,7 @@ export enum StatusCode {
   NOT_FOUND = 404,
   CONFLICT = 409,
   UNPROCESSABLE_ENTITY = 422,
+  LOCKED = 423,
   INTERNAL_SERVER_ERROR = 500,
 }
 
@@ -21,5 +22,6 @@ export enum StatusMessage {
   NOT_FOUND = 'Not Found',
   CONFLICT = 'Conflict',
   UNPROCESSABLE_ENTITY = 'Unprocessable Entity',
+  LOCKED = 'Locked',
   INTERNAL_SERVER_ERROR = 'Internal Server Error',
 }

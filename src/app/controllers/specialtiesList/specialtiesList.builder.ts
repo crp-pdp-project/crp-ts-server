@@ -1,5 +1,5 @@
 import { SpecialtiesListOutputDTOSchema } from 'src/app/entities/dtos/output/specialtiesList.output.dto';
-import { SpecialtyModel } from 'src/app/entities/models/specialty.model';
+import { SpecialtyListModel } from 'src/app/entities/models/specialtyList.model';
 import { ResponseInteractor } from 'src/app/interactors/response/response.interactor';
 import { SuccessResponseStrategy } from 'src/app/interactors/response/strategies/successResponse.strategy';
 import { SpecialtiesListInteractor } from 'src/app/interactors/specialtiesList/specialtiesList.interactor';
@@ -12,7 +12,7 @@ export class SpecialtiesListBuilder {
     const getSpecialties = new GetSpecialtiesRepository();
     const responseStrategy = new SuccessResponseStrategy(SpecialtiesListOutputDTOSchema);
     const specialtiesInteractor = new SpecialtiesListInteractor(getSpecialties);
-    const responseInteractor = new ResponseInteractor<SpecialtyModel[]>(responseStrategy);
+    const responseInteractor = new ResponseInteractor<SpecialtyListModel>(responseStrategy);
 
     return new SpecialtiesListController(specialtiesInteractor, responseInteractor);
   }

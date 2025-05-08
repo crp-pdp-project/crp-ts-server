@@ -1,5 +1,5 @@
 import { DoctorsListOutputDTOSchema } from 'src/app/entities/dtos/output/doctorsList.output.dto';
-import { DoctorModel } from 'src/app/entities/models/doctor.model';
+import { DoctorListModel } from 'src/app/entities/models/doctorList.model';
 import { DoctorsListInteractor } from 'src/app/interactors/doctorsList/doctorsList.interactor';
 import { ResponseInteractor } from 'src/app/interactors/response/response.interactor';
 import { SuccessResponseStrategy } from 'src/app/interactors/response/strategies/successResponse.strategy';
@@ -14,7 +14,7 @@ export class DoctorsListBuilder {
     const getImages = new GetDoctorImagesRepository();
     const responseStrategy = new SuccessResponseStrategy(DoctorsListOutputDTOSchema);
     const doctorsInteractor = new DoctorsListInteractor(getDoctors, getImages);
-    const responseInteractor = new ResponseInteractor<DoctorModel[]>(responseStrategy);
+    const responseInteractor = new ResponseInteractor<DoctorListModel>(responseStrategy);
 
     return new DoctorsListController(doctorsInteractor, responseInteractor);
   }

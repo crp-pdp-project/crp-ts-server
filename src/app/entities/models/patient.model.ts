@@ -13,8 +13,8 @@ export class PatientModel extends BaseModel {
   readonly documentType?: number;
   readonly createdAt?: string;
   readonly updatedAt?: string;
-  readonly relationship?: RelationshipModel | null;
-  readonly relatives?: PatientModel[] | null;
+  readonly relationship?: RelationshipModel;
+  readonly relatives?: PatientModel[];
 
   constructor(patient: PatientDTO) {
     super();
@@ -29,7 +29,25 @@ export class PatientModel extends BaseModel {
     this.documentType = patient.documentType;
     this.createdAt = patient.createdAt;
     this.updatedAt = patient.updatedAt;
-    this.relationship = patient.relationship ? new RelationshipModel(patient.relationship) : patient.relationship;
-    this.relatives = patient.relatives ? patient.relatives.map((r) => new PatientModel(r)) : patient.relatives;
+    this.relationship = this.resolveRelationship(patient);
+    this.relatives = this.resolveRelatives(patient.relatives);
+  }
+
+  private resolveRelationship(patient: PatientDTO): RelationshipModel | undefined {
+    if (!patient.relationship && Array.isArray(patient.relatives)) {
+      return new RelationshipModel({
+        id: 0,
+        name: 'Titular de la cuenta',
+      });
+    }
+
+    return patient.relationship ? new RelationshipModel(patient.relationship) : undefined;
+  }
+
+  private resolveRelatives(relatives?: PatientDTO[]): PatientModel[] | undefined {
+    if (!relatives) return undefined;
+    const filteredRelatives = relatives?.filter(Boolean) ?? [];
+
+    return filteredRelatives.map((relative) => new PatientModel(relative));
   }
 }

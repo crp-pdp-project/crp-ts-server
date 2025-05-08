@@ -3,7 +3,7 @@ import { z } from 'zod';
 extendZodWithOpenApi(z);
 
 export const RelationshipDMSchema = z.object({
-  id: z.number().int().positive().openapi({
+  id: z.number().int().openapi({
     description: 'Unique ID of the relationship',
     example: 1,
   }),

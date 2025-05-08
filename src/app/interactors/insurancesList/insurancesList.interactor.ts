@@ -2,23 +2,23 @@ import { FastifyRequest } from 'fastify';
 
 import { InsuranceDTO } from 'src/app/entities/dtos/service/insurance.dto';
 import { ErrorModel } from 'src/app/entities/models/error.model';
-import { InsuranceModel } from 'src/app/entities/models/insurance.model';
+import { InsuranceListModel } from 'src/app/entities/models/insuranceList.model';
 import { SessionModel } from 'src/app/entities/models/session.model';
 import { IGetInsurancesRepository } from 'src/app/repositories/soap/getInsurances.repository';
 import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
 
 export interface IInsurancesListInteractor {
-  list(input: FastifyRequest): Promise<InsuranceModel[] | ErrorModel>;
+  list(input: FastifyRequest): Promise<InsuranceListModel | ErrorModel>;
 }
 
 export class InsurancesListInteractor implements IInsurancesListInteractor {
   constructor(private readonly getInsurances: IGetInsurancesRepository) {}
 
-  async list(input: FastifyRequest): Promise<InsuranceModel[] | ErrorModel> {
+  async list(input: FastifyRequest): Promise<InsuranceListModel | ErrorModel> {
     try {
       this.validateSession(input.session);
       const insurancesList = await this.getInsurancesList();
-      return this.generateModels(insurancesList);
+      return new InsuranceListModel(insurancesList);
     } catch (error) {
       return ErrorModel.fromError(error);
     }
@@ -34,10 +34,5 @@ export class InsurancesListInteractor implements IInsurancesListInteractor {
     const insurancesList = await this.getInsurances.execute();
 
     return insurancesList;
-  }
-
-  private generateModels(insurancesList: InsuranceDTO[]): InsuranceModel[] {
-    const models = insurancesList.map((insurance) => new InsuranceModel(insurance));
-    return models;
   }
 }

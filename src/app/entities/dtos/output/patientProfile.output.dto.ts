@@ -7,8 +7,6 @@ extendZodWithOpenApi(z);
 
 export const PatientProfileOutputDTOSchema = PatientDMSchema.pick({
   id: true,
-  fmpId: true,
-  nhcId: true,
   firstName: true,
   lastName: true,
   secondLastName: true,
