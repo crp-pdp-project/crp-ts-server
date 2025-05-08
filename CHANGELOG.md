@@ -1,4 +1,4 @@
-## v0.4.0
+## v0.5.0
 
-- Add list services for citation pt2 (#7) ([`958fca6`](https://github.com/https://github.com/Belo-RenaruX/crp-ts-server/commit/958fca6))
+- Feat citation pt3 (#8) ([`14c569f`](https://github.com/https://github.com/Belo-RenaruX/crp-ts-server/commit/14c569f))
 
