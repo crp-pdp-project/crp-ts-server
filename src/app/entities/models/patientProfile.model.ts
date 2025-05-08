@@ -7,8 +7,6 @@ import { PatientModel } from './patient.model';
 
 export class PatientProfileModel extends BaseModel {
   readonly id: number;
-  readonly fmpId: string;
-  readonly nhcId: string;
   readonly firstName: string;
   readonly lastName: string;
   readonly secondLastName: string | null;
@@ -23,8 +21,6 @@ export class PatientProfileModel extends BaseModel {
     super();
 
     this.id = patient.id ?? 0;
-    this.fmpId = patient.fmpId ?? '';
-    this.nhcId = patient.nhcId ?? '';
     this.firstName = patient.firstName ?? '';
     this.lastName = patient.lastName ?? '';
     this.secondLastName = patient.secondLastName ?? null;

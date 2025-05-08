@@ -59,7 +59,7 @@ export class SignInPatientRepositoryMock implements ISignInPatientRepository {
         secondLastName: 'Vignolo',
         documentNumber: '88888888',
         documentType: 14,
-      }
+      },
     };
   }
 }

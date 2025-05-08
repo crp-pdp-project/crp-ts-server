@@ -57,8 +57,8 @@ export class GetCurrentAppointmentsRepository implements IGetCurrentAppointments
       usuario: process.env.INETUM_USER ?? '',
       contrasena: process.env.INETUM_PASSWORD ?? '',
       peticionListadoCitas: {
-        IdCentro: process.env.CRP_CENTER_ID ?? '',
         IdPaciente: fmpId,
+        IdCentro: process.env.CRP_CENTER_ID ?? '',
         CanalEntrada: 'PERU',
       },
     };

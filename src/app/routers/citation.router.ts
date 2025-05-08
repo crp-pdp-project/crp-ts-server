@@ -10,6 +10,8 @@ import { DoctorsListBuilder } from '../controllers/doctorsList/doctorsList.build
 import { IDoctorsListController } from '../controllers/doctorsList/doctorsList.controller';
 import { InsurancesListBuilder } from '../controllers/insurancesList/insurancesList.builder';
 import { IInsurancesListController } from '../controllers/insurancesList/insurancesList.controller';
+import { PatientRelativesBuilder } from '../controllers/patientRelatives/patientRelatives.builder';
+import { IPatientRelativesController } from '../controllers/patientRelatives/patientRelatives.controller';
 import { SpecialtiesListBuilder } from '../controllers/specialtiesList/specialtiesList.builder';
 import { ISpecialtiesListController } from '../controllers/specialtiesList/specialtiesList.controller';
 
@@ -18,6 +20,7 @@ export class CitationRouter {
   private readonly specialtiesListController: ISpecialtiesListController;
   private readonly insurancesListController: IInsurancesListController;
   private readonly appointmentTypesListController: IAppointmentTypesListController;
+  private readonly patientRelativesController: IPatientRelativesController;
   private readonly validateSessionController: IValidateSessionController;
 
   constructor(private readonly fastify: FastifyInstance) {
@@ -25,6 +28,7 @@ export class CitationRouter {
     this.specialtiesListController = SpecialtiesListBuilder.build();
     this.insurancesListController = InsurancesListBuilder.build();
     this.appointmentTypesListController = AppointmentTypesListBuilder.build();
+    this.patientRelativesController = PatientRelativesBuilder.build();
     this.validateSessionController = ValidateSessionBuilder.buildSession();
   }
 
@@ -52,6 +56,12 @@ export class CitationRouter {
       url: '/appointment-types',
       preHandler: this.validateSessionController.validate.bind(this.validateSessionController),
       handler: this.appointmentTypesListController.handle.bind(this.appointmentTypesListController),
+    });
+    this.fastify.route({
+      method: HttpMethod.GET,
+      url: '/patients/relatives',
+      preHandler: this.validateSessionController.validate.bind(this.validateSessionController),
+      handler: this.patientRelativesController.handle.bind(this.patientRelativesController),
     });
   }
 }

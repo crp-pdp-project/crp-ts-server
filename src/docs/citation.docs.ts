@@ -3,6 +3,7 @@ import { DoctorsListQueryDTOSchema } from 'src/app/entities/dtos/input/doctorsLi
 import { AppointmentTypesListOutputDTOSchema } from 'src/app/entities/dtos/output/appointmentTypesList.output.dto';
 import { DoctorsListOutputDTOSchema } from 'src/app/entities/dtos/output/doctorsList.output.dto';
 import { InsurancesListOutputDTOSchema } from 'src/app/entities/dtos/output/insurancesList.output.dto';
+import { PatientRelativesOutputDTOSchema } from 'src/app/entities/dtos/output/patientRelatives.output.dto';
 import { SpecialtiesListOutputDTOSchema } from 'src/app/entities/dtos/output/specialtiesList.output.dto';
 import { SuccessResponseDTOSchema } from 'src/app/entities/dtos/output/successResponse.output.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
@@ -62,6 +63,19 @@ export class CitationDocs {
       responses: {
         [StatusCode.OK]: SuccessResponseDTOSchema.extend({
           data: AppointmentTypesListOutputDTOSchema,
+        }),
+      },
+      secure: true,
+    });
+
+    this.manager.registerRoute({
+      method: HttpSpecMethod.GET,
+      path: `/patients/relatives`,
+      description: 'Get all patient relatives',
+      tags: ['patient', 'citation'],
+      responses: {
+        [StatusCode.OK]: SuccessResponseDTOSchema.extend({
+          data: PatientRelativesOutputDTOSchema,
         }),
       },
       secure: true,

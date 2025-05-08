@@ -2,8 +2,6 @@ import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import { BaseModel } from 'src/app/entities/models/base.model';
 import { RelationshipModel } from 'src/app/entities/models/relationship.model';
 
-import { PatientListModel } from './patientList.model';
-
 export class PatientModel extends BaseModel {
   readonly id?: number;
   readonly fmpId?: string;
@@ -16,7 +14,7 @@ export class PatientModel extends BaseModel {
   readonly createdAt?: string;
   readonly updatedAt?: string;
   readonly relationship?: RelationshipModel;
-  readonly relatives?: PatientListModel;
+  readonly relatives?: PatientModel[];
 
   constructor(patient: PatientDTO) {
     super();
@@ -32,11 +30,11 @@ export class PatientModel extends BaseModel {
     this.createdAt = patient.createdAt;
     this.updatedAt = patient.updatedAt;
     this.relationship = this.resolveRelationship(patient);
-    this.relatives = patient.relatives ? new PatientListModel(patient.relatives) : undefined;
+    this.relatives = this.resolveRelatives(patient.relatives);
   }
 
   private resolveRelationship(patient: PatientDTO): RelationshipModel | undefined {
-    if (!patient.relationship && (patient.relatives?.length ?? 0) > 0) {
+    if (!patient.relationship && Array.isArray(patient.relatives)) {
       return new RelationshipModel({
         id: 0,
         name: 'Titular de la cuenta',
@@ -44,5 +42,12 @@ export class PatientModel extends BaseModel {
     }
 
     return patient.relationship ? new RelationshipModel(patient.relationship) : undefined;
+  }
+
+  private resolveRelatives(relatives?: PatientDTO[]): PatientModel[] | undefined {
+    if (!relatives) return undefined;
+    const filteredRelatives = relatives?.filter(Boolean) ?? [];
+
+    return filteredRelatives.map((relative) => new PatientModel(relative));
   }
 }

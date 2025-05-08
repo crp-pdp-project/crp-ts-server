@@ -59,7 +59,7 @@ export class SignInBiometricRepositoryMock implements ISignInBiometricRepository
         secondLastName: 'Vignolo',
         documentNumber: '88888888',
         documentType: 14,
-      }
+      },
     };
   }
 }
