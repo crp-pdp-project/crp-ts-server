@@ -1,4 +1,6 @@
+import { AppointmentModes } from 'src/general/enums/appointmentMode.enum';
 import { AppointmentStates } from 'src/general/enums/appointmentState.enum';
+import { AppointmentRecommendations } from 'src/general/enums/recommendations.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 
 import { AppointmentDTO } from '../dtos/service/appointment.dto';
@@ -29,12 +31,12 @@ export class AppointmentModel extends BaseModel {
 
     this.id = appointment.id;
     this.episodeId = appointment.episodeId;
-    this.date = appointment.date ? DateHelper.toFormatDate(appointment.date, 'spanishDate') : appointment.date;
+    this.date = appointment.date ? DateHelper.toFormatDateTime(appointment.date, 'spanishDateTime') : appointment.date;
     this.status = AppointmentStates[appointment.status as keyof typeof AppointmentStates] ?? AppointmentStates.Citado;
     this.mode = appointment.appointmentType?.id
       ? appointment.appointmentType.id.includes(process.env.CRP_VIRTUAL_ID ?? '')
-        ? 'Virtual'
-        : 'Presencial'
+        ? AppointmentModes.REMOTE
+        : AppointmentModes.IN_PERSON
       : undefined;
     this.doctor = appointment.doctor ? new DoctorModel(appointment.doctor) : appointment.doctor;
     this.specialty = appointment.specialty ? new SpecialtyModel(appointment.specialty) : appointment.specialty;
@@ -43,9 +45,9 @@ export class AppointmentModel extends BaseModel {
       ? new AppointmentTypeModel(appointment.appointmentType)
       : appointment.appointmentType;
     this.recommendations = [
-      "Llegar 30 min. antes de tu cita.",
-      "En caso de haber realizado el pago dirígete al piso de tu especialidad.",
-      "Recuerda que toda atención es presentando el DNI o CE físico."
+      AppointmentRecommendations.APPOINTMENT_TIME,
+      AppointmentRecommendations.APPOINTMENT_PAYMENT,
+      AppointmentRecommendations.APPOINTMENT_DOCUMENT,
     ];
     this.canCancel = appointment.canCancel;
     this.canReprogram = appointment.canReprogram;

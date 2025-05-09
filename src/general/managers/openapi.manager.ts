@@ -1,10 +1,17 @@
 import { OpenAPIRegistry, RouteConfig } from '@asteasolutions/zod-to-openapi';
 import { ZodObject, ZodRawShape, ZodSchema } from 'zod';
 
-import { ErrorResponseDTOSchema } from 'src/app/entities/dtos/output/errorResponse.output.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 
 import { StatusCode } from '../enums/status.enum';
+import { BadRequestResponseDTOSchema } from 'src/app/entities/dtos/response/badRequest.response.dto';
+import { UnauthorizedResponseDTOSchema } from 'src/app/entities/dtos/response/unauthorized.response.dto';
+import { ForbiddenResponseDTOSchema } from 'src/app/entities/dtos/response/forbidden.response.dto';
+import { NotFoundResponseDTOSchema } from 'src/app/entities/dtos/response/notFound.response.dto';
+import { ConflictResponseDTOSchema } from 'src/app/entities/dtos/response/conflict.response.dto';
+import { UnprocessableEntityResponseDTOSchema } from 'src/app/entities/dtos/response/unprocessableEntity.response.dto';
+import { LockedResponseDTOSchema } from 'src/app/entities/dtos/response/locked.response.dto';
+import { InternalServerErrorResponseDTOSchema } from 'src/app/entities/dtos/response/internalServerError.response.dto';
 
 type ZodSchemaObject = ZodObject<ZodRawShape>;
 
@@ -33,14 +40,14 @@ export interface IOpenApiManager {
 
 export class OpenApiManager implements IOpenApiManager {
   private readonly defaultErrorResponses: Record<number, ZodSchema> = {
-    [StatusCode.BAD_REQUEST]: ErrorResponseDTOSchema,
-    [StatusCode.UNAUTHORIZED]: ErrorResponseDTOSchema,
-    [StatusCode.FORBIDDEN]: ErrorResponseDTOSchema,
-    [StatusCode.NOT_FOUND]: ErrorResponseDTOSchema,
-    [StatusCode.CONFLICT]: ErrorResponseDTOSchema,
-    [StatusCode.UNPROCESSABLE_ENTITY]: ErrorResponseDTOSchema,
-    [StatusCode.LOCKED]: ErrorResponseDTOSchema,
-    [StatusCode.INTERNAL_SERVER_ERROR]: ErrorResponseDTOSchema,
+    [StatusCode.BAD_REQUEST]: BadRequestResponseDTOSchema,
+    [StatusCode.UNAUTHORIZED]: UnauthorizedResponseDTOSchema,
+    [StatusCode.FORBIDDEN]: ForbiddenResponseDTOSchema,
+    [StatusCode.NOT_FOUND]: NotFoundResponseDTOSchema,
+    [StatusCode.CONFLICT]: ConflictResponseDTOSchema,
+    [StatusCode.UNPROCESSABLE_ENTITY]: UnprocessableEntityResponseDTOSchema,
+    [StatusCode.LOCKED]: LockedResponseDTOSchema,
+    [StatusCode.INTERNAL_SERVER_ERROR]: InternalServerErrorResponseDTOSchema,
   };
 
   constructor(private readonly registry: OpenAPIRegistry) {

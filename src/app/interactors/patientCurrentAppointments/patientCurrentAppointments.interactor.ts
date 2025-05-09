@@ -2,6 +2,7 @@ import { FastifyRequest } from 'fastify';
 
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
+import { AppointmentModel } from 'src/app/entities/models/appointment.model';
 import { AppointmentListModel } from 'src/app/entities/models/appointmentsList.model';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { SessionModel } from 'src/app/entities/models/session.model';
@@ -11,6 +12,7 @@ import { SortOrder } from 'src/general/enums/sort.enum';
 
 export interface IPatientCurrentAppointmentsInteractor {
   appointments(input: FastifyRequest): Promise<AppointmentListModel | ErrorModel>;
+  appointment(input: FastifyRequest): Promise<AppointmentModel | ErrorModel | void>;
 }
 
 export class PatientCurrentAppointmentsInteractor implements IPatientCurrentAppointmentsInteractor {
@@ -21,6 +23,17 @@ export class PatientCurrentAppointmentsInteractor implements IPatientCurrentAppo
       const fmpId = this.validateSession(input.session);
       const currentAppointments = await this.getAppointments(fmpId);
       return new AppointmentListModel(currentAppointments, SortOrder.ASC);
+    } catch (error) {
+      return ErrorModel.fromError(error);
+    }
+  }
+
+  async appointment(input: FastifyRequest): Promise<AppointmentModel | ErrorModel | void> {
+    try {
+      const fmpId = this.validateSession(input.session);
+      const currentAppointments = await this.getAppointments(fmpId);
+      const listModel = new AppointmentListModel(currentAppointments, SortOrder.ASC);
+      return listModel.getFirstAppointment();
     } catch (error) {
       return ErrorModel.fromError(error);
     }

@@ -1,7 +1,7 @@
 import { UpdateBiometricPasswordBodyDTOSchema } from 'src/app/entities/dtos/input/updateBiometricPassword.input.dto';
-import { EmptyResponseDTOSchema } from 'src/app/entities/dtos/output/emptyResponse.output.dto';
+import { NoContentResponseDTOSchema } from 'src/app/entities/dtos/response/noContent.response.dto';
 import { PatientProfileOutputDTOSchema } from 'src/app/entities/dtos/output/patientProfile.output.dto';
-import { SuccessResponseDTOSchema } from 'src/app/entities/dtos/output/successResponse.output.dto';
+import { OkResponseDTOSchema } from 'src/app/entities/dtos/response/ok.response.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { StatusCode } from 'src/general/enums/status.enum';
 import { IOpenApiManager } from 'src/general/managers/openapi.manager';
@@ -18,7 +18,7 @@ export class ProfileV1Docs {
       description: 'Get patient profile',
       tags: ['patients', 'profile'],
       responses: {
-        [StatusCode.OK]: SuccessResponseDTOSchema.extend({
+        [StatusCode.OK]: OkResponseDTOSchema.extend({
           data: PatientProfileOutputDTOSchema,
         }),
       },
@@ -31,7 +31,7 @@ export class ProfileV1Docs {
       description: 'Delete patient account',
       tags: ['patients', 'profile'],
       responses: {
-        [StatusCode.NO_CONTENT]: EmptyResponseDTOSchema,
+        [StatusCode.NO_CONTENT]: NoContentResponseDTOSchema,
       },
       secure: true,
     });
@@ -43,7 +43,7 @@ export class ProfileV1Docs {
       tags: ['patients', 'profile'],
       body: UpdateBiometricPasswordBodyDTOSchema,
       responses: {
-        [StatusCode.NO_CONTENT]: EmptyResponseDTOSchema,
+        [StatusCode.NO_CONTENT]: NoContentResponseDTOSchema,
       },
       secure: true,
     });

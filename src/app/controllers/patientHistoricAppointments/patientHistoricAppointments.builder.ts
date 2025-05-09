@@ -11,9 +11,9 @@ export class PatientHistoricAppointmentsBuilder {
   static build(): PatientHistoricAppointmentsController {
     const historicAppointments = new GetHistoricAppointmentsRepository();
     const responseStrategy = new SuccessResponseStrategy(PatientHistoricAppointmentsOutputDTOSchema);
-    const profileInteractor = new PatientHistoricAppointmentsInteractor(historicAppointments);
+    const appointmentInteractor = new PatientHistoricAppointmentsInteractor(historicAppointments);
     const responseInteractor = new ResponseInteractor<AppointmentListModel>(responseStrategy);
 
-    return new PatientHistoricAppointmentsController(profileInteractor, responseInteractor);
+    return new PatientHistoricAppointmentsController(appointmentInteractor, responseInteractor);
   }
 }

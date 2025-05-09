@@ -7,7 +7,7 @@ import { DoctorsListOutputDTOSchema } from 'src/app/entities/dtos/output/doctors
 import { InsurancesListOutputDTOSchema } from 'src/app/entities/dtos/output/insurancesList.output.dto';
 import { PatientRelativesOutputDTOSchema } from 'src/app/entities/dtos/output/patientRelatives.output.dto';
 import { SpecialtiesListOutputDTOSchema } from 'src/app/entities/dtos/output/specialtiesList.output.dto';
-import { SuccessResponseDTOSchema } from 'src/app/entities/dtos/output/successResponse.output.dto';
+import { OkResponseDTOSchema } from 'src/app/entities/dtos/response/ok.response.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { StatusCode } from 'src/general/enums/status.enum';
 import { IOpenApiManager } from 'src/general/managers/openapi.manager';
@@ -25,7 +25,7 @@ export class AppointmentV1Docs {
       tags: ['doctors', 'appointments'],
       query: DoctorsListQueryDTOSchema,
       responses: {
-        [StatusCode.OK]: SuccessResponseDTOSchema.extend({
+        [StatusCode.OK]: OkResponseDTOSchema.extend({
           data: DoctorsListOutputDTOSchema,
         }),
       },
@@ -38,7 +38,7 @@ export class AppointmentV1Docs {
       description: 'List all specialties',
       tags: ['specialties', 'appointments'],
       responses: {
-        [StatusCode.OK]: SuccessResponseDTOSchema.extend({
+        [StatusCode.OK]: OkResponseDTOSchema.extend({
           data: SpecialtiesListOutputDTOSchema,
         }),
       },
@@ -51,7 +51,7 @@ export class AppointmentV1Docs {
       description: 'List all insurances',
       tags: ['insurances', 'appointments'],
       responses: {
-        [StatusCode.OK]: SuccessResponseDTOSchema.extend({
+        [StatusCode.OK]: OkResponseDTOSchema.extend({
           data: InsurancesListOutputDTOSchema,
         }),
       },
@@ -65,7 +65,7 @@ export class AppointmentV1Docs {
       tags: ['appointment-types', 'appointments'],
       query: AppointmentTypesListQueryDTOSchema,
       responses: {
-        [StatusCode.OK]: SuccessResponseDTOSchema.extend({
+        [StatusCode.OK]: OkResponseDTOSchema.extend({
           data: AppointmentTypesListOutputDTOSchema,
         }),
       },
@@ -78,7 +78,7 @@ export class AppointmentV1Docs {
       description: 'Get all patient relatives',
       tags: ['patients', 'appointments'],
       responses: {
-        [StatusCode.OK]: SuccessResponseDTOSchema.extend({
+        [StatusCode.OK]: OkResponseDTOSchema.extend({
           data: PatientRelativesOutputDTOSchema,
         }),
       },
@@ -92,7 +92,7 @@ export class AppointmentV1Docs {
       tags: ['doctors', 'appointments'],
       query: AvailabilityListQueryDTOSchema,
       responses: {
-        [StatusCode.OK]: SuccessResponseDTOSchema.extend({
+        [StatusCode.OK]: OkResponseDTOSchema.extend({
           data: AvailabilityListOutputDTOSchema,
         }),
       },

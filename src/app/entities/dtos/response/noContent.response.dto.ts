@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { StatusCode, StatusMessage } from 'src/general/enums/status.enum';
 extendZodWithOpenApi(z);
 
-export const EmptyResponseDTOSchema = z.object({
+export const NoContentResponseDTOSchema = z.object({
   success: z.literal(true).openapi({
     description: 'Indicates the request was successful.',
     example: true,
@@ -19,4 +19,4 @@ export const EmptyResponseDTOSchema = z.object({
   }),
 });
 
-export type EmptyResponseDTO = z.infer<typeof EmptyResponseDTOSchema>;
+export type NoContentResponseDTO = z.infer<typeof NoContentResponseDTOSchema>;

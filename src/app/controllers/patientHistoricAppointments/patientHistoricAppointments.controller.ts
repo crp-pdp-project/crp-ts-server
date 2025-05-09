@@ -1,6 +1,5 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import { PatientHistoricAppointmentsInputDTO } from 'src/app/entities/dtos/input/patientHistoricAppointments.input.dto';
 import { AppointmentListModel } from 'src/app/entities/models/appointmentsList.model';
 import { IPatientHistoricAppointmentsInteractor } from 'src/app/interactors/patientHistoricAppointments/patientHistoricAppointments.interactor';
 import { IResponseInteractor } from 'src/app/interactors/response/response.interactor';
@@ -15,9 +14,9 @@ export class PatientHistoricAppointmentsController implements IPatientHistoricAp
     private readonly responseInteractor: IResponseInteractor<AppointmentListModel>,
   ) {}
 
-  async handle(input: FastifyRequest<PatientHistoricAppointmentsInputDTO>, reply: FastifyReply): Promise<void> {
-    const patient = await this.appointmentInteractor.appointments(input);
-    const response = this.responseInteractor.execute(patient);
+  async handle(input: FastifyRequest, reply: FastifyReply): Promise<void> {
+    const appointments = await this.appointmentInteractor.appointments(input);
+    const response = this.responseInteractor.execute(appointments);
     reply.code(response.statusCode).send(response.toResponseObject());
   }
 }
