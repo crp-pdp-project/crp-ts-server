@@ -1,6 +1,5 @@
-import dayjs from 'dayjs';
-
 import { SortOrder } from 'src/general/enums/sort.enum';
+import { DateHelper } from 'src/general/helpers/date.helper';
 
 import { AppointmentDTO } from '../dtos/service/appointment.dto';
 
@@ -23,13 +22,10 @@ export class AppointmentListModel extends BaseModel {
 
   private sortAppointments(list: AppointmentDTO[], sort: SortOrder): AppointmentDTO[] {
     return list.sort((a, b) => {
-      const dateA = dayjs(a.date ?? '');
-      const dateB = dayjs(b.date ?? '');
+      const dateA = DateHelper.toDate(a.date ?? '');
+      const dateB = DateHelper.toDate(b.date ?? '');
 
-      if (!dateA.isValid()) return 1;
-      if (!dateB.isValid()) return -1;
-
-      return sort === SortOrder.ASC ? dateA.valueOf() - dateB.valueOf() : dateB.valueOf() - dateA.valueOf();
+      return sort === SortOrder.ASC ? dateA.diff(dateB) : dateB.diff(dateA);
     });
   }
 }

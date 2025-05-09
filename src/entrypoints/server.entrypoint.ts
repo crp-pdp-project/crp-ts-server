@@ -6,21 +6,21 @@ import cors from '@fastify/cors';
 import ejs from 'ejs';
 import Fastify, { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
-import { AuthenticationRouter } from 'src/app/routers/authentication.router';
-import { CitationRouter } from 'src/app/routers/citation.router';
-import { DashboardRouter } from 'src/app/routers/dashboard.router';
-import { EnrollRouter } from 'src/app/routers/enroll.router';
-import { ProfileRouter } from 'src/app/routers/profile.router';
-import { RecoverRouter } from 'src/app/routers/recover.router';
+import { AppointmentV1Router } from 'src/app/routers/v1/appointments.router';
+import { AuthenticationV1Router } from 'src/app/routers/v1/authentication.router';
+import { DashboardV1Router } from 'src/app/routers/v1/dashboard.router';
+import { EnrollV1Router } from 'src/app/routers/v1/enroll.router';
+import { ProfileV1Router } from 'src/app/routers/v1/profile.router';
+import { RecoverV1Router } from 'src/app/routers/v1/recover.router';
 import { LoggerClient } from 'src/clients/logger.client';
-import { AuthenticationDocs } from 'src/docs/authentication.docs';
-import { CitationDocs } from 'src/docs/citation.docs';
-import { DashboardDocs } from 'src/docs/dashboard.docs';
 import { DMDocs } from 'src/docs/dataModels.docs';
-import { EnrollDocs } from 'src/docs/enroll.docs';
 import { swaggerMeta } from 'src/docs/meta/swagger.meta';
-import { ProfileDocs } from 'src/docs/profile.docs';
-import { RecoverDocs } from 'src/docs/recover.docs';
+import { AppointmentV1Docs } from 'src/docs/v1/appointments.docs';
+import { AuthenticationV1Docs } from 'src/docs/v1/authentication.docs';
+import { DashboardV1Docs } from 'src/docs/v1/dashboard.docs';
+import { EnrollV1Docs } from 'src/docs/v1/enroll.docs';
+import { ProfileV1Docs } from 'src/docs/v1/profile.docs';
+import { RecoverV1Docs } from 'src/docs/v1/recover.docs';
 import { OpenApiManager } from 'src/general/managers/openapi.manager';
 import swaggerTemplate from 'src/general/templates/swagger.template';
 
@@ -88,22 +88,22 @@ export class Server {
   }
 
   private static registerDocs(): void {
-    new EnrollDocs(this.manager).registerDocs();
-    new RecoverDocs(this.manager).registerDocs();
-    new AuthenticationDocs(this.manager).registerDocs();
-    new ProfileDocs(this.manager).registerDocs();
-    new DashboardDocs(this.manager).registerDocs();
-    new CitationDocs(this.manager).registerDocs();
+    new EnrollV1Docs(this.manager).registerDocs();
+    new RecoverV1Docs(this.manager).registerDocs();
+    new AuthenticationV1Docs(this.manager).registerDocs();
+    new ProfileV1Docs(this.manager).registerDocs();
+    new DashboardV1Docs(this.manager).registerDocs();
+    new AppointmentV1Docs(this.manager).registerDocs();
     new DMDocs(this.manager).registerDocs();
   }
 
   private static registerRoutes(): void {
-    new EnrollRouter(this.app).registerRouter();
-    new RecoverRouter(this.app).registerRouter();
-    new AuthenticationRouter(this.app).registerRouter();
-    new ProfileRouter(this.app).registerRouter();
-    new DashboardRouter(this.app).registerRouter();
-    new CitationRouter(this.app).registerRouter();
+    new EnrollV1Router(this.app).registerRouter();
+    new RecoverV1Router(this.app).registerRouter();
+    new AuthenticationV1Router(this.app).registerRouter();
+    new ProfileV1Router(this.app).registerRouter();
+    new DashboardV1Router(this.app).registerRouter();
+    new AppointmentV1Router(this.app).registerRouter();
   }
 
   private static async setupDocsEndpoint(): Promise<void> {
@@ -123,8 +123,13 @@ export class Server {
   }
 
   private static setupHttpClient(): void {
-    https.globalAgent.options.rejectUnauthorized = false;
-    https.globalAgent.options.checkServerIdentity = () => undefined;
+    https.globalAgent.options = {
+      ...https.globalAgent.options,
+      rejectUnauthorized: false,
+      keepAlive: true,
+      timeout: Number(process.env.INETUM_TIMEOUT ?? 5000),
+      checkServerIdentity: () => undefined,
+    };
   }
 }
 

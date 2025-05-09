@@ -12,7 +12,8 @@ import { ValidateSessionBuilder } from 'src/app/controllers/validateSession/vali
 import { IValidateSessionController } from 'src/app/controllers/validateSession/validateSession.controller';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 
-export class EnrollRouter {
+export class EnrollV1Router {
+  private readonly version: string = '/v1';
   private readonly enrollPatientController: IEnrollPatientController;
   private readonly sendEnrollOTPController: ISendEnrollOTPController;
   private readonly validateEnrollOTPController: IValidateEnrollOTPController;
@@ -30,24 +31,24 @@ export class EnrollRouter {
   registerRouter(): void {
     this.fastify.route({
       method: HttpMethod.POST,
-      url: '/patients/enroll',
+      url: `${this.version}/patients/enroll`,
       handler: this.enrollPatientController.handle.bind(this.enrollPatientController),
     });
     this.fastify.route({
       method: HttpMethod.POST,
-      url: '/patients/enroll/send',
+      url: `${this.version}/patients/enroll/send`,
       preHandler: this.validateSessionController.validate.bind(this.validateSessionController),
       handler: this.sendEnrollOTPController.handle.bind(this.sendEnrollOTPController),
     });
     this.fastify.route({
       method: HttpMethod.POST,
-      url: '/patients/enroll/validate',
+      url: `${this.version}/patients/enroll/validate`,
       preHandler: this.validateSessionController.validate.bind(this.validateSessionController),
       handler: this.validateEnrollOTPController.handle.bind(this.validateEnrollOTPController),
     });
     this.fastify.route({
       method: HttpMethod.POST,
-      url: '/patients/enroll/create',
+      url: `${this.version}/patients/enroll/create`,
       preHandler: this.validateSessionController.validate.bind(this.validateSessionController),
       handler: this.createEnrolledAccountController.handle.bind(this.createEnrolledAccountController),
     });

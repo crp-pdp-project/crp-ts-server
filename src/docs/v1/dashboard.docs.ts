@@ -6,13 +6,15 @@ import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { StatusCode } from 'src/general/enums/status.enum';
 import { IOpenApiManager } from 'src/general/managers/openapi.manager';
 
-export class DashboardDocs {
+export class DashboardV1Docs {
+  private readonly version: string = '/v1';
+
   constructor(private readonly manager: IOpenApiManager) {}
 
   registerDocs(): void {
     this.manager.registerRoute({
       method: HttpSpecMethod.GET,
-      path: `/patients/appointment/current`,
+      path: `${this.version}/patients/appointment/current`,
       description: 'Patient current appointment list',
       tags: ['patients', 'dashboard'],
       responses: {
@@ -25,7 +27,7 @@ export class DashboardDocs {
 
     this.manager.registerRoute({
       method: HttpSpecMethod.GET,
-      path: `/patients/appointment/historic`,
+      path: `${this.version}/patients/appointment/historic`,
       description: 'Patient historic appointment list',
       tags: ['patients', 'dashboard'],
       query: PatientHistoricAppointmentsQueryDTOSchema,

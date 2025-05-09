@@ -6,9 +6,6 @@ import {
   AppointmentTypesListQueryDTOSchema,
 } from 'src/app/entities/dtos/input/appointmentTypesList.input.dto';
 import { AppointmentTypeDTO } from 'src/app/entities/dtos/service/appointmentType.dto';
-import { DoctorDTO } from 'src/app/entities/dtos/service/doctor.dto';
-import { InsuranceDTO } from 'src/app/entities/dtos/service/insurance.dto';
-import { SpecialtyDTO } from 'src/app/entities/dtos/service/specialty.dto';
 import { AppointmentTypeListModel } from 'src/app/entities/models/appointmentTypeList.model';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { SessionModel } from 'src/app/entities/models/session.model';
@@ -25,22 +22,18 @@ export class AppointmentTypesListInteractor implements IAppointmentTypesListInte
   async list(input: FastifyRequest<AppointmentTypesListInputDTO>): Promise<AppointmentTypeListModel | ErrorModel> {
     try {
       this.validateSession(input.session);
-      const body = this.validateInput(input.query);
-      const appointmentTypesList = await this.getAppointmentTypesList(
-        body.doctorId,
-        body.specialtyId,
-        body.insuranceId,
-      );
+      const query = this.validateInput(input.query);
+      const appointmentTypesList = await this.getAppointmentTypesList(query);
       return new AppointmentTypeListModel(appointmentTypesList);
     } catch (error) {
       return ErrorModel.fromError(error);
     }
   }
 
-  private validateInput(query?: AppointmentTypesListQueryDTO): AppointmentTypesListQueryDTO {
-    const body = AppointmentTypesListQueryDTOSchema.parse(query);
+  private validateInput(input?: AppointmentTypesListQueryDTO): AppointmentTypesListQueryDTO {
+    const query = AppointmentTypesListQueryDTOSchema.parse(input);
 
-    return body;
+    return query;
   }
 
   private validateSession(session?: SessionModel): void {
@@ -49,12 +42,12 @@ export class AppointmentTypesListInteractor implements IAppointmentTypesListInte
     }
   }
 
-  private async getAppointmentTypesList(
-    doctorId: DoctorDTO['id'],
-    specialtyId: SpecialtyDTO['id'],
-    insuranceId?: InsuranceDTO['id'],
-  ): Promise<AppointmentTypeDTO[]> {
-    const appointmentTypesList = await this.getAppointmentTypes.execute(doctorId!, specialtyId!, insuranceId);
+  private async getAppointmentTypesList(query: AppointmentTypesListQueryDTO): Promise<AppointmentTypeDTO[]> {
+    const appointmentTypesList = await this.getAppointmentTypes.execute(
+      query.doctorId,
+      query.specialtyId,
+      query.insuranceId,
+    );
 
     return appointmentTypesList;
   }
