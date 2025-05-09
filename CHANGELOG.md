@@ -1,4 +1,4 @@
-## v0.4.1
+## v0.5.1
 
-- Add recommendations ([`bdb43a8`](https://github.com/https://github.com/Belo-RenaruX/crp-ts-server/commit/bdb43a8))
+- Add next appointment endpoint | refactor response dtos (#10) ([`9dbc8ea`](https://github.com/https://github.com/Belo-RenaruX/crp-ts-server/commit/9dbc8ea))
 
