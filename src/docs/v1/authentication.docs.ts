@@ -7,13 +7,15 @@ import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { StatusCode } from 'src/general/enums/status.enum';
 import { IOpenApiManager } from 'src/general/managers/openapi.manager';
 
-export class AuthenticationDocs {
+export class AuthenticationV1Docs {
+  private readonly version: string = '/v1';
+
   constructor(private readonly manager: IOpenApiManager) {}
 
   registerDocs(): void {
     this.manager.registerRoute({
       method: HttpSpecMethod.POST,
-      path: `/patients/sign-in`,
+      path: `${this.version}/patients/sign-in`,
       description: 'Sign in a patient',
       tags: ['patients', 'authentication'],
       body: SignInPatientBodyDTOSchema,
@@ -26,7 +28,7 @@ export class AuthenticationDocs {
 
     this.manager.registerRoute({
       method: HttpSpecMethod.POST,
-      path: `/patients/biometric/sign-in`,
+      path: `${this.version}/patients/biometric/sign-in`,
       description: 'Sign in a patient with biometric authentication',
       tags: ['patients', 'authentication'],
       body: SignInBiometricBodyDTOSchema,
@@ -39,7 +41,7 @@ export class AuthenticationDocs {
 
     this.manager.registerRoute({
       method: HttpSpecMethod.POST,
-      path: `/patients/sign-out`,
+      path: `${this.version}/patients/sign-out`,
       description: 'Sign out a patient',
       tags: ['patients', 'authentication'],
       responses: {

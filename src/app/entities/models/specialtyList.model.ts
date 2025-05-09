@@ -13,6 +13,12 @@ export class SpecialtyListModel extends BaseModel {
   }
 
   private generateSpecialtiesList(specialtiesList: SpecialtyDTO[]): SpecialtyModel[] {
-    return specialtiesList.map((specialty) => new SpecialtyModel(specialty));
+    return specialtiesList
+      .sort((a, b) => this.sortByNameAsc(a.name, b.name))
+      .map((specialty) => new SpecialtyModel(specialty));
+  }
+
+  private sortByNameAsc(nameA = '', nameB = ''): number {
+    return nameA.toLocaleLowerCase().localeCompare(nameB.toLocaleLowerCase());
   }
 }

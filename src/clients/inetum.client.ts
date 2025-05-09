@@ -39,8 +39,8 @@ export class InetumClient {
         process.env.INETUM_USER_BINDING_URL ?? '',
       );
       const appointmentClient = await SoapHelper.initClient(
-        process.env.INETUM_CITATION_URL ?? '',
-        process.env.INETUM_CITATION_BINDING_URL ?? '',
+        process.env.INETUM_APPOINTMENT_URL ?? '',
+        process.env.INETUM_APPOINTMENT_BINDING_URL ?? '',
       );
       const historyClient = await SoapHelper.initClient(
         process.env.INETUM_HISTORY_URL ?? '',

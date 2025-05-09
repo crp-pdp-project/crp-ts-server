@@ -8,7 +8,8 @@ import { ValidateSessionBuilder } from 'src/app/controllers/validateSession/vali
 import { IValidateSessionController } from 'src/app/controllers/validateSession/validateSession.controller';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 
-export class AuthenticationRouter {
+export class AuthenticationV1Router {
+  private readonly version: string = '/v1';
   private readonly signInPatientRegularController: ISignInPatientController;
   private readonly signInPatientBiometricController: ISignInPatientController;
   private readonly signOutPatientController: ISignOutPatientController;
@@ -24,17 +25,17 @@ export class AuthenticationRouter {
   registerRouter(): void {
     this.fastify.route({
       method: HttpMethod.POST,
-      url: '/patients/sign-in',
+      url: `${this.version}/patients/sign-in`,
       handler: this.signInPatientRegularController.handle.bind(this.signInPatientRegularController),
     });
     this.fastify.route({
       method: HttpMethod.POST,
-      url: '/patients/biometric/sign-in',
+      url: `${this.version}/patients/biometric/sign-in`,
       handler: this.signInPatientBiometricController.handle.bind(this.signInPatientBiometricController),
     });
     this.fastify.route({
       method: HttpMethod.POST,
-      url: '/patients/sign-out',
+      url: `${this.version}/patients/sign-out`,
       preHandler: this.validateSessionController.validate.bind(this.validateSessionController),
       handler: this.signOutPatientController.handle.bind(this.signOutPatientController),
     });

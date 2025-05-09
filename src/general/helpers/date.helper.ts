@@ -1,17 +1,17 @@
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs, { Dayjs, isDayjs } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 dayjs.extend(customParseFormat);
 
-const timeFormats = {
-  spanishTime: 'HH:mm:ss',
-  dbTime: 'HH:mm:ss',
-  inetumTime: 'HHmmss',
-} as const;
 const dateFormats = {
   spanishDate: 'DD-MM-YYYY',
   dbDate: 'YYYY-MM-DD',
   inetumDate: 'YYYYMMDD',
+} as const;
+const timeFormats = {
+  spanishTime: 'HH:mm:ss',
+  dbTime: 'HH:mm:ss',
+  inetumTime: 'HHmmss',
 } as const;
 const dateTimeFormats = {
   spanishDateTime: 'DD-MM-YYYY HH:mm:ss',
@@ -19,8 +19,8 @@ const dateTimeFormats = {
   inetumDateTime: 'YYYYMMDDHHmmss',
 } as const;
 const allFormats = {
-  ...timeFormats,
   ...dateFormats,
+  ...timeFormats,
   ...dateTimeFormats,
 } as const;
 
@@ -56,6 +56,26 @@ export class DateHelper {
     return parsedDate.isBefore(dayjs());
   }
 
+  static startOfTime(timeFormatKey: TimeFormatKey): string {
+    return dayjs().startOf('day').format(allFormats[timeFormatKey]);
+  }
+
+  static endOfTime(timeFormatKey: TimeFormatKey): string {
+    return dayjs().endOf('day').format(allFormats[timeFormatKey]);
+  }
+
+  static toDate(date: string | Date): Dayjs {
+    return this.parse(date, this.allInputFormats);
+  }
+
+  static dateNow(formatKey: FormatKey): string {
+    return dayjs().format(allFormats[formatKey]);
+  }
+
+  static addMonths(numOfMonths: number, formatKey: FormatKey): string {
+    return dayjs().add(numOfMonths, 'months').format(allFormats[formatKey]);
+  }
+
   static subtractMonths(numOfMonths: number, formatKey: FormatKey): string {
     return dayjs().subtract(numOfMonths, 'months').format(allFormats[formatKey]);
   }
@@ -64,8 +84,16 @@ export class DateHelper {
     return dayjs().format(allFormats[formatKey]);
   }
 
-  private static parse(input: string | Date, formats: string[]): Dayjs {
-    const date = dayjs(input);
-    return date.isValid() ? date : dayjs(input, formats);
+  private static parse(input: string | Date | Dayjs, formats: string[]): Dayjs {
+    if (input instanceof Date) {
+      return dayjs(input);
+    }
+
+    if (isDayjs(input)) {
+      return input;
+    }
+
+    const parsed = dayjs(input, formats, true);
+    return parsed.isValid() ? parsed : dayjs(input);
   }
 }

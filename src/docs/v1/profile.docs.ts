@@ -6,13 +6,15 @@ import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { StatusCode } from 'src/general/enums/status.enum';
 import { IOpenApiManager } from 'src/general/managers/openapi.manager';
 
-export class ProfileDocs {
+export class ProfileV1Docs {
+  private readonly version: string = '/v1';
+
   constructor(private readonly manager: IOpenApiManager) {}
 
   registerDocs(): void {
     this.manager.registerRoute({
       method: HttpSpecMethod.GET,
-      path: `/patients/profile`,
+      path: `${this.version}/patients/profile`,
       description: 'Get patient profile',
       tags: ['patients', 'profile'],
       responses: {
@@ -25,7 +27,7 @@ export class ProfileDocs {
 
     this.manager.registerRoute({
       method: HttpSpecMethod.DELETE,
-      path: `/patients`,
+      path: `${this.version}/patients`,
       description: 'Delete patient account',
       tags: ['patients', 'profile'],
       responses: {
@@ -36,7 +38,7 @@ export class ProfileDocs {
 
     this.manager.registerRoute({
       method: HttpSpecMethod.PATCH,
-      path: `/patients/biometric`,
+      path: `${this.version}/patients/biometric`,
       description: 'Add or update biometric password to patient account',
       tags: ['patients', 'profile'],
       body: UpdateBiometricPasswordBodyDTOSchema,

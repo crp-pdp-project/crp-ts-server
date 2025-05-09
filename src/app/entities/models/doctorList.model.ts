@@ -13,8 +13,12 @@ export class DoctorListModel extends BaseModel {
   }
 
   private generateDoctorsList(doctorsList: DoctorDTO[], images?: DoctorDTO[]): DoctorModel[] {
-    const doctorsToUse = images ? this.addDoctorImages(doctorsList, images) : doctorsList;
-    return doctorsToUse.map((doctor) => new DoctorModel(doctor));
+    const mergedDoctors = images ? this.addDoctorImages(doctorsList, images) : doctorsList;
+    return mergedDoctors.sort((a, b) => this.sortByNameAsc(a.name, b.name)).map((doctor) => new DoctorModel(doctor));
+  }
+
+  private sortByNameAsc(nameA = '', nameB = ''): number {
+    return nameA.toLocaleLowerCase().localeCompare(nameB.toLocaleLowerCase());
   }
 
   private addDoctorImages(doctorsList: DoctorDTO[], imagesList: DoctorDTO[] = []): DoctorDTO[] {
