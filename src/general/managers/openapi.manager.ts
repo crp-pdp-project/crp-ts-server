@@ -1,17 +1,17 @@
 import { OpenAPIRegistry, RouteConfig } from '@asteasolutions/zod-to-openapi';
 import { ZodObject, ZodRawShape, ZodSchema } from 'zod';
 
+import { BadRequestResponseDTOSchema } from 'src/app/entities/dtos/response/badRequest.response.dto';
+import { ConflictResponseDTOSchema } from 'src/app/entities/dtos/response/conflict.response.dto';
+import { ForbiddenResponseDTOSchema } from 'src/app/entities/dtos/response/forbidden.response.dto';
+import { InternalServerErrorResponseDTOSchema } from 'src/app/entities/dtos/response/internalServerError.response.dto';
+import { LockedResponseDTOSchema } from 'src/app/entities/dtos/response/locked.response.dto';
+import { NotFoundResponseDTOSchema } from 'src/app/entities/dtos/response/notFound.response.dto';
+import { UnauthorizedResponseDTOSchema } from 'src/app/entities/dtos/response/unauthorized.response.dto';
+import { UnprocessableEntityResponseDTOSchema } from 'src/app/entities/dtos/response/unprocessableEntity.response.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 
 import { StatusCode } from '../enums/status.enum';
-import { BadRequestResponseDTOSchema } from 'src/app/entities/dtos/response/badRequest.response.dto';
-import { UnauthorizedResponseDTOSchema } from 'src/app/entities/dtos/response/unauthorized.response.dto';
-import { ForbiddenResponseDTOSchema } from 'src/app/entities/dtos/response/forbidden.response.dto';
-import { NotFoundResponseDTOSchema } from 'src/app/entities/dtos/response/notFound.response.dto';
-import { ConflictResponseDTOSchema } from 'src/app/entities/dtos/response/conflict.response.dto';
-import { UnprocessableEntityResponseDTOSchema } from 'src/app/entities/dtos/response/unprocessableEntity.response.dto';
-import { LockedResponseDTOSchema } from 'src/app/entities/dtos/response/locked.response.dto';
-import { InternalServerErrorResponseDTOSchema } from 'src/app/entities/dtos/response/internalServerError.response.dto';
 
 type ZodSchemaObject = ZodObject<ZodRawShape>;
 

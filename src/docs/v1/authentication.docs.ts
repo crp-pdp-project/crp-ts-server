@@ -1,7 +1,7 @@
 import { SignInBiometricBodyDTOSchema } from 'src/app/entities/dtos/input/signInBiometric.input.dto';
 import { SignInPatientBodyDTOSchema } from 'src/app/entities/dtos/input/signInPatient.input.dto';
-import { NoContentResponseDTOSchema } from 'src/app/entities/dtos/response/noContent.response.dto';
 import { SignInPatientOutputDTOSchema } from 'src/app/entities/dtos/output/signInPatient.output.dto';
+import { NoContentResponseDTOSchema } from 'src/app/entities/dtos/response/noContent.response.dto';
 import { OkResponseDTOSchema } from 'src/app/entities/dtos/response/ok.response.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { StatusCode } from 'src/general/enums/status.enum';

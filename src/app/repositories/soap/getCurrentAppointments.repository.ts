@@ -65,8 +65,7 @@ export class GetCurrentAppointmentsRepository implements IGetCurrentAppointments
         IdPaciente: fmpId,
         IdCentro: process.env.CRP_CENTER_ID ?? '',
         CanalEntrada: 'PERU',
-        // FechaInicio: DateHelper.dateNow('inetumDate'),
-        FechaInicio: DateHelper.subtractMonths(12, 'inetumDate'),
+        FechaInicio: DateHelper.dateNow('inetumDate'),
         FechaFinal: DateHelper.addMonths(this.monthsToList, 'inetumDate'),
       },
     };

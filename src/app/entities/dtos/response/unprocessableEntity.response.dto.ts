@@ -1,6 +1,7 @@
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
-import { StatusCode, StatusMessage } from 'src/general/enums/status.enum';
 import { z } from 'zod';
+
+import { StatusCode, StatusMessage } from 'src/general/enums/status.enum';
 extendZodWithOpenApi(z);
 
 export const UnprocessableEntityResponseDTOSchema = z.object({

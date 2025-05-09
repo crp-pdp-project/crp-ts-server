@@ -1,6 +1,6 @@
 import { UpdateBiometricPasswordBodyDTOSchema } from 'src/app/entities/dtos/input/updateBiometricPassword.input.dto';
-import { NoContentResponseDTOSchema } from 'src/app/entities/dtos/response/noContent.response.dto';
 import { PatientProfileOutputDTOSchema } from 'src/app/entities/dtos/output/patientProfile.output.dto';
+import { NoContentResponseDTOSchema } from 'src/app/entities/dtos/response/noContent.response.dto';
 import { OkResponseDTOSchema } from 'src/app/entities/dtos/response/ok.response.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { StatusCode } from 'src/general/enums/status.enum';
