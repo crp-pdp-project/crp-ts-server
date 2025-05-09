@@ -19,6 +19,7 @@ export class AppointmentModel extends BaseModel {
   readonly specialty?: SpecialtyModel;
   readonly insurance?: InsuranceModel;
   readonly appointmentType?: AppointmentTypeModel;
+  readonly recommendations: string[];
   readonly canCancel?: boolean;
   readonly canReprogram?: boolean;
   readonly didShow?: boolean;
@@ -41,6 +42,11 @@ export class AppointmentModel extends BaseModel {
     this.appointmentType = appointment.appointmentType
       ? new AppointmentTypeModel(appointment.appointmentType)
       : appointment.appointmentType;
+    this.recommendations = [
+      "Llegar 30 min. antes de tu cita.",
+      "En caso de haber realizado el pago dirígete al piso de tu especialidad.",
+      "Recuerda que toda atención es presentando el DNI o CE físico."
+    ];
     this.canCancel = appointment.canCancel;
     this.canReprogram = appointment.canReprogram;
     this.didShow = appointment.didShow;
