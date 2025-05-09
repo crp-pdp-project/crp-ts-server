@@ -28,4 +28,9 @@ export class AppointmentListModel extends BaseModel {
       return sort === SortOrder.ASC ? dateA.diff(dateB) : dateB.diff(dateA);
     });
   }
+
+  getFirstAppointment(): AppointmentModel | void {
+    const firstAppointment = this.appointments?.[0];
+    if (firstAppointment) return firstAppointment;
+  }
 }

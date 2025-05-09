@@ -1,6 +1,7 @@
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
 import { InetumClient } from 'src/clients/inetum.client';
+import { DateHelper } from 'src/general/helpers/date.helper';
 
 type GetCurrentAppointmentsInput = {
   usuario: string;
@@ -9,6 +10,8 @@ type GetCurrentAppointmentsInput = {
     IdCentro: string;
     CanalEntrada: string;
     IdPaciente: string;
+    FechaInicio?: string;
+    FechaFinal?: string;
   };
 };
 
@@ -45,6 +48,8 @@ export interface IGetCurrentAppointmentsRepository {
 }
 
 export class GetCurrentAppointmentsRepository implements IGetCurrentAppointmentsRepository {
+  private readonly monthsToList = Number(process.env.CURRENT_MONTHS_LIST ?? 6);
+
   async execute(fmpId: PatientDM['fmpId']): Promise<AppointmentDTO[]> {
     const methodPayload = this.generateInput(fmpId);
     const instance = await InetumClient.getInstance();
@@ -60,6 +65,9 @@ export class GetCurrentAppointmentsRepository implements IGetCurrentAppointments
         IdPaciente: fmpId,
         IdCentro: process.env.CRP_CENTER_ID ?? '',
         CanalEntrada: 'PERU',
+        // FechaInicio: DateHelper.dateNow('inetumDate'),
+        FechaInicio: DateHelper.subtractMonths(12, 'inetumDate'),
+        FechaFinal: DateHelper.addMonths(this.monthsToList, 'inetumDate'),
       },
     };
   }

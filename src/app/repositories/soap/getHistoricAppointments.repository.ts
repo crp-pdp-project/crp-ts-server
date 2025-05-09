@@ -38,18 +38,20 @@ type GetHistoricAppointmentsOutput = {
 };
 
 export interface IGetHistoricAppointmentsRepository {
-  execute(fmpId: PatientDM['fmpId'], monthsToList?: number): Promise<AppointmentDTO[]>;
+  execute(fmpId: PatientDM['fmpId']): Promise<AppointmentDTO[]>;
 }
 
 export class GetHistoricAppointmentsRepository implements IGetHistoricAppointmentsRepository {
-  async execute(fmpId: PatientDM['fmpId'], monthsToList?: number): Promise<AppointmentDTO[]> {
-    const methodPayload = this.generateInput(fmpId, monthsToList);
+  private readonly monthsToList = Number(process.env.HISTORIC_MONTHS_LIST ?? 6);
+
+  async execute(fmpId: PatientDM['fmpId']): Promise<AppointmentDTO[]> {
+    const methodPayload = this.generateInput(fmpId);
     const instance = await InetumClient.getInstance();
     const rawResult = await instance.appointment.call<GetHistoricAppointmentsOutput>('ListadoConsultas', methodPayload);
     return this.parseOutput(rawResult);
   }
 
-  private generateInput(fmpId: PatientDM['fmpId'], monthsToList?: number): GetHistoricAppointmentsInput {
+  private generateInput(fmpId: PatientDM['fmpId']): GetHistoricAppointmentsInput {
     return {
       usuario: process.env.INETUM_USER ?? '',
       contrasena: process.env.INETUM_PASSWORD ?? '',
@@ -57,8 +59,8 @@ export class GetHistoricAppointmentsRepository implements IGetHistoricAppointmen
         IdPaciente: fmpId,
         IdCentro: process.env.CRP_CENTER_ID ?? '',
         CanalEntrada: 'PERU',
-        FechaInicio: monthsToList ? DateHelper.subtractMonths(monthsToList, 'inetumDate') : undefined,
-        FechaFinal: monthsToList ? DateHelper.currentDate('inetumDate') : undefined,
+        FechaInicio: DateHelper.subtractMonths(this.monthsToList, 'inetumDate'),
+        FechaFinal: DateHelper.dateNow('inetumDate'),
       },
     };
   }

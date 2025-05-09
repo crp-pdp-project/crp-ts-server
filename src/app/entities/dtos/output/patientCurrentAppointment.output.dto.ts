@@ -89,7 +89,7 @@ export const PatientCurrentAppointmentsOutputDTOSchema = z
           }),
         recommendations: z.array(z.string()).openapi({
           description: 'List of recommendations for the appointment',
-          example: ['recomendacion']
+          example: ['recomendacion'],
         }),
         canCancel: z.boolean().openapi({
           description: 'The appointment can be canceled',

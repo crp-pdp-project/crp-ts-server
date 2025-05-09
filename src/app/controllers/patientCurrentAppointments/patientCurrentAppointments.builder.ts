@@ -11,9 +11,9 @@ export class PatientCurrentAppointmentsBuilder {
   static build(): PatientCurrentAppointmentsController {
     const currentAppointments = new GetCurrentAppointmentsRepository();
     const responseStrategy = new SuccessResponseStrategy(PatientCurrentAppointmentsOutputDTOSchema);
-    const profileInteractor = new PatientCurrentAppointmentsInteractor(currentAppointments);
+    const appointmentInteractor = new PatientCurrentAppointmentsInteractor(currentAppointments);
     const responseInteractor = new ResponseInteractor<AppointmentListModel>(responseStrategy);
 
-    return new PatientCurrentAppointmentsController(profileInteractor, responseInteractor);
+    return new PatientCurrentAppointmentsController(appointmentInteractor, responseInteractor);
   }
 }

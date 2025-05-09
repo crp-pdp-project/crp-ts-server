@@ -85,7 +85,7 @@ export const PatientHistoricAppointmentsOutputDTOSchema = z
           }),
         recommendations: z.array(z.string()).openapi({
           description: 'List of recommendations for the appointment',
-          example: ['recomendacion']
+          example: ['recomendacion'],
         }),
       }),
     ),

@@ -1,9 +1,9 @@
 import { PatientVerificationBodyDTOSchema } from 'src/app/entities/dtos/input/patientVerification.input.dto';
 import { UpdatePatientPasswordBodyDTOSchema } from 'src/app/entities/dtos/input/updatePatientPassword.input.dto';
 import { ValidateVerificationOTPBodyDTOSchema } from 'src/app/entities/dtos/input/validateVerificationOtp.input.dto';
-import { EmptyResponseDTOSchema } from 'src/app/entities/dtos/output/emptyResponse.output.dto';
+import { NoContentResponseDTOSchema } from 'src/app/entities/dtos/response/noContent.response.dto';
 import { PatientVerificationOutputDTOSchema } from 'src/app/entities/dtos/output/patientVerification.output.dto';
-import { SuccessResponseDTOSchema } from 'src/app/entities/dtos/output/successResponse.output.dto';
+import { OkResponseDTOSchema } from 'src/app/entities/dtos/response/ok.response.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { StatusCode } from 'src/general/enums/status.enum';
 import { IOpenApiManager } from 'src/general/managers/openapi.manager';
@@ -21,7 +21,7 @@ export class RecoverV1Docs {
       tags: ['patients', 'recover'],
       body: PatientVerificationBodyDTOSchema,
       responses: {
-        [StatusCode.OK]: SuccessResponseDTOSchema.extend({
+        [StatusCode.OK]: OkResponseDTOSchema.extend({
           data: PatientVerificationOutputDTOSchema,
         }),
       },
@@ -33,7 +33,7 @@ export class RecoverV1Docs {
       description: 'Send OTP to recovering patient',
       tags: ['patients', 'recover'],
       responses: {
-        [StatusCode.NO_CONTENT]: EmptyResponseDTOSchema,
+        [StatusCode.NO_CONTENT]: NoContentResponseDTOSchema,
       },
       secure: true,
     });
@@ -45,7 +45,7 @@ export class RecoverV1Docs {
       tags: ['patients', 'recover'],
       body: ValidateVerificationOTPBodyDTOSchema,
       responses: {
-        [StatusCode.NO_CONTENT]: EmptyResponseDTOSchema,
+        [StatusCode.NO_CONTENT]: NoContentResponseDTOSchema,
       },
       secure: true,
     });
@@ -57,7 +57,7 @@ export class RecoverV1Docs {
       tags: ['patients', 'recover'],
       body: UpdatePatientPasswordBodyDTOSchema,
       responses: {
-        [StatusCode.NO_CONTENT]: EmptyResponseDTOSchema,
+        [StatusCode.NO_CONTENT]: NoContentResponseDTOSchema,
       },
       secure: true,
     });
