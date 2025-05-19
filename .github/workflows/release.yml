@@ -52,7 +52,11 @@ jobs:
         run: |
           VERSION=${{ steps.version.outputs.VERSION }}
           REPO_SLUG=$(git config --get remote.origin.url | sed -E 's#(git@|https://)github.com[/:](.+)\.git#\2#')
-          COMMITS=$(git log "$(git describe --tags --abbrev=0)..HEAD" --pretty=format:"- %s ([\`%h\`](https://github.com/$REPO_SLUG/commit/%h))")
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^)
+
+          echo "Previous tag: $PREV_TAG"
+
+          COMMITS=$(git log "$PREV_TAG..HEAD" --pretty=format:"- %s ([\`%h\`](https://github.com/$REPO_SLUG/commit/%h))")
 
           {
             echo "body<<EOF"
