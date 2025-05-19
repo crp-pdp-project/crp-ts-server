@@ -50,24 +50,16 @@ jobs:
       - name: Generate release changelog
         id: changelog
         run: |
-          VERSION="${{ steps.version.outputs.VERSION }}"
           REPO_SLUG=$(git config --get remote.origin.url | sed -E 's#(git@|https://)github.com[/:](.+)\.git#\2#')
+          VERSION=${{ steps.version.outputs.VERSION }}
+          COMMITS=$(git log "$(git describe --tags --abbrev=0)..HEAD" --pretty=format:"- %s ([\`%h\`](https://github.com/$REPO_SLUG/commit/%h))")
 
-          echo "🔍 Looking for previous tag..."
-          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-
-          if [ -z "$LAST_TAG" ]; then
-            echo "⚠️ No previous tag found, generating changelog from beginning"
-            GIT_RANGE=""
-          else
-            echo "📌 Found previous tag: $LAST_TAG"
-            GIT_RANGE="$LAST_TAG..HEAD"
-          fi
-
-          LOG=$(git log $GIT_RANGE --pretty=format:"- %s ([\`%h\`](https://github.com/$REPO_SLUG/commit/%H))")
-          LOG_ESCAPED=$(echo "$LOG" | sed ':a;N;$!ba;s/\n/%0A/g')
-
-          echo "body=## v$VERSION%0A%0A$LOG_ESCAPED" >> $GITHUB_OUTPUT
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          echo "## v$VERSION" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "$COMMITS" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Upload GitHub Release
         uses: softprops/action-gh-release@v1
