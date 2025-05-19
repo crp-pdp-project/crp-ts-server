@@ -15,8 +15,11 @@ export async function up(db: Kysely<unknown>): Promise<void> {
         .modifyEnd(sql`ON UPDATE CURRENT_TIMESTAMP`),
     )
     .execute();
+
+  await db.schema.createIndex('UniqueRelationshipName').on(tableName).column('name').unique().execute();
 }
 
 export async function down(db: Kysely<unknown>): Promise<void> {
+  await db.schema.dropIndex('UniqueRelationshipName').execute();
   await db.schema.dropTable(tableName).execute();
 }

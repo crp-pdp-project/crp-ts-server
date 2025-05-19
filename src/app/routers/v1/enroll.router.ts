@@ -36,19 +36,19 @@ export class EnrollV1Router {
     });
     this.fastify.route({
       method: HttpMethod.POST,
-      url: `${this.version}/patients/enroll/send`,
+      url: `${this.version}/patients/enroll/otp/send`,
       preHandler: this.validateSessionController.validate.bind(this.validateSessionController),
       handler: this.sendEnrollOTPController.handle.bind(this.sendEnrollOTPController),
     });
     this.fastify.route({
       method: HttpMethod.POST,
-      url: `${this.version}/patients/enroll/validate`,
+      url: `${this.version}/patients/enroll/otp/validate`,
       preHandler: this.validateSessionController.validate.bind(this.validateSessionController),
       handler: this.validateEnrollOTPController.handle.bind(this.validateEnrollOTPController),
     });
     this.fastify.route({
       method: HttpMethod.POST,
-      url: `${this.version}/patients/enroll/create`,
+      url: `${this.version}/patients/account`,
       preHandler: this.validateSessionController.validate.bind(this.validateSessionController),
       handler: this.createEnrolledAccountController.handle.bind(this.createEnrolledAccountController),
     });

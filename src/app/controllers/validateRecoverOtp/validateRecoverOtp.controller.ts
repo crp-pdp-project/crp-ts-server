@@ -17,6 +17,6 @@ export class ValidateRecoverOTPController implements IValidateRecoverOTPControll
   async handle(input: FastifyRequest<ValidateVerificationOTPInputDTO>, reply: FastifyReply): Promise<void> {
     const result = await this.validateOTPInteractor.validate(input);
     const response = this.responseInteractor.execute(result);
-    reply.code(response.statusCode).send(response.toResponseObject());
+    reply.code(response.statusCode).send(response.body);
   }
 }

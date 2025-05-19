@@ -17,6 +17,6 @@ export class SpecialtiesListController implements ISpecialtiesListController {
   async handle(input: FastifyRequest, reply: FastifyReply): Promise<void> {
     const specialties = await this.specialtyInteractor.list(input);
     const response = this.responseInteractor.execute(specialties);
-    reply.code(response.statusCode).send(response.toResponseObject());
+    reply.code(response.statusCode).send(response.body);
   }
 }

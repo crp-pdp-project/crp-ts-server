@@ -18,7 +18,7 @@ export class ValidateSessionController implements IValidateSessionController {
     const session = await this.validateInteractor.execute(input);
     if (session instanceof ErrorModel) {
       const errorResponse = this.responseInteractor.execute(session);
-      reply.code(errorResponse.statusCode).send(errorResponse.toResponseObject());
+      reply.code(errorResponse.statusCode).send(errorResponse.body);
     } else {
       input.session = session;
     }

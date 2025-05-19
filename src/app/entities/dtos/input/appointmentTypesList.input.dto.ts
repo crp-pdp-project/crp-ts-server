@@ -18,6 +18,7 @@ export const AppointmentTypesListQueryDTOSchema = z
       example: '2600',
     }),
   })
+  .strict()
   .openapi({
     description: 'Appointment types appointment query strings',
   });

@@ -18,6 +18,7 @@ export const CreateEnrolledAccountBodyDTOSchema = z
       example: true,
     }),
   })
+  .strict()
   .openapi({
     description: 'Create Password Request Body',
   });

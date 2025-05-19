@@ -28,7 +28,7 @@ export class AuthenticationV1Docs {
 
     this.manager.registerRoute({
       method: HttpSpecMethod.POST,
-      path: `${this.version}/patients/biometric/sign-in`,
+      path: `${this.version}/patients/sign-in/biometric`,
       description: 'Sign in a patient with biometric authentication',
       tags: ['patients', 'authentication'],
       body: SignInBiometricBodyDTOSchema,

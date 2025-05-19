@@ -2,6 +2,8 @@ import { FastifyInstance } from 'fastify';
 
 import { AvailabilityListBuilder } from 'src/app/controllers/availabilityList/availabilityList.builder';
 import { IAvailabilityListController } from 'src/app/controllers/availabilityList/availabilityList.controller';
+import { CreateAppointmentBuilder } from 'src/app/controllers/createAppointment/createAppointment.builder';
+import { ICreateAppointmentController } from 'src/app/controllers/createAppointment/createAppointment.controller';
 import { ValidateSessionBuilder } from 'src/app/controllers/validateSession/validateSession.builder';
 import { IValidateSessionController } from 'src/app/controllers/validateSession/validateSession.controller';
 import { HttpMethod } from 'src/general/enums/methods.enum';
@@ -25,6 +27,7 @@ export class AppointmentV1Router {
   private readonly appointmentTypesListController: IAppointmentTypesListController;
   private readonly patientRelativesController: IPatientRelativesController;
   private readonly availabilityListController: IAvailabilityListController;
+  private readonly createAppointmentController: ICreateAppointmentController;
   private readonly validateSessionController: IValidateSessionController;
 
   constructor(private readonly fastify: FastifyInstance) {
@@ -34,7 +37,8 @@ export class AppointmentV1Router {
     this.appointmentTypesListController = AppointmentTypesListBuilder.build();
     this.patientRelativesController = PatientRelativesBuilder.build();
     this.availabilityListController = AvailabilityListBuilder.build();
-    this.validateSessionController = ValidateSessionBuilder.buildSession();
+    this.createAppointmentController = CreateAppointmentBuilder.build();
+    this.validateSessionController = ValidateSessionBuilder.buildPatient();
   }
 
   registerRouter(): void {
@@ -73,6 +77,12 @@ export class AppointmentV1Router {
       url: `${this.version}/doctors/availability`,
       preHandler: this.validateSessionController.validate.bind(this.validateSessionController),
       handler: this.availabilityListController.handle.bind(this.availabilityListController),
+    });
+    this.fastify.route({
+      method: HttpMethod.POST,
+      url: `${this.version}/patients/:fmpId/appointments`,
+      preHandler: this.validateSessionController.validate.bind(this.validateSessionController),
+      handler: this.createAppointmentController.handle.bind(this.createAppointmentController),
     });
   }
 }

@@ -18,6 +18,6 @@ export class AppointmentTypesListController implements IAppointmentTypesListCont
   async handle(input: FastifyRequest<AppointmentTypesListInputDTO>, reply: FastifyReply): Promise<void> {
     const appointmentTypes = await this.appointmentTypesInteractor.list(input);
     const response = this.responseInteractor.execute(appointmentTypes);
-    reply.code(response.statusCode).send(response.toResponseObject());
+    reply.code(response.statusCode).send(response.body);
   }
 }

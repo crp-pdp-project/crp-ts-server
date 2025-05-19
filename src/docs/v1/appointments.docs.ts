@@ -1,8 +1,13 @@
 import { AppointmentTypesListQueryDTOSchema } from 'src/app/entities/dtos/input/appointmentTypesList.input.dto';
 import { AvailabilityListQueryDTOSchema } from 'src/app/entities/dtos/input/availabilityList.input.dto';
+import {
+  CreateAppointmentBodyDTOSchema,
+  CreateAppointmentParamsDTOSchema,
+} from 'src/app/entities/dtos/input/createAppointment.input.dto';
 import { DoctorsListQueryDTOSchema } from 'src/app/entities/dtos/input/doctorsList.input.dto';
 import { AppointmentTypesListOutputDTOSchema } from 'src/app/entities/dtos/output/appointmentTypesList.output.dto';
 import { AvailabilityListOutputDTOSchema } from 'src/app/entities/dtos/output/availabilityList.output.dto';
+import { CreateAppointmentOutputDTOSchema } from 'src/app/entities/dtos/output/createAppointment.output.dto';
 import { DoctorsListOutputDTOSchema } from 'src/app/entities/dtos/output/doctorsList.output.dto';
 import { InsurancesListOutputDTOSchema } from 'src/app/entities/dtos/output/insurancesList.output.dto';
 import { PatientRelativesOutputDTOSchema } from 'src/app/entities/dtos/output/patientRelatives.output.dto';
@@ -94,6 +99,21 @@ export class AppointmentV1Docs {
       responses: {
         [StatusCode.OK]: OkResponseDTOSchema.extend({
           data: AvailabilityListOutputDTOSchema,
+        }),
+      },
+      secure: true,
+    });
+
+    this.manager.registerRoute({
+      method: HttpSpecMethod.POST,
+      path: `${this.version}/patients/{fmpId}/appointments`,
+      description: 'Create a new appointment for a patient',
+      tags: ['patients', 'appointments'],
+      body: CreateAppointmentBodyDTOSchema,
+      params: CreateAppointmentParamsDTOSchema,
+      responses: {
+        [StatusCode.OK]: OkResponseDTOSchema.extend({
+          data: CreateAppointmentOutputDTOSchema,
         }),
       },
       secure: true,

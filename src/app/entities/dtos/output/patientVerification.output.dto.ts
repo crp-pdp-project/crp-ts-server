@@ -40,6 +40,7 @@ export const PatientVerificationOutputDTOSchema = z
       example: 'Valid JWE',
     }),
   })
+  .strict()
   .openapi({
     description: 'Enroll Patient Response Body',
   });

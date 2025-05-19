@@ -10,6 +10,7 @@ export const UpdateBiometricPasswordBodyDTOSchema = z
       example: 'UUID',
     }),
   })
+  .strict()
   .openapi({
     description: 'Create Biometric Password Request Body',
   });

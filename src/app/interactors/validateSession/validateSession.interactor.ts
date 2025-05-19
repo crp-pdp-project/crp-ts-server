@@ -7,11 +7,11 @@ import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { SessionModel } from 'src/app/entities/models/session.model';
 import { IGetPatientSessionRepository } from 'src/app/repositories/database/getPatientSession.repository';
-import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
+import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { EnrichedPayload, IJWTManager, ValidationResponse } from 'src/general/managers/jwt.manager';
 
 export interface IValidateSessionStrategy {
-  validateSession(session: SessionDTO, newExpireAt: string): Promise<void>;
+  generateSession(session: SessionDTO, payload: SessionPayloadDTO, newExpireAt: string): Promise<SessionModel>;
 }
 
 export interface IValidateSessionInteractor {
@@ -30,9 +30,9 @@ export class ValidateSessionInteractor implements IValidateSessionInteractor {
       const token = this.extractAndValidateToken(input.headers);
       const { payload, newExpireAt } = await this.decodeJWEToken(token);
       const session = await this.fetchSession(payload);
-      await this.strategy.validateSession(session, newExpireAt);
+      const model = await this.strategy.generateSession(session, payload, newExpireAt);
 
-      return new SessionModel(session);
+      return model;
     } catch (error) {
       return ErrorModel.fromError(error);
     }
@@ -64,11 +64,6 @@ export class ValidateSessionInteractor implements IValidateSessionInteractor {
     if (!session) {
       throw ErrorModel.unauthorized(ClientErrorMessages.JWE_TOKEN_INVALID);
     }
-
-    session.payload = {
-      email: payload.email,
-      phone: payload.phone,
-    };
 
     return session;
   }

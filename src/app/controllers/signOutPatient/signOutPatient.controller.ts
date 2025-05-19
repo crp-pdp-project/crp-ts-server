@@ -16,6 +16,6 @@ export class SignOutPatientController implements ISignOutPatientController {
   async handle(input: FastifyRequest, reply: FastifyReply): Promise<void> {
     const result = await this.sendOTPInteractor.signOut(input);
     const response = this.responseInteractor.execute(result);
-    reply.code(response.statusCode).send(response.toResponseObject());
+    reply.code(response.statusCode).send(response.body);
   }
 }

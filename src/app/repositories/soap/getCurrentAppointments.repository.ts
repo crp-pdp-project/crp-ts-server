@@ -1,6 +1,7 @@
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
 import { InetumClient } from 'src/clients/inetum.client';
+import { SoapConstants } from 'src/general/contants/soap.constants';
 import { DateHelper } from 'src/general/helpers/date.helper';
 
 type GetCurrentAppointmentsInput = {
@@ -44,29 +45,36 @@ type GetCurrentAppointmentsOutput = {
 };
 
 export interface IGetCurrentAppointmentsRepository {
-  execute(fmpId: PatientDM['fmpId']): Promise<AppointmentDTO[]>;
+  execute(fmpId: PatientDM['fmpId'], searchDate?: string): Promise<AppointmentDTO[]>;
 }
 
 export class GetCurrentAppointmentsRepository implements IGetCurrentAppointmentsRepository {
+  private readonly user: string = process.env.INETUM_USER ?? '';
+  private readonly password: string = process.env.INETUM_PASSWORD ?? '';
+  private readonly centerId: string = process.env.CRP_CENTER_ID ?? '';
   private readonly monthsToList = Number(process.env.CURRENT_MONTHS_LIST ?? 6);
 
-  async execute(fmpId: PatientDM['fmpId']): Promise<AppointmentDTO[]> {
-    const methodPayload = this.generateInput(fmpId);
+  async execute(fmpId: PatientDM['fmpId'], searchDate?: string): Promise<AppointmentDTO[]> {
+    const methodPayload = this.generateInput(fmpId, searchDate);
     const instance = await InetumClient.getInstance();
     const rawResult = await instance.appointment.call<GetCurrentAppointmentsOutput>('ListadoCitas', methodPayload);
     return this.parseOutput(rawResult);
   }
 
-  private generateInput(fmpId: PatientDM['fmpId']): GetCurrentAppointmentsInput {
+  private generateInput(fmpId: PatientDM['fmpId'], searchDate?: string): GetCurrentAppointmentsInput {
     return {
-      usuario: process.env.INETUM_USER ?? '',
-      contrasena: process.env.INETUM_PASSWORD ?? '',
+      usuario: this.user,
+      contrasena: this.password,
       peticionListadoCitas: {
         IdPaciente: fmpId,
-        IdCentro: process.env.CRP_CENTER_ID ?? '',
-        CanalEntrada: 'PERU',
-        FechaInicio: DateHelper.dateNow('inetumDate'),
-        FechaFinal: DateHelper.addMonths(this.monthsToList, 'inetumDate'),
+        IdCentro: this.centerId,
+        CanalEntrada: SoapConstants.ORIGIN,
+        FechaInicio: searchDate
+          ? DateHelper.subtractDays(1, 'inetumDate', searchDate)
+          : DateHelper.dateNow('inetumDate'),
+        FechaFinal: searchDate
+          ? DateHelper.addDays(1, 'inetumDate', searchDate)
+          : DateHelper.addMonths(this.monthsToList, 'inetumDate'),
       },
     };
   }

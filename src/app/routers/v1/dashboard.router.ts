@@ -21,25 +21,25 @@ export class DashboardV1Router {
     this.patientCurrentAppointmentsController = PatientCurrentAppointmentsBuilder.build();
     this.patientHistoricAppointmentsController = PatientHistoricAppointmentsBuilder.build();
     this.patientNextAppointmentController = PatientNextAppointmentBuilder.build();
-    this.validateSessionController = ValidateSessionBuilder.buildSession();
+    this.validateSessionController = ValidateSessionBuilder.buildPatient();
   }
 
   registerRouter(): void {
     this.fastify.route({
       method: HttpMethod.GET,
-      url: `${this.version}/patients/appointment/current`,
+      url: `${this.version}/patients/:fmpId/appointment/current`,
       preHandler: this.validateSessionController.validate.bind(this.validateSessionController),
       handler: this.patientCurrentAppointmentsController.handle.bind(this.patientCurrentAppointmentsController),
     });
     this.fastify.route({
       method: HttpMethod.GET,
-      url: `${this.version}/patients/appointment/historic`,
+      url: `${this.version}/patients/:fmpId/appointment/historic`,
       preHandler: this.validateSessionController.validate.bind(this.validateSessionController),
       handler: this.patientHistoricAppointmentsController.handle.bind(this.patientHistoricAppointmentsController),
     });
     this.fastify.route({
       method: HttpMethod.GET,
-      url: `${this.version}/patients/appointment/next`,
+      url: `${this.version}/patients/:fmpId/appointment/next`,
       preHandler: this.validateSessionController.validate.bind(this.validateSessionController),
       handler: this.patientNextAppointmentController.handle.bind(this.patientNextAppointmentController),
     });

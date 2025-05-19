@@ -9,8 +9,9 @@ import {
 import { AccountDTO } from 'src/app/entities/dtos/service/account.dto';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { SessionModel } from 'src/app/entities/models/session.model';
+import { SignInSessionModel } from 'src/app/entities/models/signInSession.model';
 import { ISaveBiometricPasswordRepository } from 'src/app/repositories/database/saveBiometricPassword.repository';
-import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
+import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { IEncryptionManager, PasswordHashResult } from 'src/general/managers/encryption.manager';
 
 export interface IUpdateBiometricPasswordInteractor {
@@ -38,11 +39,11 @@ export class UpdateBiometricPasswordInteractor implements IUpdateBiometricPasswo
   }
 
   private validateSession(session?: SessionModel): AccountDM['id'] {
-    if (!session) {
+    if (!(session instanceof SignInSessionModel)) {
       throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
     }
 
-    return session.account!.id!;
+    return session.patient.account.id;
   }
 
   private validateInput(body: UpdateBiometricPasswordBodyDTO): UpdateBiometricPasswordBodyDTO {

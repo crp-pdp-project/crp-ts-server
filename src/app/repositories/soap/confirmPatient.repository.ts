@@ -1,6 +1,7 @@
 import { PatientConfirmationDTO } from 'src/app/entities/dtos/service/patientConfirmation.dto';
 import { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExternal.dto';
 import { InetumClient } from 'src/clients/inetum.client';
+import { SoapConstants } from 'src/general/contants/soap.constants';
 import { DateHelper } from 'src/general/helpers/date.helper';
 
 type ConfirmPatientInput = {
@@ -41,6 +42,9 @@ export interface IConfirmPatientRepository {
 }
 
 export class ConfirmPatientRepository implements IConfirmPatientRepository {
+  private readonly user: string = process.env.INETUM_USER ?? '';
+  private readonly password: string = process.env.INETUM_PASSWORD ?? '';
+
   async execute(patient: PatientExternalDTO): Promise<PatientConfirmationDTO> {
     const methodPayload = this.parseInput(patient);
     const instance = await InetumClient.getInstance();
@@ -50,8 +54,8 @@ export class ConfirmPatientRepository implements IConfirmPatientRepository {
 
   private parseInput(patient: PatientExternalDTO): ConfirmPatientInput {
     return {
-      usuario: process.env.INETUM_USER ?? '',
-      contrasena: process.env.INETUM_PASSWORD ?? '',
+      usuario: this.user,
+      contrasena: this.password,
       peticionAltaUsuario: {
         Nombre: patient.firstName,
         Apellido1: patient.lastName,
@@ -71,7 +75,7 @@ export class ConfirmPatientRepository implements IConfirmPatientRepository {
         Otros: patient.addressAditional ?? undefined,
         Movil: patient.phone ?? undefined,
         IdCentro: patient.centerId,
-        CanalEntrada: 'PERU',
+        CanalEntrada: SoapConstants.ORIGIN,
       },
     };
   }

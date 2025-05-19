@@ -22,7 +22,7 @@ export class ProfileV1Router {
     this.patientProfileController = PatientProfileBuilder.build();
     this.deletePatientAccountController = DeletePatientAccountBuilder.build();
     this.updateBiometricPassword = UpdateBiometricPasswordBuilder.build();
-    this.validateSessionController = ValidateSessionBuilder.buildSession();
+    this.validateSessionController = ValidateSessionBuilder.buildPatient();
   }
 
   registerRouter(): void {
@@ -34,13 +34,13 @@ export class ProfileV1Router {
     });
     this.fastify.route({
       method: HttpMethod.DELETE,
-      url: `${this.version}/patients`,
+      url: `${this.version}/patients/account`,
       preHandler: this.validateSessionController.validate.bind(this.validateSessionController),
       handler: this.deletePatientAccountController.handle.bind(this.deletePatientAccountController),
     });
     this.fastify.route({
       method: HttpMethod.PATCH,
-      url: `${this.version}/patients/biometric`,
+      url: `${this.version}/patients/biometric-password`,
       preHandler: this.validateSessionController.validate.bind(this.validateSessionController),
       handler: this.updateBiometricPassword.handle.bind(this.updateBiometricPassword),
     });

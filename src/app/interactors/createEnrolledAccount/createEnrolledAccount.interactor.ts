@@ -6,11 +6,12 @@ import {
   CreateEnrolledAccountInputDTO,
 } from 'src/app/entities/dtos/input/createEnrolledAccount.input.dto';
 import { AccountDTO } from 'src/app/entities/dtos/service/account.dto';
+import { EnrollSessionModel } from 'src/app/entities/models/enrollSession.model';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { SessionModel } from 'src/app/entities/models/session.model';
 import { ICleanSessionRepository } from 'src/app/repositories/database/cleanSession.repository';
 import { ISavePatientAccountRepository } from 'src/app/repositories/database/savePatientAccount.repository';
-import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
+import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { IEncryptionManager, PasswordHashResult } from 'src/general/managers/encryption.manager';
 
 export interface ICreateEnrolledAccountInteractor {
@@ -34,16 +35,16 @@ export class CreateEnrolledAccountInteractor implements ICreateEnrolledAccountIn
         passwordSalt: salt,
         acceptTerms: body.acceptTerms,
         acceptAdvertising: body.acceptAdvertising,
-        patientId: session.patient?.id,
+        patientId: session.patient.id,
       });
-      await this.endSession(session.jti!, session.patient!.id!);
+      await this.endSession(session.jti, session.patient.id);
     } catch (error) {
       return ErrorModel.fromError(error);
     }
   }
 
-  private validateSession(session?: SessionModel): SessionModel {
-    if (!session || !session.isValidated) {
+  private validateSession(session?: SessionModel): EnrollSessionModel {
+    if (!(session instanceof EnrollSessionModel) || !session.isValidated) {
       throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
     }
 

@@ -29,7 +29,7 @@ export class EnrollV1Docs {
 
     this.manager.registerRoute({
       method: HttpSpecMethod.POST,
-      path: `${this.version}/patients/enroll/send`,
+      path: `${this.version}/patients/enroll/otp/send`,
       description: 'Send OTP to enrolling patient',
       tags: ['patients', 'enroll'],
       responses: {
@@ -40,7 +40,7 @@ export class EnrollV1Docs {
 
     this.manager.registerRoute({
       method: HttpSpecMethod.POST,
-      path: `${this.version}/patients/enroll/validate`,
+      path: `${this.version}/patients/enroll/otp/validate`,
       description: 'Validate Sent OTP to enrolling patient ',
       tags: ['patients', 'enroll'],
       body: ValidateVerificationOTPBodyDTOSchema,
@@ -52,8 +52,8 @@ export class EnrollV1Docs {
 
     this.manager.registerRoute({
       method: HttpSpecMethod.POST,
-      path: `${this.version}/patients/enroll/create`,
-      description: 'Create password to finish enrolling process',
+      path: `${this.version}/patients/account`,
+      description: 'Create account to finish enrollment process',
       tags: ['patients', 'enroll'],
       body: CreateEnrolledAccountBodyDTOSchema,
       responses: {

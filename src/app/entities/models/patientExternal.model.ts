@@ -2,7 +2,10 @@ import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.
 import { BaseModel } from 'src/app/entities/models/base.model';
 import { TextHelper } from 'src/general/helpers/text.helper';
 
+import { PatientDTO } from '../dtos/service/patient.dto';
 import { PatientExternalDTO } from '../dtos/service/patientExternal.dto';
+
+import { AccountModel } from './account.model';
 
 export class PatientExternalModel extends BaseModel {
   readonly id: number;
@@ -12,47 +15,45 @@ export class PatientExternalModel extends BaseModel {
   readonly maskedEmail: string | null;
   readonly phone: string | null;
   readonly maskedPhone: string | null;
+  readonly #fmpId: string;
+  readonly #nhcId: string;
+  readonly #documentNumber: string;
+  readonly #documentType: number;
+  readonly #account?: AccountModel;
 
-  constructor(patientId: number, patient: PatientExternalDTO) {
+  constructor(patient: PatientDTO, external: PatientExternalDTO) {
     super();
 
-    this.id = patientId;
-    this.email = patient.email;
-    this.maskedEmail = this.maskEmail(patient.email);
-    this.phone = TextHelper.normalizePhoneNumber(patient.phone);
-    this.maskedPhone = this.maskPhone(patient.phone);
-    this.firstName = TextHelper.titleCase(patient.firstName) ?? '';
-    this.lastName = TextHelper.titleCase(patient.lastName) ?? '';
-  }
-
-  private maskPhone(phone: string | null): string | null {
-    if (!phone) return phone;
-    const digits = phone.replace(/\D/g, '');
-
-    if (digits.length <= 3) return '*'.repeat(digits.length);
-
-    const mask = '*'.repeat(digits.length - 3);
-    const last = digits.slice(-3);
-
-    return `${mask}${last}`;
-  }
-
-  private maskEmail(email: string | null): string | null {
-    if (!email) return email;
-    const [name, domain] = email.split('@');
-
-    if (name.length <= 3) return `${'*'.repeat(name.length)}@${domain}`;
-
-    const mask = '*'.repeat(name.length - 3);
-    const last = name.slice(-3);
-
-    return `${mask}${last}@${domain}`;
+    this.id = patient.id ?? 0;
+    this.email = external.email;
+    this.maskedEmail = TextHelper.maskEmail(external.email);
+    this.phone = TextHelper.normalizePhoneNumber(external.phone);
+    this.maskedPhone = TextHelper.maskPhone(external.phone);
+    this.firstName = TextHelper.titleCase(external.firstName) ?? '';
+    this.lastName = TextHelper.titleCase(external.lastName) ?? '';
+    this.#fmpId = external.fmpId;
+    this.#documentNumber = external.documentNumber;
+    this.#nhcId = external.nhcId;
+    this.#documentType = external.documentType;
+    this.#account = patient.account ? new AccountModel(patient.account) : undefined;
   }
 
   toSessionPayload(): SessionPayloadDTO {
     return {
-      email: this.email,
-      phone: this.phone,
+      patient: {
+        id: this.id,
+        fmpId: this.#fmpId,
+        nhcId: this.#nhcId,
+        documentNumber: this.#documentNumber,
+        documentType: this.#documentType,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        account: this.#account ? { id: this.#account.id } : undefined,
+      },
+      external: {
+        email: this.email,
+        phone: this.phone,
+      },
     };
   }
 }

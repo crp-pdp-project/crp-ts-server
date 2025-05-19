@@ -102,6 +102,7 @@ export const PatientNextAppointmentOutputDTOSchema = z
       example: false,
     }),
   })
+  .strict()
   .openapi({
     description: 'Patient Appointment Response Body',
   });

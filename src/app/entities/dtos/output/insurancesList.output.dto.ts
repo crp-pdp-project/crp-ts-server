@@ -22,6 +22,7 @@ export const InsurancesListOutputDTOSchema = z
       }),
     ),
   })
+  .strict()
   .openapi({
     description: 'Insurances List Response Body',
   });

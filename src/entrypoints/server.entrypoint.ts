@@ -74,6 +74,9 @@ export class Server {
         method: request.method,
         url: request.url,
         ip: request.ip,
+        body: request.body ?? {},
+        query: request.query ?? {},
+        path: request.params ?? {},
         userAgent: request.headers['user-agent'],
       });
     });

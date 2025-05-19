@@ -17,8 +17,25 @@ export async function up(db: Kysely<unknown>): Promise<void> {
         .modifyEnd(sql`ON UPDATE CURRENT_TIMESTAMP`),
     )
     .execute();
+
+  await db.schema.createIndex('IndexFamilyPrincipalId').on(tableName).column('principalId').execute();
+
+  await db.schema.createIndex('IndexFamilyRelativeId').on(tableName).column('relativeId').execute();
+
+  await db.schema.createIndex('IndexFamilyRelationshipId').on(tableName).column('relationshipId').execute();
+
+  await db.schema
+    .createIndex('UniqueFamilyPrincipalRelative')
+    .on(tableName)
+    .columns(['principalId', 'relativeId'])
+    .unique()
+    .execute();
 }
 
 export async function down(db: Kysely<unknown>): Promise<void> {
+  await db.schema.dropIndex('UniqueFamilyPrincipalRelative').execute();
+  await db.schema.dropIndex('IndexFamilyRelationshipId').execute();
+  await db.schema.dropIndex('IndexFamilyRelativeId').execute();
+  await db.schema.dropIndex('IndexFamilyPrincipalId').execute();
   await db.schema.dropTable(tableName).execute();
 }

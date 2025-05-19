@@ -5,8 +5,9 @@ import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { PatientModel } from 'src/app/entities/models/patient.model';
 import { SessionModel } from 'src/app/entities/models/session.model';
+import { SignInSessionModel } from 'src/app/entities/models/signInSession.model';
 import { IPatientRelativesRepository } from 'src/app/repositories/database/patientRelatives.repository';
-import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
+import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 export interface IPatientRelativesInteractor {
   relatives(input: FastifyRequest): Promise<PatientModel | ErrorModel>;
@@ -26,7 +27,7 @@ export class PatientRelativesInteractor implements IPatientRelativesInteractor {
   }
 
   private validateSession(session?: SessionModel): PatientDM['id'] {
-    if (!session || !session.patient?.id) {
+    if (!(session instanceof SignInSessionModel)) {
       throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
     }
 

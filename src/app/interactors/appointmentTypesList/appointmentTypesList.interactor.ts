@@ -9,8 +9,9 @@ import { AppointmentTypeDTO } from 'src/app/entities/dtos/service/appointmentTyp
 import { AppointmentTypeListModel } from 'src/app/entities/models/appointmentTypeList.model';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { SessionModel } from 'src/app/entities/models/session.model';
+import { SignInSessionModel } from 'src/app/entities/models/signInSession.model';
 import { IGetAppointmentTypesRepository } from 'src/app/repositories/soap/getAppointmentTypes.repository';
-import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
+import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 export interface IAppointmentTypesListInteractor {
   list(input: FastifyRequest<AppointmentTypesListInputDTO>): Promise<AppointmentTypeListModel | ErrorModel>;
@@ -37,7 +38,7 @@ export class AppointmentTypesListInteractor implements IAppointmentTypesListInte
   }
 
   private validateSession(session?: SessionModel): void {
-    if (!session) {
+    if (!(session instanceof SignInSessionModel)) {
       throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
     }
   }

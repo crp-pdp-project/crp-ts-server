@@ -15,7 +15,7 @@ export const SignInBiometricBodyDTOSchema = PatientDMSchema.pick({
       example: 'UUID',
     }),
   })
-  .required()
+  .strict()
   .openapi({
     description: 'Sign In Biometric Request Body',
   });

@@ -1,5 +1,6 @@
 import { InsuranceDTO } from 'src/app/entities/dtos/service/insurance.dto';
 import { InetumClient } from 'src/clients/inetum.client';
+import { SoapConstants } from 'src/general/contants/soap.constants';
 
 type GetInsurancesInput = {
   usuario: string;
@@ -27,6 +28,10 @@ export interface IGetInsurancesRepository {
 }
 
 export class GetInsurancesRepository implements IGetInsurancesRepository {
+  private readonly user: string = process.env.INETUM_USER ?? '';
+  private readonly password: string = process.env.INETUM_PASSWORD ?? '';
+  private readonly centerId: string = process.env.CRP_CENTER_ID ?? '';
+
   async execute(): Promise<InsuranceDTO[]> {
     const methodPayload = this.generateInput();
     const instance = await InetumClient.getInstance();
@@ -36,11 +41,11 @@ export class GetInsurancesRepository implements IGetInsurancesRepository {
 
   private generateInput(): GetInsurancesInput {
     return {
-      usuario: process.env.INETUM_USER ?? '',
-      contrasena: process.env.INETUM_PASSWORD ?? '',
+      usuario: this.user,
+      contrasena: this.password,
       peticionListadoSociedades: {
-        IdCentro: process.env.CRP_CENTER_ID ?? '',
-        CanalEntrada: 'PERU',
+        IdCentro: this.centerId,
+        CanalEntrada: SoapConstants.ORIGIN,
       },
     };
   }

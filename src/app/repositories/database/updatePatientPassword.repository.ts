@@ -5,7 +5,7 @@ import { AccountDTO } from 'src/app/entities/dtos/service/account.dto';
 import { MysqlClient } from 'src/clients/mysql.client';
 
 export interface IUpdatePatientPasswordRepository {
-  execute(id: number, account: AccountDTO): Promise<UpdateResult>;
+  execute(id: AccountDM['id'], account: AccountDTO): Promise<UpdateResult>;
 }
 
 export class UpdatePatientPasswordRepository implements IUpdatePatientPasswordRepository {

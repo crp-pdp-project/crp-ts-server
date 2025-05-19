@@ -27,7 +27,7 @@ export class ProfileV1Docs {
 
     this.manager.registerRoute({
       method: HttpSpecMethod.DELETE,
-      path: `${this.version}/patients`,
+      path: `${this.version}/patients/account`,
       description: 'Delete patient account',
       tags: ['patients', 'profile'],
       responses: {
@@ -38,7 +38,7 @@ export class ProfileV1Docs {
 
     this.manager.registerRoute({
       method: HttpSpecMethod.PATCH,
-      path: `${this.version}/patients/biometric`,
+      path: `${this.version}/patients/biometric-password`,
       description: 'Add or update biometric password to patient account',
       tags: ['patients', 'profile'],
       body: UpdateBiometricPasswordBodyDTOSchema,

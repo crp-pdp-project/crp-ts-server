@@ -106,6 +106,7 @@ export const PatientCurrentAppointmentsOutputDTOSchema = z
       }),
     ),
   })
+  .strict()
   .openapi({
     description: 'Patient Appointment Response Body',
   });

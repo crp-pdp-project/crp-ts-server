@@ -8,6 +8,8 @@ extendZodWithOpenApi(z);
 
 export const PatientRelativesOutputDTOSchema = PatientDMSchema.pick({
   id: true,
+  fmpId: true,
+  nhcId: true,
   firstName: true,
   lastName: true,
   secondLastName: true,
@@ -19,6 +21,8 @@ export const PatientRelativesOutputDTOSchema = PatientDMSchema.pick({
       .array(
         PatientDMSchema.pick({
           id: true,
+          fmpId: true,
+          nhcId: true,
           firstName: true,
           lastName: true,
           secondLastName: true,
@@ -43,6 +47,7 @@ export const PatientRelativesOutputDTOSchema = PatientDMSchema.pick({
       description: 'Relationship of the patient',
     }),
   })
+  .strict()
   .openapi({
     description: 'Patient Profile Response Body',
   });

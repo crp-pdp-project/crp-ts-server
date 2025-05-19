@@ -1,6 +1,7 @@
 import { AvailabilityRequestDTO } from 'src/app/entities/dtos/service/availabilityRequest.dto';
 import { DoctorAvailabilityDTO } from 'src/app/entities/dtos/service/doctorAvailability.dto';
 import { InetumClient } from 'src/clients/inetum.client';
+import { SoapConstants } from 'src/general/contants/soap.constants';
 import { DateHelper } from 'src/general/helpers/date.helper';
 
 type GetDoctorAvailabilityInput = {
@@ -45,6 +46,10 @@ export interface IGetDoctorAvailabilityRepository {
 }
 
 export class GetDoctorAvailabilityRepository implements IGetDoctorAvailabilityRepository {
+  private readonly user: string = process.env.INETUM_USER ?? '';
+  private readonly password: string = process.env.INETUM_PASSWORD ?? '';
+  private readonly centerId: string = process.env.CRP_CENTER_ID ?? '';
+
   async execute(payload: AvailabilityRequestDTO): Promise<DoctorAvailabilityDTO[]> {
     const methodPayload = this.generateInput(payload);
     const instance = await InetumClient.getInstance();
@@ -57,10 +62,10 @@ export class GetDoctorAvailabilityRepository implements IGetDoctorAvailabilityRe
 
   private generateInput(payload: AvailabilityRequestDTO): GetDoctorAvailabilityInput {
     return {
-      usuario: process.env.INETUM_USER ?? '',
-      contrasena: process.env.INETUM_PASSWORD ?? '',
+      usuario: this.user,
+      contrasena: this.password,
       peticionListadoHuecosDisponibles: {
-        IdCentro: process.env.CRP_CENTER_ID ?? '',
+        IdCentro: this.centerId,
         IdEspecialidad: payload.groupId,
         IdProfesional: payload.doctorId,
         IdPrestacion: payload.appointmentTypeId,
@@ -71,7 +76,7 @@ export class GetDoctorAvailabilityRepository implements IGetDoctorAvailabilityRe
         HoraDesde: DateHelper.startOfTime('inetumTime'),
         HoraFin: DateHelper.endOfTime('inetumTime'),
         IdPaciente: payload.fmpId,
-        CanalEntrada: 'PERU',
+        CanalEntrada: SoapConstants.ORIGIN,
         PrimerHueco: String(payload.firstAvailable),
       },
     };

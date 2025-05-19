@@ -23,16 +23,19 @@ export async function up(db: Kysely<unknown>): Promise<void> {
     )
     .execute();
 
-  await db.schema.createIndex('UniqueFmpId').on(tableName).column('fmpId').unique().execute();
+  await db.schema.createIndex('UniquePatientFmpId').on(tableName).column('fmpId').unique().execute();
 
-  await db.schema.createIndex('UniqueNhcId').on(tableName).column('nhcId').unique().execute();
+  await db.schema.createIndex('UniquePatientNhcId').on(tableName).column('nhcId').unique().execute();
 
-  await db.schema.createIndex('UniqueDocumentNumber').on(tableName).column('documentNumber').unique().execute();
+  await db.schema.createIndex('UniquePatientDocumentNumber').on(tableName).column('documentNumber').unique().execute();
+
+  await db.schema.createIndex('IndexPatientDocumentType').on(tableName).column('documentType').execute();
 }
 
 export async function down(db: Kysely<unknown>): Promise<void> {
-  await db.schema.dropIndex('uniqueUsersFmpId').execute();
-  await db.schema.dropIndex('uniqueUsersNhcId').execute();
-  await db.schema.dropIndex('uniqueUsersDocumentNumber').execute();
+  await db.schema.dropIndex('UniquePatientFmpId').execute();
+  await db.schema.dropIndex('UniquePatientNhcId').execute();
+  await db.schema.dropIndex('UniquePatientDocumentNumber').execute();
+  await db.schema.dropIndex('IndexPatientDocumentType').execute();
   await db.schema.dropTable(tableName).execute();
 }

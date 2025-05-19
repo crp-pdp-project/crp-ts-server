@@ -1,6 +1,7 @@
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
 import { InetumClient } from 'src/clients/inetum.client';
+import { SoapConstants } from 'src/general/contants/soap.constants';
 import { DateHelper } from 'src/general/helpers/date.helper';
 
 type GetHistoricAppointmentsInput = {
@@ -42,6 +43,9 @@ export interface IGetHistoricAppointmentsRepository {
 }
 
 export class GetHistoricAppointmentsRepository implements IGetHistoricAppointmentsRepository {
+  private readonly user: string = process.env.INETUM_USER ?? '';
+  private readonly password: string = process.env.INETUM_PASSWORD ?? '';
+  private readonly centerId: string = process.env.CRP_CENTER_ID ?? '';
   private readonly monthsToList = Number(process.env.HISTORIC_MONTHS_LIST ?? 6);
 
   async execute(fmpId: PatientDM['fmpId']): Promise<AppointmentDTO[]> {
@@ -53,12 +57,12 @@ export class GetHistoricAppointmentsRepository implements IGetHistoricAppointmen
 
   private generateInput(fmpId: PatientDM['fmpId']): GetHistoricAppointmentsInput {
     return {
-      usuario: process.env.INETUM_USER ?? '',
-      contrasena: process.env.INETUM_PASSWORD ?? '',
+      usuario: this.user,
+      contrasena: this.password,
       peticionListadoConsultas: {
         IdPaciente: fmpId,
-        IdCentro: process.env.CRP_CENTER_ID ?? '',
-        CanalEntrada: 'PERU',
+        IdCentro: this.centerId,
+        CanalEntrada: SoapConstants.ORIGIN,
         FechaInicio: DateHelper.subtractMonths(this.monthsToList, 'inetumDate'),
         FechaFinal: DateHelper.dateNow('inetumDate'),
       },

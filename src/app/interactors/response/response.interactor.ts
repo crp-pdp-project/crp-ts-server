@@ -6,6 +6,7 @@ import { ResponseModel } from 'src/app/entities/models/response.model';
 export interface IResponseStrategy {
   getSchema(): ZodSchema;
 }
+
 export interface IResponseInteractor<TModel> {
   execute(model: TModel | ErrorModel): ResponseModel<TModel>;
 }
@@ -17,7 +18,7 @@ export class ResponseInteractor<T> implements IResponseInteractor<T> {
     try {
       const response = new ResponseModel<T>(model);
       const schema = this.strategy.getSchema();
-      schema.parse(response.toResponseObject());
+      schema.parse(response.body);
       return response;
     } catch (error) {
       const parsingError = ErrorModel.fromError(error);

@@ -18,6 +18,6 @@ export class AvailabilityListController implements IAvailabilityListController {
   async handle(input: FastifyRequest<AvailabilityListInputDTO>, reply: FastifyReply): Promise<void> {
     const availability = await this.availabilityInteractor.list(input);
     const response = this.responseInteractor.execute(availability);
-    reply.code(response.statusCode).send(response.toResponseObject());
+    reply.code(response.statusCode).send(response.body);
   }
 }

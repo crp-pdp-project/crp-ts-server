@@ -32,17 +32,22 @@ export interface IGetDoctorImagesRepository {
 }
 
 export class GetDoctorImagesRepository implements IGetDoctorImagesRepository {
+  private readonly user: string = process.env.CRP_USER ?? '';
+  private readonly password: string = process.env.CRP_PASSWORD ?? '';
+  private readonly tokenUrl: string = process.env.CRP_TOKEN_URL ?? '';
+  private readonly imageUrl: string = process.env.CRP_IMAGES_URL ?? '';
+  private readonly tokenTimeout: number = Number(process.env.CRP_TOKEN_TIMEOUT ?? 55);
+  private readonly rest = RestClient.instance;
   private token = '';
   private tokenExpiresAt = '';
   private tokenPromise: Promise<string> | null = null;
-  private readonly rest = RestClient.instance;
 
   async execute(specialtyId?: SpecialtyDTO['id'], doctorId?: DoctorDTO['id']): Promise<DoctorDTO[]> {
     const token = await this.getToken();
     const methodPayload = this.parseInput(specialtyId, doctorId);
     const rawResult = await this.rest.send<GetDoctorImagesOutput>({
       method: HttpMethod.POST,
-      url: process.env.CRP_IMAGES_URL ?? '',
+      url: this.imageUrl,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -71,12 +76,12 @@ export class GetDoctorImagesRepository implements IGetDoctorImagesRepository {
 
     const tokenResponse = await this.rest.send<AuthTokenOutput>({
       method: HttpMethod.POST,
-      url: process.env.CRP_TOKEN_URL ?? '',
+      url: this.tokenUrl,
       body: authTokenInput,
     });
 
     this.token = tokenResponse.data;
-    this.tokenExpiresAt = DateHelper.tokenRefreshTime(Number(process.env.CRP_TOKEN_TIMEOUT ?? 55));
+    this.tokenExpiresAt = DateHelper.tokenRefreshTime(this.tokenTimeout);
     return this.token;
   }
 
@@ -86,8 +91,8 @@ export class GetDoctorImagesRepository implements IGetDoctorImagesRepository {
 
   private parseTokenInput(): AuthTokenInput {
     return {
-      Usuario: process.env.CRP_USER ?? '',
-      Contrasenia: process.env.CRP_PASSWORD ?? '',
+      Usuario: this.user,
+      Contrasenia: this.password,
     };
   }
 

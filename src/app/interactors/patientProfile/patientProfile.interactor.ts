@@ -6,8 +6,9 @@ import { ErrorModel } from 'src/app/entities/models/error.model';
 import { PatientModel } from 'src/app/entities/models/patient.model';
 import { PatientProfileModel } from 'src/app/entities/models/patientProfile.model';
 import { SessionModel } from 'src/app/entities/models/session.model';
+import { SignInSessionModel } from 'src/app/entities/models/signInSession.model';
 import { ISearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
-import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
+import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 export interface IPatientProfileInteractor {
   profile(input: FastifyRequest): Promise<PatientProfileModel | ErrorModel>;
@@ -28,11 +29,11 @@ export class PatientProfileInteractor implements IPatientProfileInteractor {
   }
 
   private validateSession(session?: SessionModel): PatientModel {
-    if (!session) {
+    if (!(session instanceof SignInSessionModel)) {
       throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
     }
 
-    return session.patient!;
+    return new PatientModel(session.patient);
   }
 
   private async searchPatient(searchPayload: PatientDTO): Promise<PatientExternalDTO> {

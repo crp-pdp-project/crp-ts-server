@@ -4,8 +4,9 @@ import { InsuranceDTO } from 'src/app/entities/dtos/service/insurance.dto';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { InsuranceListModel } from 'src/app/entities/models/insuranceList.model';
 import { SessionModel } from 'src/app/entities/models/session.model';
+import { SignInSessionModel } from 'src/app/entities/models/signInSession.model';
 import { IGetInsurancesRepository } from 'src/app/repositories/soap/getInsurances.repository';
-import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
+import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 export interface IInsurancesListInteractor {
   list(input: FastifyRequest): Promise<InsuranceListModel | ErrorModel>;
@@ -25,7 +26,7 @@ export class InsurancesListInteractor implements IInsurancesListInteractor {
   }
 
   private validateSession(session?: SessionModel): void {
-    if (!session) {
+    if (!(session instanceof SignInSessionModel)) {
       throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
     }
   }
