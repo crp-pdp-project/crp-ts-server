@@ -15,7 +15,6 @@ export async function up(db: Kysely<Database>): Promise<void> {
   await db
     .insertInto('Relationships')
     .values(RELATIONSHIP_SEED)
-    .onConflict((oc) => oc.column('id').doNothing())
     .execute();
 }
 
