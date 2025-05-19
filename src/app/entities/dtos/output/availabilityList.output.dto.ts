@@ -34,6 +34,7 @@ export const AvailabilityListOutputDTOSchema = z
       }),
     ),
   })
+  .strict()
   .openapi({
     description: 'Availability List Response Body',
   });

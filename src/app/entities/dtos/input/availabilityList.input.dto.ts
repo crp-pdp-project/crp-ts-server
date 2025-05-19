@@ -7,25 +7,26 @@ export const AvailabilityListQueryDTOSchema = z
   .object({
     groupId: z.coerce.string().openapi({
       description: 'Id of the specialty group to filter',
-      example: '26',
+      example: '9',
     }),
     doctorId: z.coerce.string().openapi({
       description: 'Id of the doctor to filter',
-      example: '70358611',
+      example: '44789755',
     }),
     appointmentTypeId: z.coerce.string().openapi({
       description: 'Id of the appointmentType to filter',
-      example: '3300-10010942',
+      example: '900-10010020',
     }),
     insuranceId: z.coerce.string().openapi({
       description: 'Id of the insurance to filter',
-      example: '16260',
+      example: '16435',
     }),
     inspectionId: z.coerce.string().openapi({
       description: 'Id of the insurance inspection to filter',
       example: '99',
     }),
   })
+  .strict()
   .openapi({
     description: 'Appointment types appointment query strings',
   });

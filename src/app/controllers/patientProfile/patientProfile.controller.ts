@@ -17,6 +17,6 @@ export class PatientProfileController implements IPatientProfileController {
   async handle(input: FastifyRequest, reply: FastifyReply): Promise<void> {
     const patient = await this.profileInteractor.profile(input);
     const response = this.responseInteractor.execute(patient);
-    reply.code(response.statusCode).send(response.toResponseObject());
+    reply.code(response.statusCode).send(response.body);
   }
 }

@@ -1,5 +1,6 @@
 import { SpecialtyDTO } from 'src/app/entities/dtos/service/specialty.dto';
 import { InetumClient } from 'src/clients/inetum.client';
+import { SoapConstants } from 'src/general/contants/soap.constants';
 
 type GetSpecialtiesInput = {
   usuario: string;
@@ -26,6 +27,10 @@ export interface IGetSpecialtiesRepository {
 }
 
 export class GetSpecialtiesRepository implements IGetSpecialtiesRepository {
+  private readonly user: string = process.env.INETUM_USER ?? '';
+  private readonly password: string = process.env.INETUM_PASSWORD ?? '';
+  private readonly centerId: string = process.env.CRP_CENTER_ID ?? '';
+
   async execute(): Promise<SpecialtyDTO[]> {
     const methodPayload = this.generateInput();
     const instance = await InetumClient.getInstance();
@@ -35,11 +40,11 @@ export class GetSpecialtiesRepository implements IGetSpecialtiesRepository {
 
   private generateInput(): GetSpecialtiesInput {
     return {
-      usuario: process.env.INETUM_USER ?? '',
-      contrasena: process.env.INETUM_PASSWORD ?? '',
+      usuario: this.user,
+      contrasena: this.password,
       peticionListadoEspecialidades: {
-        IdCentro: process.env.CRP_CENTER_ID ?? '',
-        CanalEntrada: 'PERU',
+        IdCentro: this.centerId,
+        CanalEntrada: SoapConstants.ORIGIN,
       },
     };
   }

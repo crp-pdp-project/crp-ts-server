@@ -17,6 +17,6 @@ export class InsurancesListController implements IInsurancesListController {
   async handle(input: FastifyRequest, reply: FastifyReply): Promise<void> {
     const insurances = await this.insurancesList.list(input);
     const response = this.responseInteractor.execute(insurances);
-    reply.code(response.statusCode).send(response.toResponseObject());
+    reply.code(response.statusCode).send(response.body);
   }
 }

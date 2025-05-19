@@ -1,3 +1,6 @@
+import { PatientCurrentAppointmentsParamsDTOSchema } from 'src/app/entities/dtos/input/patientCurrentAppointment.input.dto';
+import { PatientHistoricAppointmentsParamsDTOSchema } from 'src/app/entities/dtos/input/patientHistoricAppointment.input.dto';
+import { PatientNextAppointmentParamsDTOSchema } from 'src/app/entities/dtos/input/patientNextAppointment.input.dto';
 import { PatientCurrentAppointmentsOutputDTOSchema } from 'src/app/entities/dtos/output/patientCurrentAppointment.output.dto';
 import { PatientHistoricAppointmentsOutputDTOSchema } from 'src/app/entities/dtos/output/patientHistoricAppointment.output.dto';
 import { PatientNextAppointmentOutputDTOSchema } from 'src/app/entities/dtos/output/patientNextAppointment.output.dto';
@@ -15,9 +18,10 @@ export class DashboardV1Docs {
   registerDocs(): void {
     this.manager.registerRoute({
       method: HttpSpecMethod.GET,
-      path: `${this.version}/patients/appointment/current`,
+      path: `${this.version}/patients/{fmpId}/appointment/current`,
       description: 'Patient current appointment list',
       tags: ['patients', 'dashboard'],
+      params: PatientCurrentAppointmentsParamsDTOSchema,
       responses: {
         [StatusCode.OK]: OkResponseDTOSchema.extend({
           data: PatientCurrentAppointmentsOutputDTOSchema,
@@ -28,9 +32,10 @@ export class DashboardV1Docs {
 
     this.manager.registerRoute({
       method: HttpSpecMethod.GET,
-      path: `${this.version}/patients/appointment/historic`,
+      path: `${this.version}/patients/{fmpId}/appointment/historic`,
       description: 'Patient historic appointment list',
       tags: ['patients', 'dashboard'],
+      params: PatientHistoricAppointmentsParamsDTOSchema,
       responses: {
         [StatusCode.OK]: OkResponseDTOSchema.extend({
           data: PatientHistoricAppointmentsOutputDTOSchema,
@@ -41,9 +46,10 @@ export class DashboardV1Docs {
 
     this.manager.registerRoute({
       method: HttpSpecMethod.GET,
-      path: `${this.version}/patients/appointment/next`,
+      path: `${this.version}/patients/{fmpId}/appointment/next`,
       description: 'Patient first current appointment',
       tags: ['patients', 'dashboard'],
+      params: PatientNextAppointmentParamsDTOSchema,
       responses: {
         [StatusCode.OK]: OkResponseDTOSchema.extend({
           data: PatientNextAppointmentOutputDTOSchema,

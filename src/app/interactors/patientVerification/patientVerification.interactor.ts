@@ -11,10 +11,10 @@ import { ErrorModel } from 'src/app/entities/models/error.model';
 import { PatientExternalModel } from 'src/app/entities/models/patientExternal.model';
 import { IGetPatientAccountRepository } from 'src/app/repositories/database/getPatientAccount.repository';
 import { ISearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
-import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
+import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 export interface IPatientVerificationStrategy {
-  persisVerification(searchResult: PatientExternalDTO, patient?: PatientDTO | null): Promise<number>;
+  persisVerification(searchResult: PatientExternalDTO, patient?: PatientDTO | null): Promise<PatientDTO>;
 }
 
 export interface IPatientVerificationInteractor {
@@ -33,9 +33,9 @@ export class PatientVerificationInteractor implements IPatientVerificationIntera
       const body = this.validateInput(input.body);
       const existingAccount = await this.getPatientAccount(body);
       const searchResult = await this.searchPatient(body);
-      const patientId = await this.verificationStrategy.persisVerification(searchResult, existingAccount);
+      const patient = await this.verificationStrategy.persisVerification(searchResult, existingAccount);
 
-      return new PatientExternalModel(patientId, searchResult);
+      return new PatientExternalModel(patient, searchResult);
     } catch (error) {
       return ErrorModel.fromError(error);
     }

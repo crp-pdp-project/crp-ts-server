@@ -45,4 +45,28 @@ export class TextHelper {
 
     return properText;
   }
+
+  static maskPhone(phone: string | null): string | null {
+    if (!phone) return phone;
+    const digits = phone.replace(/\D/g, '');
+
+    if (digits.length <= 3) return '*'.repeat(digits.length);
+
+    const mask = '*'.repeat(digits.length - 3);
+    const last = digits.slice(-3);
+
+    return `${mask}${last}`;
+  }
+
+  static maskEmail(email: string | null): string | null {
+    if (!email) return email;
+    const [name, domain] = email.split('@');
+
+    if (name.length <= 3) return `${'*'.repeat(name.length)}@${domain}`;
+
+    const mask = '*'.repeat(name.length - 3);
+    const last = name.slice(-3);
+
+    return `${mask}${last}@${domain}`;
+  }
 }

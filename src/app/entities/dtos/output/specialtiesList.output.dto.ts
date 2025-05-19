@@ -22,6 +22,7 @@ export const SpecialtiesListOutputDTOSchema = z
       }),
     ),
   })
+  .strict()
   .openapi({
     description: 'Specialties List Response Body',
   });

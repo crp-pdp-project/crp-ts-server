@@ -1,41 +1,44 @@
 import { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
 import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
 import { ErrorModel } from 'src/app/entities/models/error.model';
-import { PatientExternalModel } from 'src/app/entities/models/patientExternal.model';
-import { PatientExternalSessionModel } from 'src/app/entities/models/patientExternalSession.model';
 import { ISaveSessionRepository } from 'src/app/repositories/database/saveSession.respository';
 import { IJWTManager } from 'src/general/managers/jwt.manager';
 
-export interface IPatientVefiricationSessionInteractor {
-  session(model: PatientExternalModel): Promise<PatientExternalSessionModel | ErrorModel>;
+export interface ISessionStrategy<TInput, TOutput> {
+  toPayload(input: TInput): Promise<SessionPayloadDTO>;
+  toResponse(input: TInput, jwt: string): TOutput;
 }
 
-export class PatientVefiricationSessionInteractor implements IPatientVefiricationSessionInteractor {
+export interface ISessionInteractor<TInput, TOutput> {
+  session(model: TInput): Promise<TOutput | ErrorModel>;
+}
+
+export class SessionInteractor<TInput, TOutput> implements ISessionInteractor<TInput, TOutput> {
   constructor(
+    private readonly sessionStrategy: ISessionStrategy<TInput, TOutput>,
     private readonly saveSessionRepository: ISaveSessionRepository,
     private readonly jwtManager: IJWTManager<SessionPayloadDTO>,
   ) {}
 
-  async session(model: PatientExternalModel): Promise<PatientExternalSessionModel | ErrorModel> {
+  async session(model: TInput): Promise<TOutput | ErrorModel> {
     try {
-      const { jwt, newSession } = await this.generateJwtToken(model);
+      const payload = await this.sessionStrategy.toPayload(model);
+      const { jwt, newSession } = await this.generateJwtToken(payload);
       await this.persistSession(newSession);
 
-      return new PatientExternalSessionModel(model, jwt);
+      return this.sessionStrategy.toResponse(model, jwt);
     } catch (error) {
       return ErrorModel.fromError(error);
     }
   }
 
-  private async generateJwtToken(model: PatientExternalModel): Promise<{ jwt: string; newSession: SessionDTO }> {
-    const payload = model.toSessionPayload();
-
+  private async generateJwtToken(payload: SessionPayloadDTO): Promise<{ jwt: string; newSession: SessionDTO }> {
     const { jwt, jti, expiresAt } = await this.jwtManager.generateToken(payload);
 
     return {
       jwt,
       newSession: {
-        patientId: model.id,
+        patientId: payload.patient?.id,
         jti,
         expiresAt,
       },

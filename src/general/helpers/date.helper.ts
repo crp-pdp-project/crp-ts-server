@@ -1,28 +1,9 @@
 import dayjs, { Dayjs, isDayjs } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
-dayjs.extend(customParseFormat);
+import { allFormats, dateFormats, dateTimeFormats, timeFormats } from '../contants/date.constants';
 
-const dateFormats = {
-  spanishDate: 'DD-MM-YYYY',
-  dbDate: 'YYYY-MM-DD',
-  inetumDate: 'YYYYMMDD',
-} as const;
-const timeFormats = {
-  spanishTime: 'HH:mm:ss',
-  dbTime: 'HH:mm:ss',
-  inetumTime: 'HHmmss',
-} as const;
-const dateTimeFormats = {
-  spanishDateTime: 'DD-MM-YYYY HH:mm:ss',
-  dbDateTime: 'YYYY-MM-DD HH:mm:ss',
-  inetumDateTime: 'YYYYMMDDHHmmss',
-} as const;
-const allFormats = {
-  ...dateFormats,
-  ...timeFormats,
-  ...dateTimeFormats,
-} as const;
+dayjs.extend(customParseFormat);
 
 export type TimeFormatKey = keyof typeof timeFormats;
 export type DateFormatKey = keyof typeof dateFormats;
@@ -30,21 +11,18 @@ export type DateTimeFormatKey = keyof typeof dateTimeFormats;
 export type FormatKey = keyof typeof allFormats;
 
 export class DateHelper {
-  private static readonly timeInputFormats: string[] = Object.values(timeFormats);
-  private static readonly dateInputFormats: string[] = Object.values(dateFormats);
-  private static readonly dateTimeInputFormats: string[] = Object.values(dateTimeFormats);
   private static readonly allInputFormats: string[] = Object.values(allFormats);
 
   static toFormatDate(date: string | Date, formatKey: DateFormatKey): string {
-    return this.parse(date, this.dateInputFormats).format(dateFormats[formatKey]);
+    return this.parse(date).format(dateFormats[formatKey]);
   }
 
   static toFormatTime(date: string | Date, formatKey: TimeFormatKey): string {
-    return this.parse(date, this.timeInputFormats).format(timeFormats[formatKey]);
+    return this.parse(date).format(timeFormats[formatKey]);
   }
 
   static toFormatDateTime(date: string | Date, formatKey: DateTimeFormatKey): string {
-    return this.parse(date, this.dateTimeInputFormats).format(dateTimeFormats[formatKey]);
+    return this.parse(date).format(dateTimeFormats[formatKey]);
   }
 
   static tokenRefreshTime(minutes: number): string {
@@ -52,7 +30,7 @@ export class DateHelper {
   }
 
   static checkExpired(date: string | Date): boolean {
-    const parsedDate = this.parse(date, this.allInputFormats);
+    const parsedDate = this.parse(date);
     return parsedDate.isBefore(dayjs());
   }
 
@@ -65,26 +43,34 @@ export class DateHelper {
   }
 
   static toDate(date: string | Date): Dayjs {
-    return this.parse(date, this.allInputFormats);
+    return this.parse(date);
   }
 
   static dateNow(formatKey: FormatKey): string {
     return dayjs().format(allFormats[formatKey]);
   }
 
-  static addMonths(numOfMonths: number, formatKey: FormatKey): string {
-    return dayjs().add(numOfMonths, 'months').format(allFormats[formatKey]);
+  static addMonths(numOfMonths: number, formatKey: FormatKey, baseDate?: string | Date): string {
+    const date = baseDate ? this.parse(baseDate) : dayjs();
+    return date.add(numOfMonths, 'months').format(allFormats[formatKey]);
   }
 
-  static subtractMonths(numOfMonths: number, formatKey: FormatKey): string {
-    return dayjs().subtract(numOfMonths, 'months').format(allFormats[formatKey]);
+  static subtractMonths(numOfMonths: number, formatKey: FormatKey, baseDate?: string | Date): string {
+    const date = baseDate ? this.parse(baseDate) : dayjs();
+    return date.subtract(numOfMonths, 'months').format(allFormats[formatKey]);
   }
 
-  static currentDate(formatKey: FormatKey): string {
-    return dayjs().format(allFormats[formatKey]);
+  static addDays(numOfDays: number, formatKey: FormatKey, baseDate?: string | Date): string {
+    const date = baseDate ? this.parse(baseDate) : dayjs();
+    return date.add(numOfDays, 'days').format(allFormats[formatKey]);
   }
 
-  private static parse(input: string | Date | Dayjs, formats: string[]): Dayjs {
+  static subtractDays(numOfDays: number, formatKey: FormatKey, baseDate?: string | Date): string {
+    const date = baseDate ? this.parse(baseDate) : dayjs();
+    return date.subtract(numOfDays, 'days').format(allFormats[formatKey]);
+  }
+
+  private static parse(input: string | Date | Dayjs): Dayjs {
     if (input instanceof Date) {
       return dayjs(input);
     }
@@ -93,7 +79,7 @@ export class DateHelper {
       return input;
     }
 
-    const parsed = dayjs(input, formats, true);
+    const parsed = dayjs(input, this.allInputFormats, true);
     return parsed.isValid() ? parsed : dayjs(input);
   }
 }

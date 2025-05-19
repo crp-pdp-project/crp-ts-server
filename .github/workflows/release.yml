@@ -41,39 +41,45 @@ jobs:
           # swagger.meta.ts
           sed -i'' -E "s/version:\s*['\"](.*)['\"]/version: '$VERSION'/g" src/docs/meta/swagger.meta.ts
 
-      - name: Generate changelog
-        run: |
-          COMMIT_MSG=$(git log -1 --pretty=format:"%s")
-          COMMIT_HASH=$(git rev-parse --short HEAD)
-          REPO_SLUG=$(git config --get remote.origin.url | sed -E 's#(git@|https://)github.com[/:](.+)\.git#\2#')
-
-          {
-            echo "## v${{ steps.version.outputs.VERSION }}"
-            echo ""
-            echo "- $COMMIT_MSG ([\`$COMMIT_HASH\`](https://github.com/$REPO_SLUG/commit/$COMMIT_HASH))"
-            echo ""
-          } > CHANGELOG.md
-
       - name: Build project
         run: yarn build
 
       - name: Create release zip
         run: zip -r dist.zip dist/
 
-      - name: Extract latest changelog block
+      - name: Generate release changelog
+        id: changelog
         run: |
-          awk '/^## / && ++count > 1 { exit } count { print }' CHANGELOG.md > LATEST_CHANGELOG.md
+          VERSION="${{ steps.version.outputs.VERSION }}"
+          REPO_SLUG=$(git config --get remote.origin.url | sed -E 's#(git@|https://)github.com[/:](.+)\.git#\2#')
+
+          echo "🔍 Looking for previous tag..."
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+
+          if [ -z "$LAST_TAG" ]; then
+            echo "⚠️ No previous tag found, generating changelog from beginning"
+            GIT_RANGE=""
+          else
+            echo "📌 Found previous tag: $LAST_TAG"
+            GIT_RANGE="$LAST_TAG..HEAD"
+          fi
+
+          LOG=$(git log $GIT_RANGE --pretty=format:"- %s ([\`%h\`](https://github.com/$REPO_SLUG/commit/%H))")
+          LOG_ESCAPED=$(echo "$LOG" | sed ':a;N;$!ba;s/\n/%0A/g')
+
+          echo "body=## v$VERSION%0A%0A$LOG_ESCAPED" >> $GITHUB_OUTPUT
 
       - name: Upload GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
-          body_path: LATEST_CHANGELOG.md
+          body: ${{ steps.changelog.outputs.body }}
           files: |
             dist.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Commit version and changelog to master
         run: |
           git config user.name "github-actions[bot]"
@@ -82,6 +88,6 @@ jobs:
           git checkout master
           git pull origin master
 
-          git add package.json src/docs/meta/swagger.meta.ts CHANGELOG.md
+          git add package.json src/docs/meta/swagger.meta.ts
           git commit -m "🔖 Release metadata for ${{ steps.version.outputs.VERSION }}" || echo "ℹ️ No changes to commit"
           git push origin master

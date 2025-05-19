@@ -1,6 +1,6 @@
+import { AppointmentConstants } from 'src/general/contants/appointment.constants';
 import { AppointmentModes } from 'src/general/enums/appointmentMode.enum';
 import { AppointmentStates } from 'src/general/enums/appointmentState.enum';
-import { AppointmentRecommendations } from 'src/general/enums/recommendations.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 
 import { AppointmentDTO } from '../dtos/service/appointment.dto';
@@ -12,16 +12,17 @@ import { InsuranceModel } from './insurance.model';
 import { SpecialtyModel } from './specialty.model';
 
 export class AppointmentModel extends BaseModel {
+  readonly #virtualId: string = process.env.CRP_VIRTUAL_ID ?? '';
   readonly id?: string;
   readonly episodeId?: string;
   readonly date?: string;
   readonly status?: AppointmentStates;
-  readonly mode?: string;
+  readonly mode?: AppointmentModes;
   readonly doctor?: DoctorModel;
   readonly specialty?: SpecialtyModel;
   readonly insurance?: InsuranceModel;
   readonly appointmentType?: AppointmentTypeModel;
-  readonly recommendations: string[];
+  readonly recommendations: readonly string[];
   readonly canCancel?: boolean;
   readonly canReprogram?: boolean;
   readonly didShow?: boolean;
@@ -34,7 +35,7 @@ export class AppointmentModel extends BaseModel {
     this.date = appointment.date ? DateHelper.toFormatDateTime(appointment.date, 'spanishDateTime') : appointment.date;
     this.status = AppointmentStates[appointment.status as keyof typeof AppointmentStates] ?? AppointmentStates.Citado;
     this.mode = appointment.appointmentType?.id
-      ? appointment.appointmentType.id.includes(process.env.CRP_VIRTUAL_ID ?? '')
+      ? appointment.appointmentType.id.includes(this.#virtualId)
         ? AppointmentModes.REMOTE
         : AppointmentModes.IN_PERSON
       : undefined;
@@ -44,11 +45,7 @@ export class AppointmentModel extends BaseModel {
     this.appointmentType = appointment.appointmentType
       ? new AppointmentTypeModel(appointment.appointmentType)
       : appointment.appointmentType;
-    this.recommendations = [
-      AppointmentRecommendations.APPOINTMENT_TIME,
-      AppointmentRecommendations.APPOINTMENT_PAYMENT,
-      AppointmentRecommendations.APPOINTMENT_DOCUMENT,
-    ];
+    this.recommendations = AppointmentConstants.DEFAULT_RECOMMENDATIONS;
     this.canCancel = appointment.canCancel;
     this.canReprogram = appointment.canReprogram;
     this.didShow = appointment.didShow;

@@ -17,6 +17,6 @@ export class UpdateBiometricPasswordController implements IUpdateBiometricPasswo
   async handle(input: FastifyRequest<UpdateBiometricPasswordInputDTO>, reply: FastifyReply): Promise<void> {
     const result = await this.updateBiometricPassword.update(input);
     const response = this.responseInteractor.execute(result);
-    reply.code(response.statusCode).send(response.toResponseObject());
+    reply.code(response.statusCode).send(response.body);
   }
 }

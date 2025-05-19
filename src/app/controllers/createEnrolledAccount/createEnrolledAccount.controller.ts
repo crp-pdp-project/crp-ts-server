@@ -17,6 +17,6 @@ export class CreateEnrolledAccountController implements ICreateEnrolledAccountCo
   async handle(input: FastifyRequest<CreateEnrolledAccountInputDTO>, reply: FastifyReply): Promise<void> {
     const result = await this.createEnrolledAccount.create(input);
     const response = this.responseInteractor.execute(result);
-    reply.code(response.statusCode).send(response.toResponseObject());
+    reply.code(response.statusCode).send(response.body);
   }
 }

@@ -17,6 +17,6 @@ export class PatientRelativesController implements IPatientRelativesController {
   async handle(input: FastifyRequest, reply: FastifyReply): Promise<void> {
     const patient = await this.relativesInteractor.relatives(input);
     const response = this.responseInteractor.execute(patient);
-    reply.code(response.statusCode).send(response.toResponseObject());
+    reply.code(response.statusCode).send(response.body);
   }
 }

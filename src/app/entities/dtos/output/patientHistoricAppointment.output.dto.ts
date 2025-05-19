@@ -90,6 +90,7 @@ export const PatientHistoricAppointmentsOutputDTOSchema = z
       }),
     ),
   })
+  .strict()
   .openapi({
     description: 'Patient Appointment Response Body',
   });

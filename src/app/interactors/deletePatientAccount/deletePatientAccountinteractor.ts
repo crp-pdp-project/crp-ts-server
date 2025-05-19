@@ -3,8 +3,9 @@ import { FastifyRequest } from 'fastify';
 import { AccountDM } from 'src/app/entities/dms/accounts.dm';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { SessionModel } from 'src/app/entities/models/session.model';
+import { SignInSessionModel } from 'src/app/entities/models/signInSession.model';
 import { IDeletePatientAccountRepository } from 'src/app/repositories/database/deletePatientAccount.repository';
-import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
+import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 export interface IDeletePatientAccountInteractor {
   delete(input: FastifyRequest): Promise<void | ErrorModel>;
@@ -23,11 +24,11 @@ export class DeletePatientAccountInteractor implements IDeletePatientAccountInte
   }
 
   private validateSession(session?: SessionModel): AccountDM['id'] {
-    if (!session) {
+    if (!(session instanceof SignInSessionModel)) {
       throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
     }
 
-    return session.account!.id!;
+    return session.patient.account.id;
   }
 
   private async cleanAccount(id: AccountDM['id']): Promise<void> {

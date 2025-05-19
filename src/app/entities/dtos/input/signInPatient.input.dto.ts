@@ -15,7 +15,7 @@ export const SignInPatientBodyDTOSchema = PatientDMSchema.pick({
       example: 'ThisIsASecurePassword123',
     }),
   })
-  .required()
+  .strict()
   .openapi({
     description: 'Sign In Patient Request Body',
   });

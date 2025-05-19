@@ -19,7 +19,7 @@ export type SuccessResponse<T> = {
 };
 
 export class ResponseModel<T> {
-  private readonly body: ErrorResponse | SuccessResponse<T>;
+  readonly body: ErrorResponse | SuccessResponse<T>;
   readonly statusCode: number;
 
   constructor(private readonly data?: T | ErrorModel) {
@@ -58,12 +58,7 @@ export class ResponseModel<T> {
     if (data instanceof BaseModel) {
       return data.toPlainObject() as T;
     }
-    return data;
-  }
 
-  toResponseObject(): ErrorResponse | SuccessResponse<T> {
-    return Object.fromEntries(Object.entries(this.body).filter(([_, value]) => value !== undefined)) as
-      | ErrorResponse
-      | SuccessResponse<T>;
+    return data;
   }
 }

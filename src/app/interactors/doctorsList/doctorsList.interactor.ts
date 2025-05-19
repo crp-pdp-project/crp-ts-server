@@ -10,9 +10,10 @@ import { SpecialtyDTO } from 'src/app/entities/dtos/service/specialty.dto';
 import { DoctorListModel } from 'src/app/entities/models/doctorList.model';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { SessionModel } from 'src/app/entities/models/session.model';
+import { SignInSessionModel } from 'src/app/entities/models/signInSession.model';
 import { IGetDoctorImagesRepository } from 'src/app/repositories/rest/getDoctorImages.repository';
 import { IGetDoctorsRepository } from 'src/app/repositories/soap/getDoctors.repository';
-import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
+import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 export interface IDoctorsListInteractor {
   list(input: FastifyRequest<DoctorsListInputDTO>): Promise<DoctorListModel | ErrorModel>;
@@ -43,7 +44,7 @@ export class DoctorsListInteractor implements IDoctorsListInteractor {
   }
 
   private validateSession(session?: SessionModel): void {
-    if (!session) {
+    if (!(session instanceof SignInSessionModel)) {
       throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
     }
   }
@@ -55,7 +56,7 @@ export class DoctorsListInteractor implements IDoctorsListInteractor {
   }
 
   private async getImagesList(specialtyId?: SpecialtyDTO['id']): Promise<DoctorDTO[]> {
-    const imagesList = await this.getImages.execute(specialtyId);
+    const imagesList = await this.getImages.execute(specialtyId).catch(() => []);
 
     return imagesList;
   }

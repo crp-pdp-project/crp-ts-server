@@ -14,8 +14,9 @@ import { DoctorAvailabilityDTO } from 'src/app/entities/dtos/service/doctorAvail
 import { AvailabilityListModel } from 'src/app/entities/models/availabilityList.model';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { SessionModel } from 'src/app/entities/models/session.model';
+import { SignInSessionModel } from 'src/app/entities/models/signInSession.model';
 import { GetDoctorAvailabilityRepository } from 'src/app/repositories/soap/getDoctorAvailability.repository';
-import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
+import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 export interface IAvailabilityListInteractor {
   list(input: FastifyRequest<AvailabilityListInputDTO>): Promise<AvailabilityListModel | ErrorModel>;
@@ -38,7 +39,7 @@ export class AvailabilityListInteractor implements IAvailabilityListInteractor {
   }
 
   private validateSession(session?: SessionModel): PatientDM['fmpId'] {
-    if (!session || !session.patient?.fmpId) {
+    if (!(session instanceof SignInSessionModel)) {
       throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
     }
 

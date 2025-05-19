@@ -9,6 +9,8 @@ export const SignInPatientOutputDTOSchema = z
   .object({
     patient: PatientDMSchema.pick({
       id: true,
+      fmpId: true,
+      nhcId: true,
       firstName: true,
       lastName: true,
       secondLastName: true,
@@ -20,6 +22,7 @@ export const SignInPatientOutputDTOSchema = z
       example: 'Valid JWE',
     }),
   })
+  .strict()
   .openapi({
     description: 'Sign In Patient Response Body',
   });

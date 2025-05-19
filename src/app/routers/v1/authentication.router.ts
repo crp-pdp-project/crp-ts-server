@@ -19,7 +19,7 @@ export class AuthenticationV1Router {
     this.signInPatientRegularController = SignInPatientBuilder.buildRegular();
     this.signInPatientBiometricController = SignInPatientBuilder.buildBiometric();
     this.signOutPatientController = SignOutPatientBuilder.build();
-    this.validateSessionController = ValidateSessionBuilder.buildSession();
+    this.validateSessionController = ValidateSessionBuilder.buildPatient();
   }
 
   registerRouter(): void {
@@ -30,7 +30,7 @@ export class AuthenticationV1Router {
     });
     this.fastify.route({
       method: HttpMethod.POST,
-      url: `${this.version}/patients/biometric/sign-in`,
+      url: `${this.version}/patients/sign-in/biometric`,
       handler: this.signInPatientBiometricController.handle.bind(this.signInPatientBiometricController),
     });
     this.fastify.route({

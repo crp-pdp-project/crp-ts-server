@@ -10,6 +10,7 @@ export const ValidateVerificationOTPBodyDTOSchema = z
       example: '12345',
     }),
   })
+  .strict()
   .openapi({
     description: 'Validate OTP Request Body',
   });

@@ -1,6 +1,6 @@
 import ejs from 'ejs';
 
-import { SessionModel } from 'src/app/entities/models/session.model';
+import { EnrollSessionModel } from 'src/app/entities/models/enrollSession.model';
 import { EmailClient } from 'src/clients/email.client';
 import { InfobipClient } from 'src/clients/infobip.client';
 import { TextHelper } from 'src/general/helpers/text.helper';
@@ -13,7 +13,7 @@ export class SendVerificationEnrollOTPStrategy implements ISendVerificationOTPSt
   private readonly infobipClient: InfobipClient = InfobipClient.instance;
   private readonly emailClient: EmailClient = EmailClient.instance;
 
-  async sendOtp(session: SessionModel): Promise<string> {
+  async sendOTP(session: EnrollSessionModel): Promise<string> {
     const otp = TextHelper.generateOtp();
     await this.sendEmailOtp(session, otp);
     await this.sendSmsOtp(session, otp);
@@ -21,26 +21,26 @@ export class SendVerificationEnrollOTPStrategy implements ISendVerificationOTPSt
     return otp;
   }
 
-  private async sendEmailOtp(session: SessionModel, otp: string): Promise<void> {
-    if (session.payload?.email) {
+  private async sendEmailOtp(session: EnrollSessionModel, otp: string): Promise<void> {
+    if (session.external.email) {
       await this.emailClient.send({
-        to: session.payload.email,
+        to: session.external.email,
         subject: process.env.EMAIL_ENROLL_SUBJECT ?? '',
         html: ejs.render(emailTemplate, {
-          name: session.patient?.firstName,
+          name: session.patient.firstName,
           otp,
         }),
       });
     }
   }
 
-  private async sendSmsOtp(session: SessionModel, otp: string): Promise<void> {
-    if (session.payload?.phone) {
+  private async sendSmsOtp(session: EnrollSessionModel, otp: string): Promise<void> {
+    if (session.external.phone) {
       await this.infobipClient.sendSms({
         from: process.env.INFOBIP_SENDER ?? '',
-        to: session.payload.phone,
+        to: session.external.phone,
         text: ejs.render(smsTemplate, {
-          name: session.patient?.firstName,
+          name: session.patient.firstName,
           otp,
         }),
       });

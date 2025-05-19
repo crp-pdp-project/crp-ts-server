@@ -10,6 +10,7 @@ export const UpdatePatientPasswordBodyDTOSchema = z
       example: 'ThisIsASecurePassword123',
     }),
   })
+  .strict()
   .openapi({
     description: 'Create Password Request Body',
   });

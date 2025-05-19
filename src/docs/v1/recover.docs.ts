@@ -16,7 +16,7 @@ export class RecoverV1Docs {
   registerDocs(): void {
     this.manager.registerRoute({
       method: HttpSpecMethod.POST,
-      path: `${this.version}/patients/recover`,
+      path: `${this.version}/patients/recover-password`,
       description: 'Start recover process for new patient found in FMP',
       tags: ['patients', 'recover'],
       body: PatientVerificationBodyDTOSchema,
@@ -29,7 +29,7 @@ export class RecoverV1Docs {
 
     this.manager.registerRoute({
       method: HttpSpecMethod.POST,
-      path: `${this.version}/patients/recover/send`,
+      path: `${this.version}/patients/recover-password/otp/send`,
       description: 'Send OTP to recovering patient',
       tags: ['patients', 'recover'],
       responses: {
@@ -40,7 +40,7 @@ export class RecoverV1Docs {
 
     this.manager.registerRoute({
       method: HttpSpecMethod.POST,
-      path: `${this.version}/patients/recover/validate`,
+      path: `${this.version}/patients/recover-password/otp/validate`,
       description: 'Validate Sent OTP to recovering patient ',
       tags: ['patients', 'recover'],
       body: ValidateVerificationOTPBodyDTOSchema,
@@ -52,7 +52,7 @@ export class RecoverV1Docs {
 
     this.manager.registerRoute({
       method: HttpSpecMethod.PATCH,
-      path: `${this.version}/patients/recover/update`,
+      path: `${this.version}/patients/password`,
       description: 'Update password to finish recovering process',
       tags: ['patients', 'recover'],
       body: UpdatePatientPasswordBodyDTOSchema,

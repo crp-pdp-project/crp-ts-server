@@ -23,8 +23,11 @@ export async function up(db: Kysely<unknown>): Promise<void> {
         .modifyEnd(sql`ON UPDATE CURRENT_TIMESTAMP`),
     )
     .execute();
+
+  await db.schema.createIndex('UniqueAccountPatientId').on(tableName).column('patientId').unique().execute();
 }
 
 export async function down(db: Kysely<unknown>): Promise<void> {
+  await db.schema.dropIndex('UniqueAccountPatientId').execute();
   await db.schema.dropTable(tableName).execute();
 }

@@ -3,9 +3,10 @@ import { FastifyRequest } from 'fastify';
 import { SpecialtyDTO } from 'src/app/entities/dtos/service/specialty.dto';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { SessionModel } from 'src/app/entities/models/session.model';
+import { SignInSessionModel } from 'src/app/entities/models/signInSession.model';
 import { SpecialtyListModel } from 'src/app/entities/models/specialtyList.model';
 import { IGetSpecialtiesRepository } from 'src/app/repositories/soap/getSpecialties.repository';
-import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
+import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 export interface ISpecialtiesListInteractor {
   list(input: FastifyRequest): Promise<SpecialtyListModel | ErrorModel>;
@@ -25,7 +26,7 @@ export class SpecialtiesListInteractor implements ISpecialtiesListInteractor {
   }
 
   private validateSession(session?: SessionModel): void {
-    if (!session) {
+    if (!(session instanceof SignInSessionModel)) {
       throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
     }
   }

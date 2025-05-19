@@ -17,6 +17,6 @@ export class UpdatePatientPasswordController implements IUpdatePatientPasswordCo
   async handle(input: FastifyRequest<UpdatePatientPasswordInputDTO>, reply: FastifyReply): Promise<void> {
     const result = await this.updatePatientPassword.update(input);
     const response = this.responseInteractor.execute(result);
-    reply.code(response.statusCode).send(response.toResponseObject());
+    reply.code(response.statusCode).send(response.body);
   }
 }

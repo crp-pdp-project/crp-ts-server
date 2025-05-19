@@ -18,6 +18,7 @@ export const AppointmentTypesListOutputDTOSchema = z
       }),
     ),
   })
+  .strict()
   .openapi({
     description: 'Appointment Types List Response Body',
   });

@@ -1,12 +1,16 @@
 import { FastifyRequest } from 'fastify';
 
+import { PatientDM } from 'src/app/entities/dms/patients.dm';
+import { SessionDM } from 'src/app/entities/dms/sessions.dm';
+import { EnrollSessionModel } from 'src/app/entities/models/enrollSession.model';
 import { ErrorModel } from 'src/app/entities/models/error.model';
+import { RecoverSessionModel } from 'src/app/entities/models/recoverSession.model';
 import { SessionModel } from 'src/app/entities/models/session.model';
 import { IUpdateSessionOTPRepository } from 'src/app/repositories/database/updateSessionOTP.repository';
-import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
+import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 export interface ISendVerificationOTPStrategy {
-  sendOtp(session: SessionModel): Promise<string>;
+  sendOTP(session?: EnrollSessionModel | RecoverSessionModel): Promise<string>;
 }
 
 export interface ISendVerificationOTPInteractor {
@@ -22,22 +26,23 @@ export class SendVerificationOTPInteractor implements ISendVerificationOTPIntera
   async send(input: FastifyRequest): Promise<void | ErrorModel> {
     try {
       const session = this.validateSession(input.session);
-      const otp = await this.sendStrategy.sendOtp(session);
-      await this.addOtpToSession(session.jti!, session.patient!.id!, otp);
+      const otp = await this.sendStrategy.sendOTP(session);
+      await this.addOtpToSession(session.jti, session.patient.id, otp);
     } catch (error) {
       return ErrorModel.fromError(error);
     }
   }
 
-  private validateSession(session?: SessionModel): SessionModel {
-    if (!session) {
+  private validateSession(session?: SessionModel): EnrollSessionModel | RecoverSessionModel {
+    const typeInvalid = !(session instanceof RecoverSessionModel) && !(session instanceof EnrollSessionModel);
+    if (typeInvalid) {
       throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
     }
 
     return session;
   }
 
-  private async addOtpToSession(jti: string, patientId: number, otp: string): Promise<void> {
+  private async addOtpToSession(jti: SessionDM['jti'], patientId: PatientDM['id'], otp: string): Promise<void> {
     await this.updateSessionOtp.execute(jti, patientId, otp);
   }
 }

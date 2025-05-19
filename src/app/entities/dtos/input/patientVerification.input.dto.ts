@@ -8,9 +8,11 @@ extendZodWithOpenApi(z);
 export const PatientVerificationBodyDTOSchema = PatientDMSchema.pick({
   documentType: true,
   documentNumber: true,
-}).openapi({
-  description: 'Patient Verification Request Body',
-});
+})
+  .strict()
+  .openapi({
+    description: 'Patient Verification Request Body',
+  });
 
 export type PatientVerificationBodyDTO = z.infer<typeof PatientVerificationBodyDTOSchema>;
 export interface PatientVerificationInputDTO {

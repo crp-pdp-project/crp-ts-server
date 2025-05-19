@@ -3,7 +3,7 @@ import { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExterna
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { ISavePatientRepository } from 'src/app/repositories/database/savePatient.repository';
 import { IConfirmPatientRepository } from 'src/app/repositories/soap/confirmPatient.repository';
-import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
+import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { TextHelper } from 'src/general/helpers/text.helper';
 
@@ -15,17 +15,19 @@ export class PatientVerificationEnrollStrategy implements IPatientVerificationSt
     private readonly savePatientRepository: ISavePatientRepository,
   ) {}
 
-  async persisVerification(searchResult: PatientExternalDTO, patient?: PatientDTO | null): Promise<number> {
+  async persisVerification(searchResult: PatientExternalDTO, patient?: PatientDTO | null): Promise<PatientDTO> {
     let id = patient?.id ?? 0;
     if (!patient) {
       const patientToSave = this.createPatientDTO(searchResult);
       await this.confirmPatientCreation(searchResult);
       id = await this.persistPatient(patientToSave);
+
+      return { id } as PatientDTO;
     } else {
       this.accountCheck(patient);
-    }
 
-    return id;
+      return patient;
+    }
   }
 
   private accountCheck(patient?: PatientDTO | null): void {

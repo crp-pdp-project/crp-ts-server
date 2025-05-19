@@ -2,7 +2,7 @@ import { errors as joseErrors } from 'jose';
 import { ZodError } from 'zod';
 
 import { LoggerClient } from 'src/clients/logger.client';
-import { ClientErrorMessages } from 'src/general/enums/clientError.enum';
+import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { StatusCode } from 'src/general/enums/status.enum';
 
 export class ErrorModel extends Error {
@@ -22,78 +22,107 @@ export class ErrorModel extends Error {
   }
 
   static fromError(error: unknown): ErrorModel {
-    if (error instanceof ErrorModel) {
-      this.logger.error('Re-thrown custom ErrorModel', {
-        statusCode: error.statusCode,
-        message: error.message,
-        detail: error.detail,
-      });
+    switch (true) {
+      case error instanceof ErrorModel:
+        return error;
 
-      return error;
+      case error instanceof ZodError:
+        return this.generateFromZodError(error);
+
+      case error instanceof joseErrors.JWTClaimValidationFailed:
+        return this.generateInstanceAndLog(StatusCode.FORBIDDEN, error.message, ClientErrorMessages.JWE_TOKEN_INVALID);
+
+      case error instanceof joseErrors.JOSEError:
+        return this.generateInstanceAndLog(
+          StatusCode.UNAUTHORIZED,
+          error.message,
+          ClientErrorMessages.JWE_TOKEN_INVALID,
+        );
+
+      case error instanceof Error:
+        return this.generateInstanceAndLog(StatusCode.INTERNAL_SERVER_ERROR, error.message);
+
+      default:
+        return this.generateInstanceAndLog(StatusCode.INTERNAL_SERVER_ERROR, 'An unknown error occurred');
     }
-
-    if (error instanceof ZodError) {
-      this.logger.error('Zod validation failed', {
-        errors: error.errors,
-      });
-
-      return this.fromZod(error);
-    }
-
-    if (error instanceof joseErrors.JWTClaimValidationFailed) {
-      this.logger.error('JWT claim validation failed', { message: error.message });
-
-      return new ErrorModel(StatusCode.FORBIDDEN, error.message, ClientErrorMessages.JWE_TOKEN_INVALID);
-    }
-
-    if (error instanceof joseErrors.JOSEError) {
-      this.logger.error('JWT validation failed', { message: error.message });
-
-      return new ErrorModel(StatusCode.UNAUTHORIZED, error.message, ClientErrorMessages.JWE_TOKEN_INVALID);
-    }
-
-    if (error instanceof Error) {
-      this.logger.error('Unhandled application error', {
-        message: error.message,
-        stack: error.stack,
-      });
-
-      return new ErrorModel(StatusCode.INTERNAL_SERVER_ERROR, error.message);
-    }
-
-    this.logger.error('Unknown application error', { error });
-
-    return new ErrorModel(StatusCode.INTERNAL_SERVER_ERROR, 'An unknown error occurred');
-  }
-
-  private static fromZod(error: ZodError): ErrorModel {
-    const validationDetails = error.errors.map((e) => `(${e.path.join('.') || 'root'}: ${e.message})`).join(', ');
-
-    return new ErrorModel(StatusCode.BAD_REQUEST, `Validation failed: ${validationDetails}`);
   }
 
   static badRequest(detail?: ClientErrorMessages): ErrorModel {
-    return new ErrorModel(StatusCode.BAD_REQUEST, undefined, detail);
+    return this.generateInstanceAndLog(StatusCode.BAD_REQUEST, undefined, detail);
   }
   static unauthorized(detail?: ClientErrorMessages): ErrorModel {
-    return new ErrorModel(StatusCode.UNAUTHORIZED, undefined, detail);
+    return this.generateInstanceAndLog(StatusCode.UNAUTHORIZED, undefined, detail);
   }
   static forbidden(detail?: ClientErrorMessages): ErrorModel {
-    return new ErrorModel(StatusCode.FORBIDDEN, undefined, detail);
+    return this.generateInstanceAndLog(StatusCode.FORBIDDEN, undefined, detail);
   }
   static notFound(detail?: ClientErrorMessages): ErrorModel {
-    return new ErrorModel(StatusCode.NOT_FOUND, undefined, detail);
+    return this.generateInstanceAndLog(StatusCode.NOT_FOUND, undefined, detail);
   }
   static conflict(detail?: ClientErrorMessages): ErrorModel {
-    return new ErrorModel(StatusCode.CONFLICT, undefined, detail);
+    return this.generateInstanceAndLog(StatusCode.CONFLICT, undefined, detail);
   }
   static unprocessable(detail?: ClientErrorMessages): ErrorModel {
-    return new ErrorModel(StatusCode.UNPROCESSABLE_ENTITY, undefined, detail);
+    return this.generateInstanceAndLog(StatusCode.UNPROCESSABLE_ENTITY, undefined, detail);
   }
   static locked(detail?: ClientErrorMessages): ErrorModel {
-    return new ErrorModel(StatusCode.LOCKED, undefined, detail);
+    return this.generateInstanceAndLog(StatusCode.LOCKED, undefined, detail);
   }
   static server(detail?: ClientErrorMessages): ErrorModel {
-    return new ErrorModel(StatusCode.INTERNAL_SERVER_ERROR, undefined, detail);
+    return this.generateInstanceAndLog(StatusCode.INTERNAL_SERVER_ERROR, undefined, detail);
+  }
+
+  private static generateFromZodError(error: ZodError): ErrorModel {
+    this.logger.error('Zod validation failed', { errors: error.errors });
+    const validationDetails = error.errors.map((e) => `(${e.path.join('.') || 'root'}: ${e.message})`).join(', ');
+
+    return this.generateInstanceAndLog(StatusCode.BAD_REQUEST, `Validation failed: ${validationDetails}`);
+  }
+
+  private static generateInstanceAndLog(
+    statusCode: StatusCode,
+    message?: string,
+    detail?: ClientErrorMessages,
+  ): ErrorModel {
+    const errorInstance = new ErrorModel(statusCode, message, detail);
+    const context = this.extractContextFromStack(errorInstance.stack);
+
+    this.logger.error(`ErrorModel catched error`, {
+      statusCode: errorInstance.statusCode,
+      message: errorInstance.message,
+      detail: errorInstance.detail,
+      ...context,
+    });
+
+    return errorInstance;
+  }
+
+  private static extractContextFromStack(stack?: string): {
+    callerLine?: string;
+    fileName?: string;
+    lineNumber?: number;
+    columnNumber?: number;
+  } {
+    if (!stack) return {};
+
+    const lines = stack.split('\n');
+
+    const callerLine = lines[3]?.trim();
+
+    if (!callerLine) return {};
+
+    const match = callerLine.match(/\((.*):(\d+):(\d+)\)/);
+    if (!match) return { callerLine };
+
+    const [, fileName, lineStr, columnStr] = match;
+    const lineNumber = Number(lineStr);
+    const columnNumber = Number(columnStr);
+
+    return {
+      callerLine,
+      fileName,
+      lineNumber,
+      columnNumber,
+    };
   }
 }

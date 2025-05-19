@@ -17,6 +17,8 @@ export class PatientRelativesRepository implements IPatientRelativesRepository {
       .leftJoin('Relationships', 'Relationships.id', 'Families.relationshipId')
       .select((eb) => [
         'Principal.id',
+        'Principal.fmpId',
+        'Principal.nhcId',
         'Principal.firstName',
         'Principal.lastName',
         'Principal.secondLastName',
@@ -25,6 +27,8 @@ export class PatientRelativesRepository implements IPatientRelativesRepository {
         SqlJSONHelper.jsonArrayObject(
           [
             eb.ref('Relatives.id'),
+            eb.ref('Relatives.fmpId'),
+            eb.ref('Relatives.nhcId'),
             eb.ref('Relatives.firstName'),
             eb.ref('Relatives.lastName'),
             eb.ref('Relatives.secondLastName'),
@@ -48,6 +52,8 @@ export class PatientRelativesRepositoryMock implements IPatientRelativesReposito
   async execute(): Promise<PatientDTO | null> {
     return {
       id: 1,
+      fmpId: '239254',
+      nhcId: '00612719',
       firstName: 'Renato',
       lastName: 'Berrocal',
       secondLastName: 'Vignolo',
@@ -56,6 +62,8 @@ export class PatientRelativesRepositoryMock implements IPatientRelativesReposito
       relatives: [
         {
           id: 2,
+          fmpId: '239254',
+          nhcId: '00612719',
           firstName: 'Renato',
           lastName: 'Berrocal',
           secondLastName: 'Vignolo',

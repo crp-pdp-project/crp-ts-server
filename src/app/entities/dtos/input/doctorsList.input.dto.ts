@@ -10,6 +10,7 @@ export const DoctorsListQueryDTOSchema = z
       example: '2600',
     }),
   })
+  .strict()
   .openapi({
     description: 'Doctors List Query Strings',
   });
