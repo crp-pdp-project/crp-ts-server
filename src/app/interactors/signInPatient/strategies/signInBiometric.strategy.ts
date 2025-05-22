@@ -43,16 +43,20 @@ export class SignInBiometricStrategy implements ISignInStrategy {
   }
 
   private async validatePassword(body: SignInBiometricBodyDTO, account: AccountDTO): Promise<void> {
+    if(!account.biometricHash || !account.biometricSalt) {
+      throw ErrorModel.forbidden(ClientErrorMessages.BIOMETRIC_NOT_ENROLLED);
+    }
+
     const isValidPassword = await this.encryptionManager.comparePassword(
       body.password,
-      account.biometricHash!,
-      account.biometricSalt!,
+      account.biometricHash,
+      account.biometricSalt,
     );
 
     if (isValidPassword) {
       await this.signInManager.handleSuccess(account);
     } else {
-      await this.signInManager.handleFailure(account);
+      throw ErrorModel.forbidden(ClientErrorMessages.BIOMETRIC_INVALID);
     }
   }
 }

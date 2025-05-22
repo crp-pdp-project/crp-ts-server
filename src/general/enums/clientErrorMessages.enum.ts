@@ -9,6 +9,8 @@ export enum ClientErrorMessages {
   JWE_TOKEN_INVALID = 'No pudimos validar tu sesión. Prueba otra vez o inicia sesión nuevamente',
   SIGN_IN_INVALID = 'Recuerda que al tercer intento erróneo de contraseña, tu acceso será bloqueado',
   SIGN_IN_BLOCKED = 'Su cuenta se encuentra bloqueada. Intenta nuevamente más tarde',
+  BIOMETRIC_INVALID = 'El dispositivo ya no se encuentra afiliado a tu cuenta. Inicia sesión con tu contraseña',
+  BIOMETRIC_NOT_ENROLLED= 'Tu cuenta no esta afiliada a ningun dispositivo. Inicia sesión con tu contraseña',
   APPOINTMENT_REPEATED = 'Ya existe una cita programada en la hora seleccionada',
   ID_NOT_VALID = 'No tienes acceso a los datos del paciente seleccionado. Intenta seleccionando otro',
 }
