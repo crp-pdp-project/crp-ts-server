@@ -29,8 +29,15 @@ export class TextHelper {
   static cleanTextParentheses(text?: string): string | undefined {
     if (!text) return text;
 
-    const cleanText = text.replace(/\s*\([^)]*\)/g, '').trim();
-    return cleanText;
+    const cleaned = text.replace(/^(\s*\([^)]+\)\s*)+/, '').trim();
+    const match = cleaned.match(/^(.*?)(\s*\([^)]+\))/);
+
+    if(!match) return cleaned;
+
+    const main = match[1].trim();
+    const preserved = match[2].replace(/[()]/g, '');
+
+    return preserved ? `${main} - ${preserved}` : main;
   }
 
   static titleCase(text?: string): string | undefined {
