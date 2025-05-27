@@ -64,6 +64,7 @@ export class OpenApiManager implements IOpenApiManager {
       method,
       path,
       description,
+      summary: description,
       tags,
       request: this.buildRequest(description, { query, params, body }),
       responses: this.buildResponses(description, responses),

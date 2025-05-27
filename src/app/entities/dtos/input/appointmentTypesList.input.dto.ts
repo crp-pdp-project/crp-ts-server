@@ -7,15 +7,15 @@ export const AppointmentTypesListQueryDTOSchema = z
   .object({
     doctorId: z.coerce.string().openapi({
       description: 'Id of the doctor to filter',
-      example: '2600',
+      example: '44789755',
     }),
     specialtyId: z.coerce.string().openapi({
       description: 'Id of the specialty to filter',
-      example: '2600',
+      example: '900',
     }),
-    insuranceId: z.coerce.string().optional().openapi({
+    insuranceId: z.coerce.string().openapi({
       description: 'Id of the insurance to filter',
-      example: '2600',
+      example: '16435',
     }),
   })
   .strict()

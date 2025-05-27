@@ -3,6 +3,7 @@ import fs from 'fs/promises';
 import path, { resolve } from 'path';
 
 import { FileMigrationProvider } from 'kysely';
+
 import { LoggerClient } from 'src/clients/logger.client';
 
 export class MigrationLoader {
@@ -34,7 +35,7 @@ export class MigrationLoader {
 
     const foundLocation = possibleLocations.find((location) => existsSync(location));
 
-    this.logger.info('Found location', { location: foundLocation ?? null })
+    this.logger.info('Found location', { location: foundLocation ?? null });
 
     return foundLocation ?? '';
   }
