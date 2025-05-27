@@ -45,7 +45,7 @@ export class CreateEnrolledAccountInteractor implements ICreateEnrolledAccountIn
 
   private validateSession(session?: SessionModel): EnrollSessionModel {
     if (!(session instanceof EnrollSessionModel) || !session.isValidated) {
-      throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
+      throw ErrorModel.forbidden({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
     }
 
     return session;

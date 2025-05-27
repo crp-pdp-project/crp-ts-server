@@ -1,7 +1,7 @@
 import { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
 import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
 import { ErrorModel } from 'src/app/entities/models/error.model';
-import { ISaveSessionRepository } from 'src/app/repositories/database/saveSession.respository';
+import { IUpsertSessionRepository } from 'src/app/repositories/database/upsertSession.respository';
 import { IJWTManager } from 'src/general/managers/jwt.manager';
 
 export interface ISessionStrategy<TInput, TOutput> {
@@ -16,7 +16,7 @@ export interface ISessionInteractor<TInput, TOutput> {
 export class SessionInteractor<TInput, TOutput> implements ISessionInteractor<TInput, TOutput> {
   constructor(
     private readonly sessionStrategy: ISessionStrategy<TInput, TOutput>,
-    private readonly saveSessionRepository: ISaveSessionRepository,
+    private readonly saveSessionRepository: IUpsertSessionRepository,
     private readonly jwtManager: IJWTManager<SessionPayloadDTO>,
   ) {}
 

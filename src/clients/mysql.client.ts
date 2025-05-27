@@ -2,11 +2,13 @@ import { Kysely, MysqlDialect, ErrorLogEvent, QueryLogEvent } from 'kysely';
 import { createPool } from 'mysql2';
 
 import { AccountDM } from 'src/app/entities/dms/accounts.dm';
+import { AuthAttemptsDM } from 'src/app/entities/dms/authAttempts.dm';
 import { FamilyDM } from 'src/app/entities/dms/families.dm';
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { RelationshipDM } from 'src/app/entities/dms/relationships.dm';
 import { SessionDM } from 'src/app/entities/dms/sessions.dm';
 import { LoggerClient } from 'src/clients/logger.client';
+import { EnvHelper } from 'src/general/helpers/env.helper';
 
 export interface Database {
   Patients: PatientDM;
@@ -14,6 +16,7 @@ export interface Database {
   Sessions: SessionDM;
   Families: FamilyDM;
   Relationships: RelationshipDM;
+  AuthAttempts: AuthAttemptsDM;
 }
 
 class KyselyLogger {
@@ -42,11 +45,11 @@ export class MysqlClient {
   private constructor() {
     const dialect = new MysqlDialect({
       pool: createPool({
-        host: process.env.DB_HOST,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_NAME,
-        port: Number(process.env.DB_PORT),
+        host: EnvHelper.get('DB_HOST'),
+        user: EnvHelper.get('DB_USER'),
+        password: EnvHelper.get('DB_PASSWORD'),
+        database: EnvHelper.get('DB_NAME'),
+        port: Number(EnvHelper.get('DB_PORT')),
         connectionLimit: 10,
       }),
     });

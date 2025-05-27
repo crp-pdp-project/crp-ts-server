@@ -1,4 +1,4 @@
-import { EnrollSessionPayloadDTOSchema } from 'src/app/entities/dtos/service/EnrollsessionPayload.dto';
+import { EnrollSessionPayloadDTOSchema } from 'src/app/entities/dtos/service/enrollSessionPayload.dto';
 import { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
 import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
 import { EnrollSessionModel } from 'src/app/entities/models/enrollSession.model';
@@ -14,7 +14,7 @@ export class ValidateEnrollSessionStrategy implements IValidateSessionStrategy {
     });
 
     if (!success || (!data.external.email && !data.external.phone)) {
-      throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
+      throw ErrorModel.forbidden({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
     }
 
     return new EnrollSessionModel(session, data);

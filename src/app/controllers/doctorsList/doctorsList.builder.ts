@@ -10,12 +10,14 @@ import { DoctorsListController } from './doctorsList.controller';
 
 export class DoctorsListBuilder {
   static build(): DoctorsListController {
-    const getDoctors = new GetDoctorsRepository();
-    const getImages = new GetDoctorImagesRepository();
-    const responseStrategy = new DataResponseStrategy(DoctorsListOutputDTOSchema);
-    const doctorsInteractor = new DoctorsListInteractor(getDoctors, getImages);
-    const responseInteractor = new ResponseInteractor<DoctorListModel>(responseStrategy);
+    return new DoctorsListController(this.buildInteractor(), this.buildResponseInteractor());
+  }
 
-    return new DoctorsListController(doctorsInteractor, responseInteractor);
+  private static buildInteractor(): DoctorsListInteractor {
+    return new DoctorsListInteractor(new GetDoctorsRepository(), new GetDoctorImagesRepository());
+  }
+
+  private static buildResponseInteractor(): ResponseInteractor<DoctorListModel> {
+    return new ResponseInteractor(new DataResponseStrategy(DoctorsListOutputDTOSchema));
   }
 }

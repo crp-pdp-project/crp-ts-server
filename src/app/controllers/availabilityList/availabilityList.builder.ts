@@ -9,11 +9,14 @@ import { AvailabilityListController } from './availabilityList.controller';
 
 export class AvailabilityListBuilder {
   static build(): AvailabilityListController {
-    const availabilityList = new GetDoctorAvailabilityRepository();
-    const responseStrategy = new DataResponseStrategy(AvailabilityListOutputDTOSchema);
-    const availabilityInteractor = new AvailabilityListInteractor(availabilityList);
-    const responseInteractor = new ResponseInteractor<AvailabilityListModel>(responseStrategy);
+    return new AvailabilityListController(this.buildInteractor(), this.buildResponseInteractor());
+  }
 
-    return new AvailabilityListController(availabilityInteractor, responseInteractor);
+  private static buildInteractor(): AvailabilityListInteractor {
+    return new AvailabilityListInteractor(new GetDoctorAvailabilityRepository());
+  }
+
+  private static buildResponseInteractor(): ResponseInteractor<AvailabilityListModel> {
+    return new ResponseInteractor(new DataResponseStrategy(AvailabilityListOutputDTOSchema));
   }
 }

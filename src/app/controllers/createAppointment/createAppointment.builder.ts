@@ -11,17 +11,18 @@ import { CreateAppointmentController } from './createAppointment.controller';
 
 export class CreateAppointmentBuilder {
   static build(): CreateAppointmentController {
-    const patientRelativesValidation = new PatientRelativesValidationRepository();
-    const saveAppointment = new SaveAppointmentRepository();
-    const currentAppointments = new GetCurrentAppointmentsRepository();
-    const responseStrategy = new DataResponseStrategy(CreateAppointmentOutputDTOSchema);
-    const appointmentInteractor = new CreateAppointmentInteractor(
-      patientRelativesValidation,
-      saveAppointment,
-      currentAppointments,
-    );
-    const responseInteractor = new ResponseInteractor<AppointmentModel>(responseStrategy);
+    return new CreateAppointmentController(this.buildInteractor(), this.buildResponseInteractor());
+  }
 
-    return new CreateAppointmentController(appointmentInteractor, responseInteractor);
+  private static buildInteractor(): CreateAppointmentInteractor {
+    return new CreateAppointmentInteractor(
+      new PatientRelativesValidationRepository(),
+      new SaveAppointmentRepository(),
+      new GetCurrentAppointmentsRepository(),
+    );
+  }
+
+  private static buildResponseInteractor(): ResponseInteractor<AppointmentModel> {
+    return new ResponseInteractor(new DataResponseStrategy(CreateAppointmentOutputDTOSchema));
   }
 }

@@ -1,6 +1,7 @@
 import { LoggerClient } from 'src/clients/logger.client';
 import { RestClient } from 'src/clients/rest.client';
 import { HttpMethod } from 'src/general/enums/methods.enum';
+import { EnvHelper } from 'src/general/helpers/env.helper';
 
 type SmsMessage = {
   from: string;
@@ -27,8 +28,8 @@ export class InfobipClient {
   static readonly instance: InfobipClient = new InfobipClient();
   private readonly logger: LoggerClient = LoggerClient.instance;
   private readonly request: RestClient = RestClient.instance;
-  private readonly baseUrl: string = process.env.INFOBIP_BASE_URL ?? '';
-  private readonly apiKey: string = process.env.INFOBIP_API_KEY ?? '';
+  private readonly baseUrl: string = EnvHelper.get('INFOBIP_BASE_URL');
+  private readonly apiKey: string = EnvHelper.get('INFOBIP_API_KEY');
 
   async sendSms(message: SmsMessage): Promise<InfobipSmsResponse> {
     const url = `${this.baseUrl}/sms/3/messages`;

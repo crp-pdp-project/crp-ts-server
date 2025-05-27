@@ -32,7 +32,7 @@ export class TextHelper {
     const cleaned = text.replace(/^(\s*\([^)]+\)\s*)+/, '').trim();
     const match = cleaned.match(/^(.*?)(\s*\([^)]+\))/);
 
-    if(!match) return cleaned;
+    if (!match) return cleaned;
 
     const main = match[1].trim();
     const preserved = match[2].replace(/[()]/g, '');

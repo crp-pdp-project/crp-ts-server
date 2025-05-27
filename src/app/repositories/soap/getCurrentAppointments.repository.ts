@@ -1,8 +1,10 @@
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
 import { InetumClient } from 'src/clients/inetum.client';
-import { SoapConstants } from 'src/general/contants/soap.constants';
+import { AppointmentConstants } from 'src/general/contants/appointment.constants';
+import { CRPConstants } from 'src/general/contants/crp.constants';
 import { DateHelper } from 'src/general/helpers/date.helper';
+import { EnvHelper } from 'src/general/helpers/env.helper';
 
 type GetCurrentAppointmentsInput = {
   usuario: string;
@@ -49,10 +51,8 @@ export interface IGetCurrentAppointmentsRepository {
 }
 
 export class GetCurrentAppointmentsRepository implements IGetCurrentAppointmentsRepository {
-  private readonly user: string = process.env.INETUM_USER ?? '';
-  private readonly password: string = process.env.INETUM_PASSWORD ?? '';
-  private readonly centerId: string = process.env.CRP_CENTER_ID ?? '';
-  private readonly monthsToList = Number(process.env.CURRENT_MONTHS_LIST ?? 6);
+  private readonly user: string = EnvHelper.get('INETUM_USER');
+  private readonly password: string = EnvHelper.get('INETUM_PASSWORD');
 
   async execute(fmpId: PatientDM['fmpId'], searchDate?: string): Promise<AppointmentDTO[]> {
     const methodPayload = this.generateInput(fmpId, searchDate);
@@ -67,14 +67,14 @@ export class GetCurrentAppointmentsRepository implements IGetCurrentAppointments
       contrasena: this.password,
       peticionListadoCitas: {
         IdPaciente: fmpId,
-        IdCentro: this.centerId,
-        CanalEntrada: SoapConstants.ORIGIN,
+        IdCentro: CRPConstants.CENTER_ID,
+        CanalEntrada: CRPConstants.ORIGIN,
         FechaInicio: searchDate
           ? DateHelper.subtractDays(1, 'inetumDate', searchDate)
           : DateHelper.dateNow('inetumDate'),
         FechaFinal: searchDate
           ? DateHelper.addDays(1, 'inetumDate', searchDate)
-          : DateHelper.addMonths(this.monthsToList, 'inetumDate'),
+          : DateHelper.addMonths(AppointmentConstants.CURRENT_MONTHS_LIST, 'inetumDate'),
       },
     };
   }

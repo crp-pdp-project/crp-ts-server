@@ -7,12 +7,14 @@ import { UpdateSessionOTPRepository } from 'src/app/repositories/database/update
 
 export class SendEnrollOTPBuilder {
   static build(): SendEnrollOTPController {
-    const updateSessionOTP = new UpdateSessionOTPRepository();
-    const responseStrategy = new EmptyResponseStrategy();
-    const sendStrategy = new SendVerificationEnrollOTPStrategy();
-    const sendOTPInteractor = new SendVerificationOTPInteractor(sendStrategy, updateSessionOTP);
-    const responseInteractor = new ResponseInteractor<void>(responseStrategy);
+    return new SendEnrollOTPController(this.buildInteractor(), this.buildResponseInteractor());
+  }
 
-    return new SendEnrollOTPController(sendOTPInteractor, responseInteractor);
+  private static buildInteractor(): SendVerificationOTPInteractor {
+    return new SendVerificationOTPInteractor(new SendVerificationEnrollOTPStrategy(), new UpdateSessionOTPRepository());
+  }
+
+  private static buildResponseInteractor(): ResponseInteractor<void> {
+    return new ResponseInteractor(new EmptyResponseStrategy());
   }
 }

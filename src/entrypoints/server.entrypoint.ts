@@ -21,6 +21,8 @@ import { DashboardV1Docs } from 'src/docs/v1/dashboard.docs';
 import { EnrollV1Docs } from 'src/docs/v1/enroll.docs';
 import { ProfileV1Docs } from 'src/docs/v1/profile.docs';
 import { RecoverV1Docs } from 'src/docs/v1/recover.docs';
+import { CRPConstants } from 'src/general/contants/crp.constants';
+import { EnvHelper } from 'src/general/helpers/env.helper';
 import { OpenApiManager } from 'src/general/managers/openapi.manager';
 import swaggerTemplate from 'src/general/templates/swagger.template';
 
@@ -29,7 +31,7 @@ export class Server {
   private static readonly registry: OpenAPIRegistry = new OpenAPIRegistry();
   private static readonly manager: OpenApiManager = new OpenApiManager(this.registry);
   private static readonly logger: LoggerClient = LoggerClient.instance;
-  private static readonly port: number = Number(process.env.NODE_PORT ?? 3000);
+  private static readonly port: number = Number(EnvHelper.get('NODE_PORT'));
 
   static async start(): Promise<void> {
     try {
@@ -64,7 +66,7 @@ export class Server {
     this.registerDocs();
     this.registerRoutes();
     this.setupHttpClient();
-    await this.setupDocsEndpoint();
+    this.setupDocsEndpoint();
     await this.app.register(cors);
   }
 
@@ -109,7 +111,7 @@ export class Server {
     new AppointmentV1Router(this.app).registerRouter();
   }
 
-  private static async setupDocsEndpoint(): Promise<void> {
+  private static setupDocsEndpoint(): void {
     const generator = new OpenApiGeneratorV3(this.registry.definitions);
 
     this.app.get('/docs', async (_, reply) => {
@@ -130,7 +132,7 @@ export class Server {
       ...https.globalAgent.options,
       rejectUnauthorized: false,
       keepAlive: true,
-      timeout: Number(process.env.INETUM_TIMEOUT ?? 5000),
+      timeout: CRPConstants.SOAP_TIMEOUT,
       checkServerIdentity: () => undefined,
     };
   }

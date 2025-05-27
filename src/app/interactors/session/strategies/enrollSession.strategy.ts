@@ -1,4 +1,4 @@
-import { EnrollSessionPayloadDTOSchema } from 'src/app/entities/dtos/service/EnrollsessionPayload.dto';
+import { EnrollSessionPayloadDTOSchema } from 'src/app/entities/dtos/service/enrollSessionPayload.dto';
 import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
 import { PatientExternalModel } from 'src/app/entities/models/patientExternal.model';
 import { PatientExternalSessionModel } from 'src/app/entities/models/patientExternalSession.model';

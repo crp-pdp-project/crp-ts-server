@@ -33,9 +33,9 @@ export async function up(db: Kysely<unknown>): Promise<void> {
 }
 
 export async function down(db: Kysely<unknown>): Promise<void> {
-  await db.schema.dropIndex('UniqueFamilyPrincipalRelative').execute();
-  await db.schema.dropIndex('IndexFamilyRelationshipId').execute();
-  await db.schema.dropIndex('IndexFamilyRelativeId').execute();
-  await db.schema.dropIndex('IndexFamilyPrincipalId').execute();
+  await db.schema.dropIndex('UniqueFamilyPrincipalRelative').on(tableName).execute();
+  await db.schema.dropIndex('IndexFamilyRelationshipId').on(tableName).execute();
+  await db.schema.dropIndex('IndexFamilyRelativeId').on(tableName).execute();
+  await db.schema.dropIndex('IndexFamilyPrincipalId').on(tableName).execute();
   await db.schema.dropTable(tableName).execute();
 }

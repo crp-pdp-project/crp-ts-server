@@ -1,6 +1,7 @@
 import { DoctorDTO } from 'src/app/entities/dtos/service/doctor.dto';
 import { InetumClient } from 'src/clients/inetum.client';
-import { SoapConstants } from 'src/general/contants/soap.constants';
+import { CRPConstants } from 'src/general/contants/crp.constants';
+import { EnvHelper } from 'src/general/helpers/env.helper';
 
 type GetDoctorsInput = {
   usuario: string;
@@ -30,9 +31,8 @@ export interface IGetDoctorsRepository {
 }
 
 export class GetDoctorsRepository implements IGetDoctorsRepository {
-  private readonly user: string = process.env.INETUM_USER ?? '';
-  private readonly password: string = process.env.INETUM_PASSWORD ?? '';
-  private readonly centerId: string = process.env.CRP_CENTER_ID ?? '';
+  private readonly user: string = EnvHelper.get('INETUM_USER');
+  private readonly password: string = EnvHelper.get('INETUM_PASSWORD');
 
   async execute(specialtyId?: string): Promise<DoctorDTO[]> {
     const methodPayload = this.parseInput(specialtyId);
@@ -46,9 +46,9 @@ export class GetDoctorsRepository implements IGetDoctorsRepository {
       usuario: this.user,
       contrasena: this.password,
       peticionListadoProfesionales: {
-        IdCentro: this.centerId,
+        IdCentro: CRPConstants.CENTER_ID,
         IdEspecialidad: specialtyId,
-        CanalEntrada: SoapConstants.ORIGIN,
+        CanalEntrada: CRPConstants.ORIGIN,
       },
     };
   }

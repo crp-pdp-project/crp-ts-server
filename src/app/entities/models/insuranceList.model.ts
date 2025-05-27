@@ -4,7 +4,7 @@ import { BaseModel } from './base.model';
 import { InsuranceModel } from './insurance.model';
 
 export class InsuranceListModel extends BaseModel {
-  readonly insurances?: InsuranceModel[];
+  readonly insurances: InsuranceModel[];
 
   constructor(insurancesList: InsuranceDTO[]) {
     super();

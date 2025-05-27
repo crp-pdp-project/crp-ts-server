@@ -1,8 +1,9 @@
 import { AvailabilityRequestDTO } from 'src/app/entities/dtos/service/availabilityRequest.dto';
 import { DoctorAvailabilityDTO } from 'src/app/entities/dtos/service/doctorAvailability.dto';
 import { InetumClient } from 'src/clients/inetum.client';
-import { SoapConstants } from 'src/general/contants/soap.constants';
+import { CRPConstants } from 'src/general/contants/crp.constants';
 import { DateHelper } from 'src/general/helpers/date.helper';
+import { EnvHelper } from 'src/general/helpers/env.helper';
 
 type GetDoctorAvailabilityInput = {
   usuario: string;
@@ -46,9 +47,8 @@ export interface IGetDoctorAvailabilityRepository {
 }
 
 export class GetDoctorAvailabilityRepository implements IGetDoctorAvailabilityRepository {
-  private readonly user: string = process.env.INETUM_USER ?? '';
-  private readonly password: string = process.env.INETUM_PASSWORD ?? '';
-  private readonly centerId: string = process.env.CRP_CENTER_ID ?? '';
+  private readonly user: string = EnvHelper.get('INETUM_USER');
+  private readonly password: string = EnvHelper.get('INETUM_PASSWORD');
 
   async execute(payload: AvailabilityRequestDTO): Promise<DoctorAvailabilityDTO[]> {
     const methodPayload = this.generateInput(payload);
@@ -65,7 +65,7 @@ export class GetDoctorAvailabilityRepository implements IGetDoctorAvailabilityRe
       usuario: this.user,
       contrasena: this.password,
       peticionListadoHuecosDisponibles: {
-        IdCentro: this.centerId,
+        IdCentro: CRPConstants.CENTER_ID,
         IdEspecialidad: payload.groupId,
         IdProfesional: payload.doctorId,
         IdPrestacion: payload.appointmentTypeId,
@@ -76,7 +76,7 @@ export class GetDoctorAvailabilityRepository implements IGetDoctorAvailabilityRe
         HoraDesde: DateHelper.startOfTime('inetumTime'),
         HoraFin: DateHelper.endOfTime('inetumTime'),
         IdPaciente: payload.fmpId,
-        CanalEntrada: SoapConstants.ORIGIN,
+        CanalEntrada: CRPConstants.ORIGIN,
         PrimerHueco: String(payload.firstAvailable),
       },
     };

@@ -7,11 +7,14 @@ import { DeletePatientAccountController } from './deletePatientAccount.controlle
 
 export class DeletePatientAccountBuilder {
   static build(): DeletePatientAccountController {
-    const deletePatientAccount = new DeletePatientAccountRepository();
-    const responseStrategy = new EmptyResponseStrategy();
-    const createInteractor = new DeletePatientAccountInteractor(deletePatientAccount);
-    const responseInteractor = new ResponseInteractor<void>(responseStrategy);
+    return new DeletePatientAccountController(this.buildInteractor(), this.buildResponseInteractor());
+  }
 
-    return new DeletePatientAccountController(createInteractor, responseInteractor);
+  private static buildInteractor(): DeletePatientAccountInteractor {
+    return new DeletePatientAccountInteractor(new DeletePatientAccountRepository());
+  }
+
+  private static buildResponseInteractor(): ResponseInteractor<void> {
+    return new ResponseInteractor(new EmptyResponseStrategy());
   }
 }

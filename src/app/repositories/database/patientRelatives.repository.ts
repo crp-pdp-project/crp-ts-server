@@ -4,11 +4,11 @@ import { MysqlClient } from 'src/clients/mysql.client';
 import { SqlJSONHelper } from 'src/general/helpers/sqlJson.helper';
 
 export interface IPatientRelativesRepository {
-  execute(id: PatientDM['id']): Promise<PatientDTO | null>;
+  execute(id: PatientDM['id']): Promise<PatientDTO | undefined>;
 }
 
 export class PatientRelativesRepository implements IPatientRelativesRepository {
-  async execute(id: PatientDM['id']): Promise<PatientDTO | null> {
+  async execute(id: PatientDM['id']): Promise<PatientDTO | undefined> {
     const db = MysqlClient.instance.getDb();
     const result = await db
       .selectFrom('Patients as Principal')
@@ -44,12 +44,12 @@ export class PatientRelativesRepository implements IPatientRelativesRepository {
       .where('Principal.id', '=', id)
       .executeTakeFirst();
 
-    return result as PatientDTO;
+    return result as PatientDTO | undefined;
   }
 }
 
 export class PatientRelativesRepositoryMock implements IPatientRelativesRepository {
-  async execute(): Promise<PatientDTO | null> {
+  async execute(): Promise<PatientDTO | undefined> {
     return {
       id: 1,
       fmpId: '239254',

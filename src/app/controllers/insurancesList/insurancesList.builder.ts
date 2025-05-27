@@ -9,11 +9,14 @@ import { InsurancesListController } from './insurancesList.controller';
 
 export class InsurancesListBuilder {
   static build(): InsurancesListController {
-    const getInsurances = new GetInsurancesRepository();
-    const responseStrategy = new DataResponseStrategy(InsurancesListOutputDTOSchema);
-    const insurancesInteractor = new InsurancesListInteractor(getInsurances);
-    const responseInteractor = new ResponseInteractor<InsuranceListModel>(responseStrategy);
+    return new InsurancesListController(this.buildInteractor(), this.buildResponseInteractor());
+  }
 
-    return new InsurancesListController(insurancesInteractor, responseInteractor);
+  private static buildInteractor(): InsurancesListInteractor {
+    return new InsurancesListInteractor(new GetInsurancesRepository());
+  }
+
+  private static buildResponseInteractor(): ResponseInteractor<InsuranceListModel> {
+    return new ResponseInteractor(new DataResponseStrategy(InsurancesListOutputDTOSchema));
   }
 }

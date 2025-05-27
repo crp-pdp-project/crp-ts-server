@@ -9,13 +9,18 @@ import { UpdateBiometricPasswordController } from './updateBiometricPassword.con
 
 export class UpdateBiometricPasswordBuilder {
   static build(): UpdateBiometricPasswordController {
-    const saveBiometricPassword = new SaveBiometricPasswordRepository();
-    const responseStrategy = new EmptyResponseStrategy();
-    const encryptionConfig = new EncryptionConfigSha512();
-    const encryptionManager = new EncryptionManager(encryptionConfig);
-    const updateInteractor = new UpdateBiometricPasswordInteractor(saveBiometricPassword, encryptionManager);
-    const responseInteractor = new ResponseInteractor<void>(responseStrategy);
+    return new UpdateBiometricPasswordController(this.buildInteractor(), this.buildResponseInteractor());
+  }
 
-    return new UpdateBiometricPasswordController(updateInteractor, responseInteractor);
+  private static buildInteractor(): UpdateBiometricPasswordInteractor {
+    return new UpdateBiometricPasswordInteractor(new SaveBiometricPasswordRepository(), this.buildEncryptionManager());
+  }
+
+  private static buildEncryptionManager(): EncryptionManager {
+    return new EncryptionManager(new EncryptionConfigSha512());
+  }
+
+  private static buildResponseInteractor(): ResponseInteractor<void> {
+    return new ResponseInteractor(new EmptyResponseStrategy());
   }
 }

@@ -9,11 +9,14 @@ import { SpecialtiesListController } from './specialtiesList.controller';
 
 export class SpecialtiesListBuilder {
   static build(): SpecialtiesListController {
-    const getSpecialties = new GetSpecialtiesRepository();
-    const responseStrategy = new DataResponseStrategy(SpecialtiesListOutputDTOSchema);
-    const specialtiesInteractor = new SpecialtiesListInteractor(getSpecialties);
-    const responseInteractor = new ResponseInteractor<SpecialtyListModel>(responseStrategy);
+    return new SpecialtiesListController(this.buildInteractor(), this.buildResponseInteractor());
+  }
 
-    return new SpecialtiesListController(specialtiesInteractor, responseInteractor);
+  private static buildInteractor(): SpecialtiesListInteractor {
+    return new SpecialtiesListInteractor(new GetSpecialtiesRepository());
+  }
+
+  private static buildResponseInteractor(): ResponseInteractor<SpecialtyListModel> {
+    return new ResponseInteractor(new DataResponseStrategy(SpecialtiesListOutputDTOSchema));
   }
 }

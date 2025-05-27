@@ -1,4 +1,5 @@
 import { AccountDMSchema } from 'src/app/entities/dms/accounts.dm';
+import { AuthAttemptsDMSchema } from 'src/app/entities/dms/authAttempts.dm';
 import { FamilyDMSchema } from 'src/app/entities/dms/families.dm';
 import { PatientDMSchema } from 'src/app/entities/dms/patients.dm';
 import { RelationshipDMSchema } from 'src/app/entities/dms/relationships.dm';
@@ -14,5 +15,6 @@ export class DMDocs {
     this.manager.registerSchema('Session Data Model', SessionDMSchema);
     this.manager.registerSchema('Family Data Model', FamilyDMSchema);
     this.manager.registerSchema('Relationship Data Model', RelationshipDMSchema);
+    this.manager.registerSchema('Auth Attempt Data Model', AuthAttemptsDMSchema);
   }
 }

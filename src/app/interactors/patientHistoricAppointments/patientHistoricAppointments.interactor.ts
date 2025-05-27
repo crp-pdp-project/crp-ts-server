@@ -48,7 +48,7 @@ export class PatientHistoricAppointmentsInteractor implements IPatientHistoricAp
 
   private validateSession(session?: SessionModel): SignInSessionModel {
     if (!(session instanceof SignInSessionModel)) {
-      throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
+      throw ErrorModel.forbidden({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
     }
 
     return session;
@@ -65,7 +65,7 @@ export class PatientHistoricAppointmentsInteractor implements IPatientHistoricAp
     const isRelative = relatives.some((relative) => relative.fmpId === fmpId);
 
     if (!isSelf && !isRelative) {
-      throw ErrorModel.badRequest(ClientErrorMessages.ID_NOT_VALID);
+      throw ErrorModel.badRequest({ detail: ClientErrorMessages.ID_NOT_VALID });
     }
   }
 

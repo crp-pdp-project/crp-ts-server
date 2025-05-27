@@ -20,34 +20,34 @@ import {
 import { JWTManager } from 'src/general/managers/jwt.manager';
 
 export class ValidateSessionBuilder {
-  private static buildController(jwtConfig: IJWTConfig, strategy: IValidateSessionStrategy): ValidateSessionController {
-    const getPatientSession = new GetPatientSessionRepository();
-    const jwtManager = new JWTManager<SessionPayloadDTO>(jwtConfig);
-    const responseStrategy = new EmptyResponseStrategy();
-    const validateInteractor = new ValidateSessionInteractor(jwtManager, strategy, getPatientSession);
-    const responseInteractor = new ResponseInteractor<void>(responseStrategy);
-
-    return new ValidateSessionController(validateInteractor, responseInteractor);
-  }
   static buildEnroll(): ValidateSessionController {
-    const jwtConfig = new JWTConfigEnroll();
-    const validateStrategy = new ValidateEnrollSessionStrategy();
-
-    return this.buildController(jwtConfig, validateStrategy);
+    return this.buildController(new JWTConfigEnroll(), new ValidateEnrollSessionStrategy());
   }
 
   static buildRecover(): ValidateSessionController {
-    const jwtConfig = new JWTConfigRecover();
-    const validateStrategy = new ValidateRecoverSessionStrategy();
-
-    return this.buildController(jwtConfig, validateStrategy);
+    return this.buildController(new JWTConfigRecover(), new ValidateRecoverSessionStrategy());
   }
 
   static buildPatient(): ValidateSessionController {
-    const updateSessionExpire = new UpdateSessionExpireRepository();
-    const jwtConfig = new JWTConfigSession();
-    const validateStrategy = new ValidateSignInSessionStrategy(updateSessionExpire);
+    return this.buildController(
+      new JWTConfigSession(),
+      new ValidateSignInSessionStrategy(new UpdateSessionExpireRepository()),
+    );
+  }
 
-    return this.buildController(jwtConfig, validateStrategy);
+  private static buildController(jwtConfig: IJWTConfig, strategy: IValidateSessionStrategy): ValidateSessionController {
+    return new ValidateSessionController(this.buildInteractor(strategy, jwtConfig), this.buildResponseInteractor());
+  }
+
+  private static buildInteractor(strategy: IValidateSessionStrategy, jwtConfig: IJWTConfig): ValidateSessionInteractor {
+    return new ValidateSessionInteractor(
+      new JWTManager<SessionPayloadDTO>(jwtConfig),
+      strategy,
+      new GetPatientSessionRepository(),
+    );
+  }
+
+  private static buildResponseInteractor(): ResponseInteractor<void> {
+    return new ResponseInteractor(new EmptyResponseStrategy());
   }
 }

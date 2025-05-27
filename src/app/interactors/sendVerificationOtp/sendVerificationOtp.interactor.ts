@@ -1,12 +1,11 @@
 import { FastifyRequest } from 'fastify';
 
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { SessionDM } from 'src/app/entities/dms/sessions.dm';
 import { EnrollSessionModel } from 'src/app/entities/models/enrollSession.model';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { RecoverSessionModel } from 'src/app/entities/models/recoverSession.model';
 import { SessionModel } from 'src/app/entities/models/session.model';
 import { IUpdateSessionOTPRepository } from 'src/app/repositories/database/updateSessionOTP.repository';
+import { OTPConstants } from 'src/general/contants/otp.constants';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 export interface ISendVerificationOTPStrategy {
@@ -27,7 +26,7 @@ export class SendVerificationOTPInteractor implements ISendVerificationOTPIntera
     try {
       const session = this.validateSession(input.session);
       const otp = await this.sendStrategy.sendOTP(session);
-      await this.addOtpToSession(session.jti, session.patient.id, otp);
+      await this.addOtpToSession(session, otp);
     } catch (error) {
       return ErrorModel.fromError(error);
     }
@@ -36,13 +35,19 @@ export class SendVerificationOTPInteractor implements ISendVerificationOTPIntera
   private validateSession(session?: SessionModel): EnrollSessionModel | RecoverSessionModel {
     const typeInvalid = !(session instanceof RecoverSessionModel) && !(session instanceof EnrollSessionModel);
     if (typeInvalid) {
-      throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
+      throw ErrorModel.forbidden({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
+    }
+
+    if ((session.otpSendCount ?? 0) >= OTPConstants.MAX_SEND_COUNT) {
+      throw ErrorModel.badRequest({ detail: ClientErrorMessages.OTP_SEND_LIMIT });
     }
 
     return session;
   }
 
-  private async addOtpToSession(jti: SessionDM['jti'], patientId: PatientDM['id'], otp: string): Promise<void> {
-    await this.updateSessionOtp.execute(jti, patientId, otp);
+  private async addOtpToSession(session: EnrollSessionModel | RecoverSessionModel, otp: string): Promise<void> {
+    const newSendCount = (session.otpSendCount ?? 0) + 1;
+
+    await this.updateSessionOtp.execute(session.jti, session.patient.id, otp, newSendCount);
   }
 }

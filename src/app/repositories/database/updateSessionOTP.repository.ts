@@ -4,7 +4,12 @@ import { SessionDM } from 'src/app/entities/dms/sessions.dm';
 import { MysqlClient } from 'src/clients/mysql.client';
 
 export interface IUpdateSessionOTPRepository {
-  execute(jti: SessionDM['jti'], patientId: SessionDM['patientId'], otp: SessionDM['otp']): Promise<UpdateResult>;
+  execute(
+    jti: SessionDM['jti'],
+    patientId: SessionDM['patientId'],
+    otp: SessionDM['otp'],
+    otpSendCount: SessionDM['otpSendCount'],
+  ): Promise<UpdateResult>;
 }
 
 export class UpdateSessionOTPRepository implements IUpdateSessionOTPRepository {
@@ -12,11 +17,12 @@ export class UpdateSessionOTPRepository implements IUpdateSessionOTPRepository {
     jti: SessionDM['jti'],
     patientId: SessionDM['patientId'],
     otp: SessionDM['otp'],
+    otpSendCount: SessionDM['otpSendCount'],
   ): Promise<UpdateResult> {
     const db = MysqlClient.instance.getDb();
     return db
       .updateTable('Sessions')
-      .set({ otp })
+      .set({ otp, otpSendCount })
       .where('jti', '=', jti)
       .where('patientId', '=', patientId)
       .executeTakeFirstOrThrow();

@@ -40,7 +40,7 @@ export class AvailabilityListInteractor implements IAvailabilityListInteractor {
 
   private validateSession(session?: SessionModel): PatientDM['fmpId'] {
     if (!(session instanceof SignInSessionModel)) {
-      throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
+      throw ErrorModel.forbidden({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
     }
 
     return session.patient.fmpId;

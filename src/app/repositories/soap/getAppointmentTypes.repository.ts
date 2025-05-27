@@ -1,5 +1,7 @@
 import { AppointmentTypeDTO } from 'src/app/entities/dtos/service/appointmentType.dto';
 import { InetumClient } from 'src/clients/inetum.client';
+import { CRPConstants } from 'src/general/contants/crp.constants';
+import { EnvHelper } from 'src/general/helpers/env.helper';
 
 type GetAppointmentTypesInput = {
   usuario: string;
@@ -29,9 +31,8 @@ export interface IGetAppointmentTypesRepository {
 }
 
 export class GetAppointmentTypesRepository implements IGetAppointmentTypesRepository {
-  private readonly user: string = process.env.INETUM_USER ?? '';
-  private readonly password: string = process.env.INETUM_PASSWORD ?? '';
-  private readonly centerId: string = process.env.CRP_CENTER_ID ?? '';
+  private readonly user: string = EnvHelper.get('INETUM_USER');
+  private readonly password: string = EnvHelper.get('INETUM_PASSWORD');
 
   async execute(doctorId: string, specialtyId: string, insuranceId?: string): Promise<AppointmentTypeDTO[]> {
     const methodPayload = this.parseInput(doctorId, specialtyId, insuranceId);
@@ -45,7 +46,7 @@ export class GetAppointmentTypesRepository implements IGetAppointmentTypesReposi
       usuario: this.user,
       contrasena: this.password,
       peticionListadoPrestaciones: {
-        IdCentro: this.centerId,
+        IdCentro: CRPConstants.CENTER_ID,
         IdEspecialidad: specialtyId,
         IdProfesional: doctorId,
         IdSociedad: insuranceId,

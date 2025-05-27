@@ -6,11 +6,14 @@ import { CleanSessionRepository } from 'src/app/repositories/database/cleanSessi
 
 export class SignOutPatientBuilder {
   static build(): SignOutPatientController {
-    const cleanSession = new CleanSessionRepository();
-    const responseStrategy = new EmptyResponseStrategy();
-    const sendOTPInteractor = new SignOutPatientInteractor(cleanSession);
-    const responseInteractor = new ResponseInteractor<void>(responseStrategy);
+    return new SignOutPatientController(this.buildInteractor(), this.buildResponseInteractor());
+  }
 
-    return new SignOutPatientController(sendOTPInteractor, responseInteractor);
+  private static buildInteractor(): SignOutPatientInteractor {
+    return new SignOutPatientInteractor(new CleanSessionRepository());
+  }
+
+  private static buildResponseInteractor(): ResponseInteractor<void> {
+    return new ResponseInteractor(new EmptyResponseStrategy());
   }
 }

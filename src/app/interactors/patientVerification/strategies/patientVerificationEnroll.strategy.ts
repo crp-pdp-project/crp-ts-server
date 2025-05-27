@@ -15,12 +15,11 @@ export class PatientVerificationEnrollStrategy implements IPatientVerificationSt
     private readonly savePatientRepository: ISavePatientRepository,
   ) {}
 
-  async persisVerification(searchResult: PatientExternalDTO, patient?: PatientDTO | null): Promise<PatientDTO> {
-    let id = patient?.id ?? 0;
+  async persistVerification(searchResult: PatientExternalDTO, patient?: PatientDTO): Promise<PatientDTO> {
     if (!patient) {
       const patientToSave = this.createPatientDTO(searchResult);
       await this.confirmPatientCreation(searchResult);
-      id = await this.persistPatient(patientToSave);
+      const id = await this.persistPatient(patientToSave);
 
       return { id } as PatientDTO;
     } else {
@@ -32,7 +31,7 @@ export class PatientVerificationEnrollStrategy implements IPatientVerificationSt
 
   private accountCheck(patient?: PatientDTO | null): void {
     if (patient?.account) {
-      throw ErrorModel.badRequest(ClientErrorMessages.PATIENT_REGISTERED);
+      throw ErrorModel.badRequest({ detail: ClientErrorMessages.PATIENT_REGISTERED });
     }
   }
 
@@ -55,7 +54,7 @@ export class PatientVerificationEnrollStrategy implements IPatientVerificationSt
     const confirmationResult = await this.confirmPatientRepository.execute(searchResult);
 
     if (confirmationResult.fmpId !== searchResult.fmpId) {
-      throw ErrorModel.unprocessable(ClientErrorMessages.UNPROCESSABLE_PATIENT);
+      throw ErrorModel.unprocessable({ detail: ClientErrorMessages.UNPROCESSABLE_PATIENT });
     }
   }
 

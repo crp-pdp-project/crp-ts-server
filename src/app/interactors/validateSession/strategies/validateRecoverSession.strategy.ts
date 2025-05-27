@@ -14,7 +14,7 @@ export class ValidateRecoverSessionStrategy implements IValidateSessionStrategy 
     });
 
     if (!success || (!data.external.email && !data.external.phone)) {
-      throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
+      throw ErrorModel.forbidden({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
     }
 
     return new RecoverSessionModel(session, data);

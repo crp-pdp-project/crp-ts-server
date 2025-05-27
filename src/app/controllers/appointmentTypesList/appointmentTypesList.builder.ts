@@ -9,11 +9,14 @@ import { AppointmentTypesListController } from './appointmentTypesList.controlle
 
 export class AppointmentTypesListBuilder {
   static build(): AppointmentTypesListController {
-    const getAppointmentTypes = new GetAppointmentTypesRepository();
-    const responseStrategy = new DataResponseStrategy(AppointmentTypesListOutputDTOSchema);
-    const appointmentTypesInteractor = new AppointmentTypesListInteractor(getAppointmentTypes);
-    const responseInteractor = new ResponseInteractor<AppointmentTypeListModel>(responseStrategy);
+    return new AppointmentTypesListController(this.buildInteractor(), this.buildResponseInteractor());
+  }
 
-    return new AppointmentTypesListController(appointmentTypesInteractor, responseInteractor);
+  private static buildInteractor(): AppointmentTypesListInteractor {
+    return new AppointmentTypesListInteractor(new GetAppointmentTypesRepository());
+  }
+
+  private static buildResponseInteractor(): ResponseInteractor<AppointmentTypeListModel> {
+    return new ResponseInteractor(new DataResponseStrategy(AppointmentTypesListOutputDTOSchema));
   }
 }
