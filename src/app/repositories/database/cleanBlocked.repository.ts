@@ -10,10 +10,7 @@ export interface ICleanBlockedRepository {
 export class CleanBlockedRepository implements ICleanBlockedRepository {
   async execute(id: AuthAttemptsDM['id']): Promise<DeleteResult> {
     const db = MysqlClient.instance.getDb();
-    return db
-      .deleteFrom('AuthAttempts')
-      .where('id', '=', id)
-      .executeTakeFirstOrThrow();
+    return db.deleteFrom('AuthAttempts').where('id', '=', id).executeTakeFirstOrThrow();
   }
 }
 
