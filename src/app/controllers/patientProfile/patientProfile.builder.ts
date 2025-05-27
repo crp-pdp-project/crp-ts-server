@@ -9,11 +9,14 @@ import { PatientProfileController } from './patientProfile.controller';
 
 export class PatientProfileBuilder {
   static build(): PatientProfileController {
-    const searchPatient = new SearchPatientRepository();
-    const responseStrategy = new DataResponseStrategy(PatientProfileOutputDTOSchema);
-    const profileInteractor = new PatientProfileInteractor(searchPatient);
-    const responseInteractor = new ResponseInteractor<PatientProfileModel>(responseStrategy);
+    return new PatientProfileController(this.buildInteractor(), this.buildResponseInteractor());
+  }
 
-    return new PatientProfileController(profileInteractor, responseInteractor);
+  private static buildInteractor(): PatientProfileInteractor {
+    return new PatientProfileInteractor(new SearchPatientRepository());
+  }
+
+  private static buildResponseInteractor(): ResponseInteractor<PatientProfileModel> {
+    return new ResponseInteractor(new DataResponseStrategy(PatientProfileOutputDTOSchema));
   }
 }

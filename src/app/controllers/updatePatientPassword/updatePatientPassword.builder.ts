@@ -9,18 +9,22 @@ import { EncryptionManager } from 'src/general/managers/encryption.manager';
 
 export class UpdatePatientPasswordBuilder {
   static build(): UpdatePatientPasswordController {
-    const updatePatientPassowrd = new UpdatePatientPasswordRepository();
-    const cleanSession = new CleanSessionRepository();
-    const responseStrategy = new EmptyResponseStrategy();
-    const encryptionConfig = new EncryptionConfigSha512();
-    const encryptionManager = new EncryptionManager(encryptionConfig);
-    const updateInteractor = new UpdatePatientPasswordInteractor(
-      updatePatientPassowrd,
-      cleanSession,
-      encryptionManager,
-    );
-    const responseInteractor = new ResponseInteractor<void>(responseStrategy);
+    return new UpdatePatientPasswordController(this.buildInteractor(), this.buildResponseInteractor());
+  }
 
-    return new UpdatePatientPasswordController(updateInteractor, responseInteractor);
+  private static buildInteractor(): UpdatePatientPasswordInteractor {
+    return new UpdatePatientPasswordInteractor(
+      new UpdatePatientPasswordRepository(),
+      new CleanSessionRepository(),
+      this.buildEncryptionManager(),
+    );
+  }
+
+  private static buildEncryptionManager(): EncryptionManager {
+    return new EncryptionManager(new EncryptionConfigSha512());
+  }
+
+  private static buildResponseInteractor(): ResponseInteractor<void> {
+    return new ResponseInteractor(new EmptyResponseStrategy());
   }
 }

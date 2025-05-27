@@ -1,4 +1,5 @@
 import { AppointmentConstants } from 'src/general/contants/appointment.constants';
+import { CRPConstants } from 'src/general/contants/crp.constants';
 import { AppointmentModes } from 'src/general/enums/appointmentMode.enum';
 import { AppointmentStates } from 'src/general/enums/appointmentState.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
@@ -12,7 +13,6 @@ import { InsuranceModel } from './insurance.model';
 import { SpecialtyModel } from './specialty.model';
 
 export class AppointmentModel extends BaseModel {
-  readonly #virtualId: string = process.env.CRP_VIRTUAL_ID ?? '';
   readonly id?: string;
   readonly episodeId?: string;
   readonly date?: string;
@@ -35,7 +35,7 @@ export class AppointmentModel extends BaseModel {
     this.date = appointment.date ? DateHelper.toFormatDateTime(appointment.date, 'spanishDateTime') : appointment.date;
     this.status = AppointmentStates[appointment.status as keyof typeof AppointmentStates] ?? AppointmentStates.Citado;
     this.mode = appointment.appointmentType?.id
-      ? appointment.appointmentType.id.includes(this.#virtualId)
+      ? appointment.appointmentType.id.includes(CRPConstants.VIRTUAL_ID)
         ? AppointmentModes.REMOTE
         : AppointmentModes.IN_PERSON
       : undefined;

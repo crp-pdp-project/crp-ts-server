@@ -25,7 +25,7 @@ export class DeletePatientAccountInteractor implements IDeletePatientAccountInte
 
   private validateSession(session?: SessionModel): AccountDM['id'] {
     if (!(session instanceof SignInSessionModel)) {
-      throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
+      throw ErrorModel.forbidden({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
     }
 
     return session.patient.account.id;

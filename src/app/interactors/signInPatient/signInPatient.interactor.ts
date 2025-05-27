@@ -1,27 +1,21 @@
 import { FastifyRequest } from 'fastify';
 
-import { SignInBiometricInputDTO } from 'src/app/entities/dtos/input/signInBiometric.input.dto';
-import { SignInPatientBodyDTO, SignInPatientInputDTO } from 'src/app/entities/dtos/input/signInPatient.input.dto';
 import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { PatientModel } from 'src/app/entities/models/patient.model';
 
 export interface ISignInStrategy {
-  signIn(body: SignInPatientBodyDTO | SignInBiometricInputDTO): Promise<PatientDTO>;
+  signIn(body: unknown): Promise<PatientDTO>;
 }
 
 export interface ISignInPatientInteractor {
-  signIn(
-    input: FastifyRequest<SignInPatientInputDTO> | FastifyRequest<SignInBiometricInputDTO>,
-  ): Promise<PatientModel | ErrorModel>;
+  signIn(input: FastifyRequest): Promise<PatientModel | ErrorModel>;
 }
 
 export class SignInPatientInteractor implements ISignInPatientInteractor {
   constructor(private readonly signInStrategy: ISignInStrategy) {}
 
-  async signIn(
-    input: FastifyRequest<SignInPatientInputDTO> | FastifyRequest<SignInBiometricInputDTO>,
-  ): Promise<PatientModel | ErrorModel> {
+  async signIn(input: FastifyRequest): Promise<PatientModel | ErrorModel> {
     try {
       const patient = await this.signInStrategy.signIn(input.body);
 

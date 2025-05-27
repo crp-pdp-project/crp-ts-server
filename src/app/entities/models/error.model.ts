@@ -47,29 +47,29 @@ export class ErrorModel extends Error {
     }
   }
 
-  static badRequest(detail?: ClientErrorMessages): ErrorModel {
-    return this.generateInstanceAndLog(StatusCode.BAD_REQUEST, undefined, detail);
+  static badRequest(options?: { detail?: ClientErrorMessages; message?: string }): ErrorModel {
+    return this.generateInstanceAndLog(StatusCode.BAD_REQUEST, options?.message, options?.detail);
   }
-  static unauthorized(detail?: ClientErrorMessages): ErrorModel {
-    return this.generateInstanceAndLog(StatusCode.UNAUTHORIZED, undefined, detail);
+  static unauthorized(options?: { detail?: ClientErrorMessages; message?: string }): ErrorModel {
+    return this.generateInstanceAndLog(StatusCode.UNAUTHORIZED, options?.message, options?.detail);
   }
-  static forbidden(detail?: ClientErrorMessages): ErrorModel {
-    return this.generateInstanceAndLog(StatusCode.FORBIDDEN, undefined, detail);
+  static forbidden(options?: { detail?: ClientErrorMessages; message?: string }): ErrorModel {
+    return this.generateInstanceAndLog(StatusCode.FORBIDDEN, options?.message, options?.detail);
   }
-  static notFound(detail?: ClientErrorMessages): ErrorModel {
-    return this.generateInstanceAndLog(StatusCode.NOT_FOUND, undefined, detail);
+  static notFound(options?: { detail?: ClientErrorMessages; message?: string }): ErrorModel {
+    return this.generateInstanceAndLog(StatusCode.NOT_FOUND, options?.message, options?.detail);
   }
-  static conflict(detail?: ClientErrorMessages): ErrorModel {
-    return this.generateInstanceAndLog(StatusCode.CONFLICT, undefined, detail);
+  static conflict(options?: { detail?: ClientErrorMessages; message?: string }): ErrorModel {
+    return this.generateInstanceAndLog(StatusCode.CONFLICT, options?.message, options?.detail);
   }
-  static unprocessable(detail?: ClientErrorMessages): ErrorModel {
-    return this.generateInstanceAndLog(StatusCode.UNPROCESSABLE_ENTITY, undefined, detail);
+  static unprocessable(options?: { detail?: ClientErrorMessages; message?: string }): ErrorModel {
+    return this.generateInstanceAndLog(StatusCode.UNPROCESSABLE_ENTITY, options?.message, options?.detail);
   }
-  static locked(detail?: ClientErrorMessages): ErrorModel {
-    return this.generateInstanceAndLog(StatusCode.LOCKED, undefined, detail);
+  static locked(options?: { detail?: ClientErrorMessages; message?: string }): ErrorModel {
+    return this.generateInstanceAndLog(StatusCode.LOCKED, options?.message, options?.detail);
   }
-  static server(detail?: ClientErrorMessages): ErrorModel {
-    return this.generateInstanceAndLog(StatusCode.INTERNAL_SERVER_ERROR, undefined, detail);
+  static server(options?: { detail?: ClientErrorMessages; message?: string }): ErrorModel {
+    return this.generateInstanceAndLog(StatusCode.INTERNAL_SERVER_ERROR, options?.message, options?.detail);
   }
 
   private static generateFromZodError(error: ZodError): ErrorModel {

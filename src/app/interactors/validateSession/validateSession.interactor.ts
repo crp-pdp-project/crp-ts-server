@@ -42,7 +42,7 @@ export class ValidateSessionInteractor implements IValidateSessionInteractor {
     const { authorization } = headers;
 
     if (!authorization?.startsWith('Bearer ')) {
-      throw ErrorModel.unauthorized(ClientErrorMessages.JWE_TOKEN_INVALID);
+      throw ErrorModel.unauthorized({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
     }
 
     return authorization.slice(7);
@@ -52,7 +52,7 @@ export class ValidateSessionInteractor implements IValidateSessionInteractor {
     const result = await this.jwtManager.verifyToken(token);
 
     if (!result.payload || !result.payload?.jti) {
-      throw ErrorModel.unauthorized(ClientErrorMessages.JWE_TOKEN_INVALID);
+      throw ErrorModel.unauthorized({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
     }
 
     return result;
@@ -62,7 +62,7 @@ export class ValidateSessionInteractor implements IValidateSessionInteractor {
     const session = await this.getPatientSession.execute(payload.jti);
 
     if (!session) {
-      throw ErrorModel.unauthorized(ClientErrorMessages.JWE_TOKEN_INVALID);
+      throw ErrorModel.unauthorized({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
     }
 
     return session;

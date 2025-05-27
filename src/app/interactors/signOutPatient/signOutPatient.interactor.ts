@@ -26,7 +26,7 @@ export class SignOutPatientInteractor implements ISignOutPatientInteractor {
 
   private validateSession(session?: SessionModel): SignInSessionModel {
     if (!(session instanceof SignInSessionModel)) {
-      throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
+      throw ErrorModel.forbidden({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
     }
 
     return session;

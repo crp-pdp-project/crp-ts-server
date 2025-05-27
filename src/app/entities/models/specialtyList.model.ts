@@ -4,7 +4,7 @@ import { BaseModel } from './base.model';
 import { SpecialtyModel } from './specialty.model';
 
 export class SpecialtyListModel extends BaseModel {
-  readonly specialties?: SpecialtyModel[];
+  readonly specialties: SpecialtyModel[];
 
   constructor(specialtiesList: SpecialtyDTO[]) {
     super();

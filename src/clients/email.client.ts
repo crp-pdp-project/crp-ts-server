@@ -1,10 +1,13 @@
 import nodemailer, { Transporter } from 'nodemailer';
 
 import { LoggerClient } from 'src/clients/logger.client';
+import { EmailConstants } from 'src/general/contants/email.constants';
+import { EmailSubjects } from 'src/general/enums/emailSubject.enum';
+import { EnvHelper } from 'src/general/helpers/env.helper';
 
 type EmailOptions = {
   to: string;
-  subject: string;
+  subject: EmailSubjects;
   html: string;
   from?: string;
 };
@@ -22,15 +25,15 @@ export class EmailClient {
     this.transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+        user: EnvHelper.get('SMTP_USER'),
+        pass: EnvHelper.get('SMTP_PASS'),
       },
     });
   }
 
   async send(options: EmailOptions): Promise<void> {
     const result = await this.transporter.sendMail({
-      from: options.from ?? `"${process.env.EMAIL_FROM_NAME}" <${process.env.EMAIL_FROM_ADDRESS}>`,
+      from: options.from ?? `"${EmailConstants.FROM_NAME}" <${EmailConstants.FROM_ADDRESS}>`,
       to: options.to,
       subject: options.subject,
       html: options.html,

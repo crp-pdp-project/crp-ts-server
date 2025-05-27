@@ -7,14 +7,14 @@ export interface ISignInPatientRepository {
   execute(
     documentType: PatientDM['documentType'],
     documentNumber: PatientDM['documentNumber'],
-  ): Promise<PatientDTO | null>;
+  ): Promise<PatientDTO | undefined>;
 }
 
 export class SignInPatientRepository implements ISignInPatientRepository {
   async execute(
     documentType: PatientDM['documentType'],
     documentNumber: PatientDM['documentNumber'],
-  ): Promise<PatientDTO | null> {
+  ): Promise<PatientDTO | undefined> {
     const db = MysqlClient.instance.getDb();
     const result = await db
       .selectFrom('Patients')
@@ -29,25 +29,19 @@ export class SignInPatientRepository implements ISignInPatientRepository {
         'Patients.lastName',
         'Patients.secondLastName',
         SqlJSONHelper.jsonObject(
-          [
-            eb.ref('Accounts.id'),
-            eb.ref('Accounts.passwordHash'),
-            eb.ref('Accounts.passwordSalt'),
-            eb.ref('Accounts.tryCount'),
-            eb.ref('Accounts.blockExpiredAt'),
-          ],
+          [eb.ref('Accounts.id'), eb.ref('Accounts.passwordHash'), eb.ref('Accounts.passwordSalt')],
           { checkNull: eb.ref('Accounts.id') },
         ).as('account'),
       ])
       .where('Patients.documentType', '=', documentType)
       .where('Patients.documentNumber', '=', documentNumber)
       .executeTakeFirst();
-    return result as PatientDTO;
+    return result as PatientDTO | undefined;
   }
 }
 
 export class SignInPatientRepositoryMock implements ISignInPatientRepository {
-  async execute(): Promise<PatientDTO | null> {
+  async execute(): Promise<PatientDTO | undefined> {
     return {
       id: 1,
       fmpId: '239254',
@@ -60,8 +54,6 @@ export class SignInPatientRepositoryMock implements ISignInPatientRepository {
         id: 1,
         passwordHash: 'anyHash',
         passwordSalt: 'anySalt',
-        tryCount: 0,
-        blockExpiredAt: '2027-05-05 12:24:23',
       },
     };
   }

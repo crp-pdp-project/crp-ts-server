@@ -7,14 +7,14 @@ export interface IGetPatientAccountRepository {
   execute(
     documentType: PatientDM['documentType'],
     documentNumber: PatientDM['documentNumber'],
-  ): Promise<PatientDTO | null>;
+  ): Promise<PatientDTO | undefined>;
 }
 
 export class GetPatientAccountRepository implements IGetPatientAccountRepository {
   async execute(
     documentType: PatientDM['documentType'],
     documentNumber: PatientDM['documentNumber'],
-  ): Promise<PatientDTO | null> {
+  ): Promise<PatientDTO | undefined> {
     const db = MysqlClient.instance.getDb();
     const result = await db
       .selectFrom('Patients')
@@ -26,12 +26,12 @@ export class GetPatientAccountRepository implements IGetPatientAccountRepository
       .where('Patients.documentType', '=', documentType)
       .where('Patients.documentNumber', '=', documentNumber)
       .executeTakeFirst();
-    return result as PatientDTO;
+    return result as PatientDTO | undefined;
   }
 }
 
 export class GetPatientAccountRepositoryMock implements IGetPatientAccountRepository {
-  async execute(): Promise<PatientDTO | null> {
+  async execute(): Promise<PatientDTO | undefined> {
     return { id: 1, account: null };
   }
 }

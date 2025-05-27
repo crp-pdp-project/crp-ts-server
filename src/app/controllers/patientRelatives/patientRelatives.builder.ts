@@ -9,11 +9,14 @@ import { PatientRelativesController } from './patientRelatives.controller';
 
 export class PatientRelativesBuilder {
   static build(): PatientRelativesController {
-    const patientRelatives = new PatientRelativesRepository();
-    const responseStrategy = new DataResponseStrategy(PatientRelativesOutputDTOSchema);
-    const relativesInteractor = new PatientRelativesInteractor(patientRelatives);
-    const responseInteractor = new ResponseInteractor<PatientModel>(responseStrategy);
+    return new PatientRelativesController(this.buildInteractor(), this.buildResponseInteractor());
+  }
 
-    return new PatientRelativesController(relativesInteractor, responseInteractor);
+  private static buildInteractor(): PatientRelativesInteractor {
+    return new PatientRelativesInteractor(new PatientRelativesRepository());
+  }
+
+  private static buildResponseInteractor(): ResponseInteractor<PatientModel> {
+    return new ResponseInteractor(new DataResponseStrategy(PatientRelativesOutputDTOSchema));
   }
 }

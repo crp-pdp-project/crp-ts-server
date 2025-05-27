@@ -1,0 +1,8 @@
+export const CRPConstants = {
+  CENTER_ID: '051010100',
+  VIRTUAL_ID: '10010942',
+  ORIGIN: 'PERU',
+  DEFAULT_PATIENT_TYPE: '1',
+  SOAP_TIMEOUT: 30000,
+  TOKEN_TIMEOUT: 55,
+} as const;

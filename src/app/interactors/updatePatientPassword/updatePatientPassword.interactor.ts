@@ -45,7 +45,7 @@ export class UpdatePatientPasswordInteractor implements IUpdatePatientPasswordIn
 
   private validateSession(session?: SessionModel): RecoverSessionModel {
     if (!(session instanceof RecoverSessionModel) || !session.isValidated) {
-      throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
+      throw ErrorModel.forbidden({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
     }
 
     return session;

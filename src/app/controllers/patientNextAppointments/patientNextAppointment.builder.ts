@@ -10,15 +10,17 @@ import { PatientNextAppointmentsController } from './patientNextAppointment.cont
 
 export class PatientNextAppointmentBuilder {
   static build(): PatientNextAppointmentsController {
-    const patientRelativesValidation = new PatientRelativesValidationRepository();
-    const currentAppointments = new GetCurrentAppointmentsRepository();
-    const responseStrategy = new DataResponseStrategy(PatientNextAppointmentOutputDTOSchema);
-    const appointmentInteractor = new PatientCurrentAppointmentsInteractor(
-      patientRelativesValidation,
-      currentAppointments,
-    );
-    const responseInteractor = new ResponseInteractor<AppointmentModel | void>(responseStrategy);
+    return new PatientNextAppointmentsController(this.buildInteractor(), this.buildResponseInteractor());
+  }
 
-    return new PatientNextAppointmentsController(appointmentInteractor, responseInteractor);
+  private static buildInteractor(): PatientCurrentAppointmentsInteractor {
+    return new PatientCurrentAppointmentsInteractor(
+      new PatientRelativesValidationRepository(),
+      new GetCurrentAppointmentsRepository(),
+    );
+  }
+
+  private static buildResponseInteractor(): ResponseInteractor<AppointmentModel | void> {
+    return new ResponseInteractor(new DataResponseStrategy(PatientNextAppointmentOutputDTOSchema));
   }
 }

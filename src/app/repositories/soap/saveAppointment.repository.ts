@@ -1,8 +1,10 @@
 import { AppointmentCreateDTO } from 'src/app/entities/dtos/service/appointmentCreate.dto';
 import { AppointmentRequestDTO } from 'src/app/entities/dtos/service/appointmentRequest.dto';
 import { InetumClient } from 'src/clients/inetum.client';
-import { SoapConstants } from 'src/general/contants/soap.constants';
+import { AppointmentConstants } from 'src/general/contants/appointment.constants';
+import { CRPConstants } from 'src/general/contants/crp.constants';
 import { DateHelper } from 'src/general/helpers/date.helper';
+import { EnvHelper } from 'src/general/helpers/env.helper';
 
 type SaveAppointmentInput = {
   usuario: string;
@@ -38,9 +40,8 @@ export interface ISaveAppointmentRepository {
 }
 
 export class SaveAppointmentRepository implements ISaveAppointmentRepository {
-  private readonly user: string = process.env.INETUM_USER ?? '';
-  private readonly password: string = process.env.INETUM_PASSWORD ?? '';
-  private readonly centerId: string = process.env.CRP_CENTER_ID ?? '';
+  private readonly user: string = EnvHelper.get('INETUM_USER');
+  private readonly password: string = EnvHelper.get('INETUM_PASSWORD');
 
   async execute(payload: AppointmentRequestDTO): Promise<AppointmentCreateDTO> {
     const methodPayload = this.generateInput(payload);
@@ -55,19 +56,19 @@ export class SaveAppointmentRepository implements ISaveAppointmentRepository {
       contrasena: this.password,
       peticionAltaCita: {
         IdPaciente: payload.fmpId,
-        IdCentro: this.centerId,
+        IdCentro: CRPConstants.CENTER_ID,
         CodAgenda: payload.scheduleId,
         CodBloque: payload.blockId,
-        TipoPaciente: SoapConstants.PATIENT_TYPE,
+        TipoPaciente: CRPConstants.DEFAULT_PATIENT_TYPE,
         IdSociedad: payload.insuranceId,
         IdPrestacion: payload.appointmentTypeId,
         IdEspecialidad: payload.specialtyId,
         IdProfesional: payload.doctorId,
-        Motivo: SoapConstants.REASON_MESSAGE,
+        Motivo: AppointmentConstants.CREATE_REASON,
         FechaCita: DateHelper.toFormatDate(payload.date, 'inetumDate'),
         HoraCita: DateHelper.toFormatTime(payload.date, 'inetumTime'),
         CodInspeccion: payload.inspectionId,
-        CanalEntrada: SoapConstants.ORIGIN,
+        CanalEntrada: CRPConstants.ORIGIN,
       },
     };
   }

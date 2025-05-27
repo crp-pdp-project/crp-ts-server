@@ -60,7 +60,7 @@ export class CreateAppointmentInteractor implements ICreateAppointmentInteractor
 
   private validateSession(session?: SessionModel): SignInSessionModel {
     if (!(session instanceof SignInSessionModel)) {
-      throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
+      throw ErrorModel.forbidden({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
     }
 
     return session;
@@ -77,7 +77,7 @@ export class CreateAppointmentInteractor implements ICreateAppointmentInteractor
     const isRelative = relatives.some((relative) => relative.fmpId === fmpId);
 
     if (!isSelf && !isRelative) {
-      throw ErrorModel.badRequest(ClientErrorMessages.ID_NOT_VALID);
+      throw ErrorModel.badRequest({ detail: ClientErrorMessages.ID_NOT_VALID });
     }
   }
 
@@ -90,10 +90,10 @@ export class CreateAppointmentInteractor implements ICreateAppointmentInteractor
   private async createAppointment(payload: AppointmentRequestDTO): Promise<string> {
     const newAppointment = await this.saveAppointment.execute(payload);
     if (newAppointment.errorCode === -1) {
-      throw ErrorModel.badRequest(ClientErrorMessages.APPOINTMENT_REPEATED);
+      throw ErrorModel.badRequest({ detail: ClientErrorMessages.APPOINTMENT_REPEATED });
     }
     if (!newAppointment.id) {
-      throw ErrorModel.server();
+      throw ErrorModel.server({ message: 'Error creating the appointment, no Id received' });
     }
 
     return newAppointment.id;

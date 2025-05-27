@@ -1,8 +1,10 @@
 import { DoctorDTO } from 'src/app/entities/dtos/service/doctor.dto';
 import { SpecialtyDTO } from 'src/app/entities/dtos/service/specialty.dto';
 import { RestClient } from 'src/clients/rest.client';
+import { CRPConstants } from 'src/general/contants/crp.constants';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
+import { EnvHelper } from 'src/general/helpers/env.helper';
 
 type AuthTokenInput = {
   Usuario: string;
@@ -32,11 +34,10 @@ export interface IGetDoctorImagesRepository {
 }
 
 export class GetDoctorImagesRepository implements IGetDoctorImagesRepository {
-  private readonly user: string = process.env.CRP_USER ?? '';
-  private readonly password: string = process.env.CRP_PASSWORD ?? '';
-  private readonly tokenUrl: string = process.env.CRP_TOKEN_URL ?? '';
-  private readonly imageUrl: string = process.env.CRP_IMAGES_URL ?? '';
-  private readonly tokenTimeout: number = Number(process.env.CRP_TOKEN_TIMEOUT ?? 55);
+  private readonly user: string = EnvHelper.get('CRP_USER');
+  private readonly password: string = EnvHelper.get('CRP_PASSWORD');
+  private readonly tokenUrl: string = EnvHelper.get('CRP_TOKEN_URL');
+  private readonly imageUrl: string = EnvHelper.get('CRP_IMAGES_URL');
   private readonly rest = RestClient.instance;
   private token = '';
   private tokenExpiresAt = '';
@@ -81,7 +82,7 @@ export class GetDoctorImagesRepository implements IGetDoctorImagesRepository {
     });
 
     this.token = tokenResponse.data;
-    this.tokenExpiresAt = DateHelper.tokenRefreshTime(this.tokenTimeout);
+    this.tokenExpiresAt = DateHelper.tokenRefreshTime(CRPConstants.TOKEN_TIMEOUT);
     return this.token;
   }
 

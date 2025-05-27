@@ -197,6 +197,8 @@ SMTP_PASS=''
 
 INFOBIP_API_KEY=''
 
+JWT_SECRET=''
+
 #Endpoint envs
 INETUM_CATALOG_URL=''
 INETUM_CATALOG_BINDING_URL=''
@@ -223,29 +225,6 @@ CRP_TOKEN_URL=''
 CRP_IMAGES_URL=''
 
 INFOBIP_BASE_URL=''
-
-#Config envs
-JWT_SECRET=''
-
-EMAIL_FROM_NAME=''
-EMAIL_FROM_ADDRESS=''
-EMAIL_ENROLL_SUBJECT=''
-EMAIL_RECOVER_SUBJECT=''
-
-INFOBIP_SENDER=''
-
-CRP_CENTER_ID=''
-CRP_VIRTUAL_ID=''
-
-CRP_TOKEN_TIMEOUT=''
-
-INETUM_TIMEOUT=''
-
-LOGIN_TRY_COUNT=''
-LOGIN_BLOCK_TIME=''
-
-HISTORIC_MONTHS_LIST=''
-CURRENT_MONTHS_LIST=''
 ```
 
 > ⚠️ Without a valid `.env` file, the server will not start correctly.
@@ -267,7 +246,7 @@ This will:
 - API Server: http://localhost:3000
 - API Docs (Swagger UI): http://localhost:3000/docs
 
-## 🛠 Useful Development Commands
+## 🛠️ Useful Development Commands
 
 | Task                                 | Command         | Description                              |
 | ------------------------------------ | --------------- | ---------------------------------------- |
@@ -276,6 +255,7 @@ This will:
 | Start backend locally without Docker | yarn dev        | Run Fastify locally with nodemon         |
 | Manually start the server            | yarn init       | Run src/entrypoints/server.entrypoint.ts |
 | Run database migrations manually     | yarn migrate    | Run Kysely migrations                    |
+| Rollback database migrations         | yarn rollback   | Rollback Kysely migrations               |
 | Build project for production         | yarn build      | Clean and build into dist/               |
 | Lint code                            | yarn lint       | Run ESLint on TypeScript files           |
 | Check type safety                    | yarn typecheck  | Run TypeScript compiler                  |

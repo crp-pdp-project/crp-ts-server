@@ -1,6 +1,6 @@
 import { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
 
-import { EnrollSessionPayloadDTO } from '../dtos/service/EnrollsessionPayload.dto';
+import { EnrollSessionPayloadDTO } from '../dtos/service/enrollSessionPayload.dto';
 
 import { SessionModel } from './session.model';
 

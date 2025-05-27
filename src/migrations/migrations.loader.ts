@@ -1,6 +1,6 @@
+import { existsSync } from 'fs';
 import fs from 'fs/promises';
 import path, { resolve } from 'path';
-import { fileURLToPath } from 'url';
 
 import { FileMigrationProvider } from 'kysely';
 
@@ -8,9 +8,7 @@ export class MigrationLoader {
   private readonly migrationFolder: string;
 
   constructor() {
-    const currentDir = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
-
-    this.migrationFolder = resolve(currentDir, './tasks');
+    this.migrationFolder = this.resolveMigrationFolder();
   }
 
   getFolder(): string {
@@ -23,5 +21,14 @@ export class MigrationLoader {
       path,
       migrationFolder: this.migrationFolder,
     });
+  }
+
+  resolveMigrationFolder(): string {
+    const possibleLocations = [
+      resolve(process.cwd(), 'dist', 'tasks'),
+      resolve(process.cwd(), 'src', 'migrations', 'tasks'),
+    ];
+
+    return possibleLocations.find((location) => existsSync(location)) ?? '';
   }
 }

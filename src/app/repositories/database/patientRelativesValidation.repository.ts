@@ -16,7 +16,7 @@ export class PatientRelativesValidationRepository implements IPatientRelativesVa
       .where('Families.principalId', '=', id)
       .execute();
 
-    return result as PatientDTO[];
+    return result;
   }
 }
 

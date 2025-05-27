@@ -19,6 +19,10 @@ export const SessionDMSchema = z.object({
     description: 'One Time Password for an specific flow',
     example: '123456',
   }),
+  otpSendCount: z.number().int().nullable().openapi({
+    description: 'Number of times an OTP was sended per session',
+    example: 1,
+  }),
   isValidated: z.boolean().default(false).openapi({
     description: 'Is the one time password validated',
     example: false,

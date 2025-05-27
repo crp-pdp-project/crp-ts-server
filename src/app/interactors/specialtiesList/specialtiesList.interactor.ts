@@ -27,7 +27,7 @@ export class SpecialtiesListInteractor implements ISpecialtiesListInteractor {
 
   private validateSession(session?: SessionModel): void {
     if (!(session instanceof SignInSessionModel)) {
-      throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
+      throw ErrorModel.forbidden({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
     }
   }
 

@@ -46,7 +46,7 @@ export class RestClient {
         statusCode: response.statusCode,
         result: await response.body.text(),
       });
-      throw ErrorModel.server();
+      throw ErrorModel.server({ message: 'HTTP Error' });
     }
 
     let responseData: T;

@@ -7,7 +7,7 @@ import { AppointmentModel } from './appointment.model';
 import { BaseModel } from './base.model';
 
 export class AppointmentListModel extends BaseModel {
-  readonly appointments?: AppointmentModel[];
+  readonly appointments: AppointmentModel[];
 
   constructor(appointmentsList: AppointmentDTO[], sort?: SortOrder) {
     super();

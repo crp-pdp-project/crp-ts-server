@@ -28,7 +28,7 @@ export class PatientRelativesInteractor implements IPatientRelativesInteractor {
 
   private validateSession(session?: SessionModel): PatientDM['id'] {
     if (!(session instanceof SignInSessionModel)) {
-      throw ErrorModel.forbidden(ClientErrorMessages.JWE_TOKEN_INVALID);
+      throw ErrorModel.forbidden({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
     }
 
     return session.patient.id;
@@ -37,7 +37,7 @@ export class PatientRelativesInteractor implements IPatientRelativesInteractor {
   private async getPatientRelatives(patientId: PatientDM['id']): Promise<PatientDTO> {
     const patientWithRelatives = await this.patientRelatives.execute(patientId);
     if (!patientWithRelatives) {
-      throw ErrorModel.notFound(ClientErrorMessages.PATIENT_NOT_FOUND);
+      throw ErrorModel.notFound({ detail: ClientErrorMessages.PATIENT_NOT_FOUND });
     }
 
     return patientWithRelatives;

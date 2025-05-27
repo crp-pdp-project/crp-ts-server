@@ -12,10 +12,7 @@ const RELATIONSHIP_SEED = [
 ] as Insertable<Database['Relationships']>[];
 
 export async function up(db: Kysely<Database>): Promise<void> {
-  await db
-    .insertInto('Relationships')
-    .values(RELATIONSHIP_SEED)
-    .execute();
+  await db.insertInto('Relationships').values(RELATIONSHIP_SEED).execute();
 }
 
 export async function down(db: Kysely<Database>): Promise<void> {

@@ -6,7 +6,7 @@ export class LoggerClient {
 
   private constructor() {
     this.logger = pino({
-      level: process.env.LOG_LEVEL || 'info',
+      level: process.env.LOG_LEVEL ?? 'info',
       base: { service: 'crp-ts-app' },
       timestamp: pino.stdTimeFunctions.isoTime,
       formatters: {

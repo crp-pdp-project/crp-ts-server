@@ -9,14 +9,22 @@ import { EncryptionManager } from 'src/general/managers/encryption.manager';
 
 export class CreateEnrolledAccountBuilder {
   static build(): CreateEnrolledAccountController {
-    const savePatientAccount = new SavePatientAccountRepository();
-    const cleanSession = new CleanSessionRepository();
-    const responseStrategy = new EmptyResponseStrategy();
-    const encryptionConfig = new EncryptionConfigSha512();
-    const encryptionManager = new EncryptionManager(encryptionConfig);
-    const createInteractor = new CreateEnrolledAccountInteractor(savePatientAccount, cleanSession, encryptionManager);
-    const responseInteractor = new ResponseInteractor<void>(responseStrategy);
+    return new CreateEnrolledAccountController(this.buildInteractor(), this.buildResponseInteractor());
+  }
 
-    return new CreateEnrolledAccountController(createInteractor, responseInteractor);
+  private static buildInteractor(): CreateEnrolledAccountInteractor {
+    return new CreateEnrolledAccountInteractor(
+      new SavePatientAccountRepository(),
+      new CleanSessionRepository(),
+      this.buildEncryptionManager(),
+    );
+  }
+
+  private static buildEncryptionManager(): EncryptionManager {
+    return new EncryptionManager(new EncryptionConfigSha512());
+  }
+
+  private static buildResponseInteractor(): ResponseInteractor<void> {
+    return new ResponseInteractor(new EmptyResponseStrategy());
   }
 }

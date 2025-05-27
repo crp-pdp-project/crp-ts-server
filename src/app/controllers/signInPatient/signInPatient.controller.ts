@@ -14,13 +14,13 @@ export interface ISignInPatientController {
 
 export class SignInPatientController implements ISignInPatientController {
   constructor(
-    private readonly enrollInteractor: ISignInPatientInteractor,
+    private readonly signInInteractor: ISignInPatientInteractor,
     private readonly sessionInteractor: ISessionInteractor<PatientModel, PatientSessionModel>,
     private readonly responseInteractor: IResponseInteractor<PatientSessionModel>,
   ) {}
 
   async handle(input: FastifyRequest<SignInPatientInputDTO>, reply: FastifyReply): Promise<void> {
-    const patient = await this.enrollInteractor.signIn(input);
+    const patient = await this.signInInteractor.signIn(input);
     if (patient instanceof ErrorModel) {
       const partialErrorResponse = this.responseInteractor.execute(patient);
       reply.code(partialErrorResponse.statusCode).send(partialErrorResponse.body);

@@ -6,9 +6,9 @@ import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum'
 import { IPatientVerificationStrategy } from '../patientVerification.interactor';
 
 export class PatientVerificationRecoverStrategy implements IPatientVerificationStrategy {
-  async persisVerification(_: PatientExternalDTO, patient?: PatientDTO | null): Promise<PatientDTO> {
+  async persistVerification(_: PatientExternalDTO, patient?: PatientDTO): Promise<PatientDTO> {
     if (!patient?.id || !patient?.account) {
-      throw ErrorModel.badRequest(ClientErrorMessages.PATIENT_NOT_REGISTERED);
+      throw ErrorModel.badRequest({ detail: ClientErrorMessages.PATIENT_NOT_REGISTERED });
     }
 
     return patient;

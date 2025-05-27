@@ -7,14 +7,14 @@ export interface ISignInBiometricRepository {
   execute(
     documentType: PatientDM['documentType'],
     documentNumber: PatientDM['documentNumber'],
-  ): Promise<PatientDTO | null>;
+  ): Promise<PatientDTO | undefined>;
 }
 
 export class SignInBiometricRepository implements ISignInBiometricRepository {
   async execute(
     documentType: PatientDM['documentType'],
     documentNumber: PatientDM['documentNumber'],
-  ): Promise<PatientDTO | null> {
+  ): Promise<PatientDTO | undefined> {
     const db = MysqlClient.instance.getDb();
     const result = await db
       .selectFrom('Patients')
@@ -29,25 +29,19 @@ export class SignInBiometricRepository implements ISignInBiometricRepository {
         'Patients.lastName',
         'Patients.secondLastName',
         SqlJSONHelper.jsonObject(
-          [
-            eb.ref('Accounts.id'),
-            eb.ref('Accounts.biometricHash'),
-            eb.ref('Accounts.biometricSalt'),
-            eb.ref('Accounts.tryCount'),
-            eb.ref('Accounts.blockExpiredAt'),
-          ],
+          [eb.ref('Accounts.id'), eb.ref('Accounts.biometricHash'), eb.ref('Accounts.biometricSalt')],
           { checkNull: eb.ref('Accounts.id') },
         ).as('account'),
       ])
       .where('Patients.documentType', '=', documentType)
       .where('Patients.documentNumber', '=', documentNumber)
       .executeTakeFirst();
-    return result as PatientDTO;
+    return result as PatientDTO | undefined;
   }
 }
 
 export class SignInBiometricRepositoryMock implements ISignInBiometricRepository {
-  async execute(): Promise<PatientDTO | null> {
+  async execute(): Promise<PatientDTO | undefined> {
     return {
       id: 1,
       fmpId: '239254',
@@ -60,8 +54,6 @@ export class SignInBiometricRepositoryMock implements ISignInBiometricRepository
         id: 1,
         biometricHash: 'anyHash',
         biometricSalt: 'anySalt',
-        tryCount: 0,
-        blockExpiredAt: '2027-05-05 12:24:23',
       },
     };
   }

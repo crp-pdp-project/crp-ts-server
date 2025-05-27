@@ -33,9 +33,9 @@ export async function up(db: Kysely<unknown>): Promise<void> {
 }
 
 export async function down(db: Kysely<unknown>): Promise<void> {
-  await db.schema.dropIndex('UniquePatientFmpId').execute();
-  await db.schema.dropIndex('UniquePatientNhcId').execute();
-  await db.schema.dropIndex('UniquePatientDocumentNumber').execute();
-  await db.schema.dropIndex('IndexPatientDocumentType').execute();
+  await db.schema.dropIndex('UniquePatientFmpId').on(tableName).execute();
+  await db.schema.dropIndex('UniquePatientNhcId').on(tableName).execute();
+  await db.schema.dropIndex('UniquePatientDocumentNumber').on(tableName).execute();
+  await db.schema.dropIndex('IndexPatientDocumentType').on(tableName).execute();
   await db.schema.dropTable(tableName).execute();
 }

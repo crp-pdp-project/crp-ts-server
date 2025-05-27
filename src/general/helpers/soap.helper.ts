@@ -3,10 +3,12 @@ import { Client, createClientAsync } from 'soap';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { LoggerClient } from 'src/clients/logger.client';
 
+import { CRPConstants } from '../contants/crp.constants';
+
 type GenericSoapFunction<T> = (payload: Record<string, unknown>) => Promise<[T, unknown]>;
 
 export class SoapHelper {
-  private static readonly timeout: number = Number(process.env.INETUM_TIMEOUT ?? 5000);
+  private static readonly timeout: number = CRPConstants.SOAP_TIMEOUT;
   private logger: LoggerClient = LoggerClient.instance;
 
   private constructor(private readonly client: Client) {}
@@ -31,7 +33,7 @@ export class SoapHelper {
 
     if (typeof rawFn !== 'function') {
       this.logger.error('SOAP Method Not Found', { methodName });
-      throw ErrorModel.notFound();
+      throw ErrorModel.notFound({ message: 'SOAP Method Not Found' });
     }
 
     const fn = rawFn as GenericSoapFunction<T>;
