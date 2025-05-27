@@ -29,7 +29,6 @@ export class MigrationLoader {
       resolve(process.cwd(), 'src', 'migrations', 'tasks'),
     ];
 
-    console.log(possibleLocations.find((location) => existsSync(location)) ?? '')
     return possibleLocations.find((location) => existsSync(location)) ?? '';
   }
 }
