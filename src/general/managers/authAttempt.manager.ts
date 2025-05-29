@@ -6,70 +6,56 @@ import { IGetAuthAttemptsRepository } from 'src/app/repositories/database/getAut
 import { IUpdateBlockedRepository } from 'src/app/repositories/database/updateBlocked.repository';
 import { IUpsertTryCountRepository } from 'src/app/repositories/database/upsertTryCount.repository';
 
-import { ClientErrorMessages } from '../enums/clientErrorMessages.enum';
-import { AuthFlowIdentifier } from '../enums/flowIdentifier.enum';
 import { DateHelper } from '../helpers/date.helper';
 
 import { IAuthAttemptConfig } from './config/authAttempt.config';
 
 export interface IAuthAttemptManager {
   validateAttempt(documentNumber: AuthAttemptsDM['documentNumber']): Promise<AuthAttemptsDTO | undefined>;
-  handleSuccess(attempt?: AuthAttemptsDTO): Promise<void>;
+  handleSuccess(documentNumber: AuthAttemptsDM['documentNumber']): Promise<void>;
   handleFailure(documentNumber: AuthAttemptsDM['documentNumber'], attempt?: AuthAttemptsDTO): Promise<void>;
 }
 
 export class AuthAttemptManager implements IAuthAttemptManager {
-  private readonly flow: AuthFlowIdentifier;
-  private readonly maxTries: number;
-  private readonly blockExpMinutes: number;
-  private readonly tryCountExpMinutes: number;
-
   constructor(
     private readonly authAttemptConfig: IAuthAttemptConfig,
     private readonly getAuthAttempt: IGetAuthAttemptsRepository,
     private readonly upsertTryCount: IUpsertTryCountRepository,
     private readonly updateBlocked: IUpdateBlockedRepository,
     private readonly cleanBlocked: ICleanBlockedRepository,
-  ) {
-    this.flow = this.authAttemptConfig.flowIdentifier;
-    this.maxTries = this.authAttemptConfig.maxTries;
-    this.blockExpMinutes = this.authAttemptConfig.blockExpMinutes;
-    this.tryCountExpMinutes = this.authAttemptConfig.tryCountExpMinutes;
-  }
+  ) {}
 
   async validateAttempt(documentNumber: AuthAttemptsDM['documentNumber']): Promise<AuthAttemptsDTO | undefined> {
     const attempt = await this.fetchAttempt(documentNumber);
     if (attempt?.blockExpiredAt && !DateHelper.checkExpired(attempt.blockExpiredAt)) {
-      throw ErrorModel.locked({ detail: ClientErrorMessages.DOCUMENT_BLOCKED });
+      throw ErrorModel.locked({ detail: this.authAttemptConfig.blockErrorMessage });
     }
 
     return attempt;
   }
 
-  async handleSuccess(attempt?: AuthAttemptsDTO): Promise<void> {
-    if (attempt?.id) {
-      await this.cleanBlocked.execute(attempt.id);
-    }
+  async handleSuccess(documentNumber: AuthAttemptsDM['documentNumber']): Promise<void> {
+    await this.cleanBlocked.execute(documentNumber);
   }
 
   async handleFailure(documentNumber: AuthAttemptsDM['documentNumber'], attempt?: AuthAttemptsDTO): Promise<void> {
     const newTryCount = this.calculateTryCount(attempt);
 
-    if (!!attempt?.id && newTryCount >= this.maxTries) {
-      const expiresAt = DateHelper.tokenRefreshTime(this.blockExpMinutes);
+    if (!!attempt?.id && newTryCount >= this.authAttemptConfig.maxTries) {
+      const expiresAt = DateHelper.tokenRefreshTime(this.authAttemptConfig.blockExpMinutes);
       await this.updateBlocked.execute(attempt.id, expiresAt);
-      throw ErrorModel.locked({ detail: ClientErrorMessages.DOCUMENT_BLOCKED });
+      throw ErrorModel.locked({ detail: this.authAttemptConfig.blockErrorMessage });
     }
 
     const newAttempt: AuthAttemptsDTO = {
       documentNumber,
-      flowIdentifier: this.flow,
+      flowIdentifier: this.authAttemptConfig.flowIdentifier,
       tryCount: newTryCount,
-      tryCountExpiredAt: DateHelper.tokenRefreshTime(this.tryCountExpMinutes),
+      tryCountExpiredAt: DateHelper.tokenRefreshTime(this.authAttemptConfig.tryCountExpMinutes),
     };
 
     await this.upsertTryCount.execute(newAttempt);
-    throw ErrorModel.unauthorized({ detail: ClientErrorMessages.AUTH_INVALID });
+    throw ErrorModel.unauthorized({ detail: this.authAttemptConfig.tryErrorMessage });
   }
 
   private calculateTryCount(attempt?: AuthAttemptsDTO): number {
@@ -81,6 +67,6 @@ export class AuthAttemptManager implements IAuthAttemptManager {
   }
 
   private async fetchAttempt(documentNumber: AuthAttemptsDM['documentNumber']): Promise<AuthAttemptsDTO | undefined> {
-    return this.getAuthAttempt.execute(documentNumber, this.flow);
+    return this.getAuthAttempt.execute(documentNumber, this.authAttemptConfig.flowIdentifier);
   }
 }

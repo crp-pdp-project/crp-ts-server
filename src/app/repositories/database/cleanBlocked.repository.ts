@@ -4,13 +4,13 @@ import { AuthAttemptsDM } from 'src/app/entities/dms/authAttempts.dm';
 import { MysqlClient } from 'src/clients/mysql.client';
 
 export interface ICleanBlockedRepository {
-  execute(id: AuthAttemptsDM['id']): Promise<DeleteResult>;
+  execute(documentNumber: AuthAttemptsDM['documentNumber']): Promise<DeleteResult>;
 }
 
 export class CleanBlockedRepository implements ICleanBlockedRepository {
-  async execute(id: AuthAttemptsDM['id']): Promise<DeleteResult> {
+  async execute(documentNumber: AuthAttemptsDM['documentNumber']): Promise<DeleteResult> {
     const db = MysqlClient.instance.getDb();
-    return db.deleteFrom('AuthAttempts').where('id', '=', id).executeTakeFirstOrThrow();
+    return db.deleteFrom('AuthAttempts').where('documentNumber', '=', documentNumber).executeTakeFirstOrThrow();
   }
 }
 

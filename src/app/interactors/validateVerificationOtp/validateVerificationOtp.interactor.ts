@@ -54,11 +54,11 @@ export class ValidateVerificationOTPInteractor implements IValidateVerificationO
     body: ValidateVerificationOTPBodyDTO,
     attempt?: AuthAttemptsDTO,
   ): Promise<void> {
-    if (session.otp !== body.otp) {
+    if (session.otp === body.otp) {
+      await this.authAttemptManager.handleSuccess(session.patient.documentNumber);
+    } else {
       await this.authAttemptManager.handleFailure(session.patient.documentNumber, attempt);
-      throw ErrorModel.forbidden({ detail: ClientErrorMessages.WRONG_OTP });
     }
-    await this.authAttemptManager.handleSuccess(attempt);
   }
 
   private async persistValidation(jti: string, patientId: number): Promise<void> {

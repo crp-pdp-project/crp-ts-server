@@ -2,7 +2,6 @@ import {
   SignInBiometricBodyDTO,
   SignInBiometricBodyDTOSchema,
 } from 'src/app/entities/dtos/input/signInBiometric.input.dto';
-import { AuthAttemptsDTO } from 'src/app/entities/dtos/service/authAttempts.dto';
 import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import { ErrorModel } from 'src/app/entities/models/error.model';
 import { ISignInBiometricRepository } from 'src/app/repositories/database/signInBiometric.repository';
@@ -21,10 +20,10 @@ export class SignInBiometricStrategy implements ISignInStrategy {
 
   async signIn(body: SignInBiometricBodyDTO): Promise<PatientDTO> {
     const validatedBody = this.validateInput(body);
-    const attempt = await this.authAttemptManager.validateAttempt(validatedBody.documentNumber);
+    await this.authAttemptManager.validateAttempt(validatedBody.documentNumber);
     const patient = await this.getPatientAccount(validatedBody);
     const { hash, salt } = this.extractAccountPassword(patient);
-    await this.validatePassword(validatedBody, hash, salt, attempt);
+    await this.validatePassword(validatedBody, hash, salt);
 
     return patient;
   }
@@ -54,16 +53,11 @@ export class SignInBiometricStrategy implements ISignInStrategy {
     };
   }
 
-  private async validatePassword(
-    body: SignInBiometricBodyDTO,
-    hash: string,
-    salt: string,
-    attempt?: AuthAttemptsDTO,
-  ): Promise<void> {
+  private async validatePassword(body: SignInBiometricBodyDTO, hash: string, salt: string): Promise<void> {
     const isValidPassword = await this.encryptionManager.comparePassword(body.password, hash, salt);
 
     if (isValidPassword) {
-      await this.authAttemptManager.handleSuccess(attempt);
+      await this.authAttemptManager.handleSuccess(body.documentNumber);
     } else {
       throw ErrorModel.forbidden({ detail: ClientErrorMessages.BIOMETRIC_INVALID });
     }
