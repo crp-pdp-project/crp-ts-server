@@ -61,7 +61,7 @@ export class SignInRegularStrategy implements ISignInStrategy {
     const isValidPassword = await this.encryptionManager.comparePassword(body.password, hash, salt);
 
     if (isValidPassword) {
-      await this.authAttemptManager.handleSuccess(attempt);
+      await this.authAttemptManager.handleSuccess(body.documentNumber);
     } else {
       await this.authAttemptManager.handleFailure(body.documentNumber, attempt);
     }

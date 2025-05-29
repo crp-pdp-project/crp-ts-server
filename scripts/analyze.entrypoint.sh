@@ -23,6 +23,6 @@ docker run --rm \
   -Dsonar.projectKey="crp-ts-server" \
   -Dsonar.sources=src \
   -Dsonar.host.url=http://172.17.0.1:9000 \
-  -Dsonar.login="${SONAR_TOKEN}" \
+  -Dsonar.token="${SONAR_TOKEN}" \
 
-echo "✅ Analysis complete! Check http://172.17.0.1:9000/dashboard?id=crp-ts-server"
+echo "✅ Analysis complete! Check http://localhost:9000/dashboard?id=crp-ts-server"

@@ -7,7 +7,7 @@ export enum ClientErrorMessages {
   PATIENT_NOT_REGISTERED = 'No tienes una cuenta registrada. Registra una cuenta ingresando tus datos',
   INCONSISTENT_PATIENT = 'Hubo un problema registrando tu cuenta. Contáctate con la clínica para revisar tus datos',
   JWE_TOKEN_INVALID = 'No pudimos validar tu sesión. Prueba otra vez o inicia sesión nuevamente',
-  AUTH_INVALID = 'Recuerda que tras multiples intentos erróneos, tu acceso será bloqueado',
+  AUTH_INVALID = 'Datos incorrectos. Recuerda que al tercer intento erróneo de contraseña, tu acceso será bloqueado',
   DOCUMENT_BLOCKED = 'Su numero de documento se encuentra bloqueado. Intenta nuevamente más tarde',
   BIOMETRIC_INVALID = 'El dispositivo ya no se encuentra afiliado a tu cuenta. Inicia sesión con tu contraseña',
   BIOMETRIC_NOT_ENROLLED = 'Tu cuenta no esta afiliada a ningun dispositivo. Inicia sesión con tu contraseña',
