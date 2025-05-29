@@ -7,6 +7,7 @@ import { SessionModel } from 'src/app/entities/models/session.model';
 import { IUpdateSessionOTPRepository } from 'src/app/repositories/database/updateSessionOTP.repository';
 import { OTPConstants } from 'src/general/contants/otp.constants';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
+import { IAuthAttemptManager } from 'src/general/managers/authAttempt.manager';
 
 export interface ISendVerificationOTPStrategy {
   sendOTP(session?: EnrollSessionModel | RecoverSessionModel): Promise<string>;
@@ -19,12 +20,14 @@ export interface ISendVerificationOTPInteractor {
 export class SendVerificationOTPInteractor implements ISendVerificationOTPInteractor {
   constructor(
     private readonly sendStrategy: ISendVerificationOTPStrategy,
+    private readonly authAttemptManager: IAuthAttemptManager,
     private readonly updateSessionOtp: IUpdateSessionOTPRepository,
   ) {}
 
   async send(input: FastifyRequest): Promise<void | ErrorModel> {
     try {
       const session = this.validateSession(input.session);
+      await this.authAttemptManager.validateAttempt(session.patient.documentNumber);
       const otp = await this.sendStrategy.sendOTP(session);
       await this.addOtpToSession(session, otp);
     } catch (error) {
@@ -34,7 +37,7 @@ export class SendVerificationOTPInteractor implements ISendVerificationOTPIntera
 
   private validateSession(session?: SessionModel): EnrollSessionModel | RecoverSessionModel {
     const typeInvalid = !(session instanceof RecoverSessionModel) && !(session instanceof EnrollSessionModel);
-    if (typeInvalid) {
+    if (typeInvalid || session.isValidated) {
       throw ErrorModel.forbidden({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
     }
 

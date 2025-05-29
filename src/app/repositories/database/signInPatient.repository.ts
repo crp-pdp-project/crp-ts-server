@@ -52,8 +52,8 @@ export class SignInPatientRepositoryMock implements ISignInPatientRepository {
       lastName: 'Berrocal',
       account: {
         id: 1,
-        passwordHash: 'anyHash',
-        passwordSalt: 'anySalt',
+        passwordHash: '',
+        passwordSalt: '',
       },
     };
   }

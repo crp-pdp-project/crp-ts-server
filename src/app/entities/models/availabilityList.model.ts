@@ -41,7 +41,7 @@ export class AvailabilityListModel extends BaseModel {
       .sort(([a], [b]) => this.sortAscByDate(a, b))
       .map(([date, slots]) => ({
         date: DateHelper.toFormatDate(date, 'spanishDate'),
-        slots: slots.sort((a, b) => this.sortAscByDate(a.time, b.time)),
+        slots: [...slots].sort((a, b) => this.sortAscByDate(a.time, b.time)),
       }));
   }
 

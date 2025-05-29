@@ -137,7 +137,9 @@ Additionally, the architecture ensures:
 - Fastify (Server)
 - EJS (templating)
 - Kysely (SQL Builder)
+- Soap (SOAP Client)
 - Undici (HTTP Client)
+- Nodemailer (SMTP Client)
 - Zod (Schema validation)
 - Pino (logging)
 
@@ -192,9 +194,12 @@ INETUM_PASSWORD=''
 CRP_USER=''
 CRP_PASSWORD=''
 
+SMTP_HOST=''
+SMTP_PORT=''
 SMTP_USER=''
 SMTP_PASS=''
 
+INFOBIP_HOST=''
 INFOBIP_API_KEY=''
 
 JWT_SECRET=''
@@ -223,8 +228,6 @@ INETUM_RESULTS_BINDING_URL=''
 
 CRP_TOKEN_URL=''
 CRP_IMAGES_URL=''
-
-INFOBIP_BASE_URL=''
 ```
 
 > ⚠️ Without a valid `.env` file, the server will not start correctly.
@@ -259,3 +262,6 @@ This will:
 | Build project for production         | yarn build      | Clean and build into dist/               |
 | Lint code                            | yarn lint       | Run ESLint on TypeScript files           |
 | Check type safety                    | yarn typecheck  | Run TypeScript compiler                  |
+| Run SonarQube Container              | yarn sonar:up   | Start SonarQube on port 9000             |
+| Stop and clean SonarQube Container   | yarn sonar:down | Remove SonarQube containers + volumes    |
+| Run a SonarQube scan                 | yarn analyze    | Start a SonarQube scan providing a token |

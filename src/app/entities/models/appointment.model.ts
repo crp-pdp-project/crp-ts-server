@@ -34,11 +34,7 @@ export class AppointmentModel extends BaseModel {
     this.episodeId = appointment.episodeId;
     this.date = appointment.date ? DateHelper.toFormatDateTime(appointment.date, 'spanishDateTime') : appointment.date;
     this.status = AppointmentStates[appointment.status as keyof typeof AppointmentStates] ?? AppointmentStates.Citado;
-    this.mode = appointment.appointmentType?.id
-      ? appointment.appointmentType.id.includes(CRPConstants.VIRTUAL_ID)
-        ? AppointmentModes.REMOTE
-        : AppointmentModes.IN_PERSON
-      : undefined;
+    this.mode = appointment.appointmentType?.id ? this.resolveMode(appointment.appointmentType.id) : undefined;
     this.doctor = appointment.doctor ? new DoctorModel(appointment.doctor) : appointment.doctor;
     this.specialty = appointment.specialty ? new SpecialtyModel(appointment.specialty) : appointment.specialty;
     this.insurance = appointment.insurance ? new InsuranceModel(appointment.insurance) : appointment.insurance;
@@ -49,5 +45,9 @@ export class AppointmentModel extends BaseModel {
     this.canCancel = appointment.canCancel;
     this.canReprogram = appointment.canReprogram;
     this.didShow = appointment.didShow;
+  }
+
+  private resolveMode(appointmentTypeId: string): AppointmentModes {
+    return appointmentTypeId.includes(CRPConstants.VIRTUAL_ID) ? AppointmentModes.REMOTE : AppointmentModes.IN_PERSON;
   }
 }

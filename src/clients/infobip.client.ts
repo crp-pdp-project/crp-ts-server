@@ -28,11 +28,11 @@ export class InfobipClient {
   static readonly instance: InfobipClient = new InfobipClient();
   private readonly logger: LoggerClient = LoggerClient.instance;
   private readonly request: RestClient = RestClient.instance;
-  private readonly baseUrl: string = EnvHelper.get('INFOBIP_BASE_URL');
+  private readonly host: string = EnvHelper.get('INFOBIP_HOST');
   private readonly apiKey: string = EnvHelper.get('INFOBIP_API_KEY');
 
   async sendSms(message: SmsMessage): Promise<InfobipSmsResponse> {
-    const url = `${this.baseUrl}/sms/3/messages`;
+    const url = `${this.host}/sms/3/messages`;
 
     const body = {
       messages: [

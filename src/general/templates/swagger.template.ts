@@ -13,9 +13,8 @@ export default `
     <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-standalone-preset.js" crossorigin></script>
     <script>
       window.onload = () => {
-        const decodedSpec = JSON.parse(decodeURIComponent("<%- openApi %>"));
         window.ui = SwaggerUIBundle({
-          spec: decodedSpec,
+          url: "/docs/spec.json",
           dom_id: '#swagger-ui',
           docExpansion: 'none',
           presets: [SwaggerUIBundle.presets.apis],

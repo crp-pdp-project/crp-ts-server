@@ -12,7 +12,7 @@ export class UpdateBlockedRepository implements IUpdateBlockedRepository {
     const db = MysqlClient.instance.getDb();
     return db
       .updateTable('AuthAttempts')
-      .set({ blockExpiredAt, tryCount: null })
+      .set({ blockExpiredAt, tryCount: null, tryCountExpiredAt: null })
       .where('id', '=', id)
       .executeTakeFirstOrThrow();
   }

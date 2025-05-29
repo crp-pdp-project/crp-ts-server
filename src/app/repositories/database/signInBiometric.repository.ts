@@ -52,8 +52,8 @@ export class SignInBiometricRepositoryMock implements ISignInBiometricRepository
       lastName: 'Berrocal',
       account: {
         id: 1,
-        biometricHash: 'anyHash',
-        biometricSalt: 'anySalt',
+        biometricHash: '',
+        biometricSalt: '',
       },
     };
   }

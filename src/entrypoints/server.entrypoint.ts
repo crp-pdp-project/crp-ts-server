@@ -22,6 +22,7 @@ import { EnrollV1Docs } from 'src/docs/v1/enroll.docs';
 import { ProfileV1Docs } from 'src/docs/v1/profile.docs';
 import { RecoverV1Docs } from 'src/docs/v1/recover.docs';
 import { CRPConstants } from 'src/general/contants/crp.constants';
+import { EnvConstants } from 'src/general/contants/env.constants';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 import { OpenApiManager } from 'src/general/managers/openapi.manager';
 import swaggerTemplate from 'src/general/templates/swagger.template';
@@ -65,9 +66,12 @@ export class Server {
     this.registerHooks();
     this.registerDocs();
     this.registerRoutes();
-    this.setupHttpClient();
-    this.setupDocsEndpoint();
     await this.app.register(cors);
+
+    if (EnvHelper.get('NODE_ENV') !== EnvConstants.PRODUCTION_ENV) {
+      this.setupHttpClient();
+      this.setupDocsEndpoint();
+    }
   }
 
   private static registerHooks(): void {
@@ -115,15 +119,17 @@ export class Server {
     const generator = new OpenApiGeneratorV3(this.registry.definitions);
 
     this.app.get('/docs', async (_, reply) => {
-      const spec = generator.generateDocument(swaggerMeta);
-      const encodedSpec = encodeURIComponent(JSON.stringify(spec));
-
       const html = ejs.render(swaggerTemplate, {
-        openApi: encodedSpec,
         title: `${swaggerMeta.info.title} - Docs`,
       });
 
       reply.type('text/html').send(html);
+    });
+
+    this.app.get('/docs/spec.json', async (_, reply) => {
+      const spec = generator.generateDocument(swaggerMeta);
+
+      reply.type('application/json').send(spec);
     });
   }
 
