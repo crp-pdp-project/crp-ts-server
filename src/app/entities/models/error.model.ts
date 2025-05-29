@@ -85,44 +85,24 @@ export class ErrorModel extends Error {
     detail?: ClientErrorMessages,
   ): ErrorModel {
     const errorInstance = new ErrorModel(statusCode, message, detail);
-    const context = this.extractContextFromStack(errorInstance.stack);
+    const callerLine = this.extractCallerFromStack(errorInstance.stack);
 
     this.logger.error(`ErrorModel catched error`, {
       statusCode: errorInstance.statusCode,
       message: errorInstance.message,
       detail: errorInstance.detail,
-      ...context,
+      callerLine,
     });
 
     return errorInstance;
   }
 
-  private static extractContextFromStack(stack?: string): {
-    callerLine?: string;
-    fileName?: string;
-    lineNumber?: number;
-    columnNumber?: number;
-  } {
-    if (!stack) return {};
+  private static extractCallerFromStack(stack?: string): string {
+    if (!stack) return '';
 
     const lines = stack.split('\n');
-
     const callerLine = lines[3]?.trim();
 
-    if (!callerLine) return {};
-
-    const match = callerLine.match(/\((.*):(\d+):(\d+)\)/);
-    if (!match) return { callerLine };
-
-    const [, fileName, lineStr, columnStr] = match;
-    const lineNumber = Number(lineStr);
-    const columnNumber = Number(columnStr);
-
-    return {
-      callerLine,
-      fileName,
-      lineNumber,
-      columnNumber,
-    };
+    return callerLine;
   }
 }

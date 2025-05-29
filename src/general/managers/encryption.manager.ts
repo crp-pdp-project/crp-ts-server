@@ -14,8 +14,8 @@ export interface IEncryptionManager {
 }
 
 export class EncryptionManager implements IEncryptionManager {
-  private asyncRandomBytes = promisify(randomBytes);
-  private asyncPbkdf2 = promisify(pbkdf2);
+  private readonly asyncRandomBytes = promisify(randomBytes);
+  private readonly asyncPbkdf2 = promisify(pbkdf2);
   private readonly iterations: number;
   private readonly digest: string;
   private readonly encoding: BufferEncoding;

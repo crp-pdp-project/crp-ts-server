@@ -13,9 +13,8 @@ export class SpecialtyListModel extends BaseModel {
   }
 
   private generateSpecialtiesList(specialtiesList: SpecialtyDTO[]): SpecialtyModel[] {
-    return specialtiesList
-      .sort((a, b) => this.sortByNameAsc(a.name, b.name))
-      .map((specialty) => new SpecialtyModel(specialty));
+    const sortedSpecialties = [...specialtiesList].sort((a, b) => this.sortByNameAsc(a.name, b.name));
+    return sortedSpecialties.map((specialty) => new SpecialtyModel(specialty));
   }
 
   private sortByNameAsc(nameA = '', nameB = ''): number {

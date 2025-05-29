@@ -1,3 +1,5 @@
+import { randomBytes } from 'crypto';
+
 export class TextHelper {
   static normalizePhoneNumber(phone?: string | null): string | null {
     if (!phone) return null;
@@ -16,28 +18,49 @@ export class TextHelper {
   }
 
   static generateOtp(length = 5): string {
-    const max = 10 ** length;
-    let randomNumber: number;
-    do {
-      randomNumber = Math.floor(Math.random() * max);
-    } while (randomNumber === 0);
+    const charset = '0123456789';
+    let otp = '';
 
-    const otp = randomNumber.toString().padStart(length, '0');
+    while (otp.length < length) {
+      const byte = randomBytes(1)[0];
+      const digitIndex = byte % charset.length;
+
+      if (byte >= 250) continue;
+
+      otp += charset[digitIndex];
+    }
+
     return otp;
   }
 
   static cleanTextParentheses(text?: string): string | undefined {
-    if (!text) return text;
+    if (!text) return undefined;
 
-    const cleaned = text.replace(/^(\s*\([^)]+\)\s*)+/, '').trim();
-    const match = cleaned.match(/^(.*?)(\s*\([^)]+\))/);
+    let i = 0;
+    while (i < text.length) {
+      const trimmed = text.slice(i).trimStart();
+      if (!trimmed.startsWith('(')) break;
 
-    if (!match) return cleaned;
+      const start = i + text.slice(i).indexOf('(');
+      const end = text.indexOf(')', start + 1);
+      if (end === -1) break;
 
-    const main = match[1].trim();
-    const preserved = match[2].replace(/[()]/g, '');
+      i = end + 1;
+    }
 
-    return preserved ? `${main} - ${preserved}` : main;
+    const cleaned = text.slice(i).trim();
+
+    const open = cleaned.lastIndexOf('(');
+    const close = cleaned.lastIndexOf(')');
+
+    const isSuffix = open !== -1 && close === cleaned.length - 1 && !cleaned.slice(open + 1, close).includes('(');
+
+    if (!isSuffix) return cleaned;
+
+    const main = cleaned.slice(0, open).trim();
+    const suffix = cleaned.slice(open + 1, close).trim();
+
+    return suffix ? `${main} - ${suffix}` : main;
   }
 
   static titleCase(text?: string): string | undefined {

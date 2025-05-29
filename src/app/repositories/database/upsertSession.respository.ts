@@ -18,6 +18,7 @@ export class UpsertSessionRepository implements IUpsertSessionRepository {
         jti: eb.val(session.jti),
         expiresAt: eb.val(session.expiresAt),
         otp: eb.val(session.otp ?? null),
+        otpSendCount: eb.val(session.otpSendCount ?? null),
         isValidated: eb.val(session.isValidated ?? false),
       }))
       .executeTakeFirstOrThrow();

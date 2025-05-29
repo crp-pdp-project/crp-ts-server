@@ -9,7 +9,7 @@ type GenericSoapFunction<T> = (payload: Record<string, unknown>) => Promise<[T, 
 
 export class SoapHelper {
   private static readonly timeout: number = CRPConstants.SOAP_TIMEOUT;
-  private logger: LoggerClient = LoggerClient.instance;
+  private readonly logger: LoggerClient = LoggerClient.instance;
 
   private constructor(private readonly client: Client) {}
 

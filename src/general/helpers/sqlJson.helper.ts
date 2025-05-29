@@ -20,8 +20,8 @@ type JsonArrayOptions = {
 export class SqlJSONHelper {
   static jsonArrayObject(refs: AnyExpression[], options?: JsonArrayOptions): RawBuilder<unknown> {
     const fieldPairs = this.generateFieldPairs(refs);
-
-    const jsonObject = sql`JSON_OBJECT(${sql.join(fieldPairs, sql`, `)})`;
+    const joinedFields = sql.join(fieldPairs, sql`, `);
+    const jsonObject = sql`JSON_OBJECT(${joinedFields})`;
 
     const arrayResult = options?.checkNull
       ? sql`JSON_ARRAYAGG(IF(${options.checkNull} IS NOT NULL, ${jsonObject}, NULL))`
@@ -32,7 +32,8 @@ export class SqlJSONHelper {
 
   static jsonObject(refs: AnyExpression[], options?: JsonArrayOptions): RawBuilder<unknown> {
     const fieldPairs = this.generateFieldPairs(refs);
-    const jsonObject = sql`JSON_OBJECT(${sql.join(fieldPairs, sql`, `)})`;
+    const joinedFields = sql.join(fieldPairs, sql`, `);
+    const jsonObject = sql`JSON_OBJECT(${joinedFields})`;
 
     const jsonResult = options?.checkNull ? sql`IF(${options.checkNull} IS NOT NULL, ${jsonObject}, NULL)` : jsonObject;
 

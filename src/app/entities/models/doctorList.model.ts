@@ -17,7 +17,8 @@ export class DoctorListModel extends BaseModel {
   private generateDoctorsList(doctorsList: DoctorDTO[], images?: DoctorDTO[]): DoctorModel[] {
     const mergedDoctors = images ? this.addDoctorImages(doctorsList, images) : doctorsList;
     const filteredDoctors = this.filterInvalid(mergedDoctors);
-    return filteredDoctors.sort((a, b) => this.sortByNameAsc(a.name, b.name)).map((doctor) => new DoctorModel(doctor));
+    const sortedDoctors = [...filteredDoctors].sort((a, b) => this.sortByNameAsc(a.name, b.name));
+    return sortedDoctors.map((doctor) => new DoctorModel(doctor));
   }
 
   private sortByNameAsc(nameA = '', nameB = ''): number {

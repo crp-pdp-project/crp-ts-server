@@ -17,7 +17,10 @@
     "rollback": "tsx src/entrypoints/rollback.entrypoint.ts",
     "build": "rm -rf ./dist && node esbuild.config.mjs",
     "lint": "eslint --cache 'src/**/*.ts'",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "sonar:up": "docker compose -f docker-compose.sonar.yml up --build",
+    "sonar:down": "docker compose -f docker-compose.sonar.yml down -v --remove-orphans",
+    "analyze": "./scripts/analyze.entrypoint.sh"
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^7.3.2",
