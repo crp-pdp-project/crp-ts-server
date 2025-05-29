@@ -1,7 +1,7 @@
 export const swaggerMeta = {
   openapi: '3.0.3',
   info: {
-    version: '0.7.5',
+    version: '0.7.6',
     title: 'CRP TypeScript Fastify Backend Server - OpenAPI Spec',
     description: `
       Fastify TypeScript server on a custom architecture based on VIPER, adapted for backend services: DICER
