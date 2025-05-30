@@ -47,5 +47,16 @@ export class ProfileV1Docs {
       },
       secure: true,
     });
+
+    this.manager.registerRoute({
+      method: HttpSpecMethod.DELETE,
+      path: `${this.version}/patients/biometric-password`,
+      description: 'Delete biometric password from patient account',
+      tags: ['patients', 'profile'],
+      responses: {
+        [StatusCode.NO_CONTENT]: NoContentResponseDTOSchema,
+      },
+      secure: true,
+    });
   }
 }

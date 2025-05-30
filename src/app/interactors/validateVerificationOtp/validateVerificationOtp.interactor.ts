@@ -15,7 +15,7 @@ import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum'
 import { IAuthAttemptManager } from 'src/general/managers/authAttempt.manager';
 
 export interface IValidateVerificationOTPInteractor {
-  validate(input: FastifyRequest): Promise<void | ErrorModel>;
+  validate(input: FastifyRequest<ValidateVerificationOTPInputDTO>): Promise<void | ErrorModel>;
 }
 
 export class ValidateVerificationOTPInteractor implements IValidateVerificationOTPInteractor {

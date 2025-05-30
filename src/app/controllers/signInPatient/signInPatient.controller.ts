@@ -9,7 +9,7 @@ import { ISessionInteractor } from 'src/app/interactors/session/session.interact
 import { ISignInPatientInteractor } from 'src/app/interactors/signInPatient/signInPatient.interactor';
 
 export interface ISignInPatientController {
-  handle(input: FastifyRequest<SignInPatientInputDTO>, reply: FastifyReply): Promise<void>;
+  handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;
 }
 
 export class SignInPatientController implements ISignInPatientController {
