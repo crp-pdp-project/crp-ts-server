@@ -22,7 +22,7 @@ import { EnrollV1Docs } from 'src/docs/v1/enroll.docs';
 import { ProfileV1Docs } from 'src/docs/v1/profile.docs';
 import { RecoverV1Docs } from 'src/docs/v1/recover.docs';
 import { CRPConstants } from 'src/general/contants/crp.constants';
-import { Environments } from 'src/general/enums/Environments.enum';
+import { Environments } from 'src/general/enums/environments.enum';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 import { OpenApiManager } from 'src/general/managers/openapi.manager';
 import swaggerTemplate from 'src/general/templates/swagger.template';

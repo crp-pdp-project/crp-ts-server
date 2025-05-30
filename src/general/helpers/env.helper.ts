@@ -1,4 +1,4 @@
-import { Environments } from '../enums/Environments.enum';
+import { Environments } from '../enums/environments.enum';
 import { LogLevels } from '../enums/logLevels.enum';
 
 export class EnvHelper {
