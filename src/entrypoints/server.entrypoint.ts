@@ -22,7 +22,7 @@ import { EnrollV1Docs } from 'src/docs/v1/enroll.docs';
 import { ProfileV1Docs } from 'src/docs/v1/profile.docs';
 import { RecoverV1Docs } from 'src/docs/v1/recover.docs';
 import { CRPConstants } from 'src/general/contants/crp.constants';
-import { EnvConstants } from 'src/general/contants/env.constants';
+import { Environments } from 'src/general/enums/Environments.enum';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 import { OpenApiManager } from 'src/general/managers/openapi.manager';
 import swaggerTemplate from 'src/general/templates/swagger.template';
@@ -66,9 +66,14 @@ export class Server {
     this.registerHooks();
     this.registerDocs();
     this.registerRoutes();
-    await this.app.register(cors);
+    await this.app.register(cors, {
+      origin: true,
+      methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+      credentials: true,
+    });
 
-    if (EnvHelper.get('NODE_ENV') !== EnvConstants.PRODUCTION_ENV) {
+    if (EnvHelper.getCurrentEnv() !== Environments.PRD) {
       this.setupHttpClient();
       this.setupDocsEndpoint();
     }

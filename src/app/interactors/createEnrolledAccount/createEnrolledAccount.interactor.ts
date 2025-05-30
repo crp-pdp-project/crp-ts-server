@@ -58,6 +58,7 @@ export class CreateEnrolledAccountInteractor implements ICreateEnrolledAccountIn
   private async generatePassword(password: string): Promise<PasswordHashResult> {
     return this.encryptionManager.hashPassword(password);
   }
+
   private async persistPassword(account: AccountDTO): Promise<void> {
     await this.savePatientAccount.execute(account);
   }

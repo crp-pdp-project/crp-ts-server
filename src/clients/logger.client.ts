@@ -1,12 +1,14 @@
 import pino, { Logger, Level } from 'pino';
 
+import { EnvHelper } from 'src/general/helpers/env.helper';
+
 export class LoggerClient {
   static readonly instance: LoggerClient = new LoggerClient();
   private readonly logger: Logger;
 
   private constructor() {
     this.logger = pino({
-      level: process.env.LOG_LEVEL ?? 'info',
+      level: EnvHelper.getCurrentLogLevel(),
       base: { service: 'crp-ts-app' },
       timestamp: pino.stdTimeFunctions.isoTime,
       formatters: {
