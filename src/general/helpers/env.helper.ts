@@ -5,35 +5,40 @@ export class EnvHelper {
   static get(key: keyof NodeJS.ProcessEnv): string {
     const value = process.env[key];
     if (!value) {
-      throw new Error(`Env ${key} Not found`);
+      throw new Error(`Env variable '${key}' not found`);
     }
     return value;
   }
 
   static getCurrentEnv(): Environments {
-    const value = process.env.NODE_ENV as Environments;
-    if (!value) {
-      throw new Error('NODE_ENV Not found');
+    const rawValue = process.env.NODE_ENV;
+
+    if (!rawValue) {
+      throw new Error('NODE_ENV not found');
     }
 
-    if (!Object.values(Environments).includes(value)) {
+    const value = rawValue.toLowerCase();
+
+    if (!Object.values(Environments).includes(value as Environments)) {
       throw new Error(`NODE_ENV value '${value}' is invalid`);
     }
 
-    return value;
+    return value as Environments;
   }
 
   static getCurrentLogLevel(): LogLevels {
-    const value = process.env.LOG_LEVEL as LogLevels;
+    const rawValue = process.env.LOG_LEVEL;
 
-    if (!value) {
+    if (!rawValue) {
       return LogLevels.INFO;
     }
 
-    if (!Object.values(LogLevels).includes(value)) {
+    const value = rawValue.toLowerCase();
+
+    if (!Object.values(LogLevels).includes(value as LogLevels)) {
       throw new Error(`LOG_LEVEL value '${value}' is invalid`);
     }
 
-    return value;
+    return value as LogLevels;
   }
 }
