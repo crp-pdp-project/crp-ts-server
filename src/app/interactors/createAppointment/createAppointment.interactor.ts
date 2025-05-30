@@ -24,7 +24,7 @@ import { ISaveAppointmentRepository } from 'src/app/repositories/soap/saveAppoin
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 export interface ICreateAppointmentInteractor {
-  create(input: FastifyRequest): Promise<AppointmentModel | ErrorModel>;
+  create(input: FastifyRequest<CreateAppointmentInputDTO>): Promise<AppointmentModel | ErrorModel>;
 }
 
 export class CreateAppointmentInteractor implements ICreateAppointmentInteractor {

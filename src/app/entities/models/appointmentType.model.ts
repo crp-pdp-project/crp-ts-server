@@ -12,6 +12,6 @@ export class AppointmentTypeModel extends BaseModel {
     super();
 
     this.id = appointmentType.id;
-    this.name = TextHelper.titleCase(TextHelper.cleanTextParentheses(appointmentType.name));
+    this.name = TextHelper.titleCase(appointmentType.name);
   }
 }

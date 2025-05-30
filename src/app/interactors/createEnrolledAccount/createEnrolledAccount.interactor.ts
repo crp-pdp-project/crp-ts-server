@@ -15,7 +15,7 @@ import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum'
 import { IEncryptionManager, PasswordHashResult } from 'src/general/managers/encryption.manager';
 
 export interface ICreateEnrolledAccountInteractor {
-  create(input: FastifyRequest): Promise<void | ErrorModel>;
+  create(input: FastifyRequest<CreateEnrolledAccountInputDTO>): Promise<void | ErrorModel>;
 }
 
 export class CreateEnrolledAccountInteractor implements ICreateEnrolledAccountInteractor {

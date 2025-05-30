@@ -18,7 +18,7 @@ import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum'
 import { IEncryptionManager, PasswordHashResult } from 'src/general/managers/encryption.manager';
 
 export interface IUpdatePatientPasswordInteractor {
-  update(input: FastifyRequest): Promise<void | ErrorModel>;
+  update(input: FastifyRequest<UpdatePatientPasswordInputDTO>): Promise<void | ErrorModel>;
 }
 
 export class UpdatePatientPasswordInteractor implements IUpdatePatientPasswordInteractor {

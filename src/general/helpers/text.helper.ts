@@ -33,36 +33,6 @@ export class TextHelper {
     return otp;
   }
 
-  static cleanTextParentheses(text?: string): string | undefined {
-    if (!text) return undefined;
-
-    let i = 0;
-    while (i < text.length) {
-      const trimmed = text.slice(i).trimStart();
-      if (!trimmed.startsWith('(')) break;
-
-      const start = i + text.slice(i).indexOf('(');
-      const end = text.indexOf(')', start + 1);
-      if (end === -1) break;
-
-      i = end + 1;
-    }
-
-    const cleaned = text.slice(i).trim();
-
-    const open = cleaned.lastIndexOf('(');
-    const close = cleaned.lastIndexOf(')');
-
-    const isSuffix = open !== -1 && close === cleaned.length - 1 && !cleaned.slice(open + 1, close).includes('(');
-
-    if (!isSuffix) return cleaned;
-
-    const main = cleaned.slice(0, open).trim();
-    const suffix = cleaned.slice(open + 1, close).trim();
-
-    return suffix ? `${main} - ${suffix}` : main;
-  }
-
   static titleCase(text?: string): string | undefined {
     if (!text) return text;
 

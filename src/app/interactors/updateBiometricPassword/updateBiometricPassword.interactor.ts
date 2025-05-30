@@ -15,7 +15,7 @@ import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum'
 import { IEncryptionManager, PasswordHashResult } from 'src/general/managers/encryption.manager';
 
 export interface IUpdateBiometricPasswordInteractor {
-  update(input: FastifyRequest): Promise<void | ErrorModel>;
+  update(input: FastifyRequest<UpdateBiometricPasswordInputDTO>): Promise<void | ErrorModel>;
 }
 
 export class UpdateBiometricPasswordInteractor implements IUpdateBiometricPasswordInteractor {
@@ -53,6 +53,7 @@ export class UpdateBiometricPasswordInteractor implements IUpdateBiometricPasswo
   private async generatePassword(password: string): Promise<PasswordHashResult> {
     return this.encryptionManager.hashPassword(password);
   }
+
   private async persistPassword(id: AccountDM['id'], account: AccountDTO): Promise<void> {
     await this.saveBiometricPassowrd.execute(id, account);
   }

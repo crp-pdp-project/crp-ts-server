@@ -1,5 +1,7 @@
 import { FastifyInstance } from 'fastify';
 
+import { DeleteBiometricPasswordBuilder } from 'src/app/controllers/deleteBiometricPassword/deleteBiometricPassword.builder';
+import { DeleteBiometricPasswordController } from 'src/app/controllers/deleteBiometricPassword/deleteBiometricPassword.controller';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 
 import { DeletePatientAccountBuilder } from '../../controllers/deletePatientAccount/deletePatientAccount.builder';
@@ -14,6 +16,7 @@ export class ProfileV1Router extends BaseRouter {
   private readonly patientProfileController: IPatientProfileController;
   private readonly deletePatientAccountController: IDeletePatientAccountController;
   private readonly updateBiometricPassword: IUpdateBiometricPasswordController;
+  private readonly deleteBiometricPassword: DeleteBiometricPasswordController;
 
   constructor(private readonly fastify: FastifyInstance) {
     super();
@@ -21,6 +24,7 @@ export class ProfileV1Router extends BaseRouter {
     this.patientProfileController = PatientProfileBuilder.build();
     this.deletePatientAccountController = DeletePatientAccountBuilder.build();
     this.updateBiometricPassword = UpdateBiometricPasswordBuilder.build();
+    this.deleteBiometricPassword = DeleteBiometricPasswordBuilder.build();
   }
 
   registerRouter(): void {
@@ -41,6 +45,12 @@ export class ProfileV1Router extends BaseRouter {
       url: `${this.versionV1}/patients/biometric-password`,
       preHandler: this.validatePatientSession(),
       handler: this.updateBiometricPassword.handle.bind(this.updateBiometricPassword),
+    });
+    this.fastify.route({
+      method: HttpMethod.DELETE,
+      url: `${this.versionV1}/patients/biometric-password`,
+      preHandler: this.validatePatientSession(),
+      handler: this.deleteBiometricPassword.handle.bind(this.deleteBiometricPassword),
     });
   }
 }
