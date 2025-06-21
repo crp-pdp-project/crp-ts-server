@@ -23,36 +23,36 @@
     "analyze": "./scripts/analyze.entrypoint.sh"
   },
   "dependencies": {
-    "@asteasolutions/zod-to-openapi": "^7.3.2",
+    "@asteasolutions/zod-to-openapi": "^7.3.4",
     "@fastify/cors": "^11.0.1",
     "dayjs": "^1.11.13",
     "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
-    "fastify": "^5.3.3",
+    "fastify": "^5.4.0",
     "jose": "^6.0.11",
     "kysely": "^0.28.1",
     "mysql2": "^3.14.1",
     "nodemailer": "^7.0.3",
     "pino": "^9.7.0",
-    "soap": "^1.1.10",
+    "soap": "^1.1.12",
     "undici": "^7.10.0",
-    "zod": "^3.25.39"
+    "zod": "^3.25.67"
   },
   "devDependencies": {
     "@types/ejs": "^3.1.5",
-    "@types/node": "22.15.26",
+    "@types/node": "24.0.3",
     "@types/nodemailer": "^6.4.17",
     "esbuild": "^0.25.5",
-    "eslint": "^9.27.0",
+    "eslint": "^9.29.0",
     "eslint-config-prettier": "^10.1.5",
-    "eslint-import-resolver-typescript": "^4.4.1",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-prettier": "^5.4.0",
+    "eslint-import-resolver-typescript": "^4.4.3",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.0",
     "nodemon": "^3.1.9",
     "prettier": "^3.5.3",
-    "tsx": "^4.19.4",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.33.0"
+    "typescript-eslint": "^8.34.1"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
