@@ -21,7 +21,9 @@ import { SignInSessionModel } from 'src/app/entities/models/signInSession.model'
 import { IPatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
 import { IGetCurrentAppointmentsRepository } from 'src/app/repositories/soap/getCurrentAppointments.repository';
 import { ISaveAppointmentRepository } from 'src/app/repositories/soap/saveAppointment.repository';
+import { AppointmentFilters } from 'src/general/enums/appointmentFilters.enum';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
+import { ValidationRules } from 'src/general/enums/validationRules.enum';
 
 export interface ICreateAppointmentInteractor {
   create(input: FastifyRequest<CreateAppointmentInputDTO>): Promise<AppointmentModel | ErrorModel>;
@@ -40,7 +42,7 @@ export class CreateAppointmentInteractor implements ICreateAppointmentInteractor
       const { fmpId } = this.validateParams(input.params);
       const session = this.validateSession(input.session);
       const relatives = await this.getPatientRelatives(session.patient.id);
-      this.validatePatientId(fmpId, session, relatives);
+      session.inyectRelatives(relatives).validateFmpId(fmpId, ValidationRules.SELF_OR_RELATIVES);
       const payload = this.genPayload(fmpId, body);
       const appointmentId = await this.createAppointment(payload);
       const appointment = await this.getNewAppointment(fmpId, appointmentId, body.date);
@@ -72,15 +74,6 @@ export class CreateAppointmentInteractor implements ICreateAppointmentInteractor
     return relatives;
   }
 
-  private validatePatientId(fmpId: PatientDM['fmpId'], session: SignInSessionModel, relatives: PatientDTO[]): void {
-    const isSelf = session.patient.fmpId === fmpId;
-    const isRelative = relatives.some((relative) => relative.fmpId === fmpId);
-
-    if (!isSelf && !isRelative) {
-      throw ErrorModel.badRequest({ detail: ClientErrorMessages.ID_NOT_VALID });
-    }
-  }
-
   private genPayload(fmpId: PatientDM['fmpId'], body: CreateAppointmentBodyDTO): AppointmentRequestDTO {
     const payload = AppointmentRequestDTOSchema.parse({ fmpId, ...body });
 
@@ -104,7 +97,7 @@ export class CreateAppointmentInteractor implements ICreateAppointmentInteractor
     appointmentId: string,
     appointmentDate: string,
   ): Promise<AppointmentDTO> {
-    const appointmentList = await this.currentAppointments.execute(fmpId, appointmentDate).catch(() => []);
+    const appointmentList = await this.currentAppointments.execute(fmpId, AppointmentFilters.VALID_ONLY, appointmentDate).catch(() => []);
     const newAppointment = appointmentList.find((appointment) => appointment.id?.includes(appointmentId));
 
     return newAppointment ?? ({ id: appointmentId } as AppointmentDTO);

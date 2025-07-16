@@ -20,8 +20,10 @@ import { SessionModel } from 'src/app/entities/models/session.model';
 import { SignInSessionModel } from 'src/app/entities/models/signInSession.model';
 import { IPatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
 import { IGetCurrentAppointmentsRepository } from 'src/app/repositories/soap/getCurrentAppointments.repository';
+import { AppointmentFilters } from 'src/general/enums/appointmentFilters.enum';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { SortOrder } from 'src/general/enums/sort.enum';
+import { ValidationRules } from 'src/general/enums/validationRules.enum';
 
 export interface IPatientCurrentAppointmentsInteractor {
   appointments(input: FastifyRequest<PatientCurrentAppointmentsInputDTO>): Promise<AppointmentListModel | ErrorModel>;
@@ -41,8 +43,8 @@ export class PatientCurrentAppointmentsInteractor implements IPatientCurrentAppo
       const { fmpId } = this.validateInputCurrent(input.params);
       const session = this.validateSession(input.session);
       const relatives = await this.getPatientRelatives(session.patient.id);
-      this.validatePatientId(fmpId, session, relatives);
-      const currentAppointments = await this.fetchAppointments(fmpId);
+      session.inyectRelatives(relatives).validateFmpId(fmpId, ValidationRules.SELF_ONLY);
+      const currentAppointments = await this.fetchAppointments(fmpId, AppointmentFilters.All);
       return new AppointmentListModel(currentAppointments, SortOrder.ASC);
     } catch (error) {
       return ErrorModel.fromError(error);
@@ -56,8 +58,8 @@ export class PatientCurrentAppointmentsInteractor implements IPatientCurrentAppo
       const { fmpId } = this.validateInputNext(input.params);
       const session = this.validateSession(input.session);
       const relatives = await this.getPatientRelatives(session.patient.id);
-      this.validatePatientId(fmpId, session, relatives);
-      const currentAppointments = await this.fetchAppointments(fmpId);
+      session.inyectRelatives(relatives).validateFmpId(fmpId, ValidationRules.SELF_ONLY);
+      const currentAppointments = await this.fetchAppointments(fmpId, AppointmentFilters.VALID_ONLY);
       const listModel = new AppointmentListModel(currentAppointments, SortOrder.ASC);
       return listModel.getFirstAppointment();
     } catch (error) {
@@ -87,17 +89,8 @@ export class PatientCurrentAppointmentsInteractor implements IPatientCurrentAppo
     return relatives;
   }
 
-  private validatePatientId(fmpId: PatientDM['fmpId'], session: SignInSessionModel, relatives: PatientDTO[]): void {
-    const isSelf = session.patient.fmpId === fmpId;
-    const isRelative = relatives.some((relative) => relative.fmpId === fmpId);
-
-    if (!isSelf && !isRelative) {
-      throw ErrorModel.badRequest({ detail: ClientErrorMessages.ID_NOT_VALID });
-    }
-  }
-
-  private async fetchAppointments(fmpId: PatientDM['fmpId']): Promise<AppointmentDTO[]> {
-    const searchResult = await this.getCurrentAppointments.execute(fmpId);
+  private async fetchAppointments(fmpId: PatientDM['fmpId'], filter: AppointmentFilters): Promise<AppointmentDTO[]> {
+    const searchResult = await this.getCurrentAppointments.execute(fmpId, filter);
 
     return searchResult;
   }

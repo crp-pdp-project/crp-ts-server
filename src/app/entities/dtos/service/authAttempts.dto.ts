@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { AuthAttemptsDMSchema } from '../../dms/authAttempts.dm';
+import { AuthAttemptDMSchema } from 'src/app/entities/dms/authAttempts.dm';
 
-export const AuthAttemptsDTOSchema = AuthAttemptsDMSchema.partial();
+export const AuthAttemptsDTOSchema = AuthAttemptDMSchema.partial();
 
 export type AuthAttemptsDTO = z.infer<typeof AuthAttemptsDTOSchema>;

@@ -1,93 +1,86 @@
-import { AppointmentTransactionResultDTO } from 'src/app/entities/dtos/service/appointmentTransactionResult.dto';
 import { AppointmentRequestDTO } from 'src/app/entities/dtos/service/appointmentRequest.dto';
+import { AppointmentTransactionResultDTO } from 'src/app/entities/dtos/service/appointmentTransactionResult.dto';
 import { InetumClient } from 'src/clients/inetum.client';
-import { AppointmentConstants } from 'src/general/contants/appointment.constants';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 
-type SaveAppointmentInput = {
+type UpdateAppointmentInput = {
   usuario: string;
   contrasena: string;
-  peticionAltaCita: {
-    IdPaciente: string;
+  peticionModificarCita: {
     IdCentro: string;
+    IdCitaAntigua: string;
     CodAgenda: string;
     CodBloque: string;
-    TipoPaciente: string;
-    IdSociedad: string;
     IdPrestacion: string;
     IdEspecialidad: string;
     IdProfesional: string;
-    Motivo: string;
-    FechaCita: string;
-    HoraCita: string;
-    CodInspeccion: string;
+    FechaNuevaCita: string;
+    HoraNuevaCita: string;
+    IdPaciente: string;
     CanalEntrada: string;
   };
 };
 
-type SaveAppointmentOutput = {
-  AltaCitaResult: {
+type UpdateAppointmentOutput = {
+  ModificarCitaResult: {
     IdCita?: string | null;
     DescripcionError: string;
     CodResultado: number;
   };
 };
 
-export interface ISaveAppointmentRepository {
+export interface IUpdateAppointmentRepository {
   execute(payload: AppointmentRequestDTO): Promise<AppointmentTransactionResultDTO>;
 }
 
-export class SaveAppointmentRepository implements ISaveAppointmentRepository {
+export class UpdateAppointmentRepository implements IUpdateAppointmentRepository {
   private readonly user: string = EnvHelper.get('INETUM_USER');
   private readonly password: string = EnvHelper.get('INETUM_PASSWORD');
 
   async execute(payload: AppointmentRequestDTO): Promise<AppointmentTransactionResultDTO> {
     const methodPayload = this.generateInput(payload);
     const instance = await InetumClient.getInstance();
-    const rawResult = await instance.appointment.call<SaveAppointmentOutput>('AltaCita', methodPayload);
+    const rawResult = await instance.appointment.call<UpdateAppointmentOutput>('ModificarCita', methodPayload);
     return this.parseOutput(rawResult);
   }
 
-  private generateInput(payload: AppointmentRequestDTO): SaveAppointmentInput {
+  private generateInput(payload: AppointmentRequestDTO): UpdateAppointmentInput {
     return {
       usuario: this.user,
       contrasena: this.password,
-      peticionAltaCita: {
-        IdPaciente: payload.fmpId,
+      peticionModificarCita: {
         IdCentro: CRPConstants.CENTER_ID,
+        IdCitaAntigua: payload.appointmentId ?? '',
         CodAgenda: payload.scheduleId,
         CodBloque: payload.blockId,
-        TipoPaciente: CRPConstants.DEFAULT_PATIENT_TYPE,
-        IdSociedad: payload.insuranceId ?? '',
         IdPrestacion: payload.appointmentTypeId,
         IdEspecialidad: payload.specialtyId,
         IdProfesional: payload.doctorId,
-        Motivo: AppointmentConstants.CREATE_REASON,
-        FechaCita: DateHelper.toFormatDate(payload.date, 'inetumDate'),
-        HoraCita: DateHelper.toFormatTime(payload.date, 'inetumTime'),
-        CodInspeccion: payload.inspectionId ?? '',
+        FechaNuevaCita: DateHelper.toFormatDate(payload.date, 'inetumDate'),
+        HoraNuevaCita: DateHelper.toFormatTime(payload.date, 'inetumTime'),
+        IdPaciente: payload.fmpId,
         CanalEntrada: CRPConstants.ORIGIN,
       },
     };
   }
 
-  private parseOutput(rawResult: SaveAppointmentOutput): AppointmentTransactionResultDTO {
+  private parseOutput(rawResult: UpdateAppointmentOutput): AppointmentTransactionResultDTO {
     return {
-      id: rawResult.AltaCitaResult?.IdCita ?? null,
-      errorCode: Number(rawResult.AltaCitaResult.CodResultado),
-      errorDescription: rawResult.AltaCitaResult.DescripcionError ?? null,
+      id: rawResult.ModificarCitaResult?.IdCita ?? null,
+      errorCode: Number(rawResult.ModificarCitaResult.CodResultado),
+      errorDescription: rawResult.ModificarCitaResult.DescripcionError ?? null,
     };
   }
 }
 
-export class SaveAppointmentRepositoryMock implements ISaveAppointmentRepository {
+export class UpdateAppointmentRepositoryMock implements IUpdateAppointmentRepository {
   async execute(): Promise<AppointmentTransactionResultDTO> {
     return {
       id: 'C202335563796',
       errorCode: 0,
-      errorDescription: null,
+      errorDescription: null
     };
   }
 }

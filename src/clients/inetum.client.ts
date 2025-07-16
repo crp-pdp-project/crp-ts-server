@@ -9,7 +9,7 @@ export class InetumClient {
   readonly history: SoapHelper;
   readonly auth: SoapHelper;
   readonly fmp: SoapHelper;
-  // readonly results: SoapHelper;
+  readonly results: SoapHelper;
 
   private constructor(
     catalogClient: SoapHelper,
@@ -18,7 +18,7 @@ export class InetumClient {
     historyClient: SoapHelper,
     authClient: SoapHelper,
     fmpClient: SoapHelper,
-    // resultsClient: SoapHelper,
+    resultsClient: SoapHelper,
   ) {
     this.catalog = catalogClient;
     this.user = userClient;
@@ -26,7 +26,7 @@ export class InetumClient {
     this.history = historyClient;
     this.auth = authClient;
     this.fmp = fmpClient;
-    // this.results = resultsClient;
+    this.results = resultsClient;
   }
 
   static async getInstance(): Promise<InetumClient> {
@@ -55,10 +55,10 @@ export class InetumClient {
         EnvHelper.get('INETUM_FMP_URL'),
         EnvHelper.get('INETUM_FMP_BINDING_URL'),
       );
-      // const resultsClient = await SoapHelper.initClient(
-      //   EnvHelper.get('INETUM_RESULTS_URL'),
-      //   EnvHelper.get('INETUM_RESULTS_BINDING_URL'),
-      // );
+      const resultsClient = await SoapHelper.initClient(
+        EnvHelper.get('INETUM_RESULTS_URL'),
+        EnvHelper.get('INETUM_RESULTS_BINDING_URL'),
+      );
 
       this.instance = new InetumClient(
         catalogClient,
@@ -67,7 +67,7 @@ export class InetumClient {
         historyClient,
         authClient,
         fmpClient,
-        // resultsClient,
+        resultsClient,
       );
     }
 

@@ -1,8 +1,10 @@
 import { Kysely, sql } from 'kysely';
 
+import { Database } from 'src/clients/mysql.client';
+
 const tableName = 'Relationships';
 
-export async function up(db: Kysely<unknown>): Promise<void> {
+export async function up(db: Kysely<Database>): Promise<void> {
   await db.schema
     .createTable(tableName)
     .addColumn('id', 'bigint', (col) => col.primaryKey().autoIncrement())
@@ -19,7 +21,7 @@ export async function up(db: Kysely<unknown>): Promise<void> {
   await db.schema.createIndex('UniqueRelationshipName').on(tableName).column('name').unique().execute();
 }
 
-export async function down(db: Kysely<unknown>): Promise<void> {
+export async function down(db: Kysely<Database>): Promise<void> {
   await db.schema.dropIndex('UniqueRelationshipName').on(tableName).execute();
   await db.schema.dropTable(tableName).execute();
 }

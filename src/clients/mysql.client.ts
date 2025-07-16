@@ -2,9 +2,11 @@ import { Kysely, MysqlDialect, ErrorLogEvent, QueryLogEvent } from 'kysely';
 import { createPool } from 'mysql2';
 
 import { AccountDM } from 'src/app/entities/dms/accounts.dm';
-import { AuthAttemptsDM } from 'src/app/entities/dms/authAttempts.dm';
+import { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
+import { DeviceDM } from 'src/app/entities/dms/devices.dm';
 import { FamilyDM } from 'src/app/entities/dms/families.dm';
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
+import { PushConfigDM } from 'src/app/entities/dms/pushConfigs.dm';
 import { RelationshipDM } from 'src/app/entities/dms/relationships.dm';
 import { SessionDM } from 'src/app/entities/dms/sessions.dm';
 import { LoggerClient } from 'src/clients/logger.client';
@@ -16,7 +18,9 @@ export interface Database {
   Sessions: SessionDM;
   Families: FamilyDM;
   Relationships: RelationshipDM;
-  AuthAttempts: AuthAttemptsDM;
+  AuthAttempts: AuthAttemptDM;
+  PushConfigs: PushConfigDM;
+  Devices: DeviceDM;
 }
 
 class KyselyLogger {

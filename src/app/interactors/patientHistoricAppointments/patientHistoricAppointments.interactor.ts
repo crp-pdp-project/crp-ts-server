@@ -16,6 +16,7 @@ import { IPatientRelativesValidationRepository } from 'src/app/repositories/data
 import { IGetHistoricAppointmentsRepository } from 'src/app/repositories/soap/getHistoricAppointments.repository';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { SortOrder } from 'src/general/enums/sort.enum';
+import { ValidationRules } from 'src/general/enums/validationRules.enum';
 
 export interface IPatientHistoricAppointmentsInteractor {
   appointments(input: FastifyRequest<PatientHistoricAppointmentsInputDTO>): Promise<AppointmentListModel | ErrorModel>;
@@ -34,7 +35,7 @@ export class PatientHistoricAppointmentsInteractor implements IPatientHistoricAp
       const { fmpId } = this.validateInput(input.params);
       const session = this.validateSession(input.session);
       const relatives = await this.getPatientRelatives(session.patient.id);
-      this.validatePatientId(fmpId, session, relatives);
+      session.inyectRelatives(relatives).validateFmpId(fmpId, ValidationRules.SELF_ONLY);
       const currentAppointments = await this.getAppointments(fmpId);
       return new AppointmentListModel(currentAppointments, SortOrder.DESC);
     } catch (error) {
@@ -58,15 +59,6 @@ export class PatientHistoricAppointmentsInteractor implements IPatientHistoricAp
     const relatives = await this.patientRelativesValidation.execute(id);
 
     return relatives;
-  }
-
-  private validatePatientId(fmpId: PatientDM['fmpId'], session: SignInSessionModel, relatives: PatientDTO[]): void {
-    const isSelf = session.patient.fmpId === fmpId;
-    const isRelative = relatives.some((relative) => relative.fmpId === fmpId);
-
-    if (!isSelf && !isRelative) {
-      throw ErrorModel.badRequest({ detail: ClientErrorMessages.ID_NOT_VALID });
-    }
   }
 
   private async getAppointments(fmpId: PatientDM['fmpId']): Promise<AppointmentDTO[]> {

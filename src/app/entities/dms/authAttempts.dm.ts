@@ -4,9 +4,9 @@ import { z } from 'zod';
 import { AuthFlowIdentifier } from 'src/general/enums/flowIdentifier.enum';
 extendZodWithOpenApi(z);
 
-export const AuthAttemptsDMSchema = z.object({
+export const AuthAttemptDMSchema = z.object({
   id: z.number().int().positive().openapi({
-    description: 'Unique ID of the authAttempt',
+    description: 'Unique ID of the auth attempt',
     example: 1,
   }),
   documentNumber: z.string().min(8).openapi({
@@ -39,4 +39,4 @@ export const AuthAttemptsDMSchema = z.object({
   }),
 });
 
-export type AuthAttemptsDM = z.infer<typeof AuthAttemptsDMSchema>;
+export type AuthAttemptDM = z.infer<typeof AuthAttemptDMSchema>;

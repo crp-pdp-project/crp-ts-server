@@ -19,14 +19,6 @@ export const AccountDMSchema = z.object({
     description: 'Salt using for the hashing of the patients password',
     example: 'AnySalt',
   }),
-  biometricHash: z.string().nullable().openapi({
-    description: 'Hashed biometricUUID of the patient',
-    example: 'AnyHash',
-  }),
-  biometricSalt: z.string().nullable().openapi({
-    description: 'Salt using for the hashing of the patients biometric UUID',
-    example: 'AnySalt',
-  }),
   acceptTerms: z.boolean().openapi({
     description: 'The patient accepted the terms & conditions',
     example: true,
