@@ -89,6 +89,6 @@ jobs:
           git checkout master
           git pull origin master
 
-          git add package.json src/docs/meta/swagger.meta.ts
+          git add package.json src/general/static/swaggerMeta.static.ts
           git commit -m "🔖 Release metadata for ${{ steps.version.outputs.VERSION }}" || echo "ℹ️ No changes to commit"
           git push origin master
