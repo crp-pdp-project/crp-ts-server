@@ -9,7 +9,8 @@ export async function up(db: Kysely<Database>): Promise<void> {
     .createTable(tableName)
     .addColumn('id', 'bigint', (col) => col.primaryKey().autoIncrement())
     .addColumn('name', 'varchar(255)', (col) => col.notNull())
-    .addColumn('createdAt', 'datetime', (col) => col.notNull().defaultTo(sql`NOW()`))
+    .addColumn('isDependant', 'boolean', (col) => col.notNull().defaultTo(false))
+    .addColumn('createdAt', 'datetime', (col) => col.notNull().defaultTo(sql`CURRENT_TIMESTAMP`))
     .addColumn('updatedAt', 'datetime', (col) =>
       col
         .notNull()

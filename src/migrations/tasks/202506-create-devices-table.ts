@@ -9,11 +9,14 @@ export async function up(db: Kysely<Database>): Promise<void> {
     .createTable(tableName)
     .addColumn('id', 'bigint', (col) => col.primaryKey().autoIncrement())
     .addColumn('patientId', 'bigint', (col) => col.notNull().references('Patients.id').onDelete('cascade'))
-    .addColumn('device', 'varchar(255)', (col) => col.notNull())
+    .addColumn('os', 'varchar(255)', (col) => col.notNull())
+    .addColumn('identifier', 'varchar(255)', (col) => col.notNull())
+    .addColumn('name', 'varchar(255)', (col) => col.notNull())
     .addColumn('pushToken', 'varchar(512)')
     .addColumn('biometricHash', 'varchar(255)')
     .addColumn('biometricSalt', 'varchar(255)')
-    .addColumn('createdAt', 'datetime', (col) => col.notNull().defaultTo(sql`NOW()`))
+    .addColumn('expiresAt', 'datetime', (col) => col.notNull())
+    .addColumn('createdAt', 'datetime', (col) => col.notNull().defaultTo(sql`CURRENT_TIMESTAMP`))
     .addColumn('updatedAt', 'datetime', (col) =>
       col
         .notNull()
@@ -22,17 +25,17 @@ export async function up(db: Kysely<Database>): Promise<void> {
     )
     .execute();
 
-  await db.schema.createIndex('UniquePushTokensToken').on(tableName).column('token').unique().execute();
-
+  await db.schema.createIndex('IndexDeviceExpiresAt').on(tableName).column('expiresAt').execute();
   await db.schema
-    .createIndex('UniqueDevicesPerPatient')
+    .createIndex('UniqueDevicesByPatient')
     .on(tableName)
-    .columns(['patientId', 'device'])
+    .columns(['patientId', 'os', 'identifier'])
     .unique()
     .execute();
 }
 
 export async function down(db: Kysely<Database>): Promise<void> {
-  await db.schema.dropIndex('UniqueDevicesPerPatient').on(tableName).execute();
+  await db.schema.dropIndex('IndexDevicesExpiresAt').on(tableName).execute();
+  await db.schema.dropIndex('UniqueDevicesByPatient').on(tableName).execute();
   await db.schema.dropTable(tableName).execute();
 }

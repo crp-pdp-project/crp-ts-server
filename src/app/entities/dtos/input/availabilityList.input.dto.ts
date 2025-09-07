@@ -1,10 +1,14 @@
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 import { z } from 'zod';
 
+import { PatientDMSchema } from '../../dms/patients.dm';
+
 extendZodWithOpenApi(z);
 
-export const AvailabilityListQueryDTOSchema = z
-  .object({
+export const AvailabilityListQueryDTOSchema = PatientDMSchema.pick({
+  fmpId: true,
+})
+  .extend({
     groupId: z.coerce.string().openapi({
       description: 'Id of the specialty group to filter',
       example: '9',
@@ -28,7 +32,7 @@ export const AvailabilityListQueryDTOSchema = z
   })
   .strict()
   .openapi({
-    description: 'Appointment types appointment query strings',
+    description: 'Doctors availability query strings',
   });
 
 export type AvailabilityListQueryDTO = z.infer<typeof AvailabilityListQueryDTOSchema>;

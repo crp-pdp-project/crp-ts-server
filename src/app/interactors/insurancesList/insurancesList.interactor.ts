@@ -1,39 +1,22 @@
-import { FastifyRequest } from 'fastify';
-
-import { InsuranceDTO } from 'src/app/entities/dtos/service/insurance.dto';
-import { ErrorModel } from 'src/app/entities/models/error.model';
-import { InsuranceListModel } from 'src/app/entities/models/insuranceList.model';
-import { SessionModel } from 'src/app/entities/models/session.model';
-import { SignInSessionModel } from 'src/app/entities/models/signInSession.model';
-import { IGetInsurancesRepository } from 'src/app/repositories/soap/getInsurances.repository';
-import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
+import { InsuranceListModel } from 'src/app/entities/models/insurance/insuranceList.model';
+import { GetInsurancesRepository, IGetInsurancesRepository } from 'src/app/repositories/rest/getInsurances.repository';
 
 export interface IInsurancesListInteractor {
-  list(input: FastifyRequest): Promise<InsuranceListModel | ErrorModel>;
+  list(): Promise<InsuranceListModel>;
 }
 
 export class InsurancesListInteractor implements IInsurancesListInteractor {
   constructor(private readonly getInsurances: IGetInsurancesRepository) {}
 
-  async list(input: FastifyRequest): Promise<InsuranceListModel | ErrorModel> {
-    try {
-      this.validateSession(input.session);
-      const insurancesList = await this.getInsurancesList();
-      return new InsuranceListModel(insurancesList);
-    } catch (error) {
-      return ErrorModel.fromError(error);
-    }
-  }
-
-  private validateSession(session?: SessionModel): void {
-    if (!(session instanceof SignInSessionModel)) {
-      throw ErrorModel.forbidden({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
-    }
-  }
-
-  private async getInsurancesList(): Promise<InsuranceDTO[]> {
+  async list(): Promise<InsuranceListModel> {
     const insurancesList = await this.getInsurances.execute();
 
-    return insurancesList;
+    return new InsuranceListModel(insurancesList);
+  }
+}
+
+export class InsurancesListInteractorBuilder {
+  static build(): InsurancesListInteractor {
+    return new InsurancesListInteractor(new GetInsurancesRepository());
   }
 }

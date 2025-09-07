@@ -1,8 +1,7 @@
 import { DoctorDTO } from 'src/app/entities/dtos/service/doctor.dto';
 import { SpecialtyDTO } from 'src/app/entities/dtos/service/specialty.dto';
-import { CRPClient } from 'src/clients/crp.client';
+import { PDPClient, PDPServicePaths } from 'src/clients/pdp.client';
 import { HttpMethod } from 'src/general/enums/methods.enum';
-import { EnvHelper } from 'src/general/helpers/env.helper';
 
 type GetDoctorImagesInput = {
   Documento: string;
@@ -21,14 +20,13 @@ export interface IGetDoctorImagesRepository {
 }
 
 export class GetDoctorImagesRepository implements IGetDoctorImagesRepository {
-  private readonly imageUrl: string = EnvHelper.get('CRP_IMAGES_URL');
-  private readonly crp = CRPClient.instance;
+  private readonly pdp = PDPClient.instance;
 
   async execute(specialtyId?: SpecialtyDTO['id'], doctorId?: DoctorDTO['id']): Promise<DoctorDTO[]> {
     const methodPayload = this.parseInput(specialtyId, doctorId);
-    const rawResult = await this.crp.call<GetDoctorImagesOutput>({
+    const rawResult = await this.pdp.call<GetDoctorImagesOutput>({
       method: HttpMethod.POST,
-      url: this.imageUrl,
+      path: PDPServicePaths.GET_DOCTOR_IMAGES,
       body: methodPayload,
     });
     return this.parseOutput(rawResult);

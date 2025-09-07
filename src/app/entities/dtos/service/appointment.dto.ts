@@ -17,9 +17,11 @@ export const AppointmentDTOSchema = z.object({
   specialty: SpecialtyDTOSchema.optional(),
   insurance: InsuranceDTOSchema.optional(),
   appointmentType: AppointmentTypeDTOSchema.optional(),
-  canCancel: z.boolean().optional(),
-  canReprogram: z.boolean().optional(),
-  didShow: z.boolean().optional(),
+  mode: z.string().optional(),
+  cancelAction: z.string().optional(),
+  rescheduleAction: z.string().optional(),
+  payAction: z.string().optional(),
+  payState: z.string().optional(),
 });
 
 export type AppointmentDTO = z.infer<typeof AppointmentDTOSchema>;

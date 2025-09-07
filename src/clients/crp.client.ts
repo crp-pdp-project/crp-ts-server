@@ -15,17 +15,32 @@ type AuthTokenOutput = {
   mensaje: string;
 };
 
+export enum CRPServicePaths {
+  GENERATE_TOKEN = '/token/GenerarToken',
+  LIST_INSURANCES = '/PortalPacienteApi/Aseguradoras/Listar',
+  LIST_WARRANTY_LETTERS = '/CartasGarantia/Listar',
+  GET_LAB_RESULT = '/Laboratorio/ObtenerInforme_Particular',
+  GET_APPOINTMENT_DETAIL = '/Cita/Detalle',
+  GET_X_RAY_IMAGE_URL = '/Pacs/ObtenerImagen',
+  GET_POS_CONFIGURATION = '/Pago/ObtenerCredenciales',
+  PAY_APPOINTMENT = '/Pago/ProcesarPagoCita',
+  GET_CLINIC_INSURANCE_STATE = '/PlanSalud/validar-cliente',
+  LIST_CLINIC_INSURANCE_DEBT = '/PlanSalud/consulta-deuda',
+  PAY_CLINIC_INSURANCE = '/Pago/ProcesarPagoPlanSalud',
+  AUTH_EMPLOYEES = '/Security/AutenticarUsuario',
+}
+
 export class CRPClient {
   static readonly instance: CRPClient = new CRPClient();
-  private readonly rest = new RestHelper();
+  private readonly host: string = EnvHelper.get('CRP_BASE_HOST');
   private readonly user: string = EnvHelper.get('CRP_USER');
   private readonly password: string = EnvHelper.get('CRP_PASSWORD');
-  private readonly tokenUrl: string = EnvHelper.get('CRP_TOKEN_URL');
+  private readonly rest = new RestHelper(this.host);
   private token = '';
   private tokenExpiresAt = '';
   private tokenPromise: Promise<string> | null = null;
 
-  async call<T = unknown>(options: RestRequestOptions): Promise<T> {
+  async call<T = unknown>(options: RestRequestOptions<CRPServicePaths>): Promise<T> {
     const token = await this.getToken();
     const result = await this.rest.send<T>({
       ...options,
@@ -58,12 +73,12 @@ export class CRPClient {
 
     const tokenResponse = await this.rest.send<AuthTokenOutput>({
       method: HttpMethod.POST,
-      url: this.tokenUrl,
+      path: CRPServicePaths.GENERATE_TOKEN,
       body: authTokenInput,
     });
 
     this.token = tokenResponse.data;
-    this.tokenExpiresAt = DateHelper.tokenRefreshTime(CRPConstants.TOKEN_TIMEOUT);
+    this.tokenExpiresAt = DateHelper.addMinutes(CRPConstants.TOKEN_TIMEOUT, 'dbDateTime');
     return this.token;
   }
 

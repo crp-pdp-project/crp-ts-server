@@ -1,56 +1,120 @@
-import { FastifyRequest } from 'fastify';
+import ejs from 'ejs';
 
-import { EnrollSessionModel } from 'src/app/entities/models/enrollSession.model';
-import { ErrorModel } from 'src/app/entities/models/error.model';
-import { RecoverSessionModel } from 'src/app/entities/models/recoverSession.model';
-import { SessionModel } from 'src/app/entities/models/session.model';
-import { IUpdateSessionOTPRepository } from 'src/app/repositories/database/updateSessionOTP.repository';
-import { OTPConstants } from 'src/general/contants/otp.constants';
-import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
-import { IAuthAttemptManager } from 'src/general/managers/authAttempt.manager';
+import { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
+import { SessionDM } from 'src/app/entities/dms/sessions.dm';
+import { AuthAttemptModel } from 'src/app/entities/models/authAttempt/authAttempt.model';
+import { ErrorModel } from 'src/app/entities/models/error/error.model';
+import { EnrollSessionModel } from 'src/app/entities/models/session/enrollSession.model';
+import { RecoverSessionModel } from 'src/app/entities/models/session/recoverSession.model';
+import {
+  GetAuthAttemptsRepository,
+  IGetAuthAttemptsRepository,
+} from 'src/app/repositories/database/getAuthAttempts.repository';
+import {
+  IUpdateSessionOTPRepository,
+  UpdateSessionOTPRepository,
+} from 'src/app/repositories/database/updateSessionOTP.repository';
+import { EmailClient } from 'src/clients/email.client';
+import { InfobipClient } from 'src/clients/infobip.client';
+import { InfobipConstants } from 'src/general/contants/infobip.constants';
+import { TextHelper } from 'src/general/helpers/text.helper';
 
-export interface ISendVerificationOTPStrategy {
-  sendOTP(session?: EnrollSessionModel | RecoverSessionModel): Promise<string>;
-}
+import {
+  IVerificationOtpConfig,
+  VerificationOtpEnroll,
+  VerificationOtpRecover,
+} from './config/sendVerificationOtp.config';
+
+type CombinedTransacSession = EnrollSessionModel | RecoverSessionModel;
 
 export interface ISendVerificationOTPInteractor {
-  send(input: FastifyRequest): Promise<void | ErrorModel>;
+  sendOTP(session: CombinedTransacSession): Promise<void>;
 }
 
 export class SendVerificationOTPInteractor implements ISendVerificationOTPInteractor {
+  private readonly infobipClient: InfobipClient = InfobipClient.instance;
+  private readonly emailClient: EmailClient = EmailClient.instance;
+
   constructor(
-    private readonly sendStrategy: ISendVerificationOTPStrategy,
-    private readonly authAttemptManager: IAuthAttemptManager,
+    private readonly verificationOtpConfig: IVerificationOtpConfig,
+    private readonly getAuthAttempt: IGetAuthAttemptsRepository,
     private readonly updateSessionOtp: IUpdateSessionOTPRepository,
   ) {}
 
-  async send(input: FastifyRequest): Promise<void | ErrorModel> {
-    try {
-      const session = this.validateSession(input.session);
-      await this.authAttemptManager.validateAttempt(session.patient.documentNumber);
-      const otp = await this.sendStrategy.sendOTP(session);
-      await this.addOtpToSession(session, otp);
-    } catch (error) {
-      return ErrorModel.fromError(error);
+  async sendOTP(session: CombinedTransacSession): Promise<void> {
+    session.validateOtpLimit();
+    const attemptModel = await this.fetchAttempt(session.patient.documentNumber);
+    attemptModel.validateAttempt();
+    const otp = TextHelper.generateOtp();
+    await this.sendOtp(session, otp);
+    await this.addOtpToSession(session, otp);
+  }
+
+  private async fetchAttempt(documentNumber: AuthAttemptDM['documentNumber']): Promise<AuthAttemptModel> {
+    const attempt = await this.getAuthAttempt.execute(documentNumber, this.verificationOtpConfig.flowIdentifier);
+    const attemptModel = new AuthAttemptModel(
+      { ...attempt, documentNumber },
+      this.verificationOtpConfig.flowIdentifier,
+    );
+    return attemptModel;
+  }
+
+  private async sendOtp(session: CombinedTransacSession, otp: SessionDM['otp']): Promise<void> {
+    const promiseResult = await Promise.allSettled([this.sendEmail(session, otp), this.sendSms(session, otp)]);
+
+    const fulfilledCount = promiseResult.filter(({ status }) => status === 'fulfilled').length;
+
+    if (fulfilledCount === 0) {
+      throw ErrorModel.badRequest({ message: 'No OTP was sent to any channel' });
     }
   }
 
-  private validateSession(session?: SessionModel): EnrollSessionModel | RecoverSessionModel {
-    const typeInvalid = !(session instanceof RecoverSessionModel) && !(session instanceof EnrollSessionModel);
-    if (typeInvalid || session.isValidated) {
-      throw ErrorModel.forbidden({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
+  private async sendEmail(session: CombinedTransacSession, otp: SessionDM['otp']): Promise<void> {
+    if (session.external.email) {
+      await this.emailClient.send({
+        to: session.external.email,
+        subject: this.verificationOtpConfig.subject,
+        html: ejs.render(this.verificationOtpConfig.emailTemplate, {
+          name: session.patient.firstName,
+          otp,
+        }),
+      });
     }
-
-    if ((session.otpSendCount ?? 0) >= OTPConstants.MAX_SEND_COUNT) {
-      throw ErrorModel.badRequest({ detail: ClientErrorMessages.OTP_SEND_LIMIT });
-    }
-
-    return session;
   }
 
-  private async addOtpToSession(session: EnrollSessionModel | RecoverSessionModel, otp: string): Promise<void> {
+  private async sendSms(session: CombinedTransacSession, otp: SessionDM['otp']): Promise<void> {
+    if (session.external.phone) {
+      await this.infobipClient.sendSms({
+        from: InfobipConstants.INFOBIP_SENDER,
+        to: session.external.phone,
+        text: ejs.render(this.verificationOtpConfig.smsTemplate, {
+          name: session.patient.firstName,
+          otp,
+        }),
+      });
+    }
+  }
+
+  private async addOtpToSession(session: CombinedTransacSession, otp: SessionDM['otp']): Promise<void> {
     const newSendCount = (session.otpSendCount ?? 0) + 1;
 
     await this.updateSessionOtp.execute(session.jti, session.patient.id, otp, newSendCount);
+  }
+}
+
+export class SendVerificationOTPInteractorBuilder {
+  static buildEnroll(): SendVerificationOTPInteractor {
+    return new SendVerificationOTPInteractor(
+      new VerificationOtpEnroll(),
+      new GetAuthAttemptsRepository(),
+      new UpdateSessionOTPRepository(),
+    );
+  }
+  static buildRecover(): SendVerificationOTPInteractor {
+    return new SendVerificationOTPInteractor(
+      new VerificationOtpRecover(),
+      new GetAuthAttemptsRepository(),
+      new UpdateSessionOTPRepository(),
+    );
   }
 }

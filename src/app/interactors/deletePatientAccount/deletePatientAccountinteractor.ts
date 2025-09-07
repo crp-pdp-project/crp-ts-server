@@ -1,37 +1,28 @@
-import { FastifyRequest } from 'fastify';
-
-import { AccountDM } from 'src/app/entities/dms/accounts.dm';
-import { ErrorModel } from 'src/app/entities/models/error.model';
-import { SessionModel } from 'src/app/entities/models/session.model';
-import { SignInSessionModel } from 'src/app/entities/models/signInSession.model';
-import { IDeletePatientAccountRepository } from 'src/app/repositories/database/deletePatientAccount.repository';
-import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
+import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import { CleanSessionRepository, ICleanSessionRepository } from 'src/app/repositories/database/cleanSession.repository';
+import {
+  DeletePatientAccountRepository,
+  IDeletePatientAccountRepository,
+} from 'src/app/repositories/database/deletePatientAccount.repository';
 
 export interface IDeletePatientAccountInteractor {
-  delete(input: FastifyRequest): Promise<void | ErrorModel>;
+  delete(session: SignInSessionModel): Promise<void>;
 }
 
 export class DeletePatientAccountInteractor implements IDeletePatientAccountInteractor {
-  constructor(private readonly deletePatientAccount: IDeletePatientAccountRepository) {}
+  constructor(
+    private readonly deletePatientAccount: IDeletePatientAccountRepository,
+    private readonly cleanSession: ICleanSessionRepository,
+  ) {}
 
-  async delete(input: FastifyRequest): Promise<void | ErrorModel> {
-    try {
-      const accountId = this.validateSession(input.session);
-      await this.cleanAccount(accountId);
-    } catch (error) {
-      return ErrorModel.fromError(error);
-    }
+  async delete(session: SignInSessionModel): Promise<void> {
+    await this.deletePatientAccount.execute(session.patient.account.id);
+    await this.cleanSession.execute(session.jti, session.patient.id);
   }
+}
 
-  private validateSession(session?: SessionModel): AccountDM['id'] {
-    if (!(session instanceof SignInSessionModel)) {
-      throw ErrorModel.forbidden({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
-    }
-
-    return session.patient.account.id;
-  }
-
-  private async cleanAccount(id: AccountDM['id']): Promise<void> {
-    await this.deletePatientAccount.execute(id);
+export class DeletePatientAccountInteractorBuilder {
+  static build(): DeletePatientAccountInteractor {
+    return new DeletePatientAccountInteractor(new DeletePatientAccountRepository(), new CleanSessionRepository());
   }
 }

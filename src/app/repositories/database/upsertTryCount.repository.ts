@@ -1,22 +1,22 @@
 import { Insertable, InsertResult } from 'kysely';
 
-import { AuthAttemptsDM } from 'src/app/entities/dms/authAttempts.dm';
-import { AuthAttemptsDTO } from 'src/app/entities/dtos/service/authAttempts.dto';
+import { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
+import { AuthAttemptDTO } from 'src/app/entities/dtos/service/authAttempt.dto';
 import { MysqlClient } from 'src/clients/mysql.client';
 
 export interface IUpsertTryCountRepository {
-  execute(attempt: AuthAttemptsDTO): Promise<InsertResult>;
+  execute(attempt: AuthAttemptDTO): Promise<InsertResult>;
 }
 
 export class UpsertTryCountRepository implements IUpsertTryCountRepository {
-  async execute(attempt: AuthAttemptsDTO): Promise<InsertResult> {
+  async execute(attempt: AuthAttemptDTO): Promise<InsertResult> {
     const db = MysqlClient.instance.getDb();
     return db
       .insertInto('AuthAttempts')
-      .values(attempt as Insertable<AuthAttemptsDM>)
+      .values(attempt as Insertable<AuthAttemptDM>)
       .onDuplicateKeyUpdate((eb) => ({
         tryCount: eb.val(attempt.tryCount),
-        tryCountExpiredAt: eb.val(attempt.tryCountExpiredAt),
+        tryCountExpiresAt: eb.val(attempt.tryCountExpiresAt),
       }))
       .executeTakeFirstOrThrow();
   }

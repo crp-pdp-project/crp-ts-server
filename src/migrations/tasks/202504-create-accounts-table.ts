@@ -11,13 +11,9 @@ export async function up(db: Kysely<Database>): Promise<void> {
     .addColumn('patientId', 'bigint', (col) => col.notNull().references('Patients.id').onDelete('cascade'))
     .addColumn('passwordHash', 'varchar(255)', (col) => col.notNull())
     .addColumn('passwordSalt', 'varchar(255)', (col) => col.notNull())
-    .addColumn('biometricHash', 'varchar(255)')
-    .addColumn('biometricSalt', 'varchar(255)')
     .addColumn('acceptTerms', 'boolean', (col) => col.notNull())
     .addColumn('acceptAdvertising', 'boolean', (col) => col.notNull())
-    .addColumn('blockExpiredAt', 'datetime')
-    .addColumn('tryCount', 'integer')
-    .addColumn('createdAt', 'datetime', (col) => col.notNull().defaultTo(sql`NOW()`))
+    .addColumn('createdAt', 'datetime', (col) => col.notNull().defaultTo(sql`CURRENT_TIMESTAMP`))
     .addColumn('updatedAt', 'datetime', (col) =>
       col
         .notNull()

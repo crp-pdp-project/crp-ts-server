@@ -2,23 +2,29 @@ import { URL } from 'url';
 
 import { request } from 'undici';
 
-import { ErrorModel } from 'src/app/entities/models/error.model';
+import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { LoggerClient } from 'src/clients/logger.client';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 
-export type RestRequestOptions = {
+export type RestRequestOptions<T = string> = {
   method: HttpMethod;
-  url: string;
+  path: T;
   headers?: Record<string, string>;
   body?: Record<string, unknown>;
   query?: Record<string, string | number | boolean>;
 };
 
 export class RestHelper {
-  private readonly logger = LoggerClient.instance;
+  private readonly logger: LoggerClient = LoggerClient.instance;
+  private readonly host: string;
+
+  constructor(host: string) {
+    this.host = host;
+  }
 
   async send<T = unknown>(options: RestRequestOptions): Promise<T> {
-    const { method, url, body, headers, query } = options;
+    const { method, path, body, headers, query } = options;
+    const url = `${this.host}${path}`;
 
     const fullUrl = this.buildUrlWithQuery(url, query);
 
@@ -26,6 +32,8 @@ export class RestHelper {
       method,
       headers: {
         'Content-Type': 'application/json',
+        Connection: 'keep-alive',
+        Accept: '*/*',
         ...headers,
       },
       body: body ? JSON.stringify(body) : undefined,

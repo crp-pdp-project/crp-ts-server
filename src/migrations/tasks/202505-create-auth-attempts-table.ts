@@ -10,10 +10,10 @@ export async function up(db: Kysely<Database>): Promise<void> {
     .addColumn('id', 'bigint', (col) => col.primaryKey().autoIncrement())
     .addColumn('documentNumber', 'varchar(255)', (col) => col.notNull())
     .addColumn('flowIdentifier', 'varchar(255)', (col) => col.notNull())
-    .addColumn('blockExpiredAt', 'datetime')
+    .addColumn('blockExpiresAt', 'datetime')
     .addColumn('tryCount', 'integer')
-    .addColumn('tryCountExpiredAt', 'datetime')
-    .addColumn('createdAt', 'datetime', (col) => col.notNull().defaultTo(sql`NOW()`))
+    .addColumn('tryCountExpiresAt', 'datetime')
+    .addColumn('createdAt', 'datetime', (col) => col.notNull().defaultTo(sql`CURRENT_TIMESTAMP`))
     .addColumn('updatedAt', 'datetime', (col) =>
       col
         .notNull()

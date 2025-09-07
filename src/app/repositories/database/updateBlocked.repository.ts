@@ -1,18 +1,18 @@
 import { UpdateResult } from 'kysely';
 
-import { AuthAttemptsDM } from 'src/app/entities/dms/authAttempts.dm';
+import { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
 import { MysqlClient } from 'src/clients/mysql.client';
 
 export interface IUpdateBlockedRepository {
-  execute(id: AuthAttemptsDM['id'], blockExpiredAt: AuthAttemptsDM['blockExpiredAt']): Promise<UpdateResult>;
+  execute(id: AuthAttemptDM['id'], blockExpiresAt: AuthAttemptDM['blockExpiresAt']): Promise<UpdateResult>;
 }
 
 export class UpdateBlockedRepository implements IUpdateBlockedRepository {
-  async execute(id: AuthAttemptsDM['id'], blockExpiredAt: AuthAttemptsDM['blockExpiredAt']): Promise<UpdateResult> {
+  async execute(id: AuthAttemptDM['id'], blockExpiresAt: AuthAttemptDM['blockExpiresAt']): Promise<UpdateResult> {
     const db = MysqlClient.instance.getDb();
     return db
       .updateTable('AuthAttempts')
-      .set({ blockExpiredAt, tryCount: null, tryCountExpiredAt: null })
+      .set({ blockExpiresAt, tryCount: null, tryCountExpiresAt: null })
       .where('id', '=', id)
       .executeTakeFirstOrThrow();
   }

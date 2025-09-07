@@ -1,11 +1,12 @@
-import { SignInPatientBodyDTO, SignInPatientBodyDTOSchema } from 'src/app/entities/dtos/input/signInPatient.input.dto';
-import { AuthAttemptsDTO } from 'src/app/entities/dtos/service/authAttempts.dto';
-import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
-import { ErrorModel } from 'src/app/entities/models/error.model';
+import { SignInPatientBodyDTO } from 'src/app/entities/dtos/input/signInPatient.input.dto';
+import { AuthAttemptModel } from 'src/app/entities/models/authAttempt/authAttempt.model';
+import { ErrorModel } from 'src/app/entities/models/error/error.model';
+import { PatientModel } from 'src/app/entities/models/patient/patient.model';
+import { ICleanBlockedRepository } from 'src/app/repositories/database/cleanBlocked.repository';
 import { ISignInPatientRepository } from 'src/app/repositories/database/signInPatient.repository';
-import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
-import { IAuthAttemptManager } from 'src/general/managers/authAttempt.manager';
-import { IEncryptionManager } from 'src/general/managers/encryption.manager';
+import { IUpdateBlockedRepository } from 'src/app/repositories/database/updateBlocked.repository';
+import { IUpsertTryCountRepository } from 'src/app/repositories/database/upsertTryCount.repository';
+import { IEncryptionManager } from 'src/general/managers/encryption/encryption.manager';
 
 import { ISignInStrategy } from '../signInPatient.interactor';
 
@@ -13,57 +14,52 @@ export class SignInRegularStrategy implements ISignInStrategy {
   constructor(
     private readonly signInPatient: ISignInPatientRepository,
     private readonly encryptionManager: IEncryptionManager,
-    private readonly authAttemptManager: IAuthAttemptManager,
+    private readonly upsertTryCount: IUpsertTryCountRepository,
+    private readonly updateBlocked: IUpdateBlockedRepository,
+    private readonly cleanBlocked: ICleanBlockedRepository,
   ) {}
 
-  async signIn(body: SignInPatientBodyDTO): Promise<PatientDTO> {
-    const validatedBody = this.validateInput(body);
-    const attempt = await this.authAttemptManager.validateAttempt(validatedBody.documentNumber);
-    const patient = await this.getPatientAccount(validatedBody, attempt);
-    const { hash, salt } = this.extractAccountPassword(patient);
-    await this.validatePassword(validatedBody, hash, salt, attempt);
+  async verifySignIn(body: SignInPatientBodyDTO, attempt: AuthAttemptModel): Promise<PatientModel> {
+    const patient = await this.getPatientAccount(body);
+    await this.validateSignIn(body.password, patient, attempt);
 
     return patient;
   }
 
-  private validateInput(body: SignInPatientBodyDTO): SignInPatientBodyDTO {
-    return SignInPatientBodyDTOSchema.parse(body);
-  }
-
-  private async getPatientAccount(body: SignInPatientBodyDTO, attempt?: AuthAttemptsDTO): Promise<PatientDTO> {
+  private async getPatientAccount(body: SignInPatientBodyDTO): Promise<PatientModel> {
     const patient = await this.signInPatient.execute(body.documentType, body.documentNumber);
 
-    if (!patient) {
-      await this.authAttemptManager.handleFailure(body.documentNumber, attempt);
-      throw ErrorModel.unauthorized({ detail: ClientErrorMessages.AUTH_INVALID });
-    }
-
-    return patient;
+    return new PatientModel(patient ?? {});
   }
 
-  private extractAccountPassword(patient: PatientDTO): { hash: string; salt: string } {
-    if (!patient.account?.passwordHash || !patient.account?.passwordSalt) {
-      throw ErrorModel.unauthorized({ detail: ClientErrorMessages.AUTH_INVALID });
+  private async handleAttemptFailure(attempt: AuthAttemptModel): Promise<void> {
+    const isBlocked = attempt.isBlockedAfterFailure();
+
+    if (isBlocked) {
+      await this.updateBlocked.execute(attempt.id!, attempt.blockExpiresAt!);
+      throw ErrorModel.locked({ detail: attempt.authAttemptConfig.blockErrorMessage });
     }
 
-    return {
-      hash: patient.account.passwordHash,
-      salt: patient.account.passwordSalt,
-    };
+    await this.upsertTryCount.execute({
+      documentNumber: attempt.documentNumber,
+      flowIdentifier: attempt.flowIdentifier,
+      tryCount: attempt.tryCount,
+      tryCountExpiresAt: attempt.tryCountExpiresAt,
+    });
+    throw ErrorModel.unauthorized({ detail: attempt.authAttemptConfig.tryErrorMessage });
   }
 
-  private async validatePassword(
-    body: SignInPatientBodyDTO,
-    hash: string,
-    salt: string,
-    attempt?: AuthAttemptsDTO,
-  ): Promise<void> {
-    const isValidPassword = await this.encryptionManager.comparePassword(body.password, hash, salt);
+  private async validateSignIn(password: string, patient: PatientModel, attempt: AuthAttemptModel): Promise<void> {
+    const isValidPassword = await this.encryptionManager.comparePassword(
+      password,
+      patient.account?.passwordHash ?? '',
+      patient.account?.passwordSalt ?? '',
+    );
 
     if (isValidPassword) {
-      await this.authAttemptManager.handleSuccess(body.documentNumber);
+      await this.cleanBlocked.execute(attempt.documentNumber);
     } else {
-      await this.authAttemptManager.handleFailure(body.documentNumber, attempt);
+      await this.handleAttemptFailure(attempt);
     }
   }
 }

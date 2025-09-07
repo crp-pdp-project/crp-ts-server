@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const AppointmentTransactionResultDTOSchema = z.object({
-  id: z.string().nullable().optional(),
+  id: z.string().optional(),
   errorCode: z.number(),
   errorDescription: z.string().nullable(),
 });

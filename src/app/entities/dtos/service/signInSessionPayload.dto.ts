@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { AccountDMSchema } from '../../dms/accounts.dm';
+import { DeviceDMSchema } from '../../dms/devices.dm';
 import { PatientDMSchema } from '../../dms/patients.dm';
 
 export const SignInSessionPayloadDTOSchema = z
@@ -15,6 +16,7 @@ export const SignInSessionPayloadDTOSchema = z
       lastName: true,
     }).extend({
       account: AccountDMSchema.pick({ id: true }),
+      device: DeviceDMSchema.pick({ id: true }),
     }),
   })
   .strict();

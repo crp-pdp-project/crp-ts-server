@@ -1,7 +1,7 @@
-import { z, ZodObject, ZodRawShape, ZodSchema, ZodTypeAny } from 'zod';
+import { z, ZodObject, ZodRawShape, ZodType } from 'zod';
 
 import { SendDeepLinkNotificationBodyDTOSchema } from 'src/app/entities/dtos/input/sendDeepLinkNotification.input.dto';
-import { ErrorModel } from 'src/app/entities/models/error.model';
+import { ErrorModel } from 'src/app/entities/models/error/error.model';
 
 import { PushDataTypes } from '../enums/pushDataTypes.enum';
 
@@ -12,14 +12,14 @@ type MapConfig = {
 };
 
 export class PushHelper {
-  private static readonly dataTypeMap: Partial<Record<PushDataTypes, ZodTypeAny>> = {
+  private static readonly dataTypeMap: Partial<Record<PushDataTypes, ZodType>> = {
     [PushDataTypes.STRING]: z.string(),
     [PushDataTypes.INTEGER]: z.number().int(),
     [PushDataTypes.NUMBER]: z.number(),
     [PushDataTypes.BOOLEAN]: z.boolean(),
   };
 
-  static getPushSchema(config: MapConfig[]): ZodSchema {
+  static getPushSchema(config: MapConfig[]): ZodObject<ZodRawShape> {
     const extension = this.buildShape(config);
     const extendedSchema = SendDeepLinkNotificationBodyDTOSchema.extend({
       params: extension,
@@ -29,17 +29,16 @@ export class PushHelper {
   }
 
   private static buildShape(config: MapConfig[]): ZodObject<ZodRawShape> {
-    const rawShape = config.reduce<ZodRawShape>((acc, field) => {
+    const shape: Record<string, ZodType> = {};
+
+    config.forEach((field) => {
       const zodType = this.dataTypeMap[field.type];
       if (!zodType) {
         throw ErrorModel.notFound({ message: 'Push Config Datatype not found' });
       }
+      shape[field.name] = field.isRequired === false ? zodType.optional() : zodType;
+    });
 
-      acc[field.name] = field.isRequired === false ? zodType.optional() : zodType;
-
-      return acc;
-    }, {});
-
-    return z.object(rawShape).strict();
+    return z.object(shape).strict();
   }
 }

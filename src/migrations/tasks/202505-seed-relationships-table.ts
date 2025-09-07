@@ -3,12 +3,10 @@ import { Insertable, Kysely } from 'kysely';
 import { Database } from 'src/clients/mysql.client';
 
 const RELATIONSHIP_SEED = [
-  { name: 'Hijo/a' },
-  { name: 'Hermano/a' },
-  { name: 'Esposo/a' },
-  { name: 'Abuelo/a' },
-  { name: 'Padre' },
-  { name: 'Madre' },
+  { name: 'Hijo/a menor de edad', isDependant: true },
+  { name: 'Padre/Madre mayor de edad', isDependant: true },
+  { name: 'Familiar dependiente (CONADIS)', isDependant: true },
+  { name: 'Conyuge', isDependant: false },
 ] as Insertable<Database['Relationships']>[];
 
 export async function up(db: Kysely<Database>): Promise<void> {

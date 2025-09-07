@@ -1,6 +1,6 @@
 import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExternal.dto';
-import { InetumClient } from 'src/clients/inetum.client';
+import { InetumClient, InetumFmpServices } from 'src/clients/inetum.client';
 import { DateHelper } from 'src/general/helpers/date.helper';
 
 type SearchPatientInput = {
@@ -41,9 +41,9 @@ type SearchPatientOutput = {
           Centro?: { CodCentroIdc?: string | null };
           Origen?: string | null;
           Nhc: string | null;
-        }[];
+        };
       };
-    }[];
+    };
   };
 };
 
@@ -55,7 +55,7 @@ export class SearchPatientRepository implements ISearchPatientRepository {
   async execute(patient: PatientDTO): Promise<PatientExternalDTO> {
     const methodPayload = this.parseInput(patient);
     const instance = await InetumClient.getInstance();
-    const rawResult = await instance.fmp.call<SearchPatientOutput>('ConsultaPacientes', methodPayload);
+    const rawResult = await instance.fmp.call<SearchPatientOutput>(InetumFmpServices.SEARCH_PATIENT, methodPayload);
     return this.parseOutput(rawResult);
   }
 
@@ -74,8 +74,8 @@ export class SearchPatientRepository implements ISearchPatientRepository {
   }
 
   private parseOutput(rawResult: SearchPatientOutput): PatientExternalDTO {
-    const basePatient = rawResult.ConsultaPacientesResult?.Paciente?.[0];
-    const firstCenter = basePatient?.PacienteCentro?.PacienteCentro?.[0];
+    const basePatient = rawResult.ConsultaPacientesResult?.Paciente;
+    const firstCenter = basePatient?.PacienteCentro?.PacienteCentro;
 
     return {
       fmpId: String(basePatient?.Id),
@@ -87,8 +87,10 @@ export class SearchPatientRepository implements ISearchPatientRepository {
       birthDate: basePatient?.FechaNacimiento,
       documentNumber: basePatient?.DocIdentidad,
       documentType: Number(basePatient?.IdTipoDocIdentidad),
-      email: basePatient?.Email ?? null,
-      phone: basePatient?.Telefono3 ?? null,
+      // email: basePatient?.Email ?? null,
+      // phone: basePatient?.Telefono3 ?? null,
+      email: 'renarux.92@gmail.com',
+      phone: '962943323',
       centerId: firstCenter?.Centro?.CodCentroIdc ?? firstCenter?.Origen ?? '',
       address: basePatient?.Direccion ?? null,
       addressAditional: basePatient?.Observaciones ?? null,

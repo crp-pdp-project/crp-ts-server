@@ -5,6 +5,7 @@ import { AccountDM } from 'src/app/entities/dms/accounts.dm';
 import { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
 import { DeviceDM } from 'src/app/entities/dms/devices.dm';
 import { FamilyDM } from 'src/app/entities/dms/families.dm';
+import { HealthInsurancesDM } from 'src/app/entities/dms/healthInsurances.dm';
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { PushConfigDM } from 'src/app/entities/dms/pushConfigs.dm';
 import { RelationshipDM } from 'src/app/entities/dms/relationships.dm';
@@ -21,6 +22,7 @@ export interface Database {
   AuthAttempts: AuthAttemptDM;
   PushConfigs: PushConfigDM;
   Devices: DeviceDM;
+  HealthInsurances: HealthInsurancesDM;
 }
 
 class KyselyLogger {

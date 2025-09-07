@@ -1,6 +1,6 @@
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
-import { InetumClient } from 'src/clients/inetum.client';
+import { InetumAppointmentServices, InetumClient } from 'src/clients/inetum.client';
 import { AppointmentConstants } from 'src/general/contants/appointment.constants';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { DateHelper } from 'src/general/helpers/date.helper';
@@ -51,7 +51,10 @@ export class GetHistoricAppointmentsRepository implements IGetHistoricAppointmen
   async execute(fmpId: PatientDM['fmpId']): Promise<AppointmentDTO[]> {
     const methodPayload = this.generateInput(fmpId);
     const instance = await InetumClient.getInstance();
-    const rawResult = await instance.appointment.call<GetHistoricAppointmentsOutput>('ListadoConsultas', methodPayload);
+    const rawResult = await instance.appointment.call<GetHistoricAppointmentsOutput>(
+      InetumAppointmentServices.LIST_HISTORIC_APPOINTMENTS,
+      methodPayload,
+    );
     return this.parseOutput(rawResult);
   }
 

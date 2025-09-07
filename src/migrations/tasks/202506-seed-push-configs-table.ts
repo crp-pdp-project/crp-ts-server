@@ -6,19 +6,19 @@ import { PushDataTypes } from 'src/general/enums/pushDataTypes.enum';
 const PUSH_CONFIGS_SEED = [
   {
     screen: 'test',
-    config: [
-      { name: 'testId', type: PushDataTypes.STRING },
-      { name: 'testDescription', type: PushDataTypes.STRING },
-      { name: 'testFlag', type: PushDataTypes.BOOLEAN },
-      { name: 'testAmount', type: PushDataTypes.NUMBER },
-      { name: 'testCount', type: PushDataTypes.INTEGER },
-    ],
+    config: JSON.stringify([
+      { name: 'testId', type: PushDataTypes.STRING, isRequired: true },
+      { name: 'testDescription', type: PushDataTypes.STRING, isRequired: false },
+      { name: 'testFlag', type: PushDataTypes.BOOLEAN, isRequired: true },
+      { name: 'testAmount', type: PushDataTypes.NUMBER, isRequired: false },
+      { name: 'testCount', type: PushDataTypes.INTEGER, isRequired: true },
+    ]),
   },
   {
     screen: 'appointment',
-    config: [{ name: 'appointmentId', type: PushDataTypes.STRING }],
+    config: JSON.stringify([{ name: 'appointmentId', type: PushDataTypes.STRING, isRequired: true }]),
   },
-] as Insertable<Database['PushConfigs']>[];
+] as unknown as Insertable<Database['PushConfigs']>[];
 
 export async function up(db: Kysely<Database>): Promise<void> {
   await db.insertInto('PushConfigs').values(PUSH_CONFIGS_SEED).execute();

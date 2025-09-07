@@ -1,6 +1,6 @@
 import { AppointmentRequestDTO } from 'src/app/entities/dtos/service/appointmentRequest.dto';
 import { AppointmentTransactionResultDTO } from 'src/app/entities/dtos/service/appointmentTransactionResult.dto';
-import { InetumClient } from 'src/clients/inetum.client';
+import { InetumAppointmentServices, InetumClient } from 'src/clients/inetum.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';
@@ -42,7 +42,10 @@ export class UpdateAppointmentRepository implements IUpdateAppointmentRepository
   async execute(payload: AppointmentRequestDTO): Promise<AppointmentTransactionResultDTO> {
     const methodPayload = this.generateInput(payload);
     const instance = await InetumClient.getInstance();
-    const rawResult = await instance.appointment.call<UpdateAppointmentOutput>('ModificarCita', methodPayload);
+    const rawResult = await instance.appointment.call<UpdateAppointmentOutput>(
+      InetumAppointmentServices.RESCHEDULE_APPOINTMENT,
+      methodPayload,
+    );
     return this.parseOutput(rawResult);
   }
 
@@ -68,7 +71,7 @@ export class UpdateAppointmentRepository implements IUpdateAppointmentRepository
 
   private parseOutput(rawResult: UpdateAppointmentOutput): AppointmentTransactionResultDTO {
     return {
-      id: rawResult.ModificarCitaResult?.IdCita ?? null,
+      id: rawResult.ModificarCitaResult?.IdCita ?? undefined,
       errorCode: Number(rawResult.ModificarCitaResult.CodResultado),
       errorDescription: rawResult.ModificarCitaResult.DescripcionError ?? null,
     };
@@ -80,7 +83,7 @@ export class UpdateAppointmentRepositoryMock implements IUpdateAppointmentReposi
     return {
       id: 'C202335563796',
       errorCode: 0,
-      errorDescription: null
+      errorDescription: null,
     };
   }
 }

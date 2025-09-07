@@ -19,11 +19,11 @@ export const PushConfigDMSchema = z.object({
         description: 'Name of the param to be required',
         example: 'appointmentId',
       }),
-      type: z.nativeEnum(PushDataTypes).openapi({
+      type: z.enum(PushDataTypes).openapi({
         description: 'Type of the param to be required',
         example: PushDataTypes.STRING,
       }),
-      isRequired: z.boolean().optional().openapi({
+      isRequired: z.boolean().openapi({
         description: 'Is the param required',
         example: false,
       }),

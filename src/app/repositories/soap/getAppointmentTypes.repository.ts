@@ -1,5 +1,5 @@
 import { AppointmentTypeDTO } from 'src/app/entities/dtos/service/appointmentType.dto';
-import { InetumClient } from 'src/clients/inetum.client';
+import { InetumCatalogServices, InetumClient } from 'src/clients/inetum.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 
@@ -37,7 +37,10 @@ export class GetAppointmentTypesRepository implements IGetAppointmentTypesReposi
   async execute(doctorId: string, specialtyId: string, insuranceId?: string): Promise<AppointmentTypeDTO[]> {
     const methodPayload = this.parseInput(doctorId, specialtyId, insuranceId);
     const instance = await InetumClient.getInstance();
-    const rawResult = await instance.catalog.call<GetAppointmentTypesOutput>('ListadoPrestaciones', methodPayload);
+    const rawResult = await instance.catalog.call<GetAppointmentTypesOutput>(
+      InetumCatalogServices.LIST_APPOINTMENT_TYPES,
+      methodPayload,
+    );
     return this.parseOutput(rawResult);
   }
 
