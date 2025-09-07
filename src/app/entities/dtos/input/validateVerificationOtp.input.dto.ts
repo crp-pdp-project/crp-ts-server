@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 extendZodWithOpenApi(z);
 
-export const ValidateVerificationOTPBodyDTOSchema = z
+export const ConfirmVerificationOTPBodyDTOSchema = z
   .object({
     otp: z.string().max(5).openapi({
       description: 'One Time Password sent to the user',
@@ -15,7 +15,7 @@ export const ValidateVerificationOTPBodyDTOSchema = z
     description: 'Validate OTP Request Body',
   });
 
-export type ValidateVerificationOTPBodyDTO = z.infer<typeof ValidateVerificationOTPBodyDTOSchema>;
-export interface ValidateVerificationOTPInputDTO {
-  Body: ValidateVerificationOTPBodyDTO;
+export type ConfirmVerificationOTPBodyDTO = z.infer<typeof ConfirmVerificationOTPBodyDTOSchema>;
+export interface ConfirmVerificationOTPInputDTO {
+  Body: ConfirmVerificationOTPBodyDTO;
 }

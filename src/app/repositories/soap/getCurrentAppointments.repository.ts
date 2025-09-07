@@ -1,8 +1,9 @@
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
-import { InetumClient } from 'src/clients/inetum.client';
+import { InetumAppointmentServices, InetumClient } from 'src/clients/inetum.client';
 import { AppointmentConstants } from 'src/general/contants/appointment.constants';
 import { CRPConstants } from 'src/general/contants/crp.constants';
+import { AppointmentFilters } from 'src/general/enums/appointmentFilters.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 
@@ -13,8 +14,9 @@ type GetCurrentAppointmentsInput = {
     IdCentro: string;
     CanalEntrada: string;
     IdPaciente: string;
-    FechaInicio?: string;
-    FechaFinal?: string;
+    FechaInicio: string;
+    FechaFinal: string;
+    EstadoHIS: string;
   };
 };
 
@@ -47,21 +49,28 @@ type GetCurrentAppointmentsOutput = {
 };
 
 export interface IGetCurrentAppointmentsRepository {
-  execute(fmpId: PatientDM['fmpId'], searchDate?: string): Promise<AppointmentDTO[]>;
+  execute(fmpId: PatientDM['fmpId'], filter: AppointmentFilters, searchDate?: string): Promise<AppointmentDTO[]>;
 }
 
 export class GetCurrentAppointmentsRepository implements IGetCurrentAppointmentsRepository {
   private readonly user: string = EnvHelper.get('INETUM_USER');
   private readonly password: string = EnvHelper.get('INETUM_PASSWORD');
 
-  async execute(fmpId: PatientDM['fmpId'], searchDate?: string): Promise<AppointmentDTO[]> {
-    const methodPayload = this.generateInput(fmpId, searchDate);
+  async execute(fmpId: PatientDM['fmpId'], filter: AppointmentFilters, searchDate?: string): Promise<AppointmentDTO[]> {
+    const methodPayload = this.generateInput(fmpId, filter, searchDate);
     const instance = await InetumClient.getInstance();
-    const rawResult = await instance.appointment.call<GetCurrentAppointmentsOutput>('ListadoCitas', methodPayload);
+    const rawResult = await instance.appointment.call<GetCurrentAppointmentsOutput>(
+      InetumAppointmentServices.LIST_CURRENT_APPOINTMENTS,
+      methodPayload,
+    );
     return this.parseOutput(rawResult);
   }
 
-  private generateInput(fmpId: PatientDM['fmpId'], searchDate?: string): GetCurrentAppointmentsInput {
+  private generateInput(
+    fmpId: PatientDM['fmpId'],
+    filter: AppointmentFilters,
+    searchDate?: string,
+  ): GetCurrentAppointmentsInput {
     return {
       usuario: this.user,
       contrasena: this.password,
@@ -75,6 +84,7 @@ export class GetCurrentAppointmentsRepository implements IGetCurrentAppointments
         FechaFinal: searchDate
           ? DateHelper.addDays(1, 'inetumDate', searchDate)
           : DateHelper.addMonths(AppointmentConstants.CURRENT_MONTHS_LIST, 'inetumDate'),
+        EstadoHIS: filter,
       },
     };
   }
@@ -103,9 +113,6 @@ export class GetCurrentAppointmentsRepository implements IGetCurrentAppointments
           id: String(appointment.IdSociedad),
           inspectionId: String(appointment.CodInspeccion),
         },
-        canCancel: appointment.PuedeAnular === 'S',
-        canReprogram: appointment.PuedeModificar === 'S',
-        didShow: appointment.Presentado === 'true',
       })) || [];
 
     return appointments;
@@ -137,9 +144,6 @@ export class GetCurrentAppointmentsRepositoryMock implements IGetCurrentAppointm
           id: '16725',
           inspectionId: '99',
         },
-        canCancel: false,
-        canReprogram: false,
-        didShow: true,
       },
     ];
   }

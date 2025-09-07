@@ -1,8 +1,8 @@
 import { EnrollSessionPayloadDTOSchema } from 'src/app/entities/dtos/service/enrollSessionPayload.dto';
 import { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
 import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
-import { EnrollSessionModel } from 'src/app/entities/models/enrollSession.model';
-import { ErrorModel } from 'src/app/entities/models/error.model';
+import { ErrorModel } from 'src/app/entities/models/error/error.model';
+import { EnrollSessionModel } from 'src/app/entities/models/session/enrollSession.model';
 import { IValidateSessionStrategy } from 'src/app/interactors/validateSession/validateSession.interactor';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 

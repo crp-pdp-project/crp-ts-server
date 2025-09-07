@@ -1,3 +1,4 @@
 export const OTPConstants = {
-  MAX_SEND_COUNT: 5,
+  MAX_ENROLL_SEND_COUNT: 5,
+  MAX_RECOVER_SEND_COUNT: 5,
 } as const;

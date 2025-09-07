@@ -1,55 +1,30 @@
-import { FastifyRequest } from 'fastify';
-
+import { AppointmentTypesListQueryDTO } from 'src/app/entities/dtos/input/appointmentTypesList.input.dto';
+import { AppointmentTypeListModel } from 'src/app/entities/models/appointmentType/appointmentTypeList.model';
 import {
-  AppointmentTypesListInputDTO,
-  AppointmentTypesListQueryDTO,
-  AppointmentTypesListQueryDTOSchema,
-} from 'src/app/entities/dtos/input/appointmentTypesList.input.dto';
-import { AppointmentTypeDTO } from 'src/app/entities/dtos/service/appointmentType.dto';
-import { AppointmentTypeListModel } from 'src/app/entities/models/appointmentTypeList.model';
-import { ErrorModel } from 'src/app/entities/models/error.model';
-import { SessionModel } from 'src/app/entities/models/session.model';
-import { SignInSessionModel } from 'src/app/entities/models/signInSession.model';
-import { IGetAppointmentTypesRepository } from 'src/app/repositories/soap/getAppointmentTypes.repository';
-import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
+  GetAppointmentTypesRepository,
+  IGetAppointmentTypesRepository,
+} from 'src/app/repositories/soap/getAppointmentTypes.repository';
 
 export interface IAppointmentTypesListInteractor {
-  list(input: FastifyRequest<AppointmentTypesListInputDTO>): Promise<AppointmentTypeListModel | ErrorModel>;
+  list(query: AppointmentTypesListQueryDTO): Promise<AppointmentTypeListModel>;
 }
 
 export class AppointmentTypesListInteractor implements IAppointmentTypesListInteractor {
   constructor(private readonly getAppointmentTypes: IGetAppointmentTypesRepository) {}
 
-  async list(input: FastifyRequest<AppointmentTypesListInputDTO>): Promise<AppointmentTypeListModel | ErrorModel> {
-    try {
-      this.validateSession(input.session);
-      const query = this.validateInput(input.query);
-      const appointmentTypesList = await this.getAppointmentTypesList(query);
-      return new AppointmentTypeListModel(appointmentTypesList);
-    } catch (error) {
-      return ErrorModel.fromError(error);
-    }
-  }
-
-  private validateInput(input?: AppointmentTypesListQueryDTO): AppointmentTypesListQueryDTO {
-    const query = AppointmentTypesListQueryDTOSchema.parse(input);
-
-    return query;
-  }
-
-  private validateSession(session?: SessionModel): void {
-    if (!(session instanceof SignInSessionModel)) {
-      throw ErrorModel.forbidden({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
-    }
-  }
-
-  private async getAppointmentTypesList(query: AppointmentTypesListQueryDTO): Promise<AppointmentTypeDTO[]> {
+  async list(query: AppointmentTypesListQueryDTO): Promise<AppointmentTypeListModel> {
     const appointmentTypesList = await this.getAppointmentTypes.execute(
       query.doctorId,
       query.specialtyId,
       query.insuranceId,
     );
 
-    return appointmentTypesList;
+    return new AppointmentTypeListModel(appointmentTypesList);
+  }
+}
+
+export class AppointmentTypesListInteractorBuilder {
+  static build(): AppointmentTypesListInteractor {
+    return new AppointmentTypesListInteractor(new GetAppointmentTypesRepository());
   }
 }

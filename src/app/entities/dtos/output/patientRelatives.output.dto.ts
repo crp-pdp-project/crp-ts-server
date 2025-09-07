@@ -1,6 +1,7 @@
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 import { z } from 'zod';
 
+import { FamilyDMSchema } from '../../dms/families.dm';
 import { PatientDMSchema } from '../../dms/patients.dm';
 import { RelationshipDMSchema } from '../../dms/relationships.dm';
 
@@ -29,9 +30,11 @@ export const PatientRelativesOutputDTOSchema = PatientDMSchema.pick({
           documentNumber: true,
           documentType: true,
         }).extend({
+          isVerified: FamilyDMSchema.shape.isVerified,
           relationship: RelationshipDMSchema.pick({
             id: true,
             name: true,
+            isDependant: true,
           }).openapi({
             description: 'Relationship of the patient',
           }),
@@ -43,6 +46,7 @@ export const PatientRelativesOutputDTOSchema = PatientDMSchema.pick({
     relationship: RelationshipDMSchema.pick({
       id: true,
       name: true,
+      isDependant: true,
     }).openapi({
       description: 'Relationship of the patient',
     }),

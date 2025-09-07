@@ -14,7 +14,7 @@ export const PatientProfileOutputDTOSchema = PatientDMSchema.pick({
   documentType: true,
 })
   .extend({
-    email: z.string().email().nullable().openapi({
+    email: z.email().nullable().openapi({
       description: 'Email of the patient if available',
       example: 'email@email.com',
     }),

@@ -1,14 +1,14 @@
 import { DeleteResult } from 'kysely';
 
-import { AuthAttemptsDM } from 'src/app/entities/dms/authAttempts.dm';
+import { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
 import { MysqlClient } from 'src/clients/mysql.client';
 
 export interface ICleanBlockedRepository {
-  execute(documentNumber: AuthAttemptsDM['documentNumber']): Promise<DeleteResult>;
+  execute(documentNumber: AuthAttemptDM['documentNumber']): Promise<DeleteResult>;
 }
 
 export class CleanBlockedRepository implements ICleanBlockedRepository {
-  async execute(documentNumber: AuthAttemptsDM['documentNumber']): Promise<DeleteResult> {
+  async execute(documentNumber: AuthAttemptDM['documentNumber']): Promise<DeleteResult> {
     const db = MysqlClient.instance.getDb();
     return db.deleteFrom('AuthAttempts').where('documentNumber', '=', documentNumber).executeTakeFirstOrThrow();
   }

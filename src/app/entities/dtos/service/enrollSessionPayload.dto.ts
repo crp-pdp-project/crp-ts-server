@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { DeviceDMSchema } from '../../dms/devices.dm';
 import { PatientDMSchema } from '../../dms/patients.dm';
 
 export const EnrollSessionPayloadDTOSchema = z
@@ -12,9 +13,11 @@ export const EnrollSessionPayloadDTOSchema = z
       documentType: true,
       firstName: true,
       lastName: true,
+    }).extend({
+      device: DeviceDMSchema.pick({ id: true }),
     }),
     external: z.object({
-      email: z.string().email().nullable(),
+      email: z.email().nullable(),
       phone: z.coerce.string().nullable(),
     }),
   })

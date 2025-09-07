@@ -1,5 +1,5 @@
 import { SpecialtyDTO } from 'src/app/entities/dtos/service/specialty.dto';
-import { InetumClient } from 'src/clients/inetum.client';
+import { InetumCatalogServices, InetumClient } from 'src/clients/inetum.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 
@@ -34,7 +34,10 @@ export class GetSpecialtiesRepository implements IGetSpecialtiesRepository {
   async execute(): Promise<SpecialtyDTO[]> {
     const methodPayload = this.generateInput();
     const instance = await InetumClient.getInstance();
-    const rawResult = await instance.catalog.call<GetSpecialtiesOutput>('ListadoEspecialidades', methodPayload);
+    const rawResult = await instance.catalog.call<GetSpecialtiesOutput>(
+      InetumCatalogServices.LIST_SPECIALTIES,
+      methodPayload,
+    );
     return this.parseOutput(rawResult);
   }
 

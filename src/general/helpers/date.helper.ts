@@ -25,10 +25,6 @@ export class DateHelper {
     return this.parse(date).format(dateTimeConstants[formatKey]);
   }
 
-  static tokenRefreshTime(minutes: number): string {
-    return dayjs().add(minutes, 'minute').format(dateTimeConstants.dbDateTime);
-  }
-
   static checkExpired(date: string | Date): boolean {
     const parsedDate = this.parse(date);
     return parsedDate.isBefore(dayjs());

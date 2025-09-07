@@ -5,14 +5,14 @@ import { EmailConstants } from 'src/general/contants/email.constants';
 import { EmailSubjects } from 'src/general/enums/emailSubject.enum';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 
-type EmailOptions = {
+export type EmailOptions = {
   to: string;
   subject: EmailSubjects;
   html: string;
   from?: string;
 };
 
-type MailResponse = {
+export type MailResponse = {
   messageId: string;
 };
 

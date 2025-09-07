@@ -18,7 +18,7 @@ export const PatientVerificationOutputDTOSchema = z
         description: 'Last Name of the patient',
         example: 'Berrocal',
       }),
-      email: z.string().email().nullable().openapi({
+      email: z.email().nullable().openapi({
         description: 'Email of the patient if available',
         example: 'email@email.com',
       }),

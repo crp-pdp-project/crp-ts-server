@@ -9,7 +9,11 @@ export const RelationshipDMSchema = z.object({
   }),
   name: z.string().openapi({
     description: 'Name of the relationship',
-    example: 'Hijo/a',
+    example: 'Hijo/a menor de edad',
+  }),
+  isDependant: z.boolean().openapi({
+    description: 'Is the relationship dependant on the principal',
+    example: true,
   }),
   createdAt: z.string().openapi({
     description: 'Creation date of the family in DD-MM-YYYY HH:mm:ss',

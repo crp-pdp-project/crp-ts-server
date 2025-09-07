@@ -1,17 +1,19 @@
 import { Kysely, sql } from 'kysely';
 
+import { Database } from 'src/clients/mysql.client';
+
 const tableName = 'AuthAttempts';
 
-export async function up(db: Kysely<unknown>): Promise<void> {
+export async function up(db: Kysely<Database>): Promise<void> {
   await db.schema
     .createTable(tableName)
-    .addColumn('id', 'serial', (col) => col.primaryKey())
+    .addColumn('id', 'bigint', (col) => col.primaryKey().autoIncrement())
     .addColumn('documentNumber', 'varchar(255)', (col) => col.notNull())
     .addColumn('flowIdentifier', 'varchar(255)', (col) => col.notNull())
-    .addColumn('blockExpiredAt', 'datetime')
+    .addColumn('blockExpiresAt', 'datetime')
     .addColumn('tryCount', 'integer')
-    .addColumn('tryCountExpiredAt', 'datetime')
-    .addColumn('createdAt', 'datetime', (col) => col.notNull().defaultTo(sql`NOW()`))
+    .addColumn('tryCountExpiresAt', 'datetime')
+    .addColumn('createdAt', 'datetime', (col) => col.notNull().defaultTo(sql`CURRENT_TIMESTAMP`))
     .addColumn('updatedAt', 'datetime', (col) =>
       col
         .notNull()
@@ -28,7 +30,7 @@ export async function up(db: Kysely<unknown>): Promise<void> {
     .execute();
 }
 
-export async function down(db: Kysely<unknown>): Promise<void> {
+export async function down(db: Kysely<Database>): Promise<void> {
   await db.schema.dropIndex('UniqueAuthAttemptsPerFlow').on(tableName).execute();
   await db.schema.dropTable(tableName).execute();
 }

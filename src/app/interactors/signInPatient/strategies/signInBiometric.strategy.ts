@@ -1,13 +1,12 @@
-import {
-  SignInBiometricBodyDTO,
-  SignInBiometricBodyDTOSchema,
-} from 'src/app/entities/dtos/input/signInBiometric.input.dto';
-import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
-import { ErrorModel } from 'src/app/entities/models/error.model';
+import { SignInPatientBodyDTO } from 'src/app/entities/dtos/input/signInPatient.input.dto';
+import { AuthAttemptModel } from 'src/app/entities/models/authAttempt/authAttempt.model';
+import { DeviceModel } from 'src/app/entities/models/device/device.model';
+import { ErrorModel } from 'src/app/entities/models/error/error.model';
+import { PatientModel } from 'src/app/entities/models/patient/patient.model';
+import { ICleanBlockedRepository } from 'src/app/repositories/database/cleanBlocked.repository';
 import { ISignInBiometricRepository } from 'src/app/repositories/database/signInBiometric.repository';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
-import { IAuthAttemptManager } from 'src/general/managers/authAttempt.manager';
-import { IEncryptionManager } from 'src/general/managers/encryption.manager';
+import { IEncryptionManager } from 'src/general/managers/encryption/encryption.manager';
 
 import { ISignInStrategy } from '../signInPatient.interactor';
 
@@ -15,49 +14,44 @@ export class SignInBiometricStrategy implements ISignInStrategy {
   constructor(
     private readonly signInBiometric: ISignInBiometricRepository,
     private readonly encryptionManager: IEncryptionManager,
-    private readonly authAttemptManager: IAuthAttemptManager,
+    private readonly cleanBlocked: ICleanBlockedRepository,
   ) {}
 
-  async signIn(body: SignInBiometricBodyDTO): Promise<PatientDTO> {
-    const validatedBody = this.validateInput(body);
-    await this.authAttemptManager.validateAttempt(validatedBody.documentNumber);
-    const patient = await this.getPatientAccount(validatedBody);
-    const { hash, salt } = this.extractAccountPassword(patient);
-    await this.validatePassword(validatedBody, hash, salt);
+  async verifySignIn(
+    body: SignInPatientBodyDTO,
+    attempt: AuthAttemptModel,
+    device: DeviceModel,
+  ): Promise<PatientModel> {
+    const patient = await this.getPatientAccount(body, device);
+    await this.validateSignIn(body.password, patient, attempt);
 
     return patient;
   }
 
-  private validateInput(body: SignInBiometricBodyDTO): SignInBiometricBodyDTO {
-    return SignInBiometricBodyDTOSchema.parse(body);
+  private async getPatientAccount(body: SignInPatientBodyDTO, device: DeviceModel): Promise<PatientModel> {
+    const patient = await this.signInBiometric.execute(
+      body.documentType,
+      body.documentNumber,
+      device.identifier!,
+      device.os!,
+    );
+
+    return new PatientModel(patient ?? {});
   }
 
-  private async getPatientAccount(body: SignInBiometricBodyDTO): Promise<PatientDTO> {
-    const patient = await this.signInBiometric.execute(body.documentType, body.documentNumber);
-
-    if (!patient) {
+  private async validateSignIn(password: string, patient: PatientModel, attempt: AuthAttemptModel): Promise<void> {
+    if (!patient.device?.biometricHash || !patient.device?.biometricSalt) {
       throw ErrorModel.forbidden({ detail: ClientErrorMessages.BIOMETRIC_NOT_ENROLLED });
     }
 
-    return patient;
-  }
-
-  private extractAccountPassword(patient: PatientDTO): { hash: string; salt: string } {
-    if (!patient.account?.biometricHash || !patient.account?.biometricSalt) {
-      throw ErrorModel.forbidden({ detail: ClientErrorMessages.BIOMETRIC_NOT_ENROLLED });
-    }
-
-    return {
-      hash: patient.account.biometricHash,
-      salt: patient.account.biometricSalt,
-    };
-  }
-
-  private async validatePassword(body: SignInBiometricBodyDTO, hash: string, salt: string): Promise<void> {
-    const isValidPassword = await this.encryptionManager.comparePassword(body.password, hash, salt);
+    const isValidPassword = await this.encryptionManager.comparePassword(
+      password,
+      patient.device.biometricHash,
+      patient.device.biometricSalt,
+    );
 
     if (isValidPassword) {
-      await this.authAttemptManager.handleSuccess(body.documentNumber);
+      await this.cleanBlocked.execute(attempt.documentNumber);
     } else {
       throw ErrorModel.forbidden({ detail: ClientErrorMessages.BIOMETRIC_INVALID });
     }

@@ -1,6 +1,14 @@
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 import { z } from 'zod';
 
+import {
+  CancelActionStates,
+  PaymentActionStates,
+  PayStates,
+  RescheduleActionStates,
+} from 'src/general/enums/appointmentState.enum';
+import { InsuranceTypes } from 'src/general/enums/insuranceType.enum';
+
 extendZodWithOpenApi(z);
 
 export const CreateAppointmentOutputDTOSchema = z
@@ -69,6 +77,22 @@ export const CreateAppointmentOutputDTOSchema = z
           description: 'Unique Inspection ID of the insurance',
           example: '99',
         }),
+        iafaId: z.string().openapi({
+          description: 'Unique Iafa ID of the insurance',
+          example: '99000',
+        }),
+        fasId: z.string().openapi({
+          description: 'Unique fas ID of the insurance',
+          example: '9900',
+        }),
+        name: z.string().openapi({
+          description: 'Name of the insurance',
+          example: 'Cardiologia',
+        }),
+        type: z.enum(InsuranceTypes).openapi({
+          description: 'Type of the insurance',
+          example: InsuranceTypes.SITEDS,
+        }),
       })
       .optional()
       .openapi({
@@ -89,22 +113,38 @@ export const CreateAppointmentOutputDTOSchema = z
       .openapi({
         description: 'Appointment type model',
       }),
-    recommendations: z.array(z.string()).openapi({
-      description: 'List of recommendations for the appointment',
-      example: ['recomendacion'],
+    cancelAction: z.enum(CancelActionStates).optional().openapi({
+      description: 'State of the cancelation action',
+      example: CancelActionStates.PAYED_AFTER_DEADLINE,
     }),
-    canCancel: z.boolean().optional().openapi({
-      description: 'The appointment can be canceled',
-      example: false,
+    rescheduleAction: z.enum(RescheduleActionStates).optional().openapi({
+      description: 'State of the reschedule action',
+      example: RescheduleActionStates.ALLOWED_BEFORE_DEADLINE,
     }),
-    canReprogram: z.boolean().optional().openapi({
-      description: 'The appointment can be reprogrammed',
-      example: false,
+    payAction: z.enum(PaymentActionStates).optional().openapi({
+      description: 'State of the reschedule action',
+      example: PaymentActionStates.ALLOWED,
     }),
-    didShow: z.boolean().optional().openapi({
-      description: 'Did the patient went to the appointment',
-      example: false,
+    payState: z.enum(PayStates).optional().openapi({
+      description: 'State of the reschedule action',
+      example: PayStates.PAYED,
     }),
+    tips: z
+      .array(
+        z.object({
+          title: z.string().openapi({
+            description: 'Title of the tip',
+            example: 'Any Title',
+          }),
+          content: z.array(z.string()).openapi({
+            description: 'Content of the tip',
+            example: ['Any Content'],
+          }),
+        }),
+      )
+      .openapi({
+        description: 'Array of tips',
+      }),
   })
   .strict()
   .openapi({

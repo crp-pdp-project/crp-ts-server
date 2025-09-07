@@ -1,8 +1,8 @@
 import { randomBytes } from 'crypto';
 
 export class TextHelper {
-  static normalizePhoneNumber(phone?: string | null): string | null {
-    if (!phone) return null;
+  static normalizePhoneNumber(phone?: string | null): string | undefined | null {
+    if (!phone) return phone;
 
     const digits = phone.replace(/\D/g, '');
     const cleaned = digits.replace(/^0+/, '');
@@ -46,7 +46,7 @@ export class TextHelper {
     return properText;
   }
 
-  static maskPhone(phone: string | null): string | null {
+  static maskPhone(phone?: string | null): string | undefined | null {
     if (!phone) return phone;
     const digits = phone.replace(/\D/g, '');
 
@@ -58,7 +58,7 @@ export class TextHelper {
     return `${mask}${last}`;
   }
 
-  static maskEmail(email: string | null): string | null {
+  static maskEmail(email?: string | null): string | undefined | null {
     if (!email) return email;
     const [name, domain] = email.split('@');
 

@@ -1,6 +1,6 @@
 import { AvailabilityRequestDTO } from 'src/app/entities/dtos/service/availabilityRequest.dto';
 import { DoctorAvailabilityDTO } from 'src/app/entities/dtos/service/doctorAvailability.dto';
-import { InetumClient } from 'src/clients/inetum.client';
+import { InetumAppointmentServices, InetumClient } from 'src/clients/inetum.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';
@@ -54,7 +54,7 @@ export class GetDoctorAvailabilityRepository implements IGetDoctorAvailabilityRe
     const methodPayload = this.generateInput(payload);
     const instance = await InetumClient.getInstance();
     const rawResult = await instance.appointment.call<GetDoctorAvailabilityOutput>(
-      'ListadoHuecosDisponibles',
+      InetumAppointmentServices.GET_DOCTOR_AVAILABILITY,
       methodPayload,
     );
     return this.parseOutput(rawResult);

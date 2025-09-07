@@ -17,10 +17,6 @@ export const PatientNextAppointmentOutputDTOSchema = z
       description: 'Appointment schedule date in DD-MM-YYYY HH:mm:ss',
       example: '01-01-2025 00:00:00',
     }),
-    mode: z.string().openapi({
-      description: 'Appointment mode',
-      example: 'Presencial',
-    }),
     status: z.number().openapi({
       description: 'Appointment status, either 1 2 or 3. By default 1 is sent',
       example: 1,
@@ -85,22 +81,6 @@ export const PatientNextAppointmentOutputDTOSchema = z
       .openapi({
         description: 'Appointment type model',
       }),
-    recommendations: z.array(z.string()).openapi({
-      description: 'List of recommendations for the appointment',
-      example: ['recomendacion'],
-    }),
-    canCancel: z.boolean().openapi({
-      description: 'The appointment can be canceled',
-      example: false,
-    }),
-    canReprogram: z.boolean().openapi({
-      description: 'The appointment can be reprogrammed',
-      example: false,
-    }),
-    didShow: z.boolean().openapi({
-      description: 'Did the patient went to the appointment',
-      example: false,
-    }),
   })
   .strict()
   .openapi({

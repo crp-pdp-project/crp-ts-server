@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { AccountDMSchema } from '../../dms/accounts.dm';
+import { DeviceDMSchema } from '../../dms/devices.dm';
 import { PatientDMSchema } from '../../dms/patients.dm';
 
 export const RecoverSessionPayloadDTOSchema = z
@@ -15,9 +16,10 @@ export const RecoverSessionPayloadDTOSchema = z
       lastName: true,
     }).extend({
       account: AccountDMSchema.pick({ id: true }),
+      device: DeviceDMSchema.pick({ id: true }),
     }),
     external: z.object({
-      email: z.string().email().nullable(),
+      email: z.email().nullable(),
       phone: z.coerce.string().nullable(),
     }),
   })

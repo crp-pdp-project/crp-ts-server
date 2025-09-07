@@ -8,7 +8,11 @@ export const SessionDMSchema = z.object({
     example: 1,
   }),
   patientId: z.number().int().positive().openapi({
-    description: 'Unique ID of the patient',
+    description: 'Internal unique ID of the patient',
+    example: 1,
+  }),
+  deviceId: z.number().int().positive().openapi({
+    description: 'Unique ID of the device',
     example: 1,
   }),
   jti: z.string().openapi({

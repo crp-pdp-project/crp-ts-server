@@ -1,49 +1,32 @@
-import { FastifyRequest } from 'fastify';
-
 import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
-import { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExternal.dto';
-import { ErrorModel } from 'src/app/entities/models/error.model';
-import { PatientModel } from 'src/app/entities/models/patient.model';
-import { PatientProfileModel } from 'src/app/entities/models/patientProfile.model';
-import { SessionModel } from 'src/app/entities/models/session.model';
-import { SignInSessionModel } from 'src/app/entities/models/signInSession.model';
-import { ISearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
-import { CRPConstants } from 'src/general/contants/crp.constants';
-import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
+import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
+import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import { ISearchPatientRepository, SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
 
 export interface IPatientProfileInteractor {
-  profile(input: FastifyRequest): Promise<PatientProfileModel | ErrorModel>;
+  profile(session: SignInSessionModel): Promise<PatientExternalModel>;
 }
 
 export class PatientProfileInteractor implements IPatientProfileInteractor {
   constructor(private readonly searchPatientRepository: ISearchPatientRepository) {}
 
-  async profile(input: FastifyRequest): Promise<PatientProfileModel | ErrorModel> {
-    try {
-      const patient = this.validateSession(input.session);
-      const searchResult = await this.searchPatient({ fmpId: patient.fmpId });
-
-      return new PatientProfileModel(patient, searchResult);
-    } catch (error) {
-      return ErrorModel.fromError(error);
-    }
+  async profile(session: SignInSessionModel): Promise<PatientExternalModel> {
+    const externalPatientModel = await this.searchPatient({ fmpId: session.patient.fmpId });
+    externalPatientModel.validatePatient();
+    return externalPatientModel;
   }
 
-  private validateSession(session?: SessionModel): PatientModel {
-    if (!(session instanceof SignInSessionModel)) {
-      throw ErrorModel.forbidden({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
-    }
-
-    return new PatientModel(session.patient);
-  }
-
-  private async searchPatient(searchPayload: PatientDTO): Promise<PatientExternalDTO> {
+  private async searchPatient(searchPayload: PatientDTO): Promise<PatientExternalModel> {
     const searchResult = await this.searchPatientRepository.execute(searchPayload);
 
-    if (searchResult?.centerId !== CRPConstants.CENTER_ID) {
-      throw ErrorModel.notFound({ detail: ClientErrorMessages.PATIENT_NOT_FOUND });
-    }
+    const externalPatientModel = new PatientExternalModel(searchResult);
 
-    return searchResult;
+    return externalPatientModel;
+  }
+}
+
+export class PatientProfileInteractorBuilder {
+  static build(): PatientProfileInteractor {
+    return new PatientProfileInteractor(new SearchPatientRepository());
   }
 }

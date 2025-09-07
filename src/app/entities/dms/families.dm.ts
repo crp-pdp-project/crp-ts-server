@@ -19,6 +19,10 @@ export const FamilyDMSchema = z.object({
     description: 'Unique relationship ID of the family member',
     example: 1,
   }),
+  isVerified: z.boolean().openapi({
+    description: 'Is the family member verified to access all the data',
+    example: true,
+  }),
   createdAt: z.string().openapi({
     description: 'Creation date of the family in DD-MM-YYYY HH:mm:ss',
     example: '01-01-2025 00:00:00',

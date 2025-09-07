@@ -1,14 +1,16 @@
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
+import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { MysqlClient } from 'src/clients/mysql.client';
+import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { SqlJSONHelper } from 'src/general/helpers/sqlJson.helper';
 
 export interface IPatientRelativesRepository {
-  execute(id: PatientDM['id']): Promise<PatientDTO | undefined>;
+  execute(id: PatientDM['id']): Promise<PatientDTO>;
 }
 
 export class PatientRelativesRepository implements IPatientRelativesRepository {
-  async execute(id: PatientDM['id']): Promise<PatientDTO | undefined> {
+  async execute(id: PatientDM['id']): Promise<PatientDTO> {
     const db = MysqlClient.instance.getDb();
     const result = await db
       .selectFrom('Patients as Principal')
@@ -34,9 +36,13 @@ export class PatientRelativesRepository implements IPatientRelativesRepository {
             eb.ref('Relatives.secondLastName'),
             eb.ref('Relatives.documentNumber'),
             eb.ref('Relatives.documentType'),
-            SqlJSONHelper.jsonObject([eb.ref('Relationships.id'), eb.ref('Relationships.name')], {
-              checkNull: eb.ref('Relationships.id'),
-            }).as('relationship'),
+            eb.ref('Families.isVerified'),
+            SqlJSONHelper.jsonObject(
+              [eb.ref('Relationships.id'), eb.ref('Relationships.name'), eb.ref('Relationships.isDependant')],
+              {
+                checkNull: eb.ref('Relationships.id'),
+              },
+            ).as('relationship'),
           ],
           { checkNull: eb.ref('Relatives.id') },
         ).as('relatives'),
@@ -44,12 +50,16 @@ export class PatientRelativesRepository implements IPatientRelativesRepository {
       .where('Principal.id', '=', id)
       .executeTakeFirst();
 
-    return result as PatientDTO | undefined;
+    if (!result) {
+      throw ErrorModel.notFound({ detail: ClientErrorMessages.PATIENT_NOT_FOUND });
+    }
+
+    return result as PatientDTO;
   }
 }
 
 export class PatientRelativesRepositoryMock implements IPatientRelativesRepository {
-  async execute(): Promise<PatientDTO | undefined> {
+  async execute(): Promise<PatientDTO> {
     return {
       id: 1,
       fmpId: '239254',
@@ -69,9 +79,11 @@ export class PatientRelativesRepositoryMock implements IPatientRelativesReposito
           secondLastName: 'Vignolo',
           documentNumber: '88888888',
           documentType: 14,
+          isVerified: true,
           relationship: {
             id: 1,
-            name: 'Hijo/a',
+            name: 'Hijo/a menor de edad',
+            isDependant: true,
           },
         },
       ],

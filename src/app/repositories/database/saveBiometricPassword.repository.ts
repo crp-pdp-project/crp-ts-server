@@ -1,21 +1,21 @@
 import { UpdateResult } from 'kysely';
 
-import { AccountDM } from 'src/app/entities/dms/accounts.dm';
-import { AccountDTO } from 'src/app/entities/dtos/service/account.dto';
+import { DeviceDM } from 'src/app/entities/dms/devices.dm';
+import { DeviceDTO } from 'src/app/entities/dtos/service/device.dto';
 import { MysqlClient } from 'src/clients/mysql.client';
 
 export interface ISaveBiometricPasswordRepository {
-  execute(id: AccountDM['id'], account: AccountDTO): Promise<UpdateResult>;
+  execute(id: DeviceDM['id'], device: DeviceDTO): Promise<UpdateResult>;
 }
 
 export class SaveBiometricPasswordRepository implements ISaveBiometricPasswordRepository {
-  async execute(id: AccountDM['id'], account: AccountDTO): Promise<UpdateResult> {
+  async execute(id: DeviceDM['id'], device: DeviceDTO): Promise<UpdateResult> {
     const db = MysqlClient.instance.getDb();
     return db
-      .updateTable('Accounts')
+      .updateTable('Devices')
       .set({
-        biometricHash: account.biometricHash,
-        biometricSalt: account.biometricSalt,
+        biometricHash: device.biometricHash,
+        biometricSalt: device.biometricSalt,
       })
       .where('id', '=', id)
       .executeTakeFirstOrThrow();
