@@ -3,7 +3,6 @@ import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
 import { SignInSessionPayloadDTO } from 'src/app/entities/dtos/service/signInSessionPayload.dto';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
-import { ValidationRules } from 'src/general/enums/validationRules.enum';
 
 import { ErrorModel } from '../error/error.model';
 import { PatientModel } from '../patient/patient.model';
@@ -11,7 +10,9 @@ import { PatientModel } from '../patient/patient.model';
 import { SessionType } from './session.model';
 import { SessionModel } from './session.model';
 import { SessionSelfOnlyStrategy } from './strategies/sessionSelfOnly.strategy';
+import { SessionSelfOrDependantsStrategy } from './strategies/sessionSelfOrDependants.strategy';
 import { SessionSelfOrRelativesStrategy } from './strategies/sessionSelfOrRelatives.strategy';
+import { SessionSelfOrVerifiedStrategy } from './strategies/sessionSelfOrVerified.strategy';
 
 export type ValidateFmpIdStrategyInput = {
   selfId: PatientDM['fmpId'];
@@ -23,19 +24,29 @@ export interface ValidateFmpIdStrategy {
   isValidFmpId(input: ValidateFmpIdStrategyInput): boolean;
 }
 
+export enum ValidationRules {
+  SELF_ONLY,
+  SELF_OR_RELATIVES,
+  SELF_OR_VERIFIED,
+  SELF_OR_DEPENDANTS,
+}
+
 export class ValidateFmpIdStrategyFactory {
-  private static readonly strategyMap: Partial<Record<ValidationRules, ValidateFmpIdStrategy>> = {
-    [ValidationRules.SELF_ONLY]: new SessionSelfOnlyStrategy(),
-    [ValidationRules.SELF_OR_RELATIVES]: new SessionSelfOrRelativesStrategy(),
+  private static readonly strategyMap: Partial<Record<ValidationRules, new () => ValidateFmpIdStrategy>> = {
+    [ValidationRules.SELF_ONLY]: SessionSelfOnlyStrategy,
+    [ValidationRules.SELF_OR_RELATIVES]: SessionSelfOrRelativesStrategy,
+    [ValidationRules.SELF_OR_VERIFIED]: SessionSelfOrVerifiedStrategy,
+    [ValidationRules.SELF_OR_DEPENDANTS]: SessionSelfOrDependantsStrategy,
   };
 
   static getStrategy(rule: ValidationRules): ValidateFmpIdStrategy {
-    const strategy = this.strategyMap[rule];
-    if (!strategy) {
+    const Strategy = this.strategyMap[rule];
+
+    if (!Strategy) {
       throw ErrorModel.notFound({ message: 'FMP Validation rule not found' });
     }
 
-    return strategy;
+    return new Strategy();
   }
 }
 

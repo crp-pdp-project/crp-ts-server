@@ -61,10 +61,9 @@ export class GetAppointmentDetailRepository implements IGetAppointmentDetailRepo
     return this.parseOutput(rawResult);
   }
 
-  private parseInput(_appointmentId: AppointmentDTO['id']): GetAppointmentDetailInput {
+  private parseInput(appointmentId: AppointmentDTO['id']): GetAppointmentDetailInput {
     return {
-      IdCita: 'C202538212187',
-      // IdCita: appointmentId || '',
+      IdCita: appointmentId || '',
     };
   }
 

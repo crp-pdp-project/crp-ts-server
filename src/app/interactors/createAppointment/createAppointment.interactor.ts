@@ -10,7 +10,7 @@ import {
 } from 'src/app/entities/dtos/service/appointmentRequest.dto';
 import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import { AppointmentModel } from 'src/app/entities/models/appointment/appointment.model';
-import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import { SignInSessionModel, ValidationRules } from 'src/app/entities/models/session/signInSession.model';
 import {
   IPatientRelativesValidationRepository,
   PatientRelativesValidationRepository,
@@ -23,7 +23,6 @@ import {
   ISaveAppointmentRepository,
   SaveAppointmentRepository,
 } from 'src/app/repositories/soap/saveAppointment.repository';
-import { ValidationRules } from 'src/general/enums/validationRules.enum';
 
 export interface ICreateAppointmentInteractor {
   create(

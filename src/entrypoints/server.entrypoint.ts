@@ -30,6 +30,8 @@ import { DoctorsListV1Docs } from 'src/app/controllers/doctorsListV1/doctorsList
 import { DoctorsListV1Router } from 'src/app/controllers/doctorsListV1/doctorsList.router';
 import { InsurancesListV1Docs } from 'src/app/controllers/insurancesListV1/insurancesList.docs';
 import { InsurancesListV1Router } from 'src/app/controllers/insurancesListV1/insurancesList.router';
+import { InsuredPatientDuesV1Docs } from 'src/app/controllers/insuredPatientDuesV1/insuredPatientDues.docs';
+import { InsuredPatientDuesV1Router } from 'src/app/controllers/insuredPatientDuesV1/insuredPatientDues.router';
 import { PatientAppointmentDetailV1Docs } from 'src/app/controllers/patientAppointmentDetailV1/patientAppointmentDetail.docs';
 import { PatientAppointmentDetailV1Router } from 'src/app/controllers/patientAppointmentDetailV1/patientAppointmentDetail.router';
 import { PatientAppointmentsV1Docs } from 'src/app/controllers/patientAppointmentsV1/patientAppointments.docs';
@@ -40,6 +42,8 @@ import { PatientRelativesV1Docs } from 'src/app/controllers/patientRelativesV1/p
 import { PatientRelativesV1Router } from 'src/app/controllers/patientRelativesV1/patientRelatives.routes';
 import { PatientVerificationV1Docs } from 'src/app/controllers/patientVerificationV1/patientVerification.docs';
 import { PatientVerificationV1Router } from 'src/app/controllers/patientVerificationV1/patientVerification.routes';
+import { RescheduleAppointmentV1Docs } from 'src/app/controllers/rescheduleAppointmentV1/rescheduleAppointment.docs';
+import { RescheduleAppointmentV1Router } from 'src/app/controllers/rescheduleAppointmentV1/rescheduleAppointment.router';
 import { SendVerificationOTPV1Docs } from 'src/app/controllers/sendVerificationOtpV1/sendVerificationOtp.docs';
 import { SendVerificationOTPV1Router } from 'src/app/controllers/sendVerificationOtpV1/sendVerificationOtp.routes';
 import { SignInPatientV1Docs } from 'src/app/controllers/signInPatientV1/signInPatient.docs';
@@ -151,7 +155,9 @@ export class Server {
     new SpecialtiesListV1Docs(this.manager).registerDocs();
     new PatientAppointmentDetailV1Docs(this.manager).registerDocs();
     new CancelAppointmentV1Docs(this.manager).registerDocs();
+    new RescheduleAppointmentV1Docs(this.manager).registerDocs();
     new CreatePatientV1Docs(this.manager).registerDocs();
+    new InsuredPatientDuesV1Docs(this.manager).registerDocs();
   }
 
   private static registerRoutes(): void {
@@ -175,7 +181,9 @@ export class Server {
     new SpecialtiesListV1Router(this.app).registerRouter();
     new PatientAppointmentDetailV1Router(this.app).registerRouter();
     new CancelAppointmentV1Router(this.app).registerRouter();
+    new RescheduleAppointmentV1Router(this.app).registerRouter();
     new CreatePatientV1Router(this.app).registerRouter();
+    new InsuredPatientDuesV1Router(this.app).registerRouter();
   }
 
   private static setupDocsEndpoint(): void {

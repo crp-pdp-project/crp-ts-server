@@ -5,7 +5,7 @@ import { CRPConstants } from 'src/general/contants/crp.constants';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 
-type UpdateAppointmentInput = {
+type RescheduleAppointmentInput = {
   usuario: string;
   contrasena: string;
   peticionModificarCita: {
@@ -23,7 +23,7 @@ type UpdateAppointmentInput = {
   };
 };
 
-type UpdateAppointmentOutput = {
+type RescheduleAppointmentOutput = {
   ModificarCitaResult: {
     IdCita?: string | null;
     DescripcionError: string;
@@ -31,25 +31,25 @@ type UpdateAppointmentOutput = {
   };
 };
 
-export interface IUpdateAppointmentRepository {
+export interface IRescheduleAppointmentRepository {
   execute(payload: AppointmentRequestDTO): Promise<AppointmentTransactionResultDTO>;
 }
 
-export class UpdateAppointmentRepository implements IUpdateAppointmentRepository {
+export class RescheduleAppointmentRepository implements IRescheduleAppointmentRepository {
   private readonly user: string = EnvHelper.get('INETUM_USER');
   private readonly password: string = EnvHelper.get('INETUM_PASSWORD');
 
   async execute(payload: AppointmentRequestDTO): Promise<AppointmentTransactionResultDTO> {
     const methodPayload = this.generateInput(payload);
     const instance = await InetumClient.getInstance();
-    const rawResult = await instance.appointment.call<UpdateAppointmentOutput>(
+    const rawResult = await instance.appointment.call<RescheduleAppointmentOutput>(
       InetumAppointmentServices.RESCHEDULE_APPOINTMENT,
       methodPayload,
     );
     return this.parseOutput(rawResult);
   }
 
-  private generateInput(payload: AppointmentRequestDTO): UpdateAppointmentInput {
+  private generateInput(payload: AppointmentRequestDTO): RescheduleAppointmentInput {
     return {
       usuario: this.user,
       contrasena: this.password,
@@ -69,7 +69,7 @@ export class UpdateAppointmentRepository implements IUpdateAppointmentRepository
     };
   }
 
-  private parseOutput(rawResult: UpdateAppointmentOutput): AppointmentTransactionResultDTO {
+  private parseOutput(rawResult: RescheduleAppointmentOutput): AppointmentTransactionResultDTO {
     return {
       id: rawResult.ModificarCitaResult?.IdCita ?? undefined,
       errorCode: Number(rawResult.ModificarCitaResult.CodResultado),
@@ -78,7 +78,7 @@ export class UpdateAppointmentRepository implements IUpdateAppointmentRepository
   }
 }
 
-export class UpdateAppointmentRepositoryMock implements IUpdateAppointmentRepository {
+export class RescheduleAppointmentRepositoryMock implements IRescheduleAppointmentRepository {
   async execute(): Promise<AppointmentTransactionResultDTO> {
     return {
       id: 'C202335563796',

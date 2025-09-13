@@ -1,7 +1,7 @@
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { PatientAppointmentDetailParamsDTO } from 'src/app/entities/dtos/input/patientAppointmentDetail.input.dto';
 import { AppointmentModel } from 'src/app/entities/models/appointment/appointment.model';
-import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import { SignInSessionModel, ValidationRules } from 'src/app/entities/models/session/signInSession.model';
 import {
   IPatientRelativesValidationRepository,
   PatientRelativesValidationRepository,
@@ -10,7 +10,6 @@ import {
   GetAppointmentDetailRepository,
   IGetAppointmentDetailRepository,
 } from 'src/app/repositories/rest/getAppointmentDetail.repository';
-import { ValidationRules } from 'src/general/enums/validationRules.enum';
 
 export interface IPatientAppointmentDetailInteractor {
   obtain(params: PatientAppointmentDetailParamsDTO, session: SignInSessionModel): Promise<AppointmentModel>;
@@ -31,7 +30,7 @@ export class PatientAppointmentDetailInteractor implements IPatientAppointmentDe
 
   private async validateRelatives(fmpId: PatientDM['fmpId'], session: SignInSessionModel): Promise<void> {
     const relatives = await this.patientRelativesValidation.execute(session.patient.id);
-    session.inyectRelatives(relatives).validateFmpId(fmpId, ValidationRules.SELF_OR_RELATIVES);
+    session.inyectRelatives(relatives).validateFmpId(fmpId, ValidationRules.SELF_OR_VERIFIED);
   }
 }
 

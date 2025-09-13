@@ -1,4 +1,5 @@
 import { InsuranceDTO } from 'src/app/entities/dtos/service/insurance.dto';
+import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { CRPClient, CRPServicePaths } from 'src/clients/crp.client';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 
@@ -11,6 +12,7 @@ type GetInsurancesOutput = {
     codigoIAFA: string;
     codigoFAS: string;
   }[];
+  esCorrecto: boolean;
 };
 
 export interface IGetInsurancesRepository {
@@ -29,8 +31,14 @@ export class GetInsurancesRepository implements IGetInsurancesRepository {
   }
 
   private parseOutput(rawResult: GetInsurancesOutput): InsuranceDTO[] {
+    const { data, esCorrecto } = rawResult;
+
+    if (!esCorrecto || !data) {
+      throw ErrorModel.notFound({ message: 'Did not found any insurances' });
+    }
+
     const insurances: InsuranceDTO[] =
-      rawResult?.data?.map((insurance) => ({
+      data.map((insurance) => ({
         id: String(insurance.iseg_id),
         inspectionId: String(insurance.cod_inspeccion),
         iafaId: String(insurance.codigoIAFA),

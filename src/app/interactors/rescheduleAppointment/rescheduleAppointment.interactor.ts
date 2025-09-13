@@ -1,5 +1,8 @@
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { CancelAppointmentParamsDTO } from 'src/app/entities/dtos/input/cancelAppointment.input.dto';
+import {
+  RescheduleAppointmentBodyDTO,
+  RescheduleAppointmentParamsDTO,
+} from 'src/app/entities/dtos/input/rescheduleAppointment.input.dto';
 import { AppointmentModel } from 'src/app/entities/models/appointment/appointment.model';
 import { SignInSessionModel, ValidationRules } from 'src/app/entities/models/session/signInSession.model';
 import {
@@ -11,26 +14,33 @@ import {
   IGetAppointmentDetailRepository,
 } from 'src/app/repositories/rest/getAppointmentDetail.repository';
 import {
-  CancelAppointmentRepository,
-  ICancelAppointmentRepository,
-} from 'src/app/repositories/soap/cancelAppointment.repository';
-import { TipsType } from 'src/general/enums/tipsTypes.enum';
+  IRescheduleAppointmentRepository,
+  RescheduleAppointmentRepository,
+} from 'src/app/repositories/soap/rescheduleAppointment.repository';
 
-export interface ICancelAppointmentInteractor {
-  cancel(params: CancelAppointmentParamsDTO, session: SignInSessionModel): Promise<AppointmentModel>;
+export interface IRescheduleAppointmentInteractor {
+  reschedule(
+    body: RescheduleAppointmentBodyDTO,
+    params: RescheduleAppointmentParamsDTO,
+    session: SignInSessionModel,
+  ): Promise<AppointmentModel>;
 }
 
-export class CancelAppointmentInteractor implements ICancelAppointmentInteractor {
+export class RescheduleAppointmentInteractor implements IRescheduleAppointmentInteractor {
   constructor(
     private readonly patientRelativesValidation: IPatientRelativesValidationRepository,
     private readonly appointmentDetail: IGetAppointmentDetailRepository,
-    private readonly cancelAppointment: ICancelAppointmentRepository,
+    private readonly rescheduleAppointment: IRescheduleAppointmentRepository,
   ) {}
 
-  async cancel(params: CancelAppointmentParamsDTO, session: SignInSessionModel): Promise<AppointmentModel> {
+  async reschedule(
+    body: RescheduleAppointmentBodyDTO,
+    params: RescheduleAppointmentParamsDTO,
+    session: SignInSessionModel,
+  ): Promise<AppointmentModel> {
     await this.validateRelatives(params.fmpId, session);
-    const appointmentModel = await this.getCancelAppointment(params.appointmentId);
-    await this.cancelAppointment.execute(params.fmpId, appointmentModel.id!, appointmentModel.date!);
+    await this.rescheduleAppointment.execute({ ...params, ...body });
+    const appointmentModel = await this.getRescheduleAppointment(params.appointmentId);
 
     return appointmentModel;
   }
@@ -40,20 +50,20 @@ export class CancelAppointmentInteractor implements ICancelAppointmentInteractor
     session.inyectRelatives(relatives).validateFmpId(fmpId, ValidationRules.SELF_OR_DEPENDANTS);
   }
 
-  private async getCancelAppointment(appointmentId: string): Promise<AppointmentModel> {
+  private async getRescheduleAppointment(appointmentId: string): Promise<AppointmentModel> {
     const appointment = await this.appointmentDetail.execute(appointmentId);
-    const model = new AppointmentModel(appointment).overrideTips(TipsType.CANCEL);
+    const model = new AppointmentModel(appointment);
 
     return model;
   }
 }
 
-export class CancelAppointmentInteractorBuilder {
-  static build(): CancelAppointmentInteractor {
-    return new CancelAppointmentInteractor(
+export class RescheduleAppointmentInteractorBuilder {
+  static build(): RescheduleAppointmentInteractor {
+    return new RescheduleAppointmentInteractor(
       new PatientRelativesValidationRepository(),
       new GetAppointmentDetailRepository(),
-      new CancelAppointmentRepository(),
+      new RescheduleAppointmentRepository(),
     );
   }
 }

@@ -4,6 +4,7 @@ import { BaseModel } from 'src/app/entities/models/base.model';
 export class RelationshipModel extends BaseModel {
   readonly id?: number;
   readonly name?: string;
+  readonly isDependant?: boolean;
   readonly createdAt?: string;
   readonly updatedAt?: string;
 
@@ -12,6 +13,7 @@ export class RelationshipModel extends BaseModel {
 
     this.id = relationship?.id;
     this.name = relationship?.name;
+    this.isDependant = relationship.isDependant;
     this.createdAt = relationship?.createdAt;
     this.updatedAt = relationship?.updatedAt;
   }

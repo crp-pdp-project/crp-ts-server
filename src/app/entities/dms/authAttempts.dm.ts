@@ -12,7 +12,7 @@ export const AuthAttemptDMSchema = z.object({
   }),
   documentNumber: z.string().min(8).openapi({
     description: 'Document number of the patient',
-    example: '88888888',
+    example: '07583658',
   }),
   flowIdentifier: z.enum(AuthFlowIdentifier).openapi({
     description: 'Unique Identifier of the flow',

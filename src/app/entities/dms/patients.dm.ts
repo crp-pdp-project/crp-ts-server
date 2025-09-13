@@ -33,7 +33,7 @@ export const PatientDMSchema = z.object({
   }),
   documentNumber: z.string().min(8).openapi({
     description: 'Document number of the patient',
-    example: '88888888',
+    example: '07583658',
   }),
   documentType: z.number().int().positive().openapi({
     description: 'Type of document of the patient',

@@ -67,7 +67,7 @@ export class PatientRelativesRepositoryMock implements IPatientRelativesReposito
       firstName: 'Renato',
       lastName: 'Berrocal',
       secondLastName: 'Vignolo',
-      documentNumber: '88888888',
+      documentNumber: '07583658',
       documentType: 14,
       relatives: [
         {
@@ -77,7 +77,7 @@ export class PatientRelativesRepositoryMock implements IPatientRelativesReposito
           firstName: 'Renato',
           lastName: 'Berrocal',
           secondLastName: 'Vignolo',
-          documentNumber: '88888888',
+          documentNumber: '07583658',
           documentType: 14,
           isVerified: true,
           relationship: {

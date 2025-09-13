@@ -4,7 +4,7 @@ import { AvailabilityRequestDTO } from 'src/app/entities/dtos/service/availabili
 import { DoctorAvailabilityDTO } from 'src/app/entities/dtos/service/doctorAvailability.dto';
 import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import { AvailabilityListModel } from 'src/app/entities/models/availability/availabilityList.model';
-import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import { SignInSessionModel, ValidationRules } from 'src/app/entities/models/session/signInSession.model';
 import {
   IPatientRelativesValidationRepository,
   PatientRelativesValidationRepository,
@@ -13,7 +13,6 @@ import {
   GetDoctorAvailabilityRepository,
   IGetDoctorAvailabilityRepository,
 } from 'src/app/repositories/soap/getDoctorAvailability.repository';
-import { ValidationRules } from 'src/general/enums/validationRules.enum';
 
 export interface IAvailabilityListInteractor {
   list(query: AvailabilityListQueryDTO, session: SignInSessionModel): Promise<AvailabilityListModel>;

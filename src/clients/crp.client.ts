@@ -24,8 +24,8 @@ export enum CRPServicePaths {
   GET_X_RAY_IMAGE_URL = '/Pacs/ObtenerImagen',
   GET_POS_CONFIGURATION = '/Pago/ObtenerCredenciales',
   PAY_APPOINTMENT = '/Pago/ProcesarPagoCita',
-  GET_CLINIC_INSURANCE_STATE = '/PlanSalud/validar-cliente',
-  LIST_CLINIC_INSURANCE_DEBT = '/PlanSalud/consulta-deuda',
+  GET_INSURED_PATIENT = '/PlanSalud/validar-cliente',
+  GET_INSURED_PATIENT_DUES = '/PlanSalud/consulta-deuda',
   PAY_CLINIC_INSURANCE = '/Pago/ProcesarPagoPlanSalud',
   AUTH_EMPLOYEES = '/Security/AutenticarUsuario',
 }
