@@ -17,6 +17,11 @@ export class TextHelper {
     }
   }
 
+  static normalizeAppointmentId(appointmentId: string ): string  {
+    const cleaned = appointmentId.replace(/^C/, '');
+    return `C${cleaned}`;
+  }
+
   static generateOtp(length = 5): string {
     const charset = '0123456789';
     let otp = '';

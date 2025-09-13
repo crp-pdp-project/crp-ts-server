@@ -2,6 +2,7 @@ import { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { CRPClient, CRPServicePaths } from 'src/clients/crp.client';
 import { HttpMethod } from 'src/general/enums/methods.enum';
+import { TextHelper } from 'src/general/helpers/text.helper';
 
 type GetAppointmentDetailInput = {
   IdCita: string;
@@ -63,7 +64,8 @@ export class GetAppointmentDetailRepository implements IGetAppointmentDetailRepo
 
   private parseInput(appointmentId: AppointmentDTO['id']): GetAppointmentDetailInput {
     return {
-      IdCita: appointmentId || '',
+      // IdCita: TextHelper.normalizeAppointmentId(appointmentId ?? ''),
+      IdCita: TextHelper.normalizeAppointmentId('C202538212187'),
     };
   }
 
