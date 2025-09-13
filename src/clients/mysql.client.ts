@@ -1,4 +1,4 @@
-import { Kysely, MysqlDialect, ErrorLogEvent, QueryLogEvent } from 'kysely';
+import { Kysely, MysqlDialect, ErrorLogEvent, QueryLogEvent, MysqlPool } from 'kysely';
 import { createPool } from 'mysql2';
 
 import { AccountDM } from 'src/app/entities/dms/accounts.dm';
@@ -57,7 +57,7 @@ export class MysqlClient {
         database: EnvHelper.get('DB_NAME'),
         port: Number(EnvHelper.get('DB_PORT')),
         connectionLimit: 10,
-      }),
+      }) as MysqlPool,
     });
 
     this.db = new Kysely<Database>({
