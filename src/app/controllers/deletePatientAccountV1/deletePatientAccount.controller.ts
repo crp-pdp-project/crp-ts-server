@@ -6,7 +6,7 @@ import { SessionModel, SessionType } from 'src/app/entities/models/session/sessi
 import {
   DeletePatientAccountInteractorBuilder,
   IDeletePatientAccountInteractor,
-} from 'src/app/interactors/deletePatientAccount/deletePatientAccountinteractor';
+} from 'src/app/interactors/deletePatientAccount/deletePatientAccount.interactor';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IDeletePatientAccountController {

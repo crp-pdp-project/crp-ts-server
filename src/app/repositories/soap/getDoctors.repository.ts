@@ -54,16 +54,18 @@ export class GetDoctorsRepository implements IGetDoctorsRepository {
   }
 
   private parseOutput(rawResult: GetDoctorsOutput): DoctorDTO[] {
-    const doctors: DoctorDTO[] =
-      rawResult.ListadoProfesionalesResult?.Profesionales?.Profesional?.map((professional) => ({
-        id: String(professional.DniProfesional),
-        name: professional.Nombre ?? '',
-        specialty: {
-          id: String(professional.IdEspecialidad),
-          groupId: String(professional.IdEspecialidad).slice(0, -2) || '0',
-          name: professional.DescEspecialidad ?? '',
-        },
-      })) || [];
+    let result = rawResult.ListadoProfesionalesResult?.Profesionales?.Profesional ?? [];
+    result = Array.isArray(result) ? result : [result];
+
+    const doctors: DoctorDTO[] = result.map((professional) => ({
+      id: String(professional.DniProfesional),
+      name: professional.Nombre ?? '',
+      specialty: {
+        id: String(professional.IdEspecialidad),
+        groupId: String(professional.IdEspecialidad).slice(0, -2) || '0',
+        name: professional.DescEspecialidad ?? '',
+      },
+    }));
 
     return doctors;
   }

@@ -14,13 +14,12 @@ export enum SessionType {
   SIGN_IN = 'signIn',
 }
 
-type SessionByType<T extends SessionType> = T extends SessionType.ENROLL
-  ? EnrollSessionModel
-  : T extends SessionType.RECOVER
-    ? RecoverSessionModel
-    : T extends SessionType.SIGN_IN
-      ? SignInSessionModel
-      : never;
+type SessionTypeMap = {
+  [SessionType.ENROLL]: EnrollSessionModel;
+  [SessionType.RECOVER]: RecoverSessionModel;
+  [SessionType.SIGN_IN]: SignInSessionModel;
+};
+export type SessionByType<T extends SessionType> = SessionTypeMap[T];
 
 export abstract class SessionModel extends BaseModel {
   readonly jti: string;

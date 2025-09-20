@@ -1,4 +1,4 @@
-import dayjs, { Dayjs, isDayjs } from 'dayjs';
+import dayjs, { Dayjs, isDayjs, ManipulateType } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 import { allConstants, dateConstants, dateTimeConstants, timeConstants } from '../contants/date.constants';
@@ -74,6 +74,11 @@ export class DateHelper {
   static subtractMinutes(numOfMinutes: number, formatKey: FormatKey, baseDate?: string | Date): string {
     const date = baseDate ? this.parse(baseDate) : dayjs();
     return date.subtract(numOfMinutes, 'minutes').format(allConstants[formatKey]);
+  }
+
+  static countFromNow(baseDate: string | Date, granularity: ManipulateType): number {
+    const date = baseDate ? this.parse(baseDate) : dayjs();
+    return dayjs().diff(date, granularity);
   }
 
   private static parse(input: string | Date | Dayjs): Dayjs {

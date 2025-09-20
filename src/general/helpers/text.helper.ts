@@ -17,7 +17,7 @@ export class TextHelper {
     }
   }
 
-  static normalizeAppointmentId(appointmentId: string ): string  {
+  static normalizeAppointmentId(appointmentId: string): string {
     const cleaned = appointmentId.replace(/^C/, '');
     return `C${cleaned}`;
   }
@@ -36,6 +36,13 @@ export class TextHelper {
     }
 
     return otp;
+  }
+
+  static padTextLength(text: string | number, length = 9, char = '0'): string {
+    const pad = char.repeat(length);
+    const paddedText = `${pad}${text}`;
+
+    return paddedText.slice(-length);
   }
 
   static titleCase(text?: string): string | undefined {

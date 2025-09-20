@@ -18,7 +18,7 @@ type AuthTokenOutput = {
 export enum CRPServicePaths {
   GENERATE_TOKEN = '/token/GenerarToken',
   LIST_INSURANCES = '/PortalPacienteApi/Aseguradoras/Listar',
-  LIST_WARRANTY_LETTERS = '/CartasGarantia/Listar',
+  LIST_GUARANTEE_LETTERS = '/CartasGarantia/Listar',
   GET_LAB_RESULT = '/Laboratorio/ObtenerInforme_Particular',
   GET_APPOINTMENT_DETAIL = '/Cita/Detalle',
   GET_X_RAY_IMAGE_URL = '/Pacs/ObtenerImagen',

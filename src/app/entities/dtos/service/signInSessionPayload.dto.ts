@@ -14,6 +14,7 @@ export const SignInSessionPayloadDTOSchema = z
       documentType: true,
       firstName: true,
       lastName: true,
+      createdAt: true,
     }).extend({
       account: AccountDMSchema.pick({ id: true }),
       device: DeviceDMSchema.pick({ id: true }),

@@ -14,6 +14,7 @@ export const SessionPayloadDTOSchema = z
       documentType: true,
       firstName: true,
       lastName: true,
+      createdAt: true,
     })
       .partial()
       .extend({

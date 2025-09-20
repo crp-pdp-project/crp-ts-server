@@ -10,6 +10,11 @@ export class EnvHelper {
     return value;
   }
 
+  static getOptional(key: keyof NodeJS.ProcessEnv): string | undefined {
+    const value = process.env[key];
+    return value;
+  }
+
   static getCurrentEnv(): Environments {
     const rawValue = process.env.NODE_ENV;
 

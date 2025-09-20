@@ -83,16 +83,18 @@ export class GetDoctorAvailabilityRepository implements IGetDoctorAvailabilityRe
   }
 
   private parseOutput(rawResult: GetDoctorAvailabilityOutput): DoctorAvailabilityDTO[] {
-    const availability: DoctorAvailabilityDTO[] =
-      rawResult.ListadoHuecosDisponiblesResult?.Huecos?.Hueco?.map((availability) => ({
-        specialtyId: String(availability.IdEspecialidad),
-        doctorId: String(availability.IdProfesional),
-        appointmentTypeId: String(availability.IdPrestacion),
-        scheduleId: String(availability.CodAgenda),
-        blockId: String(availability.CodBloque),
-        date: String(availability.FechaCita),
-        time: String(availability.HoraCita),
-      })) || [];
+    let result = rawResult.ListadoHuecosDisponiblesResult?.Huecos?.Hueco ?? [];
+    result = Array.isArray(result) ? result : [result];
+
+    const availability: DoctorAvailabilityDTO[] = result.map((availability) => ({
+      specialtyId: String(availability.IdEspecialidad),
+      doctorId: String(availability.IdProfesional),
+      appointmentTypeId: String(availability.IdPrestacion),
+      scheduleId: String(availability.CodAgenda),
+      blockId: String(availability.CodBloque),
+      date: String(availability.FechaCita),
+      time: String(availability.HoraCita),
+    }));
 
     return availability;
   }

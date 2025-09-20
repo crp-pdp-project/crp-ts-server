@@ -73,29 +73,31 @@ export class GetHistoricAppointmentsRepository implements IGetHistoricAppointmen
   }
 
   private parseOutput(rawResult: GetHistoricAppointmentsOutput): AppointmentDTO[] {
-    const appointments: AppointmentDTO[] =
-      rawResult.ListadoConsultasResult.Consultas?.ConsultaRespuesta?.map((appointment) => ({
-        id: String(appointment.IdConsulta),
-        date: `${appointment.Fecha}${appointment.Hora}`,
-        status: appointment.Estado,
-        doctor: {
-          id: String(appointment.IdProfesional),
-          name: appointment.NombreProfesional ?? '',
-        },
-        specialty: {
-          id: String(appointment.IdEspecialidad),
-          groupId: String(appointment.IdAgrupacion),
-          name: appointment.Especialidad ?? '',
-        },
-        appointmentType: {
-          id: String(appointment.IdPrestacion),
-          name: appointment.Prestacion ?? '',
-        },
-        insurance: {
-          id: String(appointment.IdSociedad),
-          inspectionId: String(appointment.CodInspeccion),
-        },
-      })) || [];
+    let result = rawResult.ListadoConsultasResult.Consultas?.ConsultaRespuesta ?? [];
+    result = Array.isArray(result) ? result : [result];
+
+    const appointments: AppointmentDTO[] = result.map((appointment) => ({
+      id: String(appointment.IdConsulta),
+      date: `${appointment.Fecha}${appointment.Hora}`,
+      status: appointment.Estado,
+      doctor: {
+        id: String(appointment.IdProfesional),
+        name: appointment.NombreProfesional ?? '',
+      },
+      specialty: {
+        id: String(appointment.IdEspecialidad),
+        groupId: String(appointment.IdAgrupacion),
+        name: appointment.Especialidad ?? '',
+      },
+      appointmentType: {
+        id: String(appointment.IdPrestacion),
+        name: appointment.Prestacion ?? '',
+      },
+      insurance: {
+        id: String(appointment.IdSociedad),
+        inspectionId: String(appointment.CodInspeccion),
+      },
+    }));
 
     return appointments;
   }

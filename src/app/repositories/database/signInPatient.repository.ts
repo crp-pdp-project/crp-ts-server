@@ -28,6 +28,7 @@ export class SignInPatientRepository implements ISignInPatientRepository {
         'Patients.firstName',
         'Patients.lastName',
         'Patients.secondLastName',
+        'Patients.createdAt',
         SqlJSONHelper.jsonObject(
           [eb.ref('Accounts.id'), eb.ref('Accounts.passwordHash'), eb.ref('Accounts.passwordSalt')],
           { checkNull: eb.ref('Accounts.id') },

@@ -34,6 +34,7 @@ export class SignInBiometricRepository implements ISignInBiometricRepository {
         'Patients.firstName',
         'Patients.lastName',
         'Patients.secondLastName',
+        'Patients.createdAt',
         SqlJSONHelper.jsonObject([eb.ref('Accounts.id')], { checkNull: eb.ref('Accounts.id') }).as('account'),
         SqlJSONHelper.jsonObject(
           [eb.ref('Devices.id'), eb.ref('Devices.biometricHash'), eb.ref('Devices.biometricSalt')],

@@ -1,5 +1,7 @@
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 import { z } from 'zod';
+
+import { PatientDocumentType } from 'src/general/enums/patientInfo.enum';
 extendZodWithOpenApi(z);
 
 export const PatientDMSchema = z.object({
@@ -35,9 +37,9 @@ export const PatientDMSchema = z.object({
     description: 'Document number of the patient',
     example: '07583658',
   }),
-  documentType: z.number().int().positive().openapi({
+  documentType: z.enum(PatientDocumentType).openapi({
     description: 'Type of document of the patient',
-    example: 14,
+    example: PatientDocumentType.DNI,
   }),
   createdAt: z.string().openapi({
     description: 'Creation date of the patient in DD-MM-YYYY HH:mm:ss',

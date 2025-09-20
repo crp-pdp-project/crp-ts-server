@@ -48,10 +48,12 @@ export class RestHelper {
 
     const response = await request(fullUrl, requestOptions);
 
+    const rawText = response.body ? await response.body.text() : '';
+
     if (response.statusCode < 200 || response.statusCode >= 300) {
       this.logger.error('Error HTTP Status Code', {
         statusCode: response.statusCode,
-        result: await response.body.text(),
+        result: rawText,
       });
       throw ErrorModel.server({ message: 'HTTP Error' });
     }
@@ -59,9 +61,9 @@ export class RestHelper {
     let responseData: T;
 
     try {
-      responseData = (await response.body.json()) as T;
+      responseData = JSON.parse(rawText) as T;
     } catch {
-      responseData = (await response.body.text()) as T;
+      responseData = rawText as T;
     }
 
     this.logger.debug('HTTP Response Received', {

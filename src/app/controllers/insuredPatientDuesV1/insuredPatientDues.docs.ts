@@ -14,9 +14,9 @@ export class InsuredPatientDuesV1Docs {
   registerDocs(): void {
     this.manager.registerRoute({
       method: HttpSpecMethod.GET,
-      path: `${this.version}/insurance/dues/{contractId}`,
-      description: 'Get all patient relatives',
-      tags: ['clinic-insurance'],
+      path: `${this.version}/health-insurances/dues/{contractId}`,
+      description: 'Get all health insurance dues',
+      tags: ['health-insurance'],
       headers: BaseHeadersDTOSchema,
       params: InsuredPatientDuesParamsDTOSchema,
       responses: {

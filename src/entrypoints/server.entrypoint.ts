@@ -28,6 +28,8 @@ import { DeletePatientAccountV1Docs } from 'src/app/controllers/deletePatientAcc
 import { DeletePatientAccountV1Router } from 'src/app/controllers/deletePatientAccountV1/deletePatientAccount.router';
 import { DoctorsListV1Docs } from 'src/app/controllers/doctorsListV1/doctorsList.docs';
 import { DoctorsListV1Router } from 'src/app/controllers/doctorsListV1/doctorsList.router';
+import { HealthInsuranceViewV1Docs } from 'src/app/controllers/healthInsuranceViewV1/healthInsuranceView.docs';
+import { HealthInsuranceViewV1Router } from 'src/app/controllers/healthInsuranceViewV1/patientRelatives.routes';
 import { InsurancesListV1Docs } from 'src/app/controllers/insurancesListV1/insurancesList.docs';
 import { InsurancesListV1Router } from 'src/app/controllers/insurancesListV1/insurancesList.router';
 import { InsuredPatientDuesV1Docs } from 'src/app/controllers/insuredPatientDuesV1/insuredPatientDues.docs';
@@ -42,6 +44,8 @@ import { PatientRelativesV1Docs } from 'src/app/controllers/patientRelativesV1/p
 import { PatientRelativesV1Router } from 'src/app/controllers/patientRelativesV1/patientRelatives.routes';
 import { PatientVerificationV1Docs } from 'src/app/controllers/patientVerificationV1/patientVerification.docs';
 import { PatientVerificationV1Router } from 'src/app/controllers/patientVerificationV1/patientVerification.routes';
+import { POSConfigV1Docs } from 'src/app/controllers/posConfigV1/posConfig.docs';
+import { POSConfigV1Router } from 'src/app/controllers/posConfigV1/posConfig.router';
 import { RescheduleAppointmentV1Docs } from 'src/app/controllers/rescheduleAppointmentV1/rescheduleAppointment.docs';
 import { RescheduleAppointmentV1Router } from 'src/app/controllers/rescheduleAppointmentV1/rescheduleAppointment.router';
 import { SendVerificationOTPV1Docs } from 'src/app/controllers/sendVerificationOtpV1/sendVerificationOtp.docs';
@@ -52,11 +56,18 @@ import { SignOutPatientV1Docs } from 'src/app/controllers/signOutPatientV1/signO
 import { SignOutPatientV1Router } from 'src/app/controllers/signOutPatientV1/signOutPatient.routes';
 import { SpecialtiesListV1Docs } from 'src/app/controllers/specialtiesListV1/specialtiesList.docs';
 import { SpecialtiesListV1Router } from 'src/app/controllers/specialtiesListV1/specialtiesList.routes';
+import { ConAse270DTO } from 'src/app/entities/dtos/service/conAse270.dto';
+import { ConCod271DTO } from 'src/app/entities/dtos/service/conCod271.dto';
+import { ConNom271DTO } from 'src/app/entities/dtos/service/conNom271.dto';
 import { LoggerClient } from 'src/clients/logger.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { Environments } from 'src/general/enums/environments.enum';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 import { OpenApiManager } from 'src/general/managers/openapi/openapi.manager';
+import { ConAse270Config } from 'src/general/managers/x12/config/270ConAse.config';
+import { ConCod271Config } from 'src/general/managers/x12/config/271ConCod.config';
+import { ConNom271Config } from 'src/general/managers/x12/config/271ConNom.config';
+import { X12Manager } from 'src/general/managers/x12/x12.manager';
 import swaggerMeta from 'src/general/static/swaggerMeta.static';
 import swaggerTemplate from 'src/general/templates/swagger.template';
 
@@ -158,6 +169,8 @@ export class Server {
     new RescheduleAppointmentV1Docs(this.manager).registerDocs();
     new CreatePatientV1Docs(this.manager).registerDocs();
     new InsuredPatientDuesV1Docs(this.manager).registerDocs();
+    new HealthInsuranceViewV1Docs(this.manager).registerDocs();
+    new POSConfigV1Docs(this.manager).registerDocs();
   }
 
   private static registerRoutes(): void {
@@ -184,6 +197,68 @@ export class Server {
     new RescheduleAppointmentV1Router(this.app).registerRouter();
     new CreatePatientV1Router(this.app).registerRouter();
     new InsuredPatientDuesV1Router(this.app).registerRouter();
+    new HealthInsuranceViewV1Router(this.app).registerRouter();
+    new POSConfigV1Router(this.app).registerRouter();
+    this.app.route({
+      method: 'POST',
+      url: `/decode/270`,
+      handler: (input: FastifyRequest<{ Body: { text: string } }>, reply: FastifyReply) => {
+        const manager = new X12Manager(new ConAse270Config());
+        reply.code(200).send({
+          response: manager.decode(input.body.text),
+        });
+      },
+    });
+    this.app.route({
+      method: 'POST',
+      url: `/encode/270`,
+      handler: (input: FastifyRequest<{ Body: { payload: ConAse270DTO } }>, reply: FastifyReply) => {
+        const manager = new X12Manager(new ConAse270Config());
+        reply.code(200).send({
+          response: manager.encode(input.body.payload),
+        });
+      },
+    });
+    this.app.route({
+      method: 'POST',
+      url: `/decode/271`,
+      handler: (input: FastifyRequest<{ Body: { text: string } }>, reply: FastifyReply) => {
+        const manager = new X12Manager(new ConNom271Config());
+        reply.code(200).send({
+          response: manager.decode(input.body.text),
+        });
+      },
+    });
+    this.app.route({
+      method: 'POST',
+      url: `/encode/271`,
+      handler: (input: FastifyRequest<{ Body: { payload: ConNom271DTO } }>, reply: FastifyReply) => {
+        const manager = new X12Manager(new ConNom271Config());
+        reply.code(200).send({
+          response: manager.encode(input.body.payload),
+        });
+      },
+    });
+    this.app.route({
+      method: 'POST',
+      url: `/decode/272`,
+      handler: (input: FastifyRequest<{ Body: { text: string } }>, reply: FastifyReply) => {
+        const manager = new X12Manager(new ConCod271Config());
+        reply.code(200).send({
+          response: manager.decode(input.body.text),
+        });
+      },
+    });
+    this.app.route({
+      method: 'POST',
+      url: `/encode/272`,
+      handler: (input: FastifyRequest<{ Body: { payload: ConCod271DTO } }>, reply: FastifyReply) => {
+        const manager = new X12Manager(new ConCod271Config());
+        reply.code(200).send({
+          response: manager.encode(input.body.payload),
+        });
+      },
+    });
   }
 
   private static setupDocsEndpoint(): void {

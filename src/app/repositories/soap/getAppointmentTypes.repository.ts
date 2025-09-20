@@ -59,11 +59,13 @@ export class GetAppointmentTypesRepository implements IGetAppointmentTypesReposi
   }
 
   private parseOutput(rawResult: GetAppointmentTypesOutput): AppointmentTypeDTO[] {
-    const appointmentTypes: AppointmentTypeDTO[] =
-      rawResult.ListadoPrestacionesResult?.Prestaciones?.Prestacion?.map((type) => ({
-        id: String(type.IdPrestacion),
-        name: type.Nombre,
-      })) || [];
+    let result = rawResult.ListadoPrestacionesResult?.Prestaciones?.Prestacion ?? [];
+    result = Array.isArray(result) ? result : [result];
+
+    const appointmentTypes: AppointmentTypeDTO[] = result.map((type) => ({
+      id: String(type.IdPrestacion),
+      name: type.Nombre,
+    }));
 
     return appointmentTypes;
   }

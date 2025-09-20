@@ -90,30 +90,32 @@ export class GetCurrentAppointmentsRepository implements IGetCurrentAppointments
   }
 
   private parseOutput(rawResult: GetCurrentAppointmentsOutput): AppointmentDTO[] {
-    const appointments: AppointmentDTO[] =
-      rawResult.ListadoCitasResult?.Citas?.CitaRespuesta?.map((appointment) => ({
-        id: String(appointment.IdCita),
-        episodeId: String(appointment.CodEpisodio),
-        date: `${appointment.Fecha}${appointment.Hora}`,
-        status: appointment.EstadoHis,
-        doctor: {
-          id: String(appointment.IdProfesional),
-          name: appointment.NombreProfesional ?? '',
-        },
-        specialty: {
-          id: String(appointment.IdEspecialidad),
-          groupId: String(appointment.IdAgrupacion),
-          name: appointment.Especialidad ?? '',
-        },
-        appointmentType: {
-          id: String(appointment.IdPrestacion),
-          name: appointment.Prestacion ?? '',
-        },
-        insurance: {
-          id: String(appointment.IdSociedad),
-          inspectionId: String(appointment.CodInspeccion),
-        },
-      })) || [];
+    let result = rawResult.ListadoCitasResult?.Citas?.CitaRespuesta ?? [];
+    result = Array.isArray(result) ? result : [result];
+
+    const appointments: AppointmentDTO[] = result.map((appointment) => ({
+      id: String(appointment.IdCita),
+      episodeId: String(appointment.CodEpisodio),
+      date: `${appointment.Fecha}${appointment.Hora}`,
+      status: appointment.EstadoHis,
+      doctor: {
+        id: String(appointment.IdProfesional),
+        name: appointment.NombreProfesional ?? '',
+      },
+      specialty: {
+        id: String(appointment.IdEspecialidad),
+        groupId: String(appointment.IdAgrupacion),
+        name: appointment.Especialidad ?? '',
+      },
+      appointmentType: {
+        id: String(appointment.IdPrestacion),
+        name: appointment.Prestacion ?? '',
+      },
+      insurance: {
+        id: String(appointment.IdSociedad),
+        inspectionId: String(appointment.CodInspeccion),
+      },
+    }));
 
     return appointments;
   }

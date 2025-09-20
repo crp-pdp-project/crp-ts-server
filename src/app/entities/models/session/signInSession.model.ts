@@ -32,7 +32,7 @@ export enum ValidationRules {
 }
 
 export class ValidateFmpIdStrategyFactory {
-  private static readonly strategyMap: Partial<Record<ValidationRules, new () => ValidateFmpIdStrategy>> = {
+  private static readonly strategyMap: Record<ValidationRules, new () => ValidateFmpIdStrategy> = {
     [ValidationRules.SELF_ONLY]: SessionSelfOnlyStrategy,
     [ValidationRules.SELF_OR_RELATIVES]: SessionSelfOrRelativesStrategy,
     [ValidationRules.SELF_OR_VERIFIED]: SessionSelfOrVerifiedStrategy,

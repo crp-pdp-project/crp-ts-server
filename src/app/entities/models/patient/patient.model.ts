@@ -60,6 +60,7 @@ export class PatientModel extends BaseModel {
         documentType: this.documentType,
         firstName: this.firstName,
         lastName: this.lastName,
+        createdAt: this.createdAt,
         account: this.account ? { id: this.account.id } : undefined,
         device: this.#device ? { id: this.#device.id } : undefined,
       },

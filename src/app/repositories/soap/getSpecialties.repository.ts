@@ -53,12 +53,14 @@ export class GetSpecialtiesRepository implements IGetSpecialtiesRepository {
   }
 
   private parseOutput(rawResult: GetSpecialtiesOutput): SpecialtyDTO[] {
-    const specialties: SpecialtyDTO[] =
-      rawResult.ListadoEspecialidadesResult?.Especialidades?.Especialidad?.map((specialty) => ({
-        id: String(specialty.IdEspecialidad),
-        groupId: String(specialty.IdEspecialidad).slice(0, -2) || '0',
-        name: specialty.Nombre,
-      })) || [];
+    let result = rawResult.ListadoEspecialidadesResult?.Especialidades?.Especialidad ?? [];
+    result = Array.isArray(result) ? result : [result];
+
+    const specialties: SpecialtyDTO[] = result.map((specialty) => ({
+      id: String(specialty.IdEspecialidad),
+      groupId: String(specialty.IdEspecialidad).slice(0, -2) || '0',
+      name: specialty.Nombre,
+    }));
 
     return specialties;
   }

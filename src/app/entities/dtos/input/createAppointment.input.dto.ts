@@ -29,7 +29,7 @@ export const CreateAppointmentBodyDTOSchema = z
     }),
     insuranceId: z.coerce.string().openapi({
       description: 'Id of the insurance',
-      example: '16435',
+      example: '16023',
     }),
     inspectionId: z.coerce.string().openapi({
       description: 'Id of the insurance inspection',

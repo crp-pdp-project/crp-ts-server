@@ -23,7 +23,7 @@ export const AvailabilityListQueryDTOSchema = PatientDMSchema.pick({
     }),
     insuranceId: z.coerce.string().openapi({
       description: 'Id of the insurance to filter',
-      example: '16435',
+      example: '16023',
     }),
     inspectionId: z.coerce.string().openapi({
       description: 'Id of the insurance inspection to filter',

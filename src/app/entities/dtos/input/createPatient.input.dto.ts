@@ -1,36 +1,21 @@
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 import { z } from 'zod';
 
-import { PatientDocumentType, PatientGender } from 'src/general/enums/patientInfo.enum';
+import { PatientGender } from 'src/general/enums/patientInfo.enum';
+
+import { PatientDMSchema } from '../../dms/patients.dm';
 
 extendZodWithOpenApi(z);
 
-export const CreatePatientBodyDTOSchema = z
-  .object({
-    firstName: z.string().openapi({
-      description: 'First Name of the patient',
-      example: 'Renato',
-    }),
-    lastName: z.string().openapi({
-      description: 'Last Name of the patient',
-      example: 'Berrocal',
-    }),
-    secondLastName: z.string().optional().openapi({
-      description: 'Last Name of the patient',
-      example: 'Vignolo',
-    }),
-    birthDate: z.string().openapi({
-      description: 'Birth Date of the patient in DD-MM-YYYY',
-      example: '01-01-2025',
-    }),
-    documentNumber: z.string().min(8).openapi({
-      description: 'Document number of the patient',
-      example: '07583658',
-    }),
-    documentType: z.enum(PatientDocumentType).openapi({
-      description: 'Type of document of the patient',
-      example: PatientDocumentType.DNI,
-    }),
+export const CreatePatientBodyDTOSchema = PatientDMSchema.pick({
+  firstName: true,
+  lastName: true,
+  secondLastName: true,
+  birthDate: true,
+  documentNumber: true,
+  documentType: true,
+})
+  .extend({
     gender: z.enum(PatientGender).openapi({
       description: 'Type of document of the patient',
       example: PatientGender.MALE,
