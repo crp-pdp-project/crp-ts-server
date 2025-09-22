@@ -16,4 +16,5 @@ export enum ClientErrorMessages {
   APPOINTMENT_REPEATED = 'Ya existe una cita programada en la hora seleccionada',
   ID_NOT_VALID = 'No tienes acceso a los datos del paciente seleccionado. Intenta seleccionando otro',
   OTP_SEND_LIMIT = 'Recuerda que solo puedes enviar un número limitado de códigos de verificación. Intenta nuevamente más tarde',
+  RELATIVE_EXISTS = 'El familiar ya se encuentra registrado',
 }

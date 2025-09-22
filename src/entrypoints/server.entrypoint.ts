@@ -22,6 +22,10 @@ import { CreateAppointmentV1Docs } from 'src/app/controllers/createAppointmentV1
 import { CreateAppointmentV1Router } from 'src/app/controllers/createAppointmentV1/createAppointment.router';
 import { CreatePatientV1Docs } from 'src/app/controllers/createPatientV1/createPatient.docs';
 import { CreatePatientV1Router } from 'src/app/controllers/createPatientV1/createPatient.router';
+import { CreateRelativeInformationV1Docs } from 'src/app/controllers/createRelativeInformationV1/createRelativeInformation.docs';
+import { CreateRelativeInformationV1Router } from 'src/app/controllers/createRelativeInformationV1/createRelativeInformation.router';
+import { CreateRelativeV1Docs } from 'src/app/controllers/createRelativeV1/createRelative.docs';
+import { CreateRelativeV1Router } from 'src/app/controllers/createRelativeV1/createRelative.router';
 import { DeleteBiometricPasswordV1Docs } from 'src/app/controllers/deleteBiometricPasswordV1/deleteBiometricPassword.docs';
 import { DeleteBiometricPasswordV1Router } from 'src/app/controllers/deleteBiometricPasswordV1/deleteBiometricPassword.router';
 import { DeletePatientAccountV1Docs } from 'src/app/controllers/deletePatientAccountV1/deletePatientAccount.docs';
@@ -46,6 +50,10 @@ import { PatientVerificationV1Docs } from 'src/app/controllers/patientVerificati
 import { PatientVerificationV1Router } from 'src/app/controllers/patientVerificationV1/patientVerification.routes';
 import { POSConfigV1Docs } from 'src/app/controllers/posConfigV1/posConfig.docs';
 import { POSConfigV1Router } from 'src/app/controllers/posConfigV1/posConfig.router';
+import { RelationshipsListV1Docs } from 'src/app/controllers/relationshipsListV1/relationshipsList.docs';
+import { RelationshipsListV1Router } from 'src/app/controllers/relationshipsListV1/relationshipsList.router';
+import { RelativeVerificationV1Docs } from 'src/app/controllers/relativeVerificationV1/relativeVerification.docs';
+import { RelativeVerificationV1Router } from 'src/app/controllers/relativeVerificationV1/relativeVerification.router';
 import { RescheduleAppointmentV1Docs } from 'src/app/controllers/rescheduleAppointmentV1/rescheduleAppointment.docs';
 import { RescheduleAppointmentV1Router } from 'src/app/controllers/rescheduleAppointmentV1/rescheduleAppointment.router';
 import { SendVerificationOTPV1Docs } from 'src/app/controllers/sendVerificationOtpV1/sendVerificationOtp.docs';
@@ -171,6 +179,10 @@ export class Server {
     new InsuredPatientDuesV1Docs(this.manager).registerDocs();
     new HealthInsuranceViewV1Docs(this.manager).registerDocs();
     new POSConfigV1Docs(this.manager).registerDocs();
+    new RelationshipsListV1Docs(this.manager).registerDocs();
+    new RelativeVerificationV1Docs(this.manager).registerDocs();
+    new CreateRelativeInformationV1Docs(this.manager).registerDocs();
+    new CreateRelativeV1Docs(this.manager).registerDocs();
   }
 
   private static registerRoutes(): void {
@@ -199,6 +211,10 @@ export class Server {
     new InsuredPatientDuesV1Router(this.app).registerRouter();
     new HealthInsuranceViewV1Router(this.app).registerRouter();
     new POSConfigV1Router(this.app).registerRouter();
+    new RelationshipsListV1Router(this.app).registerRouter();
+    new RelativeVerificationV1Router(this.app).registerRouter();
+    new CreateRelativeInformationV1Router(this.app).registerRouter();
+    new CreateRelativeV1Router(this.app).registerRouter();
     this.app.route({
       method: 'POST',
       url: `/decode/270`,

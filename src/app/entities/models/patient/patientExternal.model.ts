@@ -68,10 +68,14 @@ export class PatientExternalModel extends BaseModel {
     return this.#device;
   }
 
-  validatePatient(): void {
+  validateCenter(): void {
     if (this.#searchResult.centerId !== CRPConstants.CENTER_ID) {
       throw ErrorModel.notFound({ detail: ClientErrorMessages.PATIENT_NOT_FOUND });
     }
+  }
+
+  validatePatient(): void {
+    this.validateCenter();
     if (!this.email && !this.phone) {
       throw ErrorModel.unprocessable({ detail: ClientErrorMessages.UNPROCESSABLE_PATIENT });
     }

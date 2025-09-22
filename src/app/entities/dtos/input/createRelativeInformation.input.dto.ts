@@ -7,7 +7,7 @@ import { PatientDMSchema } from '../../dms/patients.dm';
 
 extendZodWithOpenApi(z);
 
-export const CreatePatientBodyDTOSchema = PatientDMSchema.pick({
+export const CreateRelativeInformationBodyDTOSchema = PatientDMSchema.pick({
   firstName: true,
   lastName: true,
   secondLastName: true,
@@ -31,10 +31,10 @@ export const CreatePatientBodyDTOSchema = PatientDMSchema.pick({
   })
   .strict()
   .openapi({
-    description: 'Enroll Patient request Body',
+    description: 'Create relative request body',
   });
 
-export type CreatePatientBodyDTO = z.infer<typeof CreatePatientBodyDTOSchema>;
-export interface CreatePatientInputDTO {
-  Body: CreatePatientBodyDTO;
+export type CreateRelativeInformationBodyDTO = z.infer<typeof CreateRelativeInformationBodyDTOSchema>;
+export interface CreateRelativeInformationInputDTO {
+  Body: CreateRelativeInformationBodyDTO;
 }

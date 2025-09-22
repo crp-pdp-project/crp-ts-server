@@ -17,6 +17,7 @@ export class UpsertSessionRepository implements IUpsertSessionRepository {
       .onDuplicateKeyUpdate((eb) => ({
         jti: eb.val(session.jti),
         expiresAt: eb.val(session.expiresAt),
+        deviceId: eb.val(session.deviceId),
         otp: eb.val(session.otp ?? null),
         otpSendCount: eb.val(session.otpSendCount ?? null),
         isValidated: eb.val(session.isValidated ?? false),

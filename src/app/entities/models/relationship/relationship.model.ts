@@ -13,7 +13,7 @@ export class RelationshipModel extends BaseModel {
 
     this.id = relationship?.id;
     this.name = relationship?.name;
-    this.isDependant = relationship.isDependant;
+    this.isDependant = relationship.isDependant != null ? !!relationship.isDependant : undefined;
     this.createdAt = relationship?.createdAt;
     this.updatedAt = relationship?.updatedAt;
   }
