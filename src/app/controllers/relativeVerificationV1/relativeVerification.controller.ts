@@ -4,6 +4,7 @@ import {
   RelativeVerificationBodyDTOSchema,
   RelativeVerificationInputDTO,
 } from 'src/app/entities/dtos/input/relativeVerification.input.dto';
+import { RelativeVerificationOutputDTOSchema } from 'src/app/entities/dtos/output/relativeVerification.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { SessionModel, SessionType } from 'src/app/entities/models/session/session.model';
@@ -44,7 +45,7 @@ export class RelativeVerificationControllerBuilder {
   static build(): RelativeVerificationController {
     return new RelativeVerificationController(
       RelativeVerificationInteractorBuilder.build(),
-      ResponseManagerBuilder.buildData(RelativeVerificationBodyDTOSchema),
+      ResponseManagerBuilder.buildData(RelativeVerificationOutputDTOSchema),
     );
   }
 }

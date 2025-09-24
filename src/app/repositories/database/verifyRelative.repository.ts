@@ -1,33 +1,37 @@
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
-import { ErrorModel } from 'src/app/entities/models/error/error.model';
+import { FamilyDTO } from 'src/app/entities/dtos/service/family.dto';
 import { MysqlClient } from 'src/clients/mysql.client';
-import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 export interface IVerifyRelativeRepository {
-  execute(principalId: PatientDM['id'], relativeId: PatientDM['id']): Promise<PatientDTO>;
+  execute(
+    principalId: PatientDM['id'],
+    relativeDocumentNumber: PatientDM['documentNumber'],
+    relativeDocumentType: PatientDM['documentType'],
+  ): Promise<FamilyDTO | undefined>;
 }
 
 export class VerifyRelativeRepository implements IVerifyRelativeRepository {
-  async execute(principalId: PatientDM['id'], relativeId: PatientDM['id']): Promise<PatientDTO> {
+  async execute(
+    principalId: PatientDM['id'],
+    relativeDocumentNumber: PatientDM['documentNumber'],
+    relativeDocumentType: PatientDM['documentType'],
+  ): Promise<FamilyDTO | undefined> {
     const db = MysqlClient.instance.getDb();
     const result = await db
       .selectFrom('Families')
-      .select(['id'])
-      .where('principalId', '=', principalId)
-      .where('relativeId', '=', relativeId)
+      .innerJoin('Patients as Relatives', 'Families.relativeId', 'Relatives.id')
+      .select(['Families.id'])
+      .where('Families.principalId', '=', principalId)
+      .where('Relatives.documentNumber', '=', relativeDocumentNumber)
+      .where('Relatives.documentType', '=', relativeDocumentType)
       .executeTakeFirst();
 
-    if (!result) {
-      throw ErrorModel.notFound({ detail: ClientErrorMessages.PATIENT_NOT_FOUND });
-    }
-
-    return result as PatientDTO;
+    return result as FamilyDTO;
   }
 }
 
 export class VerifyRelativeRepositoryMock implements IVerifyRelativeRepository {
-  async execute(): Promise<PatientDTO> {
+  async execute(): Promise<FamilyDTO> {
     return { id: 1 };
   }
 }

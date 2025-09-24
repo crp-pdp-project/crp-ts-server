@@ -9,7 +9,11 @@ export interface IGetPatientRepository {
 export class GetPatientRepository implements IGetPatientRepository {
   async execute(id: PatientDM['id']): Promise<PatientDTO | undefined> {
     const db = MysqlClient.instance.getDb();
-    const result = await db.selectFrom('Patients').select(['id']).where('id', '=', id).executeTakeFirst();
+    const result = await db
+      .selectFrom('Patients')
+      .select(['id', 'documentNumber', 'documentType'])
+      .where('id', '=', id)
+      .executeTakeFirst();
     return result as PatientDTO | undefined;
   }
 }

@@ -4,6 +4,7 @@ import {
   CreateRelativeInformationBodyDTOSchema,
   CreateRelativeInformationInputDTO,
 } from 'src/app/entities/dtos/input/createRelativeInformation.input.dto';
+import { RelativeVerificationOutputDTOSchema } from 'src/app/entities/dtos/output/relativeVerification.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { SessionModel, SessionType } from 'src/app/entities/models/session/session.model';
@@ -44,7 +45,7 @@ export class CreateRelativeInformationControllerBuilder {
   static build(): CreateRelativeInformationController {
     return new CreateRelativeInformationController(
       CreateRelativeInformationInteractorBuilder.build(),
-      ResponseManagerBuilder.buildData(CreateRelativeInformationBodyDTOSchema),
+      ResponseManagerBuilder.buildData(RelativeVerificationOutputDTOSchema),
     );
   }
 }

@@ -30,10 +30,14 @@ import { DeleteBiometricPasswordV1Docs } from 'src/app/controllers/deleteBiometr
 import { DeleteBiometricPasswordV1Router } from 'src/app/controllers/deleteBiometricPasswordV1/deleteBiometricPassword.router';
 import { DeletePatientAccountV1Docs } from 'src/app/controllers/deletePatientAccountV1/deletePatientAccount.docs';
 import { DeletePatientAccountV1Router } from 'src/app/controllers/deletePatientAccountV1/deletePatientAccount.router';
+import { DeleteRelativeV1Docs } from 'src/app/controllers/deleteRelativeV1/deleteRelative.docs';
+import { DeleteRelativeV1Router } from 'src/app/controllers/deleteRelativeV1/deleteRelative.router';
 import { DoctorsListV1Docs } from 'src/app/controllers/doctorsListV1/doctorsList.docs';
 import { DoctorsListV1Router } from 'src/app/controllers/doctorsListV1/doctorsList.router';
 import { HealthInsuranceViewV1Docs } from 'src/app/controllers/healthInsuranceViewV1/healthInsuranceView.docs';
-import { HealthInsuranceViewV1Router } from 'src/app/controllers/healthInsuranceViewV1/patientRelatives.routes';
+import { HealthInsuranceViewV1Router } from 'src/app/controllers/healthInsuranceViewV1/healthInsuranceView.routes';
+import { InformInsuranceInterestV1Docs } from 'src/app/controllers/informInsuranceInterestV1/informInsuranceInterest.docs';
+import { InformInsuranceInterestV1Router } from 'src/app/controllers/informInsuranceInterestV1/informInsuranceInterest.router';
 import { InsurancesListV1Docs } from 'src/app/controllers/insurancesListV1/insurancesList.docs';
 import { InsurancesListV1Router } from 'src/app/controllers/insurancesListV1/insurancesList.router';
 import { InsuredPatientDuesV1Docs } from 'src/app/controllers/insuredPatientDuesV1/insuredPatientDues.docs';
@@ -183,6 +187,8 @@ export class Server {
     new RelativeVerificationV1Docs(this.manager).registerDocs();
     new CreateRelativeInformationV1Docs(this.manager).registerDocs();
     new CreateRelativeV1Docs(this.manager).registerDocs();
+    new DeleteRelativeV1Docs(this.manager).registerDocs();
+    new InformInsuranceInterestV1Docs(this.manager).registerDocs();
   }
 
   private static registerRoutes(): void {
@@ -215,6 +221,8 @@ export class Server {
     new RelativeVerificationV1Router(this.app).registerRouter();
     new CreateRelativeInformationV1Router(this.app).registerRouter();
     new CreateRelativeV1Router(this.app).registerRouter();
+    new DeleteRelativeV1Router(this.app).registerRouter();
+    new InformInsuranceInterestV1Router(this.app).registerRouter();
     this.app.route({
       method: 'POST',
       url: `/decode/270`,

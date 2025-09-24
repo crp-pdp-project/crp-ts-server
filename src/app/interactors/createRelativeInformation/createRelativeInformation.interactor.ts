@@ -1,7 +1,6 @@
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { CreateRelativeInformationBodyDTO } from 'src/app/entities/dtos/input/createRelativeInformation.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { PatientModel } from 'src/app/entities/models/patient/patient.model';
 import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
 import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
 import { ISavePatientRepository, SavePatientRepository } from 'src/app/repositories/database/savePatient.repository';
@@ -17,7 +16,7 @@ import { ISearchPatientRepository, SearchPatientRepository } from 'src/app/repos
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 export interface ICreateRelativeInformationInteractor {
-  create(body: CreateRelativeInformationBodyDTO, session: SignInSessionModel): Promise<PatientModel>;
+  create(body: CreateRelativeInformationBodyDTO, session: SignInSessionModel): Promise<PatientExternalModel>;
 }
 
 export class CreateRelativeInformationInteractor implements ICreateRelativeInformationInteractor {
@@ -28,14 +27,14 @@ export class CreateRelativeInformationInteractor implements ICreateRelativeInfor
     private readonly verifyRelativeRepository: IVerifyRelativeRepository,
   ) {}
 
-  async create(body: CreateRelativeInformationBodyDTO, session: SignInSessionModel): Promise<PatientModel> {
+  async create(body: CreateRelativeInformationBodyDTO, session: SignInSessionModel): Promise<PatientExternalModel> {
+    await this.verifyRelationship(body, session);
     const newFmpId = await this.patientCreation(body);
     const patientExternalModel = await this.searchPatient(newFmpId);
     patientExternalModel.validateCenter();
-    const relative = await this.persistPatient(patientExternalModel);
-    await this.verifyRelationship(session.patient.id, relative.id!);
+    await this.persistPatient(patientExternalModel);
 
-    return relative;
+    return patientExternalModel;
   }
 
   private async patientCreation(body: CreateRelativeInformationBodyDTO): Promise<PatientDM['fmpId']> {
@@ -59,19 +58,21 @@ export class CreateRelativeInformationInteractor implements ICreateRelativeInfor
     return externalPatientModel;
   }
 
-  private async persistPatient(patientExternalModel: PatientExternalModel): Promise<PatientModel> {
+  private async persistPatient(patientExternalModel: PatientExternalModel): Promise<void> {
     if (!patientExternalModel.hasPersistedPatient()) {
       const { insertId } = await this.savePatientRepository.execute(patientExternalModel.toPersistPatientPayload());
       patientExternalModel.inyectPatientId(Number(insertId));
     }
-
-    return new PatientModel({ id: patientExternalModel.id });
   }
 
-  private async verifyRelationship(principalId: PatientDM['id'], relativeId: PatientDM['id']): Promise<void> {
-    const verifyResult = await this.verifyRelativeRepository.execute(principalId, relativeId);
+  private async verifyRelationship(body: CreateRelativeInformationBodyDTO, session: SignInSessionModel): Promise<void> {
+    const verifyResult = await this.verifyRelativeRepository.execute(
+      session.patient.id,
+      body.documentNumber,
+      body.documentType,
+    );
 
-    if (verifyResult.id) {
+    if (verifyResult?.id || body.documentNumber === session.patient.documentNumber) {
       throw ErrorModel.unprocessable({ detail: ClientErrorMessages.RELATIVE_EXISTS });
     }
   }

@@ -41,7 +41,7 @@ export class PatientModel extends BaseModel {
     this.documentType = patient.documentType;
     this.createdAt = patient.createdAt;
     this.updatedAt = patient.updatedAt;
-    this.isVerified = patient.isVerified;
+    this.isVerified = patient.isVerified != null ? !!patient.isVerified : undefined;
     this.account = patient.account ? new AccountModel(patient.account) : undefined;
     this.relationship = this.resolvePrincipalRelationship(patient);
     this.relatives = this.resolveRelatives(patient.relatives);

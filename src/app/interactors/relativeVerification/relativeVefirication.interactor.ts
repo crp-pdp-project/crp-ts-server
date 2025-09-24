@@ -1,7 +1,5 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { RelativeVerificationBodyDTO } from 'src/app/entities/dtos/input/relativeVerification.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { PatientModel } from 'src/app/entities/models/patient/patient.model';
 import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
 import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
 import {
@@ -21,7 +19,7 @@ import { ISearchPatientRepository, SearchPatientRepository } from 'src/app/repos
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 export interface IRelativeVerificationInteractor {
-  verify(body: RelativeVerificationBodyDTO, session: SignInSessionModel): Promise<PatientModel>;
+  verify(body: RelativeVerificationBodyDTO, session: SignInSessionModel): Promise<PatientExternalModel>;
 }
 
 export class RelativeVerificationInteractor implements IRelativeVerificationInteractor {
@@ -33,14 +31,14 @@ export class RelativeVerificationInteractor implements IRelativeVerificationInte
     private readonly verifyRelativeRepository: IVerifyRelativeRepository,
   ) {}
 
-  async verify(body: RelativeVerificationBodyDTO, session: SignInSessionModel): Promise<PatientModel> {
+  async verify(body: RelativeVerificationBodyDTO, session: SignInSessionModel): Promise<PatientExternalModel> {
+    await this.verifyRelationship(body, session);
     const externalPatientModel = await this.searchPatient(body);
     externalPatientModel.validateCenter();
     await this.confirmPatientCreation(externalPatientModel);
-    const relative = await this.persistPatient(externalPatientModel);
-    await this.verifyRelationship(session.patient.id, relative.id!);
+    await this.persistPatient(externalPatientModel);
 
-    return relative;
+    return externalPatientModel;
   }
 
   private async searchPatient(body: RelativeVerificationBodyDTO): Promise<PatientExternalModel> {
@@ -60,19 +58,21 @@ export class RelativeVerificationInteractor implements IRelativeVerificationInte
     }
   }
 
-  private async persistPatient(patientExternalModel: PatientExternalModel): Promise<PatientModel> {
+  private async persistPatient(patientExternalModel: PatientExternalModel): Promise<void> {
     if (!patientExternalModel.hasPersistedPatient()) {
       const { insertId } = await this.savePatientRepository.execute(patientExternalModel.toPersistPatientPayload());
       patientExternalModel.inyectPatientId(Number(insertId));
     }
-
-    return new PatientModel({ id: patientExternalModel.id });
   }
 
-  private async verifyRelationship(principalId: PatientDM['id'], relativeId: PatientDM['id']): Promise<void> {
-    const verifyResult = await this.verifyRelativeRepository.execute(principalId, relativeId);
+  private async verifyRelationship(body: RelativeVerificationBodyDTO, session: SignInSessionModel): Promise<void> {
+    const verifyResult = await this.verifyRelativeRepository.execute(
+      session.patient.id,
+      body.documentNumber,
+      body.documentType,
+    );
 
-    if (verifyResult.id) {
+    if (verifyResult?.id || body.documentNumber === session.patient.documentNumber) {
       throw ErrorModel.unprocessable({ detail: ClientErrorMessages.RELATIVE_EXISTS });
     }
   }

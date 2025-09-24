@@ -1,35 +1,35 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import {
-  CreateRelativeBodyDTOSchema,
-  CreateRelativeInputDTO,
-} from 'src/app/entities/dtos/input/createRelative.input.dto';
+  DeleteRelativeInputDTO,
+  DeleteRelativeParamsDTOSchema,
+} from 'src/app/entities/dtos/input/deleteRelative.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { SessionModel, SessionType } from 'src/app/entities/models/session/session.model';
 import {
-  CreateRelativeInteractorBuilder,
-  ICreateRelativeInteractor,
-} from 'src/app/interactors/createRelative/createRelative.interactor';
+  DeleteRelativeInteractorBuilder,
+  IDeleteRelativeInteractor,
+} from 'src/app/interactors/deleteRelative/deleteRelative.interactor';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
-export interface ICreateRelativeController {
+export interface IDeleteRelativeController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;
 }
 
-export class CreateRelativeController implements ICreateRelativeController {
+export class DeleteRelativeController implements IDeleteRelativeController {
   private response?: ResponseModel;
 
   constructor(
-    private readonly createRelative: ICreateRelativeInteractor,
+    private readonly deleteRelative: IDeleteRelativeInteractor,
     private readonly responseManager: IResponseManager,
   ) {}
 
-  async handle(input: FastifyRequest<CreateRelativeInputDTO>, reply: FastifyReply): Promise<void> {
+  async handle(input: FastifyRequest<DeleteRelativeInputDTO>, reply: FastifyReply): Promise<void> {
     try {
-      const body = CreateRelativeBodyDTOSchema.parse(input.body);
+      const params = DeleteRelativeParamsDTOSchema.parse(input.params);
       const session = SessionModel.validateSessionInstance(SessionType.SIGN_IN, input.session);
-      await this.createRelative.create(body, session);
+      await this.deleteRelative.delete(params, session);
       this.response = this.responseManager.validateResponse();
     } catch (error) {
       const errorModel = ErrorModel.fromError(error);
@@ -40,8 +40,8 @@ export class CreateRelativeController implements ICreateRelativeController {
   }
 }
 
-export class CreateRelativeControllerBuilder {
-  static build(): CreateRelativeController {
-    return new CreateRelativeController(CreateRelativeInteractorBuilder.build(), ResponseManagerBuilder.buildEmpty());
+export class DeleteRelativeControllerBuilder {
+  static build(): DeleteRelativeController {
+    return new DeleteRelativeController(DeleteRelativeInteractorBuilder.build(), ResponseManagerBuilder.buildEmpty());
   }
 }

@@ -26,7 +26,7 @@ export class CreateRelativeInteractor implements ICreateRelativeInteractor {
   async create(body: CreateRelativeBodyDTO, session: SignInSessionModel): Promise<void> {
     const relative = await this.getPatient(body.relativeId);
     relative.validatePatient();
-    await this.verifyRelationship(session.patient.id, relative.id!);
+    await this.verifyRelationship(relative, session);
     await this.persistRelative(session.patient.id, relative.id!, body.relationshipId);
   }
 
@@ -36,10 +36,14 @@ export class CreateRelativeInteractor implements ICreateRelativeInteractor {
     return new PatientModel(patient ?? {});
   }
 
-  private async verifyRelationship(principalId: PatientDM['id'], relativeId: PatientDM['id']): Promise<void> {
-    const verifyResult = await this.verifyRelativeRepository.execute(principalId, relativeId);
+  private async verifyRelationship(relative: PatientModel, session: SignInSessionModel): Promise<void> {
+    const verifyResult = await this.verifyRelativeRepository.execute(
+      session.patient.id,
+      relative.documentNumber!,
+      relative.documentType!,
+    );
 
-    if (verifyResult.id) {
+    if (verifyResult?.id || relative.id === session.patient.id) {
       throw ErrorModel.unprocessable({ detail: ClientErrorMessages.RELATIVE_EXISTS });
     }
   }
