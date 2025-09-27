@@ -29,7 +29,7 @@ export class PatientExternalModel extends BaseModel {
   readonly phone?: string | null;
   readonly maskedPhone?: string | null;
   readonly fmpId?: string;
-  readonly nhcId?: string;
+  readonly nhcId?: string | null;
   readonly documentNumber?: string;
   readonly documentType?: number;
   readonly account?: AccountModel;

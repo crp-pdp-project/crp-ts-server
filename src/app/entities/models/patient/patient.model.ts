@@ -14,7 +14,7 @@ import { ErrorModel } from '../error/error.model';
 export class PatientModel extends BaseModel {
   readonly id?: number;
   readonly fmpId?: string;
-  readonly nhcId?: string;
+  readonly nhcId?: string | null;
   readonly firstName?: string;
   readonly lastName?: string;
   readonly secondLastName?: string | null;

@@ -79,7 +79,7 @@ export class SearchPatientRepository implements ISearchPatientRepository {
 
     return {
       fmpId: String(basePatient?.Id),
-      nhcId: firstCenter?.Nhc ?? '',
+      nhcId: firstCenter?.Nhc ?? null,
       firstName: basePatient?.Nombre,
       lastName: basePatient?.Apellido1,
       secondLastName: basePatient?.Apellido2 ?? null,

@@ -3,6 +3,10 @@ import { CreateRelativeInformationBodyDTO } from 'src/app/entities/dtos/input/cr
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
 import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import {
+  GetPatientAccountRepository,
+  IGetPatientAccountRepository,
+} from 'src/app/repositories/database/getPatientAccount.repository';
 import { ISavePatientRepository, SavePatientRepository } from 'src/app/repositories/database/savePatient.repository';
 import {
   IVerifyRelativeRepository,
@@ -22,6 +26,7 @@ export interface ICreateRelativeInformationInteractor {
 export class CreateRelativeInformationInteractor implements ICreateRelativeInformationInteractor {
   constructor(
     private readonly confirmPatientRepository: IConfirmPatientRepository,
+    private readonly getPatientAccountRepository: IGetPatientAccountRepository,
     private readonly searchPatientRepository: ISearchPatientRepository,
     private readonly savePatientRepository: ISavePatientRepository,
     private readonly verifyRelativeRepository: IVerifyRelativeRepository,
@@ -30,7 +35,7 @@ export class CreateRelativeInformationInteractor implements ICreateRelativeInfor
   async create(body: CreateRelativeInformationBodyDTO, session: SignInSessionModel): Promise<PatientExternalModel> {
     await this.verifyRelationship(body, session);
     const newFmpId = await this.patientCreation(body);
-    const patientExternalModel = await this.searchPatient(newFmpId);
+    const patientExternalModel = await this.searchPatient(newFmpId, body.documentType, body.documentNumber);
     // patientExternalModel.validateCenter();
     await this.persistPatient(patientExternalModel);
 
@@ -51,9 +56,14 @@ export class CreateRelativeInformationInteractor implements ICreateRelativeInfor
     return creationResult.fmpId;
   }
 
-  private async searchPatient(fmpId: PatientDM['fmpId']): Promise<PatientExternalModel> {
+  private async searchPatient(
+    fmpId: PatientDM['fmpId'],
+    documentType: PatientDM['documentType'],
+    documentNumber: PatientDM['documentNumber'],
+  ): Promise<PatientExternalModel> {
     const searchResult = await this.searchPatientRepository.execute({ fmpId });
-    const externalPatientModel = new PatientExternalModel(searchResult);
+    const existingAccount = await this.getPatientAccountRepository.execute(documentType, documentNumber);
+    const externalPatientModel = new PatientExternalModel(searchResult, existingAccount);
 
     return externalPatientModel;
   }
@@ -82,6 +92,7 @@ export class CreateRelativeInformationInteractorBuilder {
   static build(): CreateRelativeInformationInteractor {
     return new CreateRelativeInformationInteractor(
       new ConfirmPatientRepository(),
+      new GetPatientAccountRepository(),
       new SearchPatientRepository(),
       new SavePatientRepository(),
       new VerifyRelativeRepository(),
