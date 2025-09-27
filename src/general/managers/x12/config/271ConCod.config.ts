@@ -4,7 +4,7 @@ import { FieldMap, X12ManagerConfig } from '../x12.manager';
 
 import { ConCod271DetailConfig } from './271ConCodDetail.config';
 
-export class ConCod271Config extends X12ManagerConfig<ConCod271DTO> {
+export class ConCod271Config implements X12ManagerConfig<ConCod271DTO> {
   readonly segmentDelimiter: string = '~';
   readonly elementDelimiter: string = '*';
   readonly componentDelimiter: string = ':';
@@ -58,7 +58,7 @@ export class ConCod271Config extends X12ManagerConfig<ConCod271DTO> {
     IEA: 2,
   };
 
-  readonly fieldMap: Readonly<FieldMap<ConCod271DTO>> = {
+  readonly fieldMap: FieldMap<ConCod271DTO> = {
     ipressId: [
       { tag: 'ISA', element: 6, occurrence: 1 },
       { tag: 'GS', element: 2, occurrence: 1 },

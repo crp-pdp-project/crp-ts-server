@@ -3,6 +3,7 @@ import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.
 import { BaseModel } from 'src/app/entities/models/base.model';
 import { RelationshipModel } from 'src/app/entities/models/relationship/relationship.model';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
+import { PatientDocumentType } from 'src/general/enums/patientInfo.enum';
 import defaultRelationshipStatic from 'src/general/static/defaultRelationship.static';
 
 import { DeviceDM } from '../../dms/devices.dm';
@@ -18,7 +19,7 @@ export class PatientModel extends BaseModel {
   readonly lastName?: string;
   readonly secondLastName?: string | null;
   readonly documentNumber?: string;
-  readonly documentType?: number;
+  readonly documentType?: PatientDocumentType;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   readonly account?: AccountModel;

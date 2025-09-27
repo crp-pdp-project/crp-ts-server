@@ -3,10 +3,10 @@ import { GuaranteeLetterDTO } from 'src/app/entities/dtos/service/guaranteeLette
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { CRPClient, CRPServicePaths } from 'src/clients/crp.client';
 import { HttpMethod } from 'src/general/enums/methods.enum';
-import { GuaranteeLetterDocumentType } from 'src/general/enums/patientInfo.enum';
+import { CRPDocumentType, DocumentTypeMapper, PatientDocumentType } from 'src/general/enums/patientInfo.enum';
 
 type GetGuaranteeLetterInput = {
-  TipoDocumento: GuaranteeLetterDocumentType;
+  TipoDocumento: CRPDocumentType;
   NroDocumento: PatientDM['documentNumber'];
 };
 
@@ -28,7 +28,7 @@ type GetGuaranteeLetterOutput = {
 
 export interface IGetGuaranteeLetterRepository {
   execute(
-    documentType: GuaranteeLetterDocumentType,
+    documentType: PatientDocumentType,
     documentNumber: PatientDM['documentNumber'],
   ): Promise<GuaranteeLetterDTO[]>;
 }
@@ -37,7 +37,7 @@ export class GetGuaranteeLetterRepository implements IGetGuaranteeLetterReposito
   private readonly crp = CRPClient.instance;
 
   async execute(
-    documentType: GuaranteeLetterDocumentType,
+    documentType: PatientDocumentType,
     documentNumber: PatientDM['documentNumber'],
   ): Promise<GuaranteeLetterDTO[]> {
     const methodPayload = this.parseInput(documentType, documentNumber);
@@ -50,11 +50,11 @@ export class GetGuaranteeLetterRepository implements IGetGuaranteeLetterReposito
   }
 
   private parseInput(
-    documentType: GuaranteeLetterDocumentType,
+    documentType: PatientDocumentType,
     documentNumber: PatientDM['documentNumber'],
   ): GetGuaranteeLetterInput {
     return {
-      TipoDocumento: documentType,
+      TipoDocumento: DocumentTypeMapper.getCrpDocumentType(documentType),
       NroDocumento: documentNumber,
     };
   }

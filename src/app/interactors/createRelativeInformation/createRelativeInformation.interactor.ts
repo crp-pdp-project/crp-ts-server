@@ -31,7 +31,7 @@ export class CreateRelativeInformationInteractor implements ICreateRelativeInfor
     await this.verifyRelationship(body, session);
     const newFmpId = await this.patientCreation(body);
     const patientExternalModel = await this.searchPatient(newFmpId);
-    patientExternalModel.validateCenter();
+    // patientExternalModel.validateCenter();
     await this.persistPatient(patientExternalModel);
 
     return patientExternalModel;

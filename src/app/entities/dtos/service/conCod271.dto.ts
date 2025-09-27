@@ -61,7 +61,7 @@ export const ConCod271DTOSchema = z.object({
   holderDocumentType: z.string().optional(),
   holderDocumentNumber: z.string().optional(),
   holderEnrollmentDate: z.string().optional(),
-  details: z.array(ConCod271DetailDTOSchema).optional(),
+  details: z.array(ConCod271DetailDTOSchema).default([]),
 });
 
 export type ConCod271DTO = z.infer<typeof ConCod271DTOSchema>;

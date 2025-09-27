@@ -4,20 +4,37 @@ export enum PatientDocumentType {
   PASS = 7,
 }
 
-export enum GuaranteeLetterDocumentType {
+export enum CRPDocumentType {
   DNI = '01',
   CE = '03',
   PASS = '06',
 }
 
-export class GuaranteeLetterDocumentTypeMapper {
-  private static readonly documentTypeMap: Record<PatientDocumentType, GuaranteeLetterDocumentType> = {
-    [PatientDocumentType.DNI]: GuaranteeLetterDocumentType.DNI,
-    [PatientDocumentType.CE]: GuaranteeLetterDocumentType.CE,
-    [PatientDocumentType.PASS]: GuaranteeLetterDocumentType.PASS,
+export enum SitedsDocumentType {
+  DNI = '1',
+  CE = '3',
+  PASS = '6',
+}
+
+export class DocumentTypeMapper {
+  private static readonly crpDocumentTypeMap: Record<PatientDocumentType, CRPDocumentType> = {
+    [PatientDocumentType.DNI]: CRPDocumentType.DNI,
+    [PatientDocumentType.CE]: CRPDocumentType.CE,
+    [PatientDocumentType.PASS]: CRPDocumentType.PASS,
   };
-  static getAppointmentState(type: PatientDocumentType): GuaranteeLetterDocumentType {
-    return this.documentTypeMap[type];
+
+  private static readonly sitedsDocumentTypeMap: Record<PatientDocumentType, SitedsDocumentType> = {
+    [PatientDocumentType.DNI]: SitedsDocumentType.DNI,
+    [PatientDocumentType.CE]: SitedsDocumentType.CE,
+    [PatientDocumentType.PASS]: SitedsDocumentType.PASS,
+  };
+
+  static getCrpDocumentType(type: PatientDocumentType): CRPDocumentType {
+    return this.crpDocumentTypeMap[type];
+  }
+
+  static getSitedsDocumentType(type: PatientDocumentType): SitedsDocumentType {
+    return this.sitedsDocumentTypeMap[type];
   }
 }
 

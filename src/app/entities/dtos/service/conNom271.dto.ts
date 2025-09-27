@@ -9,7 +9,7 @@ export const ConNom271DTOSchema = z.object({
   time: z.string().optional(),
   shortDate: z.string().optional(),
   shortTime: z.string().optional(),
-  interchangeControlNumber: z.string().optional(),
+  correlative: z.string().optional(),
   transactionId: z.string().optional(),
   purposeCode: z.string().optional(),
   senderEntityType: z.string().optional(),
@@ -17,7 +17,7 @@ export const ConNom271DTOSchema = z.object({
   receiverTaxId: z.string().optional(),
   groupControlNumber: z.string().optional(),
   transactionSetControlNumber: z.string().optional(),
-  details: z.array(ConNom271DetailDTOSchema).optional().default([]),
+  details: z.array(ConNom271DetailDTOSchema).default([]),
 });
 
 export type ConNom271DTO = z.infer<typeof ConNom271DTOSchema>;

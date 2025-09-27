@@ -1,5 +1,6 @@
 export const dateConstants = {
   crpDate: 'DDMMYYYY',
+  crpDateShort: 'DDMMYY',
   inetumDate: 'YYYYMMDD',
   spanishDate: 'DD-MM-YYYY',
   dbDate: 'YYYY-MM-DD',
@@ -7,6 +8,7 @@ export const dateConstants = {
 
 export const timeConstants = {
   crpTime: 'HHmmss',
+  crpTimeShort: 'HHmm',
   inetumTime: 'HHmmss',
   spanishTime: 'HH:mm:ss',
   dbTime: 'HH:mm:ss',
@@ -14,6 +16,7 @@ export const timeConstants = {
 
 export const dateTimeConstants = {
   crpDateTime: 'DDMMYYYYHHmmss',
+  crpDateTimeShort: 'DDMMYYHHmm',
   inetumDateTime: 'YYYYMMDDHHmmss',
   spanishDateTime: 'DD-MM-YYYY HH:mm:ss',
   dbDateTime: 'YYYY-MM-DD HH:mm:ss',

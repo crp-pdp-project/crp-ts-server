@@ -2,7 +2,7 @@ import { ConNom271DetailDTO } from 'src/app/entities/dtos/service/conNom271Detai
 
 import { FieldMap, X12ManagerConfig } from '../x12.manager';
 
-export class ConNom271DetailConfig extends X12ManagerConfig<ConNom271DetailDTO> {
+export class ConNom271DetailConfig implements X12ManagerConfig<ConNom271DetailDTO> {
   readonly segmentDelimiter: string = '~';
   readonly elementDelimiter: string = '*';
   readonly componentDelimiter: string = ':';
@@ -12,7 +12,7 @@ export class ConNom271DetailConfig extends X12ManagerConfig<ConNom271DetailDTO> 
     REF: 4,
     DMG: 5,
   };
-  readonly fieldMap: Readonly<FieldMap<ConNom271DetailDTO>> = {
+  readonly fieldMap: FieldMap<ConNom271DetailDTO> = {
     patientEntityType: [{ tag: 'NM1', element: 2, occurrence: 1 }],
     patientLastName: [{ tag: 'NM1', element: 3, occurrence: 1 }],
     patientFirstName: [{ tag: 'NM1', element: 4, occurrence: 1 }],

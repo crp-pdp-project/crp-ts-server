@@ -28,7 +28,7 @@ export class PatientProfileV1Router {
 
   registerRouter(): void {
     this.fastify.route({
-      method: HttpMethod.POST,
+      method: HttpMethod.GET,
       url: `${this.version}/patients/profile`,
       preHandler: RouterHelper.wrapPreHandlers(
         this.validateHeadersController.validate.bind(this.validateHeadersController),

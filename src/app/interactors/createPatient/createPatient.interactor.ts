@@ -46,7 +46,7 @@ export class CreatePatientInteractor implements ICreatePatientInteractor {
     attemptModel.validateAttempt();
     const newFmpId = await this.patientCreation(body);
     const patientExternalModel = await this.searchPatient(newFmpId);
-    patientExternalModel.validatePatient();
+    // patientExternalModel.validatePatient();
     await this.persistPatient(patientExternalModel);
     await this.registerDevice(patientExternalModel, device);
     const sessionModel = await this.generateJwtToken(patientExternalModel);

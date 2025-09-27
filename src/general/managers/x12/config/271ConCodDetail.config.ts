@@ -2,7 +2,7 @@ import { ConCod271DetailDTO } from 'src/app/entities/dtos/service/conCod271Detai
 
 import { FieldMap, X12ManagerConfig } from '../x12.manager';
 
-export class ConCod271DetailConfig extends X12ManagerConfig<ConCod271DetailDTO> {
+export class ConCod271DetailConfig implements X12ManagerConfig<ConCod271DetailDTO> {
   readonly segmentDelimiter: string = '~';
   readonly elementDelimiter: string = '*';
   readonly componentDelimiter: string = ':';
@@ -13,7 +13,7 @@ export class ConCod271DetailConfig extends X12ManagerConfig<ConCod271DetailDTO> 
     MSG: 2,
     DTP: 3,
   };
-  readonly fieldMap: Readonly<FieldMap<ConCod271DetailDTO>> = {
+  readonly fieldMap: FieldMap<ConCod271DetailDTO> = {
     benefitInfo: [{ tag: 'EB', element: 1, occurrence: 1 }],
     coverageNumber: [{ tag: 'EB', element: 5, occurrence: 1 }],
     initialMaxBenefit: [{ tag: 'EB', element: 7, occurrence: 1 }],

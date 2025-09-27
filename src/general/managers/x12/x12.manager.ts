@@ -1,5 +1,9 @@
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 
+import { ConAse270Config } from './config/270ConAse.config';
+import { ConCod271Config } from './config/271ConCod.config';
+import { ConNom271Config } from './config/271ConNom.config';
+
 export type Location = {
   tag: string;
   element: number;
@@ -22,13 +26,13 @@ export type Segment = string[];
 export type OccurrenceMap = Record<number, Segment>;
 export type SegmentStore = Record<string, OccurrenceMap>;
 
-export abstract class X12ManagerConfig<T = Record<string, unknown>> {
-  abstract readonly segmentDelimiter: string;
-  abstract readonly elementDelimiter: string;
-  abstract readonly componentDelimiter: string;
-  abstract readonly segmentSequence: string[];
-  abstract readonly segmentLength: Record<string, number>;
-  abstract readonly fieldMap: FieldMap<T>;
+export interface X12ManagerConfig<T = Record<string, unknown>> {
+  segmentDelimiter: string;
+  elementDelimiter: string;
+  componentDelimiter: string;
+  segmentSequence: string[];
+  segmentLength: Record<string, number>;
+  fieldMap: FieldMap<T>;
 }
 
 export interface IX12Manager<Input, Output> {
@@ -389,5 +393,15 @@ export class X12Manager<EncodeConf extends X12ManagerConfig, DecodeConf extends 
 
   private normalizeX12(x12: string): string {
     return x12.replaceAll('\r', '').replaceAll('\n', '').trim();
+  }
+}
+
+export class X12ManagerBuild {
+  static buildConNom(): X12Manager<ConAse270Config, ConNom271Config> {
+    return new X12Manager(new ConAse270Config(), new ConNom271Config());
+  }
+
+  static buildConCod(): X12Manager<ConAse270Config, ConCod271Config> {
+    return new X12Manager(new ConAse270Config(), new ConCod271Config());
   }
 }

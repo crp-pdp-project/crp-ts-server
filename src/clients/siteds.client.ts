@@ -2,8 +2,8 @@ import { EnvHelper } from 'src/general/helpers/env.helper';
 import { SoapHelper } from 'src/general/helpers/soap.helper';
 
 export enum SitedsServices {
-  INSURANCE_DETAILS = 'ConsultaAsegNom',
-  INSURANCE_PRICES = 'ConsultaAsegCod',
+  INSURANCE_DETAILS = 'getConsultaAsegNom',
+  INSURANCE_PRICES = 'getConsultaAsegCod',
 }
 
 export class SitedsClient {
@@ -21,7 +21,7 @@ export class SitedsClient {
         EnvHelper.get('SITEDS_BINDING_URL'),
         {
           username: EnvHelper.get('SITEDS_USER'),
-          password: EnvHelper.get('SITEDS_PASSOWRD'),
+          password: EnvHelper.get('SITEDS_PASSWORD'),
         },
       );
 

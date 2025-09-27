@@ -4,7 +4,7 @@ import { FieldMap, X12ManagerConfig } from '../x12.manager';
 
 import { ConNom271DetailConfig } from './271ConNomDetail.config';
 
-export class ConNom271Config extends X12ManagerConfig<ConNom271DTO> {
+export class ConNom271Config implements X12ManagerConfig<ConNom271DTO> {
   readonly segmentDelimiter: string = '~';
   readonly elementDelimiter: string = '*';
   readonly componentDelimiter: string = ':';
@@ -20,7 +20,7 @@ export class ConNom271Config extends X12ManagerConfig<ConNom271DTO> {
     GE: 2,
     IEA: 2,
   };
-  readonly fieldMap: Readonly<FieldMap<ConNom271DTO>> = {
+  readonly fieldMap: FieldMap<ConNom271DTO> = {
     ipressId: [
       { tag: 'ISA', element: 6, occurrence: 1 },
       { tag: 'GS', element: 2, occurrence: 1 },
@@ -33,7 +33,7 @@ export class ConNom271Config extends X12ManagerConfig<ConNom271DTO> {
     time: [{ tag: 'GS', element: 5, occurrence: 1 }],
     shortDate: [{ tag: 'ISA', element: 9, occurrence: 1 }],
     shortTime: [{ tag: 'ISA', element: 10, occurrence: 1 }],
-    interchangeControlNumber: [
+    correlative: [
       { tag: 'ISA', element: 13, occurrence: 1 },
       { tag: 'IEA', element: 2, occurrence: 1 },
     ],

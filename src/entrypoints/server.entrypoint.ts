@@ -71,6 +71,7 @@ import { SpecialtiesListV1Router } from 'src/app/controllers/specialtiesListV1/s
 import { ConAse270DTO } from 'src/app/entities/dtos/service/conAse270.dto';
 import { ConCod271DTO } from 'src/app/entities/dtos/service/conCod271.dto';
 import { ConNom271DTO } from 'src/app/entities/dtos/service/conNom271.dto';
+import { GetSitedsPatientRepository } from 'src/app/repositories/soap/getSitedsPatient.repository';
 import { LoggerClient } from 'src/clients/logger.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { Environments } from 'src/general/enums/environments.enum';
@@ -223,6 +224,27 @@ export class Server {
     new CreateRelativeV1Router(this.app).registerRouter();
     new DeleteRelativeV1Router(this.app).registerRouter();
     new InformInsuranceInterestV1Router(this.app).registerRouter();
+    this.app.route({
+      method: 'POST',
+      url: `/call/270`,
+      handler: async (
+        input: FastifyRequest<{ Body: { correlative: string; iafaId: string } }>,
+        reply: FastifyReply,
+      ) => {
+        const repository = new GetSitedsPatientRepository();
+        const response = await repository.execute(
+          {
+            documentNumber: '73360363',
+            documentType: 14,
+          },
+          input.body.iafaId,
+          input.body.correlative,
+        );
+        reply.code(200).send({
+          response: response,
+        });
+      },
+    });
     this.app.route({
       method: 'POST',
       url: `/decode/270`,
