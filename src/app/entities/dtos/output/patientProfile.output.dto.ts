@@ -9,7 +9,6 @@ export const PatientProfileOutputDTOSchema = PatientDMSchema.pick({
   id: true,
   firstName: true,
   lastName: true,
-  secondLastName: true,
   documentNumber: true,
   documentType: true,
 })
