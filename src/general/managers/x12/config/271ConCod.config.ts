@@ -60,12 +60,12 @@ export class ConCod271Config implements X12ManagerConfig<ConCod271DTO> {
 
   readonly fieldMap: FieldMap<ConCod271DTO> = {
     ipressId: [
-      { tag: 'ISA', element: 6, occurrence: 1 },
-      { tag: 'GS', element: 2, occurrence: 1 },
-    ],
-    iafaId: [
       { tag: 'ISA', element: 8, occurrence: 1 },
       { tag: 'GS', element: 3, occurrence: 1 },
+    ],
+    iafaId: [
+      { tag: 'ISA', element: 6, occurrence: 1 },
+      { tag: 'GS', element: 2, occurrence: 1 },
     ],
     gsTransactionDate: [{ tag: 'GS', element: 4, occurrence: 1 }],
     gsTransactionTime: [{ tag: 'GS', element: 5, occurrence: 1 }],

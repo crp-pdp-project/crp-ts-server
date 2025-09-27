@@ -11,6 +11,7 @@ import { MDD32Strategy } from './strategies/mdd32.strategy';
 import { MDD4Strategy } from './strategies/mdd4.strategy';
 import { MDD75Strategy } from './strategies/mdd75.strategy';
 import { MDD77Strategy } from './strategies/mdd77.strategy';
+import { EnvHelper } from 'src/general/helpers/env.helper';
 
 export interface GenerateMDDStrategy {
   genMDD(session: SignInSessionModel, external: PatientExternalDTO): Record<string, unknown>;
@@ -53,6 +54,7 @@ export class POSConfigModel extends BaseModel {
   readonly correlative?: string;
   readonly token?: string;
   readonly pinHash?: string;
+  readonly env: string;
   readonly MDD?: Record<string, unknown>;
 
   constructor(posConfig: POSConfigDTO, session: SignInSessionModel, external: PatientExternalDTO) {
@@ -62,10 +64,12 @@ export class POSConfigModel extends BaseModel {
     this.password = posConfig.password;
     this.commerceCode = posConfig.commerceCode;
     this.channel = posConfig.channel;
-    this.host = posConfig.host;
+    // this.host = posConfig.host;
+    this.host = 'https://apisandbox.vnforappstest.com';
     this.correlative = posConfig.correlative ? TextHelper.padTextLength(posConfig.correlative) : undefined;
     this.token = posConfig.token;
     this.pinHash = posConfig.pinHash;
+    this.env = EnvHelper.get('NIUBIZ_ENVIRONMENT');
     this.MDD = posConfig.MDDList ? this.generateMDDObject(posConfig.MDDList, session, external) : undefined;
   }
 

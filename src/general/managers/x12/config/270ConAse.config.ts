@@ -57,6 +57,7 @@ export class ConAse270Config implements X12ManagerConfig<ConAse270DTO> {
     iafaId: [
       { tag: 'ISA', element: 8, occurrence: 1 },
       { tag: 'GS', element: 3, occurrence: 1 },
+      { tag: 'NM1', element: 9, occurrence: 2 },
     ],
     date: [{ tag: 'GS', element: 4, occurrence: 1 }],
     time: [{ tag: 'GS', element: 5, occurrence: 1 }],

@@ -20,6 +20,10 @@ export const POSConfigOutputDTOSchema = z
       description: 'Host of the POS',
       example: 'https://anyHost.com',
     }),
+    env: z.string().openapi({
+      description: 'Environment of the POS config',
+      example: 'dev',
+    }),
     correlative: z.string().openapi({
       description: 'Unique number of the transaction',
       example: '000000006',
