@@ -1,9 +1,7 @@
 import { DeviceDM } from 'src/app/entities/dms/devices.dm';
 import { POSConfigDTO, POSConfigDTOSchema } from 'src/app/entities/dtos/service/posConfig.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { CRPConstants } from 'src/general/contants/crp.constants';
 import { HttpMethod } from 'src/general/enums/methods.enum';
-import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 import { RestHelper } from 'src/general/helpers/rest.helper';
 
@@ -41,9 +39,6 @@ export class NiubizClient {
   private readonly overridePinHash?: string = EnvHelper.getOptional('NIUBIZ_PIN_HASH');
   private readonly config: POSConfigDTO;
   private readonly rest: RestHelper;
-  private token = '';
-  private tokenExpiresAt = '';
-  private tokenPromise: Promise<string> | null = null;
 
   private constructor(config: POSConfigDTO) {
     const parsedConfig = POSConfigDTOSchema.omit({
@@ -60,7 +55,7 @@ export class NiubizClient {
     const token = await this.getToken();
     const response: POSConfigDTO = {
       ...this.config,
-      token: this.token,
+      token: token,
       pinHash: this.overridePinHash,
     };
 
@@ -126,16 +121,7 @@ export class NiubizClient {
   }
 
   private async getToken(): Promise<string> {
-    if (this.isTokenValid()) {
-      return this.token;
-    }
-
-    if (this.tokenPromise) return this.tokenPromise;
-
-    this.tokenPromise = this.fetchNewToken();
-    const token = await this.tokenPromise;
-
-    this.tokenPromise = null;
+    const token = await this.fetchNewToken();
 
     return token;
   }
@@ -151,12 +137,6 @@ export class NiubizClient {
       },
     });
 
-    this.token = token;
-    this.tokenExpiresAt = DateHelper.addMinutes(CRPConstants.TOKEN_TIMEOUT, 'dbDateTime');
-    return this.token;
-  }
-
-  private isTokenValid(): boolean {
-    return !!this.token && !DateHelper.checkExpired(this.tokenExpiresAt);
+    return token;
   }
 }
