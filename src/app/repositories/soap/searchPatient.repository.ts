@@ -41,9 +41,9 @@ type SearchPatientOutput = {
           Centro?: { CodCentroIdc?: string | null };
           Origen?: string | null;
           Nhc: string | null;
-        };
+        }[];
       };
-    };
+    }[];
   };
 };
 
@@ -74,8 +74,10 @@ export class SearchPatientRepository implements ISearchPatientRepository {
   }
 
   private parseOutput(rawResult: SearchPatientOutput): PatientExternalDTO {
-    const basePatient = rawResult.ConsultaPacientesResult?.Paciente;
-    const firstCenter = basePatient?.PacienteCentro?.PacienteCentro;
+    const patientArray = rawResult.ConsultaPacientesResult?.Paciente ?? [];
+    const basePatient = Array.isArray(patientArray) ? patientArray[0] : patientArray;
+    const centerArray = basePatient?.PacienteCentro?.PacienteCentro ?? [];
+    const firstCenter = Array.isArray(centerArray) ? centerArray[0] : centerArray;
 
     return {
       fmpId: String(basePatient?.Id),
