@@ -1,6 +1,6 @@
 {
   "name": "crp-ts-server",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "description": "Fastify backend server for CRP app services",
   "author": "Renato Berrocal <renato.berrocal@buffrlabs.com>",
   "license": "MIT",
