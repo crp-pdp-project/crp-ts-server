@@ -32,10 +32,6 @@ export enum InetumFmpServices {
   SEARCH_PATIENT = 'ConsultaPacientes',
 }
 
-export enum InetumResultServices {
-  GET_PDF_DOCUMENT = 'ObtenerInforme_Particular',
-}
-
 export class InetumClient {
   private static instance: InetumClient;
   readonly catalog: SoapHelper<InetumCatalogServices>;
@@ -43,7 +39,6 @@ export class InetumClient {
   readonly appointment: SoapHelper<InetumAppointmentServices>;
   readonly history: SoapHelper<InetumHistoryServices>;
   readonly fmp: SoapHelper<InetumFmpServices>;
-  readonly results: SoapHelper<InetumResultServices>;
 
   private constructor(
     catalogClient: SoapHelper<InetumCatalogServices>,
@@ -51,14 +46,12 @@ export class InetumClient {
     appointmentClient: SoapHelper<InetumAppointmentServices>,
     historyClient: SoapHelper<InetumHistoryServices>,
     fmpClient: SoapHelper<InetumFmpServices>,
-    resultsClient: SoapHelper<InetumResultServices>,
   ) {
     this.catalog = catalogClient;
     this.user = userClient;
     this.appointment = appointmentClient;
     this.history = historyClient;
     this.fmp = fmpClient;
-    this.results = resultsClient;
   }
 
   static async getInstance(): Promise<InetumClient> {
@@ -83,10 +76,6 @@ export class InetumClient {
         EnvHelper.get('INETUM_FMP_URL'),
         EnvHelper.get('INETUM_FMP_BINDING_URL'),
       );
-      const resultsClient = await SoapHelper.initClient<InetumResultServices>(
-        EnvHelper.get('INETUM_RESULTS_URL'),
-        EnvHelper.get('INETUM_RESULTS_BINDING_URL'),
-      );
 
       this.instance = new InetumClient(
         catalogClient,
@@ -94,7 +83,6 @@ export class InetumClient {
         appointmentClient,
         historyClient,
         fmpClient,
-        resultsClient,
       );
     }
 
