@@ -77,13 +77,7 @@ export class InetumClient {
         EnvHelper.get('INETUM_FMP_BINDING_URL'),
       );
 
-      this.instance = new InetumClient(
-        catalogClient,
-        userClient,
-        appointmentClient,
-        historyClient,
-        fmpClient,
-      );
+      this.instance = new InetumClient(catalogClient, userClient, appointmentClient, historyClient, fmpClient);
     }
 
     return this.instance;

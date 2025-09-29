@@ -14,7 +14,8 @@ const HEALTH_INSURANCE_SEED = {
     'Mayor beneficio anual por persona',
     'Más de 400 profesionales de la salud, más de 250 consultorios y más 170 camas de hospitalización.',
   ]),
-  banner: 'https://static.vecteezy.com/system/resources/thumbnails/005/720/479/small_2x/banner-abstract-background-board-for-text-and-message-design-modern-free-vector.jpg',
+  banner:
+    'https://static.vecteezy.com/system/resources/thumbnails/005/720/479/small_2x/banner-abstract-background-board-for-text-and-message-design-modern-free-vector.jpg',
   pdfUrl:
     'https://portal.susalud.gob.pe/wp-content/uploads/archivo/documentacion-proyectos/siteds/componente/Especificacion-Tecnica%20SITEDSv.024.pdf',
   enabled: true,

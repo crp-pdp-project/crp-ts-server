@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { ConCod271DTOSchema } from './conCod271.dto';
+
 export const ConNom271DetailDTOSchema = z.object({
   patientEntityType: z.string().optional(),
   patientLastName: z.string().optional(),
@@ -25,6 +27,7 @@ export const ConNom271DetailDTOSchema = z.object({
   contractorDocumentType: z.string().optional(),
   contractorIdQualifier: z.string().optional(),
   contractorId: z.string().optional(),
+  prices: ConCod271DTOSchema.partial().optional(),
 });
 
 export type ConNom271DetailDTO = z.infer<typeof ConNom271DetailDTOSchema>;

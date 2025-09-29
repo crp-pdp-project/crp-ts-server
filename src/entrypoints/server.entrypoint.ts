@@ -52,6 +52,8 @@ import { PatientRelativesV1Docs } from 'src/app/controllers/patientRelativesV1/p
 import { PatientRelativesV1Router } from 'src/app/controllers/patientRelativesV1/patientRelatives.routes';
 import { PatientVerificationV1Docs } from 'src/app/controllers/patientVerificationV1/patientVerification.docs';
 import { PatientVerificationV1Router } from 'src/app/controllers/patientVerificationV1/patientVerification.routes';
+import { PayHealthInsuranceV1Docs } from 'src/app/controllers/payHealthInsuranceV1/payHealthInsurance.docs';
+import { PayHealthInsuranceV1Router } from 'src/app/controllers/payHealthInsuranceV1/relativeVerification.router';
 import { POSConfigV1Docs } from 'src/app/controllers/posConfigV1/posConfig.docs';
 import { POSConfigV1Router } from 'src/app/controllers/posConfigV1/posConfig.router';
 import { RelationshipsListV1Docs } from 'src/app/controllers/relationshipsListV1/relationshipsList.docs';
@@ -66,21 +68,15 @@ import { SignInPatientV1Docs } from 'src/app/controllers/signInPatientV1/signInP
 import { SignInPatientV1Router } from 'src/app/controllers/signInPatientV1/signInPatient.routes';
 import { SignOutPatientV1Docs } from 'src/app/controllers/signOutPatientV1/signOutPatient.docs';
 import { SignOutPatientV1Router } from 'src/app/controllers/signOutPatientV1/signOutPatient.routes';
+import { SitedsPriceV1Docs } from 'src/app/controllers/sitedsPriceV1/sitedsPrice.docs';
+import { SitedsPriceV1Router } from 'src/app/controllers/sitedsPriceV1/sitedsPrice.router';
 import { SpecialtiesListV1Docs } from 'src/app/controllers/specialtiesListV1/specialtiesList.docs';
 import { SpecialtiesListV1Router } from 'src/app/controllers/specialtiesListV1/specialtiesList.routes';
-import { ConAse270DTO } from 'src/app/entities/dtos/service/conAse270.dto';
-import { ConCod271DTO } from 'src/app/entities/dtos/service/conCod271.dto';
-import { ConNom271DTO } from 'src/app/entities/dtos/service/conNom271.dto';
-import { GetSitedsPatientRepository } from 'src/app/repositories/soap/getSitedsPatient.repository';
 import { LoggerClient } from 'src/clients/logger.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { Environments } from 'src/general/enums/environments.enum';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 import { OpenApiManager } from 'src/general/managers/openapi/openapi.manager';
-import { ConAse270Config } from 'src/general/managers/x12/config/270ConAse.config';
-import { ConCod271Config } from 'src/general/managers/x12/config/271ConCod.config';
-import { ConNom271Config } from 'src/general/managers/x12/config/271ConNom.config';
-import { X12Manager } from 'src/general/managers/x12/x12.manager';
 import swaggerMeta from 'src/general/static/swaggerMeta.static';
 import swaggerTemplate from 'src/general/templates/swagger.template';
 
@@ -190,6 +186,8 @@ export class Server {
     new CreateRelativeV1Docs(this.manager).registerDocs();
     new DeleteRelativeV1Docs(this.manager).registerDocs();
     new InformInsuranceInterestV1Docs(this.manager).registerDocs();
+    new SitedsPriceV1Docs(this.manager).registerDocs();
+    new PayHealthInsuranceV1Docs(this.manager).registerDocs();
   }
 
   private static registerRoutes(): void {
@@ -224,87 +222,8 @@ export class Server {
     new CreateRelativeV1Router(this.app).registerRouter();
     new DeleteRelativeV1Router(this.app).registerRouter();
     new InformInsuranceInterestV1Router(this.app).registerRouter();
-    this.app.route({
-      method: 'POST',
-      url: `/call/270`,
-      handler: async (
-        input: FastifyRequest<{ Body: { correlative: string; iafaId: string } }>,
-        reply: FastifyReply,
-      ) => {
-        const repository = new GetSitedsPatientRepository();
-        const response = await repository.execute(
-          {
-            documentNumber: '73360363',
-            documentType: 14,
-          },
-          input.body.iafaId,
-          input.body.correlative,
-        );
-        reply.code(200).send({
-          response: response,
-        });
-      },
-    });
-    this.app.route({
-      method: 'POST',
-      url: `/decode/270`,
-      handler: (input: FastifyRequest<{ Body: { text: string } }>, reply: FastifyReply) => {
-        const manager = new X12Manager(new ConAse270Config());
-        reply.code(200).send({
-          response: manager.decode(input.body.text),
-        });
-      },
-    });
-    this.app.route({
-      method: 'POST',
-      url: `/encode/270`,
-      handler: (input: FastifyRequest<{ Body: { payload: ConAse270DTO } }>, reply: FastifyReply) => {
-        const manager = new X12Manager(new ConAse270Config());
-        reply.code(200).send({
-          response: manager.encode(input.body.payload),
-        });
-      },
-    });
-    this.app.route({
-      method: 'POST',
-      url: `/decode/271`,
-      handler: (input: FastifyRequest<{ Body: { text: string } }>, reply: FastifyReply) => {
-        const manager = new X12Manager(new ConNom271Config());
-        reply.code(200).send({
-          response: manager.decode(input.body.text),
-        });
-      },
-    });
-    this.app.route({
-      method: 'POST',
-      url: `/encode/271`,
-      handler: (input: FastifyRequest<{ Body: { payload: ConNom271DTO } }>, reply: FastifyReply) => {
-        const manager = new X12Manager(new ConNom271Config());
-        reply.code(200).send({
-          response: manager.encode(input.body.payload),
-        });
-      },
-    });
-    this.app.route({
-      method: 'POST',
-      url: `/decode/272`,
-      handler: (input: FastifyRequest<{ Body: { text: string } }>, reply: FastifyReply) => {
-        const manager = new X12Manager(new ConCod271Config());
-        reply.code(200).send({
-          response: manager.decode(input.body.text),
-        });
-      },
-    });
-    this.app.route({
-      method: 'POST',
-      url: `/encode/272`,
-      handler: (input: FastifyRequest<{ Body: { payload: ConCod271DTO } }>, reply: FastifyReply) => {
-        const manager = new X12Manager(new ConCod271Config());
-        reply.code(200).send({
-          response: manager.encode(input.body.payload),
-        });
-      },
-    });
+    new SitedsPriceV1Router(this.app).registerRouter();
+    new PayHealthInsuranceV1Router(this.app).registerRouter();
   }
 
   private static setupDocsEndpoint(): void {

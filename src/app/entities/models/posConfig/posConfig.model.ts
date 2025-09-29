@@ -1,3 +1,4 @@
+import { EnvHelper } from 'src/general/helpers/env.helper';
 import { TextHelper } from 'src/general/helpers/text.helper';
 
 import { PatientExternalDTO } from '../../dtos/service/patientExternal.dto';
@@ -11,7 +12,6 @@ import { MDD32Strategy } from './strategies/mdd32.strategy';
 import { MDD4Strategy } from './strategies/mdd4.strategy';
 import { MDD75Strategy } from './strategies/mdd75.strategy';
 import { MDD77Strategy } from './strategies/mdd77.strategy';
-import { EnvHelper } from 'src/general/helpers/env.helper';
 
 export interface GenerateMDDStrategy {
   genMDD(session: SignInSessionModel, external: PatientExternalDTO): Record<string, unknown>;

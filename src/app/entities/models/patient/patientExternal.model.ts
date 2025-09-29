@@ -32,11 +32,12 @@ export class PatientExternalModel extends BaseModel {
   readonly nhcId?: string | null;
   readonly documentNumber?: string;
   readonly documentType?: number;
+  readonly birthDate?: string;
   readonly account?: AccountModel;
 
   readonly #searchResult: PatientExternalDTO;
   readonly #secondLastName?: string | null;
-  readonly #birthDate?: string;
+ 
   #id?: number;
   #device?: DeviceModel;
 
@@ -51,7 +52,7 @@ export class PatientExternalModel extends BaseModel {
     this.firstName = TextHelper.titleCase(external.firstName) ?? '';
     this.lastName = TextHelper.titleCase(external.lastName) ?? '';
     this.#secondLastName = external.secondLastName ? TextHelper.titleCase(external.secondLastName)! : null;
-    this.#birthDate = external.birthDate ? DateHelper.toFormatDate(external.birthDate, 'dbDate') : undefined;
+    this.birthDate = external.birthDate ? DateHelper.toFormatDate(external.birthDate, 'dbDate') : undefined;
     this.fmpId = external.fmpId;
     this.documentNumber = external.documentNumber;
     this.nhcId = external.nhcId;
@@ -119,7 +120,7 @@ export class PatientExternalModel extends BaseModel {
       firstName: this.firstName,
       lastName: this.lastName,
       secondLastName: this.#secondLastName,
-      birthDate: this.#birthDate,
+      birthDate: this.birthDate,
       documentNumber: this.documentNumber,
       documentType: this.documentType,
     };

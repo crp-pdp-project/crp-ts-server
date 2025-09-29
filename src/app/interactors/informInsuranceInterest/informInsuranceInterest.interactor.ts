@@ -1,6 +1,10 @@
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
 import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import {
+  IInformInsuranceInterestRepository,
+  InformInsuranceInterestRepository,
+} from 'src/app/repositories/rest/informInsuranceInterest.repository';
 import { ISearchPatientRepository, SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
 
 export interface IInformInsuranceInterestInteractor {
@@ -8,11 +12,14 @@ export interface IInformInsuranceInterestInteractor {
 }
 
 export class InformInsuranceInterestInteractor implements IInformInsuranceInterestInteractor {
-  constructor(private readonly searchPatientRepository: ISearchPatientRepository) {}
+  constructor(
+    private readonly searchPatientRepository: ISearchPatientRepository,
+    private readonly informInsuranceInterest: IInformInsuranceInterestRepository,
+  ) {}
 
   async inform(session: SignInSessionModel): Promise<void> {
     const patientExternalModel = await this.searchPatient(session.patient.fmpId);
-    patientExternalModel.validatePatient();
+    await this.informInsuranceInterest.execute(patientExternalModel);
   }
 
   private async searchPatient(fmpId: PatientDM['fmpId']): Promise<PatientExternalModel> {
@@ -25,6 +32,9 @@ export class InformInsuranceInterestInteractor implements IInformInsuranceIntere
 
 export class InformInsuranceInterestInteractorBuilder {
   static build(): InformInsuranceInterestInteractor {
-    return new InformInsuranceInterestInteractor(new SearchPatientRepository());
+    return new InformInsuranceInterestInteractor(
+      new SearchPatientRepository(),
+      new InformInsuranceInterestRepository(),
+    );
   }
 }

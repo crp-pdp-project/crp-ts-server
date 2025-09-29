@@ -17,7 +17,7 @@ export const SitedsPriceBodyDTOSchema = z
   .object({
     iafaId: z.coerce.string().openapi({
       description: 'Iafa Id of the insurance',
-      example: '200001',
+      example: '20001',
     }),
     correlative: z.coerce.string().openapi({
       description: 'Correlative of the transaction',

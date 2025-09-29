@@ -28,6 +28,7 @@ export enum CRPServicePaths {
   GET_INSURED_PATIENT_DUES = '/PlanSalud/consulta-deuda',
   PAY_CLINIC_INSURANCE = '/Pago/ProcesarPagoPlanSalud',
   AUTH_EMPLOYEES = '/Security/AutenticarUsuario',
+  INSURANCE_INTEREST = 'PlanSalud/contactar-persona',
 }
 
 export class CRPClient {

@@ -11,15 +11,15 @@ export class PatientProfileInteractor implements IPatientProfileInteractor {
   constructor(private readonly searchPatientRepository: ISearchPatientRepository) {}
 
   async profile(session: SignInSessionModel): Promise<PatientExternalModel> {
-    const externalPatientModel = await this.searchPatient(session);
+    const externalPatientModel = await this.searchPatient({ fmpId: session.patient.fmpId });
     externalPatientModel.validatePatient();
     return externalPatientModel;
   }
 
-  private async searchPatient(session: SignInSessionModel): Promise<PatientExternalModel> {
-    const searchResult = await this.searchPatientRepository.execute({ fmpId: session.patient.fmpId });
+  private async searchPatient(searchPayload: PatientDTO): Promise<PatientExternalModel> {
+    const searchResult = await this.searchPatientRepository.execute(searchPayload);
 
-    const externalPatientModel = new PatientExternalModel(searchResult, session.patient);
+    const externalPatientModel = new PatientExternalModel(searchResult);
 
     return externalPatientModel;
   }
