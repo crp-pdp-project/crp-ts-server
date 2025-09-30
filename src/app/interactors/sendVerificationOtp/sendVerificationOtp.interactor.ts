@@ -45,7 +45,7 @@ export class SendVerificationOTPInteractor implements ISendVerificationOTPIntera
     session.validateOtpLimit();
     const attemptModel = await this.fetchAttempt(session.patient.documentNumber);
     attemptModel.validateAttempt();
-    const otp = TextHelper.generateOtp();
+    const otp = TextHelper.generateUniqueCode();
     await this.sendOtp(session, otp);
     await this.addOtpToSession(session, otp);
   }
@@ -86,7 +86,7 @@ export class SendVerificationOTPInteractor implements ISendVerificationOTPIntera
     if (session.external.phone) {
       await this.infobipClient.sendSms({
         from: InfobipConstants.INFOBIP_SENDER,
-        to: session.external.phone,
+        to: TextHelper.addCityCode(session.external.phone)!,
         text: ejs.render(this.verificationOtpConfig.smsTemplate, {
           name: session.patient.firstName,
           otp,

@@ -1,9 +1,15 @@
+import http from 'http';
+import https, { AgentOptions } from 'https';
+
 import { Client, createClientAsync, WSSecurity } from 'soap';
 
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { LoggerClient } from 'src/clients/logger.client';
 
 import { CRPConstants } from '../contants/crp.constants';
+import { Environments } from '../enums/environments.enum';
+
+import { EnvHelper } from './env.helper';
 
 type GenericSoapFunction<TOutput> = (payload: Record<string, unknown>) => Promise<[TOutput, unknown]>;
 
@@ -25,10 +31,18 @@ export class SoapHelper<TInput> {
     bindingUrl: string,
     credentials?: WSSecurityCredentials,
   ): Promise<SoapHelper<TInput>> {
+    const agentOptions: AgentOptions = {
+      keepAlive: true,
+      timeout: this.timeout,
+      rejectUnauthorized: EnvHelper.getCurrentEnv() === Environments.PRD,
+    };
+
     const client = await createClientAsync(wsdlUrl, {
       endpoint: bindingUrl,
       wsdl_options: {
         timeout: this.timeout,
+        httpAgent: new http.Agent(agentOptions),
+        httpsAgent: new https.Agent(agentOptions),
       },
     });
 

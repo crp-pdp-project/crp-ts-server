@@ -18,8 +18,8 @@ export enum CRPShortDocumentType {
 
 export enum SitedsDocumentType {
   DNI = '1',
-  CE = '3',
-  PASS = '6',
+  CE = '2',
+  PASS = '3',
 }
 
 export enum PosDocumentType {

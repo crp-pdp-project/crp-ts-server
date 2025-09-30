@@ -27,6 +27,10 @@ import {
   ConfirmPatientRepository,
   IConfirmPatientRepository,
 } from 'src/app/repositories/soap/confirmPatient.repository';
+import {
+  CreatePatientNHCRepository,
+  ICreatePatientNHCRepository,
+} from 'src/app/repositories/soap/createPatientNHC.repository';
 import { ISearchPatientRepository, SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
 import { IJWTManager, JWTManagerBuilder } from 'src/general/managers/jwt/jwt.manager';
 
@@ -39,6 +43,7 @@ export class CreatePatientInteractor implements ICreatePatientInteractor {
     private readonly confirmPatientRepository: IConfirmPatientRepository,
     private readonly getPatientAccountRepository: IGetPatientAccountRepository,
     private readonly searchPatientRepository: ISearchPatientRepository,
+    private readonly createPatientNHC: ICreatePatientNHCRepository,
     private readonly savePatientRepository: ISavePatientRepository,
     private readonly getAuthAttempt: IGetAuthAttemptsRepository,
     private readonly saveSessionRepository: IUpsertSessionRepository,
@@ -51,7 +56,8 @@ export class CreatePatientInteractor implements ICreatePatientInteractor {
     attemptModel.validateAttempt();
     const newFmpId = await this.patientCreation(body);
     const patientExternalModel = await this.searchPatient(newFmpId, body.documentType, body.documentNumber);
-    // patientExternalModel.validatePatient();
+    patientExternalModel.validatePatient();
+    await this.validateNHCId(patientExternalModel);
     await this.persistPatient(patientExternalModel);
     await this.registerDevice(patientExternalModel, device);
     const sessionModel = await this.generateJwtToken(patientExternalModel);
@@ -92,6 +98,14 @@ export class CreatePatientInteractor implements ICreatePatientInteractor {
     return externalPatientModel;
   }
 
+  private async validateNHCId(patientExternalModel: PatientExternalModel): Promise<void> {
+    if (!patientExternalModel.nhcId) {
+      await this.createPatientNHC.execute(patientExternalModel.fmpId!);
+      const updatedSearchResult = await this.searchPatientRepository.execute({ fmpId: patientExternalModel.fmpId });
+      patientExternalModel.updateModel(updatedSearchResult).validateCenter();
+    }
+  }
+
   private async persistPatient(patientExternalModel: PatientExternalModel): Promise<void> {
     if (!patientExternalModel.hasPersistedPatient()) {
       const { insertId } = await this.savePatientRepository.execute(patientExternalModel.toPersistPatientPayload());
@@ -129,6 +143,7 @@ export class CreatePatientInteractorBuilder {
       new ConfirmPatientRepository(),
       new GetPatientAccountRepository(),
       new SearchPatientRepository(),
+      new CreatePatientNHCRepository(),
       new SavePatientRepository(),
       new GetAuthAttemptsRepository(),
       new UpsertSessionRepository(),

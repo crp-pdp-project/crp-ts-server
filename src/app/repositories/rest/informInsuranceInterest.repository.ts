@@ -30,7 +30,7 @@ export class InformInsuranceInterestRepository implements IInformInsuranceIntere
     const methodPayload = this.parseInput(externalPatient);
     const rawResult = await this.crp.call<InformInsuranceInterestOutput>({
       method: HttpMethod.POST,
-      path: CRPServicePaths.PAY_CLINIC_INSURANCE,
+      path: CRPServicePaths.INSURANCE_INTEREST,
       body: methodPayload,
     });
     this.checkOutput(rawResult);
@@ -44,7 +44,9 @@ export class InformInsuranceInterestRepository implements IInformInsuranceIntere
       fechaNacimiento: externalPatient.birthDate ?? '',
       nombres: `${externalPatient.firstName} ${externalPatient.lastName}`,
       numeroDocumento: externalPatient.documentNumber ?? '',
-      tipoDocumento: DocumentTypeMapper.getCrpShortDocumentType(externalPatient.documentType ?? PatientDocumentType.DNI),
+      tipoDocumento: DocumentTypeMapper.getCrpShortDocumentType(
+        externalPatient.documentType ?? PatientDocumentType.DNI,
+      ),
     };
   }
 

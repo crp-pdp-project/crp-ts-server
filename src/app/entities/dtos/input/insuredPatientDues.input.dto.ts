@@ -7,7 +7,7 @@ export const InsuredPatientDuesParamsDTOSchema = z
   .object({
     contractId: z.coerce.string().openapi({
       description: 'Id of the contract',
-      example: '122038',
+      example: '123124',
     }),
   })
   .strict()

@@ -20,6 +20,7 @@ import {
   UpsertSessionRepository,
 } from 'src/app/repositories/database/upsertSession.respository';
 import { ConfirmPatientRepository } from 'src/app/repositories/soap/confirmPatient.repository';
+import { CreatePatientNHCRepository } from 'src/app/repositories/soap/createPatientNHC.repository';
 import { ISearchPatientRepository, SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
 import { IJWTManager, JWTManagerBuilder } from 'src/general/managers/jwt/jwt.manager';
 
@@ -98,6 +99,8 @@ export class PatientVerificationInteractorBuilder {
       JWTManagerBuilder.buildEnrollConfig<SessionPayloadDTO>(),
       new PatientVerificationEnrollStrategy(
         new ConfirmPatientRepository(),
+        new CreatePatientNHCRepository(),
+        new SearchPatientRepository(),
         new SavePatientRepository(),
         new UpsertDeviceRepository(),
       ),

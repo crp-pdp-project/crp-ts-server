@@ -6,6 +6,7 @@ import { SitedsClient, SitedsServices } from 'src/clients/siteds.client';
 import { SitedsConstants } from 'src/general/contants/siteds.constants';
 import { DocumentTypeMapper, SitedsDocumentType } from 'src/general/enums/patientInfo.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
+import { TextHelper } from 'src/general/helpers/text.helper';
 import { X12ManagerBuild } from 'src/general/managers/x12/x12.manager';
 
 type GetSitedsInsuranceInput = {
@@ -57,11 +58,15 @@ export class GetSitedsInsuranceRepository implements IGetSitedsInsuranceReposito
       purposeCode: SitedsConstants.DEFAULT_PURPOSE_CODE,
       transactionId: SitedsConstants.DEFAULT_TRANSAC_ID,
       patientEntityType: SitedsConstants.DEFAULT_PATIENT_TYPE,
+      contractorIdQualifier: SitedsConstants.DEFAULT_QUALIFIER,
+      requestText: SitedsConstants.DEFAULT_REQUEST,
+      groupControlNumber: TextHelper.generateUniqueCode(8),
+      transactionSetControlNumber: TextHelper.generateUniqueCode(8),
       patientFirstName: patient.firstName?.toUpperCase(),
       patientLastName: patient.lastName?.toUpperCase(),
       patientSecondLastName: patient.secondLastName?.toUpperCase() ?? undefined,
-      documentType: normalizedDocumentType,
-      documentNumber: patient.documentNumber,
+      patientDocumentType: normalizedDocumentType,
+      patientDocumentNumber: patient.documentNumber,
     };
 
     const x12Payload = this.x12Manager.encode(payload);
@@ -77,7 +82,8 @@ export class GetSitedsInsuranceRepository implements IGetSitedsInsuranceReposito
     const { coError, txRespuesta } = rawResult ?? {};
 
     if (coError !== SitedsConstants.SUCCESS_CODE) {
-      throw ErrorModel.notFound({ message: 'Error executing siteds' });
+      const errorMessage = SitedsConstants.ERROR_MESSAGES[coError as keyof typeof SitedsConstants.ERROR_MESSAGES];
+      throw ErrorModel.notFound({ message: errorMessage ?? 'Unkown error consuming siteds' });
     }
 
     const result = this.x12Manager.decode(txRespuesta);

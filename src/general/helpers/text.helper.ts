@@ -1,7 +1,7 @@
 import { randomBytes } from 'crypto';
 
 export class TextHelper {
-  static normalizePhoneNumber(phone?: string | null): string | undefined | null {
+  static addCityCode(phone?: string | null): string | undefined | null {
     if (!phone) return phone;
 
     const digits = phone.replace(/\D/g, '');
@@ -17,12 +17,28 @@ export class TextHelper {
     }
   }
 
+  static normalizePhoneNumber(phone?: string | null): string | undefined | null {
+    if (!phone) return phone;
+
+    const digits = phone.replace(/\D/g, '');
+    const cleaned = digits.replace(/^0+/, '');
+
+    switch (true) {
+      case cleaned.startsWith('511'):
+        return cleaned.slice(3);
+      case cleaned.startsWith('51'):
+        return cleaned.slice(2);
+      default:
+        return cleaned;
+    }
+  }
+
   static normalizeAppointmentId(appointmentId: string): string {
     const cleaned = appointmentId.replace(/^C/, '');
     return `C${cleaned}`;
   }
 
-  static generateOtp(length = 5): string {
+  static generateUniqueCode(length = 5): string {
     const charset = '0123456789';
     let otp = '';
 

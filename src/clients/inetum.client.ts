@@ -25,7 +25,6 @@ export enum InetumHistoryServices {
   LIST_DOCUMENTS = 'ListadoInformes',
   LIST_RESULTS = 'ListadoPruebasDiagnosticas',
   GET_PDF_DOCUMENT = 'ObtenerInformePdf',
-  CREATE_PATIENT_NHC = 'CrearPacienteEnCentros',
 }
 
 export enum InetumFmpServices {

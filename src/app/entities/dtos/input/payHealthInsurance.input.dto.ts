@@ -7,7 +7,7 @@ export const PayHealthInsuranceBodyDTOSchema = z
   .object({
     contractId: z.coerce.string().openapi({
       description: 'Id of the contract',
-      example: '122038',
+      example: '123124',
     }),
     commerceCode: z.string().openapi({
       description: 'Unique code for the POS',
@@ -27,7 +27,7 @@ export const PayHealthInsuranceBodyDTOSchema = z
     }),
     documents: z.array(z.string()).openapi({
       description: 'Array of documentIds of the selected dues',
-      example: ['122038-1-1', '122038-1-2'],
+      example: ['123124-1-1', '123124-1-2'],
     }),
   })
   .strict()

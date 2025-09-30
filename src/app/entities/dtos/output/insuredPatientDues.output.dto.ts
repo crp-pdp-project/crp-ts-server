@@ -11,7 +11,7 @@ export const InsuredPatientDuesOutputDTOSchema = z
     }),
     contractId: z.coerce.string().openapi({
       description: 'Id of the contract',
-      example: '122038',
+      example: '123124',
     }),
     sections: z
       .array(
@@ -24,7 +24,7 @@ export const InsuredPatientDuesOutputDTOSchema = z
             z.object({
               id: z.string().openapi({
                 description: 'Unique ID of the due',
-                example: '122038-1-12',
+                example: '123124-1-12',
               }),
               dueDate: z.string().openapi({
                 description: 'Due expire date in DD-MM-YYYY format',

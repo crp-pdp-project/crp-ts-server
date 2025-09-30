@@ -1,5 +1,4 @@
 import 'dotenv/config';
-import https from 'https';
 
 import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi';
 import cors from '@fastify/cors';
@@ -73,7 +72,6 @@ import { SitedsPriceV1Router } from 'src/app/controllers/sitedsPriceV1/sitedsPri
 import { SpecialtiesListV1Docs } from 'src/app/controllers/specialtiesListV1/specialtiesList.docs';
 import { SpecialtiesListV1Router } from 'src/app/controllers/specialtiesListV1/specialtiesList.routes';
 import { LoggerClient } from 'src/clients/logger.client';
-import { CRPConstants } from 'src/general/contants/crp.constants';
 import { Environments } from 'src/general/enums/environments.enum';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 import { OpenApiManager } from 'src/general/managers/openapi/openapi.manager';
@@ -101,11 +99,11 @@ export class Server {
     }
   }
 
-  static async shutdown(): Promise<void> {
+  static async shutdown(fatal = false): Promise<void> {
     try {
       await this.app.close();
       this.logger.info('Server closed gracefully');
-      process.exit(0);
+      process.exit(fatal ? 1 : 0);
     } catch (error) {
       this.logger.error('Error during shutdown', {
         message: error instanceof Error ? error.message : String(error),
@@ -127,7 +125,6 @@ export class Server {
     });
 
     if (EnvHelper.getCurrentEnv() !== Environments.PRD) {
-      this.setupHttpClient();
       this.setupDocsEndpoint();
     }
   }
@@ -243,19 +240,24 @@ export class Server {
       reply.type('application/json').send(spec);
     });
   }
-
-  private static setupHttpClient(): void {
-    https.globalAgent.options = {
-      ...https.globalAgent.options,
-      rejectUnauthorized: false,
-      keepAlive: true,
-      timeout: CRPConstants.SOAP_TIMEOUT,
-      checkServerIdentity: () => undefined,
-    };
-  }
 }
 
 void Server.start();
 
 process.once('SIGINT', () => Server.shutdown());
 process.once('SIGTERM', () => Server.shutdown());
+
+process.on('unhandledRejection', (err) => {
+  LoggerClient.instance.error('Unhandled promise rejection', {
+    err: err instanceof Error ? { name: err.name, message: err.message, stack: err.stack } : String(err),
+  });
+});
+
+process.on('uncaughtException', (err) => {
+  LoggerClient.instance.error('Uncaught exception', {
+    name: err.name,
+    message: err.message,
+    stack: err.stack,
+  });
+  setImmediate(() => Server.shutdown(true));
+});

@@ -9,6 +9,7 @@ export type Location = {
   element: number;
   component?: number;
   occurrence: number;
+  mapper?: Record<string, Record<string, string>>;
 };
 
 export type ChildLocation = {
@@ -132,8 +133,8 @@ export class X12Manager<EncodeConf extends X12ManagerConfig, DecodeConf extends 
     if (!elements) {
       throw ErrorModel.server({ message: `Occurrence ${occurrenceNumber} for tag ${location.tag} not found` });
     }
-
-    let valueToInsert = value;
+    const mapper: Record<string, string> | undefined = location.mapper?.encode;
+    let valueToInsert = mapper ? (mapper[value] ?? value) : value;
 
     if (location.component && location.component > 0) {
       const current = elements[elementTrueIndex] ?? '';
@@ -144,7 +145,7 @@ export class X12Manager<EncodeConf extends X12ManagerConfig, DecodeConf extends 
         components.push('');
       }
 
-      components[componentTrueIndex] = value;
+      components[componentTrueIndex] = mapper ? (mapper[value] ?? value) : value;
       valueToInsert = components.join(this.encodeConfig.componentDelimiter);
     }
 
@@ -177,17 +178,19 @@ export class X12Manager<EncodeConf extends X12ManagerConfig, DecodeConf extends 
     for (const [key, mapping] of Object.entries(this.decodeConfig.fieldMap)) {
       if (!this.isLocationArray(mapping)) continue;
 
-      let selectedValue: string | undefined = undefined;
+      let selectedValue: string | undefined;
+      let mapper: Record<string, string> | undefined;
 
       for (const location of mapping) {
         const candidate = this.readValueFromStore(segmentStore, location)?.trim();
         if (candidate) {
           selectedValue = candidate;
+          mapper = location.mapper?.decode;
           break;
         }
       }
 
-      output[key] = selectedValue;
+      output[key] = mapper ? (mapper[selectedValue as keyof typeof mapper] ?? selectedValue) : selectedValue;
     }
 
     return output as InferType<DecodeConf>;

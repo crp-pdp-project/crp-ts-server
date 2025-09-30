@@ -29,7 +29,7 @@ export class InsuredPatientDuesV1Router {
   registerRouter(): void {
     this.fastify.route({
       method: HttpMethod.GET,
-      url: `${this.version}/insurance/dues/:contractId`,
+      url: `${this.version}/health-insurances/dues/:contractId`,
       preHandler: RouterHelper.wrapPreHandlers(
         this.validateHeadersController.validate.bind(this.validateHeadersController),
         this.validateSessionController.validate.bind(this.validateSessionController),

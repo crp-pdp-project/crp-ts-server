@@ -29,17 +29,17 @@ export class PatientExternalModel extends BaseModel {
   readonly phone?: string | null;
   readonly maskedPhone?: string | null;
   readonly fmpId?: string;
-  readonly nhcId?: string | null;
   readonly documentNumber?: string;
   readonly documentType?: number;
   readonly birthDate?: string;
   readonly account?: AccountModel;
 
-  readonly #searchResult: PatientExternalDTO;
   readonly #secondLastName?: string | null;
- 
+
   #id?: number;
   #device?: DeviceModel;
+  #nhcId?: string | null;
+  #searchResult: PatientExternalDTO;
 
   constructor(external: PatientExternalDTO, patient?: PatientDTO) {
     super();
@@ -55,7 +55,7 @@ export class PatientExternalModel extends BaseModel {
     this.birthDate = external.birthDate ? DateHelper.toFormatDate(external.birthDate, 'dbDate') : undefined;
     this.fmpId = external.fmpId;
     this.documentNumber = external.documentNumber;
-    this.nhcId = external.nhcId;
+    this.#nhcId = external.nhcId;
     this.documentType = external.documentType;
     this.account = patient?.account ? new AccountModel(patient.account) : undefined;
     this.#searchResult = external;
@@ -69,14 +69,17 @@ export class PatientExternalModel extends BaseModel {
     return this.#device;
   }
 
+  get nhcId(): string | undefined | null {
+    return this.#nhcId;
+  }
+
   validateCenter(): void {
-    if (this.#searchResult.centerId !== CRPConstants.CENTER_ID) {
+    if (this.#searchResult.centerId !== CRPConstants.CENTER_ID || !this.nhcId) {
       throw ErrorModel.notFound({ detail: ClientErrorMessages.PATIENT_NOT_FOUND });
     }
   }
 
   validatePatient(): void {
-    this.validateCenter();
     if (!this.email && !this.phone) {
       throw ErrorModel.unprocessable({ detail: ClientErrorMessages.UNPROCESSABLE_PATIENT });
     }
@@ -88,6 +91,12 @@ export class PatientExternalModel extends BaseModel {
 
   hasValidAccount(): boolean {
     return !!this.#id && !!this.account;
+  }
+
+  updateModel(external: PatientExternalDTO): this {
+    this.#searchResult = external;
+    this.#nhcId = external.nhcId;
+    return this;
   }
 
   inyectPatientId(id: PatientDM['id']): this {
@@ -116,7 +125,7 @@ export class PatientExternalModel extends BaseModel {
   toPersistPatientPayload(): PatientDTO {
     return {
       fmpId: this.fmpId,
-      nhcId: this.nhcId,
+      nhcId: this.#nhcId,
       firstName: this.firstName,
       lastName: this.lastName,
       secondLastName: this.#secondLastName,
@@ -135,7 +144,7 @@ export class PatientExternalModel extends BaseModel {
       patient: {
         id: this.#id,
         fmpId: this.fmpId,
-        nhcId: this.nhcId,
+        nhcId: this.#nhcId,
         documentNumber: this.documentNumber,
         documentType: this.documentType,
         firstName: this.firstName,
