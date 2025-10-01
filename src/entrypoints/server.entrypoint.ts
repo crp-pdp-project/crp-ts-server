@@ -10,6 +10,8 @@ import { AccountPasswordV1Docs } from 'src/app/controllers/accountPasswordV1/acc
 import { AccountPasswordV1Router } from 'src/app/controllers/accountPasswordV1/accountPassword.router';
 import { AddDeviceBiometricPasswordV1Docs } from 'src/app/controllers/addDeviceBiometricPasswordV1/addDeviceBiometricPassword.docs';
 import { AddDeviceBiometricPasswordV1Router } from 'src/app/controllers/addDeviceBiometricPasswordV1/addDeviceBiometricPassword.router';
+import { AppointmentDocumentPDFV1Docs } from 'src/app/controllers/appointmentDocumentPDFV1/appointmentDocumentPDF.docs';
+import { AppointmentDocumentPDFV1Router } from 'src/app/controllers/appointmentDocumentPDFV1/appointmentDocumentPDF.router';
 import { AppointmentTypesListV1Docs } from 'src/app/controllers/appointmentTypesListV1/appointmentTypesList.docs';
 import { AppointmentTypesListV1Router } from 'src/app/controllers/appointmentTypesListV1/appointmentTypesList.router';
 import { AvailabilityListV1Docs } from 'src/app/controllers/availabilityListV1/availabilityList.docs';
@@ -188,6 +190,7 @@ export class Server {
     new InformInsuranceInterestV1Docs(this.manager).registerDocs();
     new SitedsPriceV1Docs(this.manager).registerDocs();
     new PayHealthInsuranceV1Docs(this.manager).registerDocs();
+    new AppointmentDocumentPDFV1Docs(this.manager).registerDocs();
   }
 
   private static registerRoutes(): void {
@@ -224,6 +227,7 @@ export class Server {
     new InformInsuranceInterestV1Router(this.app).registerRouter();
     new SitedsPriceV1Router(this.app).registerRouter();
     new PayHealthInsuranceV1Router(this.app).registerRouter();
+    new AppointmentDocumentPDFV1Router(this.app).registerRouter();
   }
 
   private static setupDocsEndpoint(): void {

@@ -1,4 +1,4 @@
-import { randomBytes } from 'crypto';
+import { randomBytes, randomUUID } from 'crypto';
 
 export class TextHelper {
   static addCityCode(phone?: string | null): string | undefined | null {
@@ -96,5 +96,9 @@ export class TextHelper {
     const last = name.slice(-3);
 
     return `${mask}${last}@${domain}`;
+  }
+
+  static genUniqueName(): string {
+    return randomUUID();
   }
 }

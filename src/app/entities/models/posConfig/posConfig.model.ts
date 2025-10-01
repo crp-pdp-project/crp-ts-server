@@ -64,8 +64,7 @@ export class POSConfigModel extends BaseModel {
     this.password = posConfig.password;
     this.commerceCode = posConfig.commerceCode;
     this.channel = posConfig.channel;
-    // this.host = posConfig.host;
-    this.host = 'https://apisandbox.vnforappstest.com';
+    this.host = posConfig.host;
     this.correlative = posConfig.correlative ? TextHelper.padTextLength(posConfig.correlative) : undefined;
     this.token = posConfig.token;
     this.pinHash = posConfig.pinHash;

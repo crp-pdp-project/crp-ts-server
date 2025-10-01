@@ -68,7 +68,7 @@ export class SignInSessionModel extends SessionModel {
     return this;
   }
 
-  validateFmpId(fmpId: PatientDM['fmpId'], rule: ValidationRules): void {
+  isValidFmpId(fmpId: PatientDM['fmpId'], rule: ValidationRules): boolean {
     const strategy = ValidateFmpIdStrategyFactory.getStrategy(rule);
     const isValid = strategy.isValidFmpId({
       selfId: this.selfId,
@@ -76,6 +76,11 @@ export class SignInSessionModel extends SessionModel {
       relatives: this.relatives,
     });
 
+    return isValid;
+  }
+
+  validateFmpId(fmpId: PatientDM['fmpId'], rule: ValidationRules): void {
+    const isValid = this.isValidFmpId(fmpId, rule);
     if (!isValid) {
       throw ErrorModel.badRequest({ detail: ClientErrorMessages.ID_NOT_VALID });
     }

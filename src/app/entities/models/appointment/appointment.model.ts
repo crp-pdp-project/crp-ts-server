@@ -14,6 +14,8 @@ import {
 import { TipsType, TipsTypeUtils } from 'src/general/enums/tipsTypes.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 
+import { AppointmentDocumentModel } from '../appointmentDocument/appointmentDocument.model';
+import { AppointmentDocumentListModel } from '../appointmentDocument/appointmentDocumentList.model';
 import { AppointmentTypeModel } from '../appointmentType/appointmentType.model';
 import { BaseModel } from '../base.model';
 import { DoctorModel } from '../doctor/doctor.model';
@@ -37,6 +39,7 @@ export class AppointmentModel extends BaseModel {
   readonly payState?: PayStates;
 
   #tips?: TipModel[];
+  #documents?: AppointmentDocumentModel[];
 
   constructor(appointment: AppointmentDTO) {
     super();
@@ -69,9 +72,19 @@ export class AppointmentModel extends BaseModel {
     return this.#tips;
   }
 
+  get documents(): AppointmentDocumentModel[] | undefined {
+    return this.#documents;
+  }
+
   overrideTips(type: TipsType): this {
     const tips = TipsTypeUtils.getTipsByType(type);
     this.#tips = tips.map((tip) => new TipModel(tip));
+
+    return this;
+  }
+
+  inyectDocuments(documentList: AppointmentDocumentListModel): this {
+    this.#documents = documentList.documents;
 
     return this;
   }

@@ -39,7 +39,6 @@ export class RelativeVerificationInteractor implements IRelativeVerificationInte
   async verify(body: RelativeVerificationBodyDTO, session: SignInSessionModel): Promise<PatientExternalModel> {
     await this.verifyRelationship(body, session);
     const externalPatientModel = await this.searchPatient(body);
-    console.log(externalPatientModel)
     externalPatientModel.validateExistance();
     await this.confirmPatientCreation(externalPatientModel);
     await this.validateNHCId(externalPatientModel);

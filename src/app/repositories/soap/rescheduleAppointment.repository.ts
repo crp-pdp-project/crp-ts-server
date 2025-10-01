@@ -4,6 +4,7 @@ import { InetumAppointmentServices, InetumClient } from 'src/clients/inetum.clie
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';
+import { TextHelper } from 'src/general/helpers/text.helper';
 
 type RescheduleAppointmentInput = {
   usuario: string;
@@ -55,7 +56,7 @@ export class RescheduleAppointmentRepository implements IRescheduleAppointmentRe
       contrasena: this.password,
       peticionModificarCita: {
         IdCentro: CRPConstants.CENTER_ID,
-        IdCitaAntigua: payload.appointmentId ?? '',
+        IdCitaAntigua: TextHelper.normalizeAppointmentId(payload.appointmentId ?? ''),
         CodAgenda: payload.scheduleId,
         CodBloque: payload.blockId,
         IdPrestacion: payload.appointmentTypeId,
