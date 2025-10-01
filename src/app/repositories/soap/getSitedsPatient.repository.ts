@@ -82,7 +82,7 @@ export class GetSitedsPatientRepository implements IGetSitedsPatientRepository {
   private parseOutput(rawResult: GetSitedsPatientOutput): ConNom271DTO {
     const { coError, txRespuesta } = rawResult ?? {};
 
-    if (coError !== SitedsConstants.SUCCESS_CODE) {
+    if (!SitedsConstants.SUCCESS_CODES.includes(coError)) {
       const errorMessage = SitedsConstants.ERROR_MESSAGES[coError as keyof typeof SitedsConstants.ERROR_MESSAGES];
       throw ErrorModel.notFound({ message: errorMessage ?? 'Unkown error consuming siteds' });
     }

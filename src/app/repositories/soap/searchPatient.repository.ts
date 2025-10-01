@@ -80,7 +80,7 @@ export class SearchPatientRepository implements ISearchPatientRepository {
     const firstCenter = Array.isArray(centerArray) ? centerArray[0] : centerArray;
 
     return {
-      fmpId: String(basePatient?.Id),
+      fmpId: basePatient?.Id ? String(basePatient.Id) : undefined,
       nhcId: firstCenter?.Nhc ?? null,
       firstName: basePatient?.Nombre,
       lastName: basePatient?.Apellido1,
@@ -88,12 +88,12 @@ export class SearchPatientRepository implements ISearchPatientRepository {
       gender: basePatient?.IdSexo,
       birthDate: basePatient?.FechaNacimiento,
       documentNumber: basePatient?.DocIdentidad,
-      documentType: Number(basePatient?.IdTipoDocIdentidad),
+      documentType: basePatient?.IdTipoDocIdentidad ? Number(basePatient?.IdTipoDocIdentidad) : undefined,
       // email: basePatient?.Email ?? null,
       // phone: basePatient?.Telefono3 ?? null,
       email: 'renarux.92@gmail.com',
       phone: '962943323',
-      centerId: firstCenter?.Centro?.CodCentroIdc ?? firstCenter?.Origen ?? '',
+      centerId: firstCenter?.Centro?.CodCentroIdc ?? firstCenter?.Origen ?? undefined,
       address: basePatient?.Direccion ?? null,
       addressAditional: basePatient?.Observaciones ?? null,
       addressNumber: basePatient?.NumDomicilio ? String(basePatient?.NumDomicilio) : null,

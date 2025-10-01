@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import https from 'https';
 
 import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi';
 import cors from '@fastify/cors';
@@ -72,6 +73,7 @@ import { SitedsPriceV1Router } from 'src/app/controllers/sitedsPriceV1/sitedsPri
 import { SpecialtiesListV1Docs } from 'src/app/controllers/specialtiesListV1/specialtiesList.docs';
 import { SpecialtiesListV1Router } from 'src/app/controllers/specialtiesListV1/specialtiesList.routes';
 import { LoggerClient } from 'src/clients/logger.client';
+import { CRPConstants } from 'src/general/contants/crp.constants';
 import { Environments } from 'src/general/enums/environments.enum';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 import { OpenApiManager } from 'src/general/managers/openapi/openapi.manager';
@@ -126,6 +128,7 @@ export class Server {
 
     if (EnvHelper.getCurrentEnv() !== Environments.PRD) {
       this.setupDocsEndpoint();
+      this.setupHttpClient();
     }
   }
 
@@ -239,6 +242,16 @@ export class Server {
 
       reply.type('application/json').send(spec);
     });
+  }
+
+  private static setupHttpClient(): void {
+    https.globalAgent.options = {
+      ...https.globalAgent.options,
+      rejectUnauthorized: false,
+      keepAlive: true,
+      timeout: CRPConstants.SOAP_TIMEOUT,
+      checkServerIdentity: () => undefined,
+    };
   }
 }
 

@@ -5,7 +5,7 @@ export const SitedsConstants = {
   DEFAULT_PATIENT_TYPE: '1',
   DEFAULT_PURPOSE_CODE: '13',
   EXCEPTION_CODE: '0000',
-  SUCCESS_CODE: '0000',
+  SUCCESS_CODES: ['0000', '1200'],
   DEFAULT_TRANSAC_NAME: '270_CON_ASE',
   DEFAULT_TRANSAC_ID: '270',
   DEFAULT_QUALIFIER: 'A4',
@@ -69,4 +69,4 @@ export const SitedsConstants = {
     '9898': 'En estos momentos no hay comunicación con la IAFAS',
     '9999': 'Error de webservice',
   },
-} as const;
+};

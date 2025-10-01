@@ -79,7 +79,14 @@ export class PatientExternalModel extends BaseModel {
     }
   }
 
+  validateExistance(): void {
+    if (!this.fmpId) {
+      throw ErrorModel.notFound({ detail: ClientErrorMessages.PATIENT_NOT_FOUND });
+    }
+  }
+
   validatePatient(): void {
+    this.validateExistance();
     if (!this.email && !this.phone) {
       throw ErrorModel.unprocessable({ detail: ClientErrorMessages.UNPROCESSABLE_PATIENT });
     }

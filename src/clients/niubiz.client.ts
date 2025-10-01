@@ -30,8 +30,8 @@ type GetPinHashOutput = {
 };
 
 export enum NiubizServicePaths {
-  GENERATE_TOKEN = 'api.security/v1/security',
-  GET_HASH = 'api.certificate/v1/query',
+  GENERATE_TOKEN = '/api.security/v1/security',
+  GET_HASH = '/api.certificate/v1/query',
 }
 
 export class NiubizClient {
