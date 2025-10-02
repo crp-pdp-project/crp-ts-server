@@ -11,7 +11,7 @@ export class CurrentAppointmentsStrategy implements IPatientAppointmentsStrategy
   constructor(private readonly getCurrentAppointments: IGetCurrentAppointmentsRepository) {}
 
   async fetchData(fmpId: PatientDM['fmpId'], session: SignInSessionModel): Promise<AppointmentListModel> {
-    session.validateFmpId(fmpId, ValidationRules.SELF_ONLY);
+    session.validateFmpId(fmpId, ValidationRules.SELF_OR_VERIFIED);
     const currentAppointments = await this.getCurrentAppointments.execute(fmpId, AppointmentFilters.All);
 
     return new AppointmentListModel(currentAppointments, SortOrder.ASC);

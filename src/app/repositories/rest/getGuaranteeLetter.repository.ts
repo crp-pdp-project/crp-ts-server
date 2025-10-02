@@ -67,7 +67,7 @@ export class GetGuaranteeLetterRepository implements IGetGuaranteeLetterReposito
     }
 
     const letters: GuaranteeLetterDTO[] =
-      data.map((letter) => ({
+      data?.map((letter) => ({
         letterNumber: letter.nroCartaGarantia,
         referenceNumber: letter.nroCartaGarantia ?? null,
         service: letter.servicio,

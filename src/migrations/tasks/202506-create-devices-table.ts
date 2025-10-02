@@ -25,7 +25,7 @@ export async function up(db: Kysely<Database>): Promise<void> {
     )
     .execute();
 
-  await db.schema.createIndex('IndexDeviceExpiresAt').on(tableName).column('expiresAt').execute();
+  await db.schema.createIndex('IndexDevicesExpiresAt').on(tableName).column('expiresAt').execute();
   await db.schema
     .createIndex('UniqueDevicesByPatient')
     .on(tableName)

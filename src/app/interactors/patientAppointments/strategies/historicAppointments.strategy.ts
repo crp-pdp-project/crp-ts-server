@@ -10,7 +10,7 @@ export class HistoryAppointmentsStrategy implements IPatientAppointmentsStrategy
   constructor(private readonly getHistoricAppointments: IGetHistoricAppointmentsRepository) {}
 
   async fetchData(fmpId: PatientDM['fmpId'], session: SignInSessionModel): Promise<AppointmentListModel> {
-    session.validateFmpId(fmpId, ValidationRules.SELF_OR_DEPENDANTS);
+    session.validateFmpId(fmpId, ValidationRules.SELF_OR_VERIFIED);
     const currentAppointments = await this.getHistoricAppointments.execute(fmpId);
 
     return new AppointmentListModel(currentAppointments, SortOrder.DESC);

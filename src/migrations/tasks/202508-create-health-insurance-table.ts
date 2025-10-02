@@ -28,6 +28,6 @@ export async function up(db: Kysely<Database>): Promise<void> {
 }
 
 export async function down(db: Kysely<Database>): Promise<void> {
-  await db.schema.dropIndex('IndexHealthInsuranceEnabled').on(tableName).execute();
+  await db.schema.dropIndex('IndexHealthInsurancesEnabled').on(tableName).execute();
   await db.schema.dropTable(tableName).execute();
 }

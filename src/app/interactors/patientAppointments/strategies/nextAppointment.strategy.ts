@@ -12,7 +12,7 @@ export class NextAppointmentStrategy implements IPatientAppointmentsStrategy {
   constructor(private readonly getCurrentAppointments: IGetCurrentAppointmentsRepository) {}
 
   async fetchData(fmpId: PatientDM['fmpId'], session: SignInSessionModel): Promise<AppointmentModel | void> {
-    session.validateFmpId(fmpId, ValidationRules.SELF_OR_VERIFIED);
+    session.validateFmpId(fmpId, ValidationRules.SELF_ONLY);
     const currentAppointments = await this.getCurrentAppointments.execute(fmpId, AppointmentFilters.VALID_ONLY);
 
     return new AppointmentListModel(currentAppointments, SortOrder.ASC).getFirstAppointment();

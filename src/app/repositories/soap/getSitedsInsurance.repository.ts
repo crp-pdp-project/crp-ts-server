@@ -81,7 +81,7 @@ export class GetSitedsInsuranceRepository implements IGetSitedsInsuranceReposito
   private parseOutput(rawResult: GetSitedsInsuranceOutput): ConCod271DTO {
     const { coError, txRespuesta } = rawResult ?? {};
 
-    if (!SitedsConstants.SUCCESS_CODES.includes(coError)) {
+    if (!SitedsConstants.SUCCESS_CODES.has(coError)) {
       const errorMessage = SitedsConstants.ERROR_MESSAGES[coError as keyof typeof SitedsConstants.ERROR_MESSAGES];
       throw ErrorModel.notFound({ message: errorMessage ?? 'Unkown error consuming siteds' });
     }
