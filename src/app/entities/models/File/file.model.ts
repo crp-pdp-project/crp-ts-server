@@ -19,17 +19,25 @@ export enum MimeType {
 
 export abstract class FileModel {
   abstract readonly mimeType: MimeType;
-  protected readonly normalizedBase64: string;
   protected readonly preferredFilename: string;
 
-  private decodedBytes?: Buffer;
+  #normalizedBase64?: string;
+  #decodedBytes?: Buffer;
 
-  constructor(base64: string, filename?: string) {
-    this.normalizedBase64 = FileModel.normalizeBase64(base64);
+  protected constructor(file: string | Buffer, filename?: string) {
+    this.populateFile(file);
     this.preferredFilename = filename?.trim() ?? TextHelper.genUniqueName();
   }
 
-  static normalizeBase64(value: string): string {
+  private populateFile(file: string | Buffer): void {
+    if (Buffer.isBuffer(file)) {
+      this.#decodedBytes = file;
+    } else {
+      this.#normalizedBase64 = this.normalizeBase64(file);
+    }
+  }
+
+  private normalizeBase64(value: string): string {
     return value
       .replace(/^data:[^;]+;base64,?/i, '')
       .replace(/\s+/g, '')
@@ -37,16 +45,16 @@ export abstract class FileModel {
   }
 
   toBuffer(): Buffer {
-    if (!this.decodedBytes) {
-      const bytes: Buffer = Buffer.from(this.normalizedBase64, 'base64');
+    if (!this.#decodedBytes) {
+      const bytes: Buffer = Buffer.from(this.#normalizedBase64!, 'base64');
 
       if (!bytes || bytes.length === 0) {
         throw ErrorModel.unprocessable({ message: 'Empty file payload.' });
       }
 
-      this.decodedBytes = bytes;
+      this.#decodedBytes = bytes;
     }
-    return this.decodedBytes;
+    return this.#decodedBytes;
   }
 
   toStream(): Readable {

@@ -6,12 +6,19 @@ import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { LoggerClient } from 'src/clients/logger.client';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 
+export enum ResponseType {
+  JSON,
+  TEXT,
+  ARRAY_BUFFER,
+  STREAM,
+}
 export type RestRequestOptions<T = string> = {
   method: HttpMethod;
   path: T;
   headers?: Record<string, string>;
   body?: Record<string, unknown>;
   query?: Record<string, string | number | boolean>;
+  responseType?: ResponseType;
 };
 
 export class RestHelper {
@@ -23,7 +30,7 @@ export class RestHelper {
   }
 
   async send<T = unknown>(options: RestRequestOptions): Promise<T> {
-    const { method, path, body, headers, query } = options;
+    const { method, path, body, headers, query, responseType = ResponseType.JSON } = options;
     const url = `${this.host}${path}`;
 
     const fullUrl = this.buildUrlWithQuery(url, query);
@@ -48,28 +55,43 @@ export class RestHelper {
 
     const response = await request(fullUrl, requestOptions);
 
-    const rawText = response.body ? await response.body.text() : '';
-
     if (response.statusCode < 200 || response.statusCode >= 300) {
+      const errorText = response.body ? await response.body.text() : '';
       this.logger.error('Error HTTP Status Code', {
         statusCode: response.statusCode,
-        result: rawText,
+        result: errorText.slice(0, 2000),
       });
       throw ErrorModel.server({ message: 'HTTP Error' });
     }
 
     let responseData: T;
+    let logResponse = false;
 
-    try {
-      responseData = JSON.parse(rawText) as T;
-    } catch {
-      responseData = rawText as T;
+    switch (responseType) {
+      case ResponseType.TEXT:
+        responseData = (await response.body.text()) as T;
+        logResponse = true;
+        break;
+      case ResponseType.JSON:
+        try {
+          responseData = (await response.body.json()) as T;
+        } catch {
+          responseData = (await response.body.text()) as T;
+        }
+        logResponse = true;
+        break;
+      case ResponseType.ARRAY_BUFFER:
+        responseData = Buffer.from(await response.body.arrayBuffer()) as T;
+        break;
+      case ResponseType.STREAM:
+        responseData = response.body as T;
+        break;
     }
 
     this.logger.debug('HTTP Response Received', {
       statusCode: response.statusCode,
       url: fullUrl,
-      response: responseData,
+      response: logResponse ? responseData : {},
     });
 
     return responseData;

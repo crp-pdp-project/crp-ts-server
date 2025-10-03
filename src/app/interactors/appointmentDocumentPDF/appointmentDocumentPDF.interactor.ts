@@ -35,7 +35,7 @@ export class AppointmentDocumentPDFInteractor implements IAppointmentDocumentPDF
 
   private async getAppointmentDocumentPDF(params: AppointmentDocumentPDFParamsDTO): Promise<PdfFileModel> {
     const base64 = await this.obtainePdfDocument.execute(params.fmpId, params.documentId);
-    const model = new PdfFileModel(base64);
+    const model = PdfFileModel.fromBase64(base64);
 
     return model;
   }

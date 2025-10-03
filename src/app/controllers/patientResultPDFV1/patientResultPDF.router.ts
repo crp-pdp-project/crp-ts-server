@@ -12,19 +12,16 @@ import {
   ValidateSessionControllerBuilder,
 } from '../validateSessionV1/validateSession.controller';
 
-import {
-  AppointmentDocumentPDFControllerBuilder,
-  IAppointmentDocumentPDFController,
-} from './appointmentDocumentPDF.controller';
+import { PatientResultPDFControllerBuilder, IPatientResultPDFController } from './patientResultPDF.controller';
 
-export class AppointmentDocumentPDFV1Router {
+export class PatientResultPDFV1Router {
   private readonly version: string = '/v1';
-  private readonly appointmentDocumentPDFController: IAppointmentDocumentPDFController;
+  private readonly patientResultPDFController: IPatientResultPDFController;
   private readonly validateHeadersController: IValidateHeadersController;
   private readonly validateSessionController: IValidateSessionController;
 
   constructor(private readonly fastify: FastifyInstance) {
-    this.appointmentDocumentPDFController = AppointmentDocumentPDFControllerBuilder.build();
+    this.patientResultPDFController = PatientResultPDFControllerBuilder.build();
     this.validateHeadersController = ValidateHeadersControllerBuilder.build();
     this.validateSessionController = ValidateSessionControllerBuilder.buildSignIn();
   }
@@ -32,12 +29,12 @@ export class AppointmentDocumentPDFV1Router {
   registerRouter(): void {
     this.fastify.route({
       method: HttpMethod.GET,
-      url: `${this.version}/patients/:fmpId/appointments/documents/:documentId`,
+      url: `${this.version}/patients/:fmpId/results/documents/:resultId`,
       preHandler: RouterHelper.wrapPreHandlers(
         this.validateHeadersController.validate.bind(this.validateHeadersController),
         this.validateSessionController.validate.bind(this.validateSessionController),
       ),
-      handler: this.appointmentDocumentPDFController.handle.bind(this.appointmentDocumentPDFController),
+      handler: this.patientResultPDFController.handle.bind(this.patientResultPDFController),
     });
   }
 }
