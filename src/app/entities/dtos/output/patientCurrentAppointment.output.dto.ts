@@ -1,6 +1,8 @@
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 import { z } from 'zod';
 
+import { AppointmentStates } from 'src/general/enums/appointmentState.enum';
+
 extendZodWithOpenApi(z);
 
 export const PatientCurrentAppointmentsOutputDTOSchema = z
@@ -19,9 +21,9 @@ export const PatientCurrentAppointmentsOutputDTOSchema = z
           description: 'Appointment schedule date in DD-MM-YYYY HH:mm:ss',
           example: '01-01-2025 00:00:00',
         }),
-        status: z.number().openapi({
+        status: z.enum(AppointmentStates).optional().openapi({
           description: 'Appointment status, either 1 2 or 3. By default 1 is sent',
-          example: 1,
+          example: AppointmentStates.PROGRAMMED,
         }),
         doctor: z
           .object({

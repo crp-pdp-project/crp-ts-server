@@ -11,6 +11,7 @@ export const timeConstants = {
   crpTimeShort: 'HHmm',
   inetumTime: 'HHmmss',
   spanishTime: 'HH:mm:ss',
+  spanishShortTime: 'HH:mm',
   dbTime: 'HH:mm:ss',
 } as const;
 

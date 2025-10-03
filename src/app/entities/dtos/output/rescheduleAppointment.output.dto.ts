@@ -2,6 +2,7 @@ import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 import { z } from 'zod';
 
 import {
+  AppointmentStates,
   CancelActionStates,
   PaymentActionStates,
   PayStates,
@@ -29,9 +30,9 @@ export const RescheduleAppointmentOutputDTOSchema = z
       description: 'Appointment mode',
       example: 'Presencial',
     }),
-    status: z.number().optional().openapi({
+    status: z.enum(AppointmentStates).optional().openapi({
       description: 'Appointment status, either 1 2 or 3. By default 1 is sent',
-      example: 1,
+      example: AppointmentStates.PROGRAMMED,
     }),
     doctor: z
       .object({

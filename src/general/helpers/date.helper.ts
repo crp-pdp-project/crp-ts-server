@@ -5,6 +5,21 @@ import { allConstants, dateConstants, dateTimeConstants, timeConstants } from '.
 
 dayjs.extend(customParseFormat);
 
+export enum Months {
+  Jan = 1,
+  Feb,
+  Mar,
+  Apr,
+  May,
+  Jun,
+  Jul,
+  Aug,
+  Sep,
+  Oct,
+  Nov,
+  Dec,
+}
+
 export type TimeFormatKey = keyof typeof timeConstants;
 export type DateFormatKey = keyof typeof dateConstants;
 export type DateTimeFormatKey = keyof typeof dateTimeConstants;
@@ -59,6 +74,17 @@ export class DateHelper {
   static addDays(numOfDays: number, formatKey: FormatKey, baseDate?: string | Date): string {
     const date = baseDate ? this.parse(baseDate) : dayjs();
     return date.add(numOfDays, 'days').format(allConstants[formatKey]);
+  }
+
+  static dateRange(year: number, formatKey: FormatKey, month?: Months): { startDate: string; endDate: string } {
+    const baseYear = dayjs(`${year}-01-01`);
+    const baseDate = month ? baseYear.set('month', month - 1) : baseYear;
+    const granularity: dayjs.UnitType = month ? 'month' : 'year';
+
+    const startDate = baseDate.startOf(granularity).format(allConstants[formatKey]);
+    const endDate = baseDate.endOf(granularity).format(allConstants[formatKey]);
+
+    return { startDate, endDate };
   }
 
   static subtractDays(numOfDays: number, formatKey: FormatKey, baseDate?: string | Date): string {
