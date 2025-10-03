@@ -1,5 +1,6 @@
 import { ConNom271DTO } from 'src/app/entities/dtos/service/conNom271.dto';
 
+import { entityTypeMap } from '../maps/entityType.map';
 import { FieldMap, X12ManagerConfig } from '../x12.manager';
 
 import { ConNom271DetailConfig } from './271ConNomDetail.config';
@@ -52,8 +53,8 @@ export class ConNom271Config implements X12ManagerConfig<ConNom271DTO> {
       { tag: 'SE', element: 2, occurrence: 1 },
     ],
     purposeCode: [{ tag: 'BHT', element: 2, occurrence: 1 }], // ES: tiFinalidad
-    senderEntityType: [{ tag: 'NM1', element: 2, occurrence: 1 }], // ES: caRemitente
-    receiverEntityType: [{ tag: 'NM1', element: 2, occurrence: 2 }], // ES: caReceptor
+    senderEntityType: [{ tag: 'NM1', element: 2, occurrence: 1, mapper: entityTypeMap }], // ES: caRemitente
+    receiverEntityType: [{ tag: 'NM1', element: 2, occurrence: 2, mapper: entityTypeMap }], // ES: caReceptor
     receiverTaxId: [{ tag: 'NM1', element: 9, occurrence: 2 }], // ES: nuRucReceptor
     details: {
       startTag: 'HL',

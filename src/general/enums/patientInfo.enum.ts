@@ -17,6 +17,12 @@ export enum CRPShortDocumentType {
 }
 
 export enum SitedsDocumentType {
+  DNI = 'DNI',
+  CE = 'CE',
+  PASS = 'PAS',
+}
+
+export enum SitedsRawDocumentType {
   DNI = '1',
   CE = '2',
   PASS = '3',
@@ -53,6 +59,12 @@ export class DocumentTypeMapper {
     [PatientDocumentType.PASS]: PosDocumentType.PASS,
   };
 
+  private static readonly sitedsRawDocumentTypeMap: Record<SitedsDocumentType, SitedsRawDocumentType> = {
+    [SitedsDocumentType.DNI]: SitedsRawDocumentType.DNI,
+    [SitedsDocumentType.CE]: SitedsRawDocumentType.CE,
+    [SitedsDocumentType.PASS]: SitedsRawDocumentType.PASS,
+  };
+
   static getCrpDocumentType(type: PatientDocumentType): CRPDocumentType {
     return this.crpDocumentTypeMap[type];
   }
@@ -63,6 +75,10 @@ export class DocumentTypeMapper {
 
   static getSitedsDocumentType(type: PatientDocumentType): SitedsDocumentType {
     return this.sitedsDocumentTypeMap[type];
+  }
+
+  static getRawSitedsDocumentType(type: SitedsDocumentType): SitedsRawDocumentType {
+    return this.sitedsRawDocumentTypeMap[type];
   }
 
   static getPosDocumentType(type: PatientDocumentType): PosDocumentType {

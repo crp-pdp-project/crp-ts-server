@@ -54,7 +54,8 @@ export class SignInSessionModel extends SessionModel {
   readonly type = SessionType.SIGN_IN;
   readonly patient: SignInSessionPayloadDTO['patient'];
   private readonly selfId: PatientDM['fmpId'];
-  private relatives?: PatientModel[];
+
+  #relatives?: PatientModel[];
 
   constructor(session: SessionDTO, payload: SignInSessionPayloadDTO) {
     super(session);
@@ -64,8 +65,22 @@ export class SignInSessionModel extends SessionModel {
   }
 
   inyectRelatives(relatives: PatientDTO[]): this {
-    this.relatives = this.resolveRelatives(relatives);
+    this.#relatives = this.resolveRelatives(relatives);
+
     return this;
+  }
+
+  getPatient(fmpId: PatientDM['fmpId']): PatientModel {
+    const selectedRelative =
+      this.patient.fmpId === fmpId
+        ? new PatientModel(this.patient)
+        : this.#relatives?.find((relative) => relative.fmpId === fmpId);
+
+    if (!selectedRelative) {
+      throw ErrorModel.badRequest({ detail: ClientErrorMessages.ID_NOT_VALID });
+    }
+
+    return selectedRelative;
   }
 
   isValidFmpId(fmpId: PatientDM['fmpId'], rule: ValidationRules): boolean {
@@ -73,7 +88,7 @@ export class SignInSessionModel extends SessionModel {
     const isValid = strategy.isValidFmpId({
       selfId: this.selfId,
       targetId: fmpId,
-      relatives: this.relatives,
+      relatives: this.#relatives,
     });
 
     return isValid;

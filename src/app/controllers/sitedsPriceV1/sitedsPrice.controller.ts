@@ -33,7 +33,6 @@ export class SitedsPriceController implements ISitedsPriceController {
       const params = SitedsPriceParamsDTOSchema.parse(input.params);
       const session = SessionModel.validateSessionInstance(SessionType.SIGN_IN, input.session);
       const model = await this.sitedsPrice.obtain(body, params, session);
-
       this.response = this.responseManager.validateResponse(model);
     } catch (error) {
       const errorModel = ErrorModel.fromError(error);

@@ -1,6 +1,7 @@
 import { ConNom271DetailDTO } from 'src/app/entities/dtos/service/conNom271Detail.dto';
 
 import { documentTypeMap } from '../maps/documentType.map';
+import { entityTypeMap } from '../maps/entityType.map';
 import { statusTypeMap } from '../maps/statusType.map';
 import { FieldMap, X12ManagerConfig } from '../x12.manager';
 
@@ -15,11 +16,11 @@ export class ConNom271DetailConfig implements X12ManagerConfig<ConNom271DetailDT
     DMG: 5,
   };
   readonly fieldMap: FieldMap<ConNom271DetailDTO> = {
-    patientEntityType: [{ tag: 'NM1', element: 2, occurrence: 1 }], // ES: caPaciente
+    patientEntityType: [{ tag: 'NM1', element: 2, occurrence: 1, mapper: entityTypeMap }], // ES: caPaciente
     patientLastName: [{ tag: 'NM1', element: 3, occurrence: 1 }], // ES: apPaternoPaciente
     patientFirstName: [{ tag: 'NM1', element: 4, occurrence: 1 }], // ES: noPaciente
     patientMemberId: [{ tag: 'NM1', element: 9, occurrence: 1 }], // ES: coAfPaciente
-    patientMaternalLastName: [{ tag: 'NM1', element: 12, occurrence: 1 }], // ES: apMaternoPaciente
+    patientSecondLastName: [{ tag: 'NM1', element: 12, occurrence: 1 }], // ES: apMaternoPaciente
     patientStatusCode: [{ tag: 'REF', element: 2, occurrence: 1, mapper: statusTypeMap }], // ES: coEstadoPaciente
     patientDocumentType: [{ tag: 'REF', element: 2, occurrence: 2, mapper: documentTypeMap }], // ES: tiDocumento
     patientDocumentNumber: [{ tag: 'REF', element: 4, component: 2, occurrence: 2 }], // ES: nuDocumento
@@ -32,10 +33,10 @@ export class ConNom271DetailConfig implements X12ManagerConfig<ConNom271DetailDT
     birthDate: [{ tag: 'DMG', element: 2, occurrence: 1 }], // ES: feNacimiento
     gender: [{ tag: 'DMG', element: 3, occurrence: 1 }], // ES: sexo
     maritalStatus: [{ tag: 'DMG', element: 4, occurrence: 1 }], // ES: esCivil
-    contractorEntityType: [{ tag: 'NM1', element: 2, occurrence: 2 }], // ES: tiCaContratante
+    contractorEntityType: [{ tag: 'NM1', element: 2, occurrence: 2, mapper: entityTypeMap }], // ES: tiCaContratante
     contractorLastName: [{ tag: 'NM1', element: 3, occurrence: 2 }], // ES: noPaContratante
     contractorFirstName: [{ tag: 'NM1', element: 4, occurrence: 2 }], // ES: noContratante
-    contractorMaternalLastName: [{ tag: 'NM1', element: 12, occurrence: 2 }], // ES: noMaContratante
+    contractorSecondLastName: [{ tag: 'NM1', element: 12, occurrence: 2 }], // ES: noMaContratante
     contractorDocumentType: [{ tag: 'REF', element: 2, occurrence: 7, mapper: documentTypeMap }], // ES: tiDoContratante
     contractorIdQualifier: [{ tag: 'REF', element: 4, component: 1, occurrence: 7 }], // ES: idReContratante
     contractorId: [{ tag: 'REF', element: 4, component: 2, occurrence: 7 }], // ES: coReContratante

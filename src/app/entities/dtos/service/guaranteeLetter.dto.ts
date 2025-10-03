@@ -10,7 +10,7 @@ export const GuaranteeLetterDTOSchema = z.object({
   status: z.string().optional(),
   rejectReason: z.string().nullable().optional(),
   notes: z.string().nullable().optional(),
-  procedure: z.string().optional(),
+  procedure: z.string().nullable().optional(),
 });
 
 export type GuaranteeLetterDTO = z.infer<typeof GuaranteeLetterDTOSchema>;

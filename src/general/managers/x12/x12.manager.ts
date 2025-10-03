@@ -48,10 +48,12 @@ export class X12Manager<EncodeConf extends X12ManagerConfig, DecodeConf extends 
 {
   private readonly encodeConfig: EncodeConf;
   private readonly decodeConfig: DecodeConf;
+  private readonly rawValues?: boolean;
 
-  constructor(encodeConfig: EncodeConf, decodeConfig?: DecodeConf) {
+  constructor(encodeConfig: EncodeConf, decodeConfig?: DecodeConf, rawValues = false) {
     this.encodeConfig = encodeConfig;
     this.decodeConfig = (decodeConfig ?? encodeConfig) as DecodeConf;
+    this.rawValues = rawValues;
   }
 
   encode(payload: InferType<EncodeConf>): string {
@@ -133,8 +135,9 @@ export class X12Manager<EncodeConf extends X12ManagerConfig, DecodeConf extends 
     if (!elements) {
       throw ErrorModel.server({ message: `Occurrence ${occurrenceNumber} for tag ${location.tag} not found` });
     }
-    const mapper: Record<string, string> | undefined = location.mapper?.encode;
-    let valueToInsert = mapper ? (mapper[value] ?? value) : value;
+    const mapper: Record<string, string> | undefined = this.rawValues ? undefined : location.mapper?.encode;
+    const mappedValue = mapper ? (mapper[value] ?? value) : value;
+    let valueToInsert = mappedValue;
 
     if (location.component && location.component > 0) {
       const current = elements[elementTrueIndex] ?? '';
@@ -145,7 +148,7 @@ export class X12Manager<EncodeConf extends X12ManagerConfig, DecodeConf extends 
         components.push('');
       }
 
-      components[componentTrueIndex] = mapper ? (mapper[value] ?? value) : value;
+      components[componentTrueIndex] = mappedValue;
       valueToInsert = components.join(this.encodeConfig.componentDelimiter);
     }
 
@@ -185,7 +188,7 @@ export class X12Manager<EncodeConf extends X12ManagerConfig, DecodeConf extends 
         const candidate = this.readValueFromStore(segmentStore, location)?.trim();
         if (candidate) {
           selectedValue = candidate;
-          mapper = location.mapper?.decode;
+          mapper = this.rawValues ? undefined : location.mapper?.decode;
           break;
         }
       }
@@ -209,7 +212,7 @@ export class X12Manager<EncodeConf extends X12ManagerConfig, DecodeConf extends 
 
       if (childItemChunks.length === 0) continue;
 
-      const childManager = new X12Manager(mapping.config);
+      const childManager = new X12Manager(mapping.config, mapping.config, this.rawValues);
       const decodedArray: unknown[] = [];
 
       for (const chunk of childItemChunks) {
@@ -272,7 +275,7 @@ export class X12Manager<EncodeConf extends X12ManagerConfig, DecodeConf extends 
       const childItems = Array.isArray(childPayloadAny) ? childPayloadAny : [childPayloadAny];
       if (childItems.length === 0) continue;
 
-      const childManager = new X12Manager(mapping.config);
+      const childManager = new X12Manager(mapping.config, mapping.config, this.rawValues);
 
       let childFragment = '';
       for (const item of childItems) {

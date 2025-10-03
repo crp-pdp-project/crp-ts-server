@@ -73,7 +73,7 @@ export class GetGuaranteeLetterRepository implements IGetGuaranteeLetterReposito
         service: letter.servicio,
         insurance: letter.financiador,
         procedureType: letter.tipocg,
-        procedure: letter.procedimiento,
+        procedure: letter.procedimiento ?? null,
         coveredAmount: Number(letter.cobertura_igv ?? 0),
         status: letter.estado,
         rejectReason: letter.motivo_rechazo ?? null,

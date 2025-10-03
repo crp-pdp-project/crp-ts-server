@@ -1,13 +1,11 @@
 import { z } from 'zod';
 
-import { ConCod271DTOSchema } from './conCod271.dto';
-
 export const ConNom271DetailDTOSchema = z.object({
   patientEntityType: z.string().optional(),
   patientLastName: z.string().optional(),
   patientFirstName: z.string().optional(),
   patientMemberId: z.string().optional(),
-  patientMaternalLastName: z.string().optional(),
+  patientSecondLastName: z.string().optional(),
   patientStatusCode: z.string().optional(),
   patientDocumentType: z.string().optional(),
   patientDocumentNumber: z.string().optional(),
@@ -23,11 +21,10 @@ export const ConNom271DetailDTOSchema = z.object({
   contractorEntityType: z.string().optional(),
   contractorLastName: z.string().optional(),
   contractorFirstName: z.string().optional(),
-  contractorMaternalLastName: z.string().optional(),
+  contractorSecondLastName: z.string().optional(),
   contractorDocumentType: z.string().optional(),
   contractorIdQualifier: z.string().optional(),
   contractorId: z.string().optional(),
-  prices: ConCod271DTOSchema.partial().optional(),
 });
 
 export type ConNom271DetailDTO = z.infer<typeof ConNom271DetailDTOSchema>;

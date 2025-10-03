@@ -36,6 +36,8 @@ import { DeleteRelativeV1Docs } from 'src/app/controllers/deleteRelativeV1/delet
 import { DeleteRelativeV1Router } from 'src/app/controllers/deleteRelativeV1/deleteRelative.router';
 import { DoctorsListV1Docs } from 'src/app/controllers/doctorsListV1/doctorsList.docs';
 import { DoctorsListV1Router } from 'src/app/controllers/doctorsListV1/doctorsList.router';
+import { GuaranteeLetterListV1Docs } from 'src/app/controllers/guaranteeLetterListV1/guaranteeLetterList.docs';
+import { GuaranteeLetterListV1Router } from 'src/app/controllers/guaranteeLetterListV1/guaranteeLetterList.router';
 import { HealthInsuranceViewV1Docs } from 'src/app/controllers/healthInsuranceViewV1/healthInsuranceView.docs';
 import { HealthInsuranceViewV1Router } from 'src/app/controllers/healthInsuranceViewV1/healthInsuranceView.routes';
 import { InformInsuranceInterestV1Docs } from 'src/app/controllers/informInsuranceInterestV1/informInsuranceInterest.docs';
@@ -191,6 +193,7 @@ export class Server {
     new SitedsPriceV1Docs(this.manager).registerDocs();
     new PayHealthInsuranceV1Docs(this.manager).registerDocs();
     new AppointmentDocumentPDFV1Docs(this.manager).registerDocs();
+    new GuaranteeLetterListV1Docs(this.manager).registerDocs();
   }
 
   private static registerRoutes(): void {
@@ -228,6 +231,7 @@ export class Server {
     new SitedsPriceV1Router(this.app).registerRouter();
     new PayHealthInsuranceV1Router(this.app).registerRouter();
     new AppointmentDocumentPDFV1Router(this.app).registerRouter();
+    new GuaranteeLetterListV1Router(this.app).registerRouter();
   }
 
   private static setupDocsEndpoint(): void {

@@ -69,11 +69,12 @@ export const SitedsConstants = {
     '9898': 'En estos momentos no hay comunicación con la IAFAS',
     '9999': 'Error de webservice',
   },
+  VALID_PLAN: 'VIGENTE',
   VALID_COVERAGES: {
-    AMBULATORIO: ['100', '150', '152', '153'],
+    AMBULATORIO: new Set<string>(['100', '150', '152', '153']),
   },
   VALID_PRODUCTS: {
-    '20007': 
+    '20007':
       /* prettier-ignore */ new Set<string>([
       '1','10','100','101','102','103','104','105','106','107','108','109','11',
       '110','111','112','113','114','115','116','117','118','119','12','120',
@@ -90,7 +91,7 @@ export const SitedsConstants = {
       '86','87','88','89','9','90','91','93','94','95','96','97','98','99',
     ]),
     '20001': new Set<string>(['A', 'R', 'S']),
-    '40007': 
+    '40007':
       /* prettier-ignore */ new Set<string>([
       '01','02','03','04','07','08','11','12','15','16','17','18','19','20',
       '24','27','28','29','30','31','34','36','38','42','43','46','49','50',
@@ -102,7 +103,7 @@ export const SitedsConstants = {
       'SE','SF','SG','SO',
     ]),
     '20002': new Set<string>(['EPS', 'POTE', 'SCTR']),
-    '40004': 
+    '40004':
       /* prettier-ignore */ new Set<string>([
       'ACCI','ACCO','ACES','AD01','AD02','AD03','AD04','ADMI','AE06','AE08',
       'AE09','AE10','AE11','AE12','AE13','AM05','AM06','AM07','AM08','AM10',
@@ -114,8 +115,8 @@ export const SitedsConstants = {
     '20004': new Set<string>(['P', 'R', 'S']),
     '40006': new Set<string>(['1', '3', '5']),
     '20005': new Set<string>(['01', '02', '03', '04', '05', '06']),
-    '20029': 
-      /* prettier-ignore */new Set<string>([
+    '20029':
+      /* prettier-ignore */ new Set<string>([
       '18000001','18100001','18200001','18200002','18300001','18300002',
       '18300003','18300004','18300005',
     ]),
@@ -148,4 +149,5 @@ export const SitedsConstants = {
     '30007': new Set<string>(['15-1', '15-3']),
     '30011': new Set<string>(['14-2', '14-3', '14-4', '14-5', '14-6', '14-7', 'EPS', 'POTE', 'SECO']),
   },
+  TAX_PERCENTAGE: 18,
 } as const;

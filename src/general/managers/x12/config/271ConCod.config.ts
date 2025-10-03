@@ -1,6 +1,7 @@
 import { ConCod271DTO } from 'src/app/entities/dtos/service/conCod271.dto';
 
 import { affiliationTypeMap } from '../maps/affiliationType.map';
+import { currencyTypeMap } from '../maps/currencyType.map';
 import { documentTypeMap } from '../maps/documentType.map';
 import { planTypeMap } from '../maps/planType.map';
 import { statusTypeMap } from '../maps/statusType.map';
@@ -117,7 +118,7 @@ export class ConCod271Config implements X12ManagerConfig<ConCod271DTO> {
     productDescription: [{ tag: 'REF', element: 3, occurrence: 6 }], // ES: deProducto
     planNumber: [{ tag: 'REF', element: 2, occurrence: 7 }], // ES: nuPlan
     healthPlanType: [{ tag: 'REF', element: 4, component: 2, occurrence: 7, mapper: planTypeMap }], // ES: tiPlanSalud
-    currencyCode: [{ tag: 'REF', element: 4, component: 4, occurrence: 7 }], // ES: coMoneda
+    currencyCode: [{ tag: 'REF', element: 4, component: 4, occurrence: 7, mapper: currencyTypeMap }], // ES: coMoneda
     relationshipCode: [{ tag: 'REF', element: 2, occurrence: 8 }], // ES: coParentesco
     benefitSubjectCode: [{ tag: 'REF', element: 2, occurrence: 9 }], // ES: coSujetoBeneficio
     benefitSubjectNumber: [{ tag: 'REF', element: 4, component: 2, occurrence: 9 }], // ES: nuSujetoBeneficio

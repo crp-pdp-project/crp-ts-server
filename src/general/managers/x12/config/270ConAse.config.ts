@@ -2,6 +2,7 @@ import { ConAse270DTO } from 'src/app/entities/dtos/service/conAse270.dto';
 
 import { coverageTypeMap } from '../maps/coverageType.map';
 import { documentTypeMap } from '../maps/documentType.map';
+import { entityTypeMap } from '../maps/entityType.map';
 import { FieldMap, X12ManagerConfig } from '../x12.manager';
 
 export class ConAse270Config implements X12ManagerConfig<ConAse270DTO> {
@@ -84,11 +85,11 @@ export class ConAse270Config implements X12ManagerConfig<ConAse270DTO> {
       { tag: 'SE', element: 2, occurrence: 1 },
     ],
     purposeCode: [{ tag: 'BHT', element: 2, occurrence: 1 }], // ES: tiFinalidad
-    senderEntityType: [{ tag: 'NM1', element: 2, occurrence: 1 }], // ES: caRemitente
+    senderEntityType: [{ tag: 'NM1', element: 2, occurrence: 1, mapper: entityTypeMap }], // ES: caRemitente
     senderTaxId: [{ tag: 'NM1', element: 9, occurrence: 1 }], // ES: nuRucRemitente
     requestText: [{ tag: 'PRV', element: 3, occurrence: 1 }], // ES: txRequest
-    receiverEntityType: [{ tag: 'NM1', element: 2, occurrence: 2 }], // ES: caReceptor
-    patientEntityType: [{ tag: 'NM1', element: 2, occurrence: 3 }], // ES: caPaciente
+    receiverEntityType: [{ tag: 'NM1', element: 2, occurrence: 2, mapper: entityTypeMap }], // ES: caReceptor
+    patientEntityType: [{ tag: 'NM1', element: 2, occurrence: 3, mapper: entityTypeMap }], // ES: caPaciente
     patientLastName: [{ tag: 'NM1', element: 3, occurrence: 3 }], // ES: apPaternoPaciente
     patientFirstName: [{ tag: 'NM1', element: 4, occurrence: 3 }], // ES: noPaciente
     patientMemberId: [{ tag: 'NM1', element: 9, occurrence: 3 }], // ES: coAfPaciente
@@ -112,7 +113,7 @@ export class ConAse270Config implements X12ManagerConfig<ConAse270DTO> {
     originalAuthNumber: [{ tag: 'REF', element: 4, component: 2, occurrence: 9 }], // ES: nuAutOrigen
     accidentType: [{ tag: 'REF', element: 2, occurrence: 10 }], // ES: tiAccidente
     accidentDate: [{ tag: 'DTP', element: 3, occurrence: 1 }], // ES: feAccidente
-    contractorEntityType: [{ tag: 'NM1', element: 2, occurrence: 4 }], // ES: tiCaContratante
+    contractorEntityType: [{ tag: 'NM1', element: 2, occurrence: 4, mapper: entityTypeMap }], // ES: tiCaContratante
     contractorLastName: [{ tag: 'NM1', element: 3, occurrence: 4 }], // ES: noPaContratante
     contractorFirstName: [{ tag: 'NM1', element: 4, occurrence: 4 }], // ES: noContratante
     contractorSecondLastName: [{ tag: 'NM1', element: 12, occurrence: 4 }], // ES: noMaContratante
