@@ -81,8 +81,8 @@ export class DateHelper {
     const baseDate = month ? baseYear.set('month', month - 1) : baseYear;
     const granularity: dayjs.UnitType = month ? 'month' : 'year';
 
-    const startDate = baseDate.startOf(granularity).format(allConstants[formatKey]);
-    const endDate = baseDate.endOf(granularity).format(allConstants[formatKey]);
+    const startDate = baseDate.startOf(granularity).subtract(1, 'day').format(allConstants[formatKey]);
+    const endDate = baseDate.endOf(granularity).add(1, 'day').format(allConstants[formatKey]);
 
     return { startDate, endDate };
   }
