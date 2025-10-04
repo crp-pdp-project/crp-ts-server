@@ -12,7 +12,7 @@ import { SessionModel, SessionType } from 'src/app/entities/models/session/sessi
 import {
   IPatientResultsListInteractor,
   PatientResultsListInteractorBuilder,
-} from 'src/app/interactors/PatientResultsList/patientResultsList.interactor';
+} from 'src/app/interactors/patientResultsList/patientResultsList.interactor';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IPatientResultsListController {

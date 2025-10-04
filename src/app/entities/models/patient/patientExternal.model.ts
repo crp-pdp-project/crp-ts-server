@@ -38,7 +38,7 @@ export class PatientExternalModel extends BaseModel {
 
   #id?: number;
   #device?: DeviceModel;
-  #nhcId?: string | null;
+  #nhcId?: string;
   #searchResult: PatientExternalDTO;
 
   constructor(external: PatientExternalDTO, patient?: PatientDTO) {
@@ -69,7 +69,7 @@ export class PatientExternalModel extends BaseModel {
     return this.#device;
   }
 
-  get nhcId(): string | undefined | null {
+  get nhcId(): string | undefined {
     return this.#nhcId;
   }
 

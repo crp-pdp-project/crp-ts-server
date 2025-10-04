@@ -9,7 +9,7 @@ export async function up(db: Kysely<Database>): Promise<void> {
     .createTable(tableName)
     .addColumn('id', 'bigint', (col) => col.primaryKey().autoIncrement())
     .addColumn('fmpId', 'varchar(255)', (col) => col.notNull())
-    .addColumn('nhcId', 'varchar(255)')
+    .addColumn('nhcId', 'varchar(255)', (col) => col.notNull())
     .addColumn('firstName', 'varchar(255)', (col) => col.notNull())
     .addColumn('lastName', 'varchar(255)', (col) => col.notNull())
     .addColumn('secondLastName', 'varchar(255)', (col) => col.notNull())

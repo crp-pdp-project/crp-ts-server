@@ -96,6 +96,7 @@ export class SignInSessionModel extends SessionModel {
 
   validateFmpId(fmpId: PatientDM['fmpId'], rule: ValidationRules): void {
     const isValid = this.isValidFmpId(fmpId, rule);
+    console.log(fmpId, isValid, this.patient.fmpId);
     if (!isValid) {
       throw ErrorModel.badRequest({ detail: ClientErrorMessages.ID_NOT_VALID });
     }

@@ -38,6 +38,13 @@ export class TextHelper {
     return `C${cleaned}`;
   }
 
+  static stripLeadingZeros(text?: string): string | undefined {
+    if(!text) return text;
+    
+    const number = Number(text);
+    return Number.isNaN(number) ? text : String(number);
+  }
+
   static generateUniqueCode(length = 5): string {
     const charset = '0123456789';
     let otp = '';

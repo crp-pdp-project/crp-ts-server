@@ -58,6 +58,8 @@ import { PatientResultPDFV1Docs } from 'src/app/controllers/patientResultPDFV1/p
 import { PatientResultPDFV1Router } from 'src/app/controllers/patientResultPDFV1/patientResultPDF.router';
 import { PatientResultsListV1Docs } from 'src/app/controllers/patientResultsListV1/patientResultsList.docs';
 import { PatientResultsListV1Router } from 'src/app/controllers/patientResultsListV1/patientResultsList.router';
+import { PatientResultURLV1Docs } from 'src/app/controllers/patientResultURLV1/patientResultURL.docs';
+import { PatientResultURLV1Router } from 'src/app/controllers/patientResultURLV1/patientResultURL.router';
 import { PatientVerificationV1Docs } from 'src/app/controllers/patientVerificationV1/patientVerification.docs';
 import { PatientVerificationV1Router } from 'src/app/controllers/patientVerificationV1/patientVerification.routes';
 import { PayHealthInsuranceV1Docs } from 'src/app/controllers/payHealthInsuranceV1/payHealthInsurance.docs';
@@ -200,6 +202,7 @@ export class Server {
     new GuaranteeLetterListV1Docs(this.manager).registerDocs();
     new PatientResultsListV1Docs(this.manager).registerDocs();
     new PatientResultPDFV1Docs(this.manager).registerDocs();
+    new PatientResultURLV1Docs(this.manager).registerDocs();
   }
 
   private static registerRoutes(): void {
@@ -240,6 +243,7 @@ export class Server {
     new GuaranteeLetterListV1Router(this.app).registerRouter();
     new PatientResultsListV1Router(this.app).registerRouter();
     new PatientResultPDFV1Router(this.app).registerRouter();
+    new PatientResultURLV1Router(this.app).registerRouter();
   }
 
   private static setupDocsEndpoint(): void {

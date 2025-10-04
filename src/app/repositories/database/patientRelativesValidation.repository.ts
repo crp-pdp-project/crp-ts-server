@@ -16,6 +16,7 @@ export class PatientRelativesValidationRepository implements IPatientRelativesVa
       .innerJoin('Relationships', 'Families.relationshipId', 'Relationships.id')
       .select((eb) => [
         'Relatives.fmpId',
+        'Relatives.nhcId',
         'Relatives.documentNumber',
         'Relatives.documentType',
         'Families.isVerified',
