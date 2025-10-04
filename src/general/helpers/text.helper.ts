@@ -39,8 +39,8 @@ export class TextHelper {
   }
 
   static stripLeadingZeros(text?: string): string | undefined {
-    if(!text) return text;
-    
+    if (!text) return text;
+
     const number = Number(text);
     return Number.isNaN(number) ? text : String(number);
   }
