@@ -5,7 +5,6 @@ import { AppointmentConstants } from 'src/general/contants/appointment.constants
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';
-import { TextHelper } from 'src/general/helpers/text.helper';
 
 type CancelAppointmentInput = {
   usuario: string;
@@ -56,7 +55,7 @@ export class CancelAppointmentRepository implements ICancelAppointmentRepository
       peticionAnularCita: {
         IdPaciente: fmpId,
         IdCentro: CRPConstants.CENTER_ID,
-        IdCita: TextHelper.normalizeAppointmentId(appointmentId ?? ''),
+        IdCita: appointmentId,
         IdMotivo: AppointmentConstants.REASON_ID,
         FechaCita: DateHelper.toFormatDate(date, 'inetumDate'),
         CanalEntrada: CRPConstants.ORIGIN,

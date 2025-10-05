@@ -5,6 +5,7 @@ import { AppointmentConstants } from 'src/general/contants/appointment.constants
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';
+import { TextHelper } from 'src/general/helpers/text.helper';
 
 type GetHistoricAppointmentsInput = {
   usuario: string;
@@ -77,7 +78,7 @@ export class GetHistoricAppointmentsRepository implements IGetHistoricAppointmen
     result = Array.isArray(result) ? result : [result];
 
     const appointments: AppointmentDTO[] = result.map((appointment) => ({
-      id: String(appointment.IdConsulta),
+      id: TextHelper.normalizeAppointmentId(String(appointment.IdConsulta)),
       date: `${appointment.Fecha}${appointment.Hora}`,
       status: appointment.Estado,
       doctor: {
@@ -90,7 +91,7 @@ export class GetHistoricAppointmentsRepository implements IGetHistoricAppointmen
         name: appointment.Especialidad ?? '',
       },
       appointmentType: {
-        id: String(appointment.IdPrestacion),
+        id: TextHelper.normalizeAppointmentTypeId(String(appointment.IdPrestacion), String(appointment.IdEspecialidad)),
         name: appointment.Prestacion ?? '',
       },
       insurance: {

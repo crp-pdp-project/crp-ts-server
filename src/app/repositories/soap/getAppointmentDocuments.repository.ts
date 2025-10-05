@@ -5,7 +5,6 @@ import { AppointmentConstants } from 'src/general/contants/appointment.constants
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';
-import { TextHelper } from 'src/general/helpers/text.helper';
 
 type GetAppointmentDocumentsInput = {
   usuario: string;
@@ -91,7 +90,7 @@ export class GetAppointmentDocumentsRepository implements IGetAppointmentDocumen
         HoraHasta: endDate ? DateHelper.endOfTime('inetumTime') : undefined,
         NumRegistros: AppointmentConstants.DEFAULT_DOCUMENT_COUNT,
         CanalEntrada: CRPConstants.ORIGIN,
-        IdCita: TextHelper.normalizeAppointmentId(appointmentId ?? ''),
+        IdCita: appointmentId,
       },
     };
   }

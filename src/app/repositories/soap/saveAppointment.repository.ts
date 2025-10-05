@@ -67,7 +67,7 @@ export class SaveAppointmentRepository implements ISaveAppointmentRepository {
         CodBloque: payload.blockId,
         TipoPaciente: CRPConstants.DEFAULT_PATIENT_TYPE,
         IdSociedad: payload.insuranceId ?? '',
-        IdPrestacion: TextHelper.normalizeAppointmentTypeId(payload.appointmentTypeId, payload.specialtyId),
+        IdPrestacion: payload.appointmentTypeId,
         IdEspecialidad: payload.specialtyId,
         IdProfesional: payload.doctorId,
         Motivo: AppointmentConstants.CREATE_REASON,
@@ -80,10 +80,11 @@ export class SaveAppointmentRepository implements ISaveAppointmentRepository {
   }
 
   private parseOutput(rawResult: SaveAppointmentOutput): AppointmentTransactionResultDTO {
+    const { AltaCitaResult } = rawResult;
     const parsedBody = {
-      id: rawResult.AltaCitaResult.IdCita ?? undefined,
-      errorCode: Number(rawResult.AltaCitaResult.CodResultado),
-      errorDescription: rawResult.AltaCitaResult.DescripcionError ?? null,
+      id: AltaCitaResult?.IdCita ? TextHelper.normalizeAppointmentId(AltaCitaResult.IdCita) : undefined,
+      errorCode: Number(AltaCitaResult?.CodResultado ?? 0),
+      errorDescription: AltaCitaResult?.DescripcionError ?? null,
     };
 
     if (parsedBody.errorCode === -1) {

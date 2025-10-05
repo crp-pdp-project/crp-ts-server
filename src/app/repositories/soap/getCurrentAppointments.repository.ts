@@ -6,6 +6,7 @@ import { CRPConstants } from 'src/general/contants/crp.constants';
 import { AppointmentFilters } from 'src/general/enums/appointmentFilters.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';
+import { TextHelper } from 'src/general/helpers/text.helper';
 
 type GetCurrentAppointmentsInput = {
   usuario: string;
@@ -94,7 +95,7 @@ export class GetCurrentAppointmentsRepository implements IGetCurrentAppointments
     result = Array.isArray(result) ? result : [result];
 
     const appointments: AppointmentDTO[] = result.map((appointment) => ({
-      id: String(appointment.IdCita),
+      id: TextHelper.normalizeAppointmentId(String(appointment.IdCita)),
       episodeId: String(appointment.CodEpisodio),
       date: `${appointment.Fecha}${appointment.Hora}`,
       status: appointment.EstadoHis,
@@ -108,7 +109,7 @@ export class GetCurrentAppointmentsRepository implements IGetCurrentAppointments
         name: appointment.Especialidad ?? '',
       },
       appointmentType: {
-        id: String(appointment.IdPrestacion),
+        id: TextHelper.normalizeAppointmentTypeId(String(appointment.IdPrestacion), String(appointment.IdEspecialidad)),
         name: appointment.Prestacion ?? '',
       },
       insurance: {

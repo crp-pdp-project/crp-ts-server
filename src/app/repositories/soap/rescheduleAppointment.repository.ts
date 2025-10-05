@@ -56,10 +56,10 @@ export class RescheduleAppointmentRepository implements IRescheduleAppointmentRe
       contrasena: this.password,
       peticionModificarCita: {
         IdCentro: CRPConstants.CENTER_ID,
-        IdCitaAntigua: TextHelper.normalizeAppointmentId(payload.appointmentId ?? ''),
+        IdCitaAntigua: payload.appointmentId ?? '',
         CodAgenda: payload.scheduleId,
         CodBloque: payload.blockId,
-        IdPrestacion: TextHelper.normalizeAppointmentTypeId(payload.appointmentTypeId, payload.specialtyId),
+        IdPrestacion: payload.appointmentTypeId,
         IdEspecialidad: payload.specialtyId,
         IdProfesional: payload.doctorId,
         FechaNuevaCita: DateHelper.toFormatDate(payload.date, 'inetumDate'),
@@ -71,10 +71,11 @@ export class RescheduleAppointmentRepository implements IRescheduleAppointmentRe
   }
 
   private parseOutput(rawResult: RescheduleAppointmentOutput): AppointmentTransactionResultDTO {
+    const { ModificarCitaResult } = rawResult;
     return {
-      id: rawResult.ModificarCitaResult?.IdCita ?? undefined,
-      errorCode: Number(rawResult.ModificarCitaResult.CodResultado),
-      errorDescription: rawResult.ModificarCitaResult.DescripcionError ?? null,
+      id: ModificarCitaResult?.IdCita ? TextHelper.normalizeAppointmentId(ModificarCitaResult.IdCita) : undefined,
+      errorCode: Number(ModificarCitaResult?.CodResultado ?? 0),
+      errorDescription: ModificarCitaResult?.DescripcionError ?? null,
     };
   }
 }

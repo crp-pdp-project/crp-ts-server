@@ -65,7 +65,7 @@ export class GetAppointmentDetailRepository implements IGetAppointmentDetailRepo
 
   private parseInput(appointmentId: AppointmentDTO['id']): GetAppointmentDetailInput {
     return {
-      IdCita: TextHelper.normalizeAppointmentId(appointmentId ?? ''),
+      IdCita: appointmentId ?? '',
     };
   }
 
@@ -77,7 +77,7 @@ export class GetAppointmentDetailRepository implements IGetAppointmentDetailRepo
     }
 
     const result: AppointmentDTO = {
-      id: String(data.idCita),
+      id: TextHelper.normalizeAppointmentId(String(data.idCita)),
       episodeId: String(data.idExterno),
       date: `${data.horaCita} ${data.fechaCita}`,
       status: data.estadoCita,
