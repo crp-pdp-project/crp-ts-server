@@ -1,6 +1,7 @@
 import { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { CRPClient, CRPServicePaths } from 'src/clients/crp.client';
+import { RescheduleActionTextStates } from 'src/general/enums/appointmentState.enum';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 import { TextHelper } from 'src/general/helpers/text.helper';
 
@@ -38,11 +39,13 @@ type GetAppointmentDetailOutput = {
     estadoPago: string;
     anulacion: string;
     reprogramacion: string;
+    bloquearReprogramacion?: string;
     pago: string;
     tipo: string;
     codigoIAFA: string;
     codigoFAS: string;
   };
+  esCorrecto: boolean;
 };
 
 export interface IGetAppointmentDetailRepository {
@@ -69,11 +72,16 @@ export class GetAppointmentDetailRepository implements IGetAppointmentDetailRepo
   }
 
   private parseOutput(rawResult: GetAppointmentDetailOutput): AppointmentDTO {
-    const { data } = rawResult;
+    const { data, esCorrecto } = rawResult;
 
-    if (!data) {
+    if (!esCorrecto || !data) {
       throw ErrorModel.notFound({ message: 'Did not found the detail for the appointment' });
     }
+
+    const normalizedRescheduleAction =
+      data.bloquearReprogramacion === RescheduleActionTextStates.BLOCKED
+        ? data.bloquearReprogramacion
+        : data.reprogramacion;
 
     const result: AppointmentDTO = {
       id: String(data.idCita),
@@ -103,7 +111,7 @@ export class GetAppointmentDetailRepository implements IGetAppointmentDetailRepo
       },
       mode: data.modalidad,
       cancelAction: data.anulacion,
-      rescheduleAction: data.reprogramacion,
+      rescheduleAction: normalizedRescheduleAction,
       payAction: data.pago,
       payState: data.estadoPago,
     };
