@@ -11,7 +11,7 @@ type MapConfig = {
   isRequired?: boolean;
 };
 
-export class PushHelper {
+export class DynamicPushHelper {
   private static readonly dataTypeMap: Partial<Record<PushDataTypes, ZodType>> = {
     [PushDataTypes.STRING]: z.string(),
     [PushDataTypes.INTEGER]: z.number().int(),

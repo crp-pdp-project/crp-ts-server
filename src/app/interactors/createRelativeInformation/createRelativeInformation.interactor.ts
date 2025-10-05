@@ -56,6 +56,8 @@ export class CreateRelativeInformationInteractor implements ICreateRelativeInfor
       gender: body.gender,
       documentNumber: body.documentNumber,
       documentType: body.documentType,
+      email: body.email,
+      phone: body.phone,
     });
 
     return creationResult.fmpId;

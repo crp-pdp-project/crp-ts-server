@@ -6,9 +6,10 @@
 // import { RestHelper } from 'src/general/helpers/rest.helper';
 
 // export class FcmPushStrategy implements PushStrategy {
+//   EnvHelper.get('FCM_URL')
 //   private readonly url: string = EnvHelper.get('FCM_URL');
 //   private readonly key: string = EnvHelper.get('FCM_SERVER_KEY');
-//   private readonly rest: RestHelper = RestHelper.instance;
+//   private readonly rest: RestHelper = new RestHelper(this.url);
 //   private readonly logger: LoggerClient = LoggerClient.instance;
 
 // async sendPush(payload: PushPayload): Promise<void> {
