@@ -3,7 +3,7 @@ import { POSConfigDTO, POSConfigDTOSchema } from 'src/app/entities/dtos/service/
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 import { EnvHelper } from 'src/general/helpers/env.helper';
-import { RestHelper } from 'src/general/helpers/rest.helper';
+import { ResponseType, RestHelper } from 'src/general/helpers/rest.helper';
 
 import { CRPClient, CRPServicePaths } from './crp.client';
 
@@ -66,6 +66,7 @@ export class NiubizClient {
         headers: {
           Authorization: token,
         },
+        responseType: ResponseType.JSON,
       });
       response.pinHash = result.pinHash;
     }

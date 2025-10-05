@@ -68,24 +68,30 @@ export class RestHelper {
     let logResponse = false;
 
     switch (responseType) {
-      case ResponseType.TEXT:
+      case ResponseType.TEXT: {
         responseData = (await response.body.text()) as T;
         logResponse = true;
         break;
-      case ResponseType.JSON:
+      }
+      case ResponseType.JSON: {
+        const raw = await response.body.text();
         try {
-          responseData = (await response.body.json()) as T;
+          responseData = JSON.parse(raw) as T;
         } catch {
-          responseData = (await response.body.text()) as T;
+          responseData = raw as T;
         }
         logResponse = true;
         break;
-      case ResponseType.ARRAY_BUFFER:
-        responseData = Buffer.from(await response.body.arrayBuffer()) as T;
+      }
+      case ResponseType.ARRAY_BUFFER: {
+        const bufferArray = await response.body.arrayBuffer();
+        responseData = Buffer.from(bufferArray) as T;
         break;
-      case ResponseType.STREAM:
+      }
+      case ResponseType.STREAM: {
         responseData = response.body as T;
         break;
+      }
     }
 
     this.logger.debug('HTTP Response Received', {

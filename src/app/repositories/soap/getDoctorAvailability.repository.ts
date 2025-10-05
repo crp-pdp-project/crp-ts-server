@@ -61,6 +61,9 @@ export class GetDoctorAvailabilityRepository implements IGetDoctorAvailabilityRe
   }
 
   private generateInput(payload: AvailabilityRequestDTO): GetDoctorAvailabilityInput {
+    const initDate = DateHelper.subtractDays(1, 'inetumDate');
+    const baseEndDate = DateHelper.addMonths(6, 'inetumDate');
+
     return {
       usuario: this.user,
       contrasena: this.password,
@@ -70,9 +73,9 @@ export class GetDoctorAvailabilityRepository implements IGetDoctorAvailabilityRe
         IdProfesional: payload.doctorId,
         IdPrestacion: payload.appointmentTypeId,
         IdSociedad: payload.insuranceId,
-        FechaDesde: DateHelper.dateNow('inetumDate'),
+        FechaDesde: initDate,
         CodInspeccion: payload.inspectionId,
-        FechaFin: DateHelper.addMonths(6, 'inetumDate'),
+        FechaFin: DateHelper.addDays(1, 'inetumDate', baseEndDate),
         HoraDesde: DateHelper.startOfTime('inetumTime'),
         HoraFin: DateHelper.endOfTime('inetumTime'),
         IdPaciente: payload.fmpId,

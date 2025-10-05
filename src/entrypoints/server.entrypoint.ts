@@ -62,8 +62,10 @@ import { PatientResultURLV1Docs } from 'src/app/controllers/patientResultURLV1/p
 import { PatientResultURLV1Router } from 'src/app/controllers/patientResultURLV1/patientResultURL.router';
 import { PatientVerificationV1Docs } from 'src/app/controllers/patientVerificationV1/patientVerification.docs';
 import { PatientVerificationV1Router } from 'src/app/controllers/patientVerificationV1/patientVerification.routes';
+import { PayAppointmentV1Router } from 'src/app/controllers/payAppointmentV1/payAppointment.router';
+import { PayAppointmentV1Docs } from 'src/app/controllers/payAppointmentV1/payHealthInsurance.docs';
 import { PayHealthInsuranceV1Docs } from 'src/app/controllers/payHealthInsuranceV1/payHealthInsurance.docs';
-import { PayHealthInsuranceV1Router } from 'src/app/controllers/payHealthInsuranceV1/relativeVerification.router';
+import { PayHealthInsuranceV1Router } from 'src/app/controllers/payHealthInsuranceV1/payHealthInsurance.router';
 import { POSConfigV1Docs } from 'src/app/controllers/posConfigV1/posConfig.docs';
 import { POSConfigV1Router } from 'src/app/controllers/posConfigV1/posConfig.router';
 import { RelationshipsListV1Docs } from 'src/app/controllers/relationshipsListV1/relationshipsList.docs';
@@ -203,6 +205,7 @@ export class Server {
     new PatientResultsListV1Docs(this.manager).registerDocs();
     new PatientResultPDFV1Docs(this.manager).registerDocs();
     new PatientResultURLV1Docs(this.manager).registerDocs();
+    new PayAppointmentV1Docs(this.manager).registerDocs();
   }
 
   private static registerRoutes(): void {
@@ -244,6 +247,7 @@ export class Server {
     new PatientResultsListV1Router(this.app).registerRouter();
     new PatientResultPDFV1Router(this.app).registerRouter();
     new PatientResultURLV1Router(this.app).registerRouter();
+    new PayAppointmentV1Router(this.app).registerRouter();
   }
 
   private static setupDocsEndpoint(): void {
