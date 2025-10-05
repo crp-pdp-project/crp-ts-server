@@ -116,11 +116,11 @@ export const RescheduleAppointmentOutputDTOSchema = z
       }),
     cancelAction: z.enum(CancelActionStates).optional().openapi({
       description: 'State of the cancelation action',
-      example: CancelActionStates.PAYED_AFTER_DEADLINE,
+      example: CancelActionStates.ALLOWED,
     }),
     rescheduleAction: z.enum(RescheduleActionStates).optional().openapi({
       description: 'State of the reschedule action',
-      example: RescheduleActionStates.ALLOWED_BEFORE_DEADLINE,
+      example: RescheduleActionStates.ALLOWED,
     }),
     payAction: z.enum(PaymentActionStates).optional().openapi({
       description: 'State of the reschedule action',

@@ -27,19 +27,19 @@ export class AppointmentStatesMapper {
 }
 
 export enum PayStates {
-  PAYED = 1,
-  NOT_PAYED = 2,
+  NOT_PAYED = 1,
+  PAYED = 2,
 }
 
 export enum PayTextStates {
-  PAYED = 'Pagado',
   NOT_PAYED = 'Pendiente de pago',
+  PAYED = 'Pagado',
 }
 
 export class PayStatesMapper {
   private static readonly payStatesMap: Record<PayTextStates, PayStates> = {
-    [PayTextStates.PAYED]: PayStates.PAYED,
     [PayTextStates.NOT_PAYED]: PayStates.NOT_PAYED,
+    [PayTextStates.PAYED]: PayStates.PAYED,
   };
   static getPayState(state: string): PayStates {
     if (!(state in this.payStatesMap)) {
@@ -50,25 +50,25 @@ export class PayStatesMapper {
 }
 
 export enum CancelActionStates {
-  UNPAYED_BEFORE_DEADLINE = 1,
-  UNPAYED_AFTER_DEADLINE = 2,
-  PAYED_BEFORE_DEADLINE = 3,
-  PAYED_AFTER_DEADLINE = 4,
+  ALLOWED = 1,
+  ALLOWED_AFTER_DEADLINE = 2,
+  ALLOWED_PAYED_BEFORE_DEADLINE = 3,
+  BLOCKED = 4,
 }
 
 export enum CancelActionTextStates {
-  UNPAYED_BEFORE_DEADLINE = 'A01',
-  UNPAYED_AFTER_DEADLINE = 'A02',
-  PAYED_BEFORE_DEADLINE = 'A03',
-  PAYED_AFTER_DEADLINE = 'A04',
+  ALLOWED = 'A01',
+  ALLOWED_AFTER_DEADLINE = 'A02',
+  ALLOWED_PAYED_BEFORE_DEADLINE = 'A03',
+  BLOCKED = 'A04',
 }
 
 export class CancelActionStatesMapper {
   private static readonly cancelActionStatesMap: Record<CancelActionTextStates, CancelActionStates> = {
-    [CancelActionTextStates.UNPAYED_BEFORE_DEADLINE]: CancelActionStates.UNPAYED_BEFORE_DEADLINE,
-    [CancelActionTextStates.UNPAYED_AFTER_DEADLINE]: CancelActionStates.UNPAYED_AFTER_DEADLINE,
-    [CancelActionTextStates.PAYED_BEFORE_DEADLINE]: CancelActionStates.PAYED_BEFORE_DEADLINE,
-    [CancelActionTextStates.PAYED_AFTER_DEADLINE]: CancelActionStates.PAYED_AFTER_DEADLINE,
+    [CancelActionTextStates.ALLOWED]: CancelActionStates.ALLOWED,
+    [CancelActionTextStates.ALLOWED_AFTER_DEADLINE]: CancelActionStates.ALLOWED_AFTER_DEADLINE,
+    [CancelActionTextStates.ALLOWED_PAYED_BEFORE_DEADLINE]: CancelActionStates.ALLOWED_PAYED_BEFORE_DEADLINE,
+    [CancelActionTextStates.BLOCKED]: CancelActionStates.BLOCKED,
   };
   static getCancelState(state: string): CancelActionStates {
     if (!(state in this.cancelActionStatesMap)) {
@@ -79,22 +79,25 @@ export class CancelActionStatesMapper {
 }
 
 export enum RescheduleActionStates {
-  ALLOWED_BEFORE_DEADLINE = 1,
+  ALLOWED = 1,
   BLOCKED_AFTER_DEADLINE = 2,
   BLOCKED_ALREADY_RESCHEDULE = 3,
+  BLOCKED = 4,
 }
 
 export enum RescheduleActionTextStates {
-  ALLOWED_BEFORE_DEADLINE = 'R01',
+  ALLOWED = 'R01',
   BLOCKED_AFTER_DEADLINE = 'R02',
   BLOCKED_ALREADY_RESCHEDULE = 'R03',
+  BLOCKED = 'R04',
 }
 
 export class RescheduleActionStatesMapper {
   private static readonly rescheduleActionStatesMap: Record<RescheduleActionTextStates, RescheduleActionStates> = {
-    [RescheduleActionTextStates.ALLOWED_BEFORE_DEADLINE]: RescheduleActionStates.ALLOWED_BEFORE_DEADLINE,
-    [RescheduleActionTextStates.BLOCKED_AFTER_DEADLINE]: RescheduleActionStates.BLOCKED_AFTER_DEADLINE,
+    [RescheduleActionTextStates.ALLOWED]: RescheduleActionStates.ALLOWED,
     [RescheduleActionTextStates.BLOCKED_ALREADY_RESCHEDULE]: RescheduleActionStates.BLOCKED_ALREADY_RESCHEDULE,
+    [RescheduleActionTextStates.BLOCKED_AFTER_DEADLINE]: RescheduleActionStates.BLOCKED_AFTER_DEADLINE,
+    [RescheduleActionTextStates.BLOCKED]: RescheduleActionStates.BLOCKED,
   };
   static getRescheduleActionState(state: string): RescheduleActionStates {
     if (!(state in this.rescheduleActionStatesMap)) {
