@@ -34,8 +34,13 @@ export class TextHelper {
   }
 
   static normalizeAppointmentId(appointmentId: string): string {
-    const cleaned = appointmentId.replace(/^C/, '');
-    return `C${cleaned}`;
+    const cleaned = appointmentId.toUpperCase().startsWith('C') ? appointmentId : `C${appointmentId}`;
+    return cleaned;
+  }
+
+  static normalizeAppointmentTypeId(appointmentTypeId: string, specialtyId: string): string {
+    const cleaned = appointmentTypeId.includes('-') ? appointmentTypeId : `${specialtyId}-${appointmentTypeId}`;
+    return cleaned;
   }
 
   static stripLeadingZeros(text?: string): string | undefined {

@@ -59,7 +59,7 @@ export class RescheduleAppointmentRepository implements IRescheduleAppointmentRe
         IdCitaAntigua: TextHelper.normalizeAppointmentId(payload.appointmentId ?? ''),
         CodAgenda: payload.scheduleId,
         CodBloque: payload.blockId,
-        IdPrestacion: payload.appointmentTypeId,
+        IdPrestacion: TextHelper.normalizeAppointmentTypeId(payload.appointmentTypeId, payload.specialtyId),
         IdEspecialidad: payload.specialtyId,
         IdProfesional: payload.doctorId,
         FechaNuevaCita: DateHelper.toFormatDate(payload.date, 'inetumDate'),

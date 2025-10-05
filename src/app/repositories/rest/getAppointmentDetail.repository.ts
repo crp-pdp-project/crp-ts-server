@@ -91,7 +91,7 @@ export class GetAppointmentDetailRepository implements IGetAppointmentDetailRepo
         name: data.especialidad ?? '',
       },
       appointmentType: {
-        id: String(data.idPrestacion),
+        id: TextHelper.normalizeAppointmentTypeId(String(data.idPrestacion), String(data.idEspecialidad)),
         name: data.prestacion ?? '',
       },
       insurance: {

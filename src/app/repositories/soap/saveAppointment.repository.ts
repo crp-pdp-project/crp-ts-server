@@ -7,6 +7,7 @@ import { CRPConstants } from 'src/general/contants/crp.constants';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';
+import { TextHelper } from 'src/general/helpers/text.helper';
 
 type SaveAppointmentInput = {
   usuario: string;
@@ -66,7 +67,7 @@ export class SaveAppointmentRepository implements ISaveAppointmentRepository {
         CodBloque: payload.blockId,
         TipoPaciente: CRPConstants.DEFAULT_PATIENT_TYPE,
         IdSociedad: payload.insuranceId ?? '',
-        IdPrestacion: payload.appointmentTypeId,
+        IdPrestacion: TextHelper.normalizeAppointmentTypeId(payload.appointmentTypeId, payload.specialtyId),
         IdEspecialidad: payload.specialtyId,
         IdProfesional: payload.doctorId,
         Motivo: AppointmentConstants.CREATE_REASON,
