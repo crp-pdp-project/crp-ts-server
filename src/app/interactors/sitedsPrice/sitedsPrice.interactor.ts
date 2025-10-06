@@ -49,7 +49,7 @@ export class SitedsPriceInteractor implements ISitedsPriceInteractor {
 
   private async getSitedsPatientInfo(body: SitedsPriceBodyDTO, patient: PatientModel): Promise<SitedsModel> {
     const decodedPatient = await this.getSitedsPatient.execute(patient, body.iafaId, body.correlative);
-    const model = new SitedsModel(decodedPatient, patient.documentNumber!, patient.documentType!);
+    const model = SitedsModel.fromDTO(decodedPatient, patient.documentNumber!, patient.documentType!);
 
     return model;
   }

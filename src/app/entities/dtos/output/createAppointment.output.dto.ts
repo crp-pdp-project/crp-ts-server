@@ -146,6 +146,21 @@ export const CreateAppointmentOutputDTOSchema = z
       .openapi({
         description: 'Array of tips',
       }),
+    siteds: z
+      .object({
+        base64: z.string().openapi({
+          description: 'Encoded siteds response',
+          example: 'anyBase64',
+        }),
+        amount: z.number().openapi({
+          description: 'Amount to pay',
+          example: 0,
+        }),
+      })
+      .optional()
+      .openapi({
+        description: 'Siteds result',
+      }),
   })
   .strict()
   .openapi({

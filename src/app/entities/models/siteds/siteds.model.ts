@@ -5,11 +5,13 @@ import { DocumentTypeMapper, SitedsDocumentType } from 'src/general/enums/patien
 import { DateHelper } from 'src/general/helpers/date.helper';
 
 import { PatientDM } from '../../dms/patients.dm';
+import { AxionalPayloadDTO, AxionalPayloadDTOSchema } from '../../dtos/service/axionalPayload.dto';
 import { ConAse270DTO } from '../../dtos/service/conAse270.dto';
 import { ConNom271DTO } from '../../dtos/service/conNom271.dto';
 import { ConNom271DetailDTO } from '../../dtos/service/conNom271Detail.dto';
 import { BaseModel } from '../base.model';
 import { ErrorModel } from '../error/error.model';
+import { SignInSessionModel } from '../session/signInSession.model';
 
 import { SitedsDetailModel } from './sitedsDetail.model';
 
@@ -26,8 +28,9 @@ export class SitedsModel extends BaseModel {
   readonly time?: string;
 
   #details: SitedsDetailModel[];
+  #base64?: string;
 
-  constructor(
+  private constructor(
     sitedsResult: ConNom271DTO,
     documentNumber: PatientDM['documentNumber'],
     documentType: PatientDM['documentType'],
@@ -51,26 +54,30 @@ export class SitedsModel extends BaseModel {
     return this.#details;
   }
 
-  private isValidDetail(detail: ConNom271DetailDTO, iafaId: ConNom271DTO['iafaId']): boolean {
-    const config = SitedsConstants.VALID_PRODUCTS[iafaId as keyof typeof SitedsConstants.VALID_PRODUCTS];
-
-    return (
-      detail.patientStatusCode === SitedsConstants.VALID_PLAN &&
-      config?.has(detail.productCode ?? '') &&
-      detail.patientDocumentNumber === this.#documentNumber &&
-      detail.patientDocumentType === this.#documentType
-    );
+  get base64(): string | undefined {
+    return this.#base64;
   }
 
-  private resolveValidDetails(details: ConNom271DetailDTO[], iafaId: ConNom271DTO['iafaId']): SitedsDetailModel[] {
-    const filteredModels = details.flatMap((detail) => {
-      if (this.isValidDetail(detail, iafaId)) {
-        return new SitedsDetailModel(detail);
-      }
-      return [];
-    });
+  get amount(): number | undefined {
+    return this.#details?.[0]?.coverages?.[0].copayFixed;
+  }
 
-    return filteredModels;
+  static fromDTO(
+    sitedsResult: ConNom271DTO,
+    documentNumber: PatientDM['documentNumber'],
+    documentType: PatientDM['documentType'],
+  ): SitedsModel {
+    return new SitedsModel(sitedsResult, documentNumber, documentType);
+  }
+
+  static fromBase64(
+    encodedSites: string,
+    documentNumber: PatientDM['documentNumber'],
+    documentType: PatientDM['documentType'],
+  ): SitedsModel {
+    const decoded = Buffer.from(encodedSites, 'base64').toString('utf8');
+    const dto = JSON.parse(decoded) as ConNom271DTO;
+    return new SitedsModel(dto, documentNumber, documentType);
   }
 
   hasValidDetails(): boolean {
@@ -97,6 +104,13 @@ export class SitedsModel extends BaseModel {
     }
   }
 
+  generateBase64(): this {
+    const objectString = JSON.stringify(this.toPlainObject());
+    this.#base64 = Buffer.from(objectString).toString('base64');
+
+    return this;
+  }
+
   sanitizeDetails(): this {
     const detailsWithCoverages = this.#details.filter((detail) => detail.coverages?.length);
     if (detailsWithCoverages.length > 0) {
@@ -120,5 +134,69 @@ export class SitedsModel extends BaseModel {
       groupControlNumber: this.#rawData.groupControlNumber,
       transactionSetControlNumber: this.#rawData.transactionSetControlNumber,
     };
+  }
+
+  getAxionalPayload(session: SignInSessionModel): AxionalPayloadDTO {
+    const { patient: client } = session;
+    const detail = this.details?.[0];
+    const coverage = detail?.coverages?.[0];
+
+    const payload = {
+      ipressId: this.ipressId,
+      iafaId: this.iafaId,
+      date: this.date,
+      time: this.time,
+      patientEntityType: detail?.patientEntityType,
+      patientLastName: detail?.patientLastName,
+      patientFirstName: detail?.patientFirstName,
+      patientMemberId: detail?.patientMemberId,
+      patientSecondLastName: detail?.patientSecondLastName,
+      patientDocumentType: detail?.patientDocumentType,
+      patientDocumentNumber: detail?.patientDocumentNumber,
+      clientLastName: client.lastName,
+      clientFirstName: client.firstName,
+      clientDocumentType: client.documentType,
+      clientDocumentNumber: client.documentNumber,
+      productCode: detail?.productCode,
+      productDescription: detail?.productDescription,
+      contractorEntityType: detail?.contractorEntityType,
+      contractorFirstName: detail?.contractorFirstName,
+      contractorDocumentType: detail?.contractorDocumentType,
+      contractorIdQualifier: detail?.contractorIdQualifier,
+      contractorId: detail?.contractorId,
+      coverageTypeCode: coverage?.coverageTypeCode,
+      coverageSubtypeCode: coverage?.coverageSubtypeCode,
+      currencyCode: coverage?.currencyCode,
+      copayFixed: coverage?.copayFixed,
+      serviceCalcCode: coverage?.serviceCalcCode,
+      serviceCalcQuantity: coverage?.serviceCalcQuantity,
+      copayVariable: coverage?.copayVariable,
+      taxAmount: coverage?.taxAmount,
+      preTaxAmount: coverage?.preTaxAmount,
+    };
+
+    return AxionalPayloadDTOSchema.parse(payload);
+  }
+
+  private isValidDetail(detail: ConNom271DetailDTO, iafaId: ConNom271DTO['iafaId']): boolean {
+    const config = SitedsConstants.VALID_PRODUCTS[iafaId as keyof typeof SitedsConstants.VALID_PRODUCTS];
+
+    return (
+      detail.patientStatusCode === SitedsConstants.VALID_PLAN &&
+      config?.has(detail.productCode ?? '') &&
+      detail.patientDocumentNumber === this.#documentNumber &&
+      detail.patientDocumentType === this.#documentType
+    );
+  }
+
+  private resolveValidDetails(details: ConNom271DetailDTO[], iafaId: ConNom271DTO['iafaId']): SitedsDetailModel[] {
+    const filteredModels = details.flatMap((detail) => {
+      if (this.isValidDetail(detail, iafaId)) {
+        return new SitedsDetailModel(detail);
+      }
+      return [];
+    });
+
+    return filteredModels;
   }
 }

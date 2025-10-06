@@ -75,9 +75,9 @@ export class PatientAppointmentDetailInteractor implements IPatientAppointmentDe
   private async addSiteds(patient: PatientModel, appointment: AppointmentModel): Promise<void> {
     if (appointment.shouldFetchSiteds()) {
       const decodedPatient = await this.getSitedsPatient.execute(patient, appointment.insurance!.iafaId!);
-      const sitedsModel = new SitedsModel(decodedPatient, patient.documentNumber!, patient.documentType!);
+      const sitedsModel = SitedsModel.fromDTO(decodedPatient, patient.documentNumber!, patient.documentType!);
       await this.obtainSitedsCoverages(sitedsModel, patient);
-      appointment.inyectSiteds(sitedsModel.sanitizeDetails()).refreshStates();
+      appointment.inyectSiteds(sitedsModel.sanitizeDetails().generateBase64()).refreshStates();
     }
   }
 

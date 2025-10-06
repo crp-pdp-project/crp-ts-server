@@ -1,11 +1,11 @@
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { PayAppointmentBodyDTO, PayAppointmentParamsDTO } from 'src/app/entities/dtos/input/payAppointment.input.dto';
 import { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
-import { AxionalPayloadDTO } from 'src/app/entities/dtos/service/axionalPayload.dto';
 import { POSAuthorizationDTO } from 'src/app/entities/dtos/service/posAuthorization.dto';
-import { ErrorModel } from 'src/app/entities/models/error/error.model';
+import { PatientModel } from 'src/app/entities/models/patient/patient.model';
 import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
 import { SignInSessionModel, ValidationRules } from 'src/app/entities/models/session/signInSession.model';
+import { SitedsModel } from 'src/app/entities/models/siteds/siteds.model';
 import {
   IPatientRelativesValidationRepository,
   PatientRelativesValidationRepository,
@@ -34,12 +34,13 @@ export class PayAppointmentInteractor implements IPayAppointmentInteractor {
 
   async pay(body: PayAppointmentBodyDTO, params: PayAppointmentParamsDTO, session: SignInSessionModel): Promise<void> {
     await this.validateRelatives(params.fmpId, session);
-    this.checkPatientConsistency(params.fmpId, body, session);
+    const patient = session.getPatient(params.fmpId);
+    const sitedsModel = this.parseModel(body.siteds, patient);
     const externalPatientModel = await this.searchPatient(session);
     const appointment = await this.searchAppointment(params.appointmentId);
     await this.payAppointment.execute(
-      this.createAuthorizationPayload(body, externalPatientModel),
-      this.createAxionalPayload(body, session),
+      this.createAuthorizationPayload(sitedsModel, body, externalPatientModel),
+      sitedsModel.getAxionalPayload(session),
       appointment,
     );
   }
@@ -47,6 +48,13 @@ export class PayAppointmentInteractor implements IPayAppointmentInteractor {
   private async validateRelatives(fmpId: PatientDM['fmpId'], session: SignInSessionModel): Promise<void> {
     const relatives = await this.patientRelativesValidation.execute(session.patient.id);
     session.inyectRelatives(relatives).validateFmpId(fmpId, ValidationRules.SELF_OR_RELATIVES);
+  }
+
+  private parseModel(base64: string, patient: PatientModel): SitedsModel {
+    const sitedsModel = SitedsModel.fromBase64(base64, patient.documentNumber!, patient.documentType!);
+    sitedsModel.validateInsurance();
+
+    return sitedsModel;
   }
 
   private async searchPatient(session: SignInSessionModel): Promise<PatientExternalModel> {
@@ -63,68 +71,17 @@ export class PayAppointmentInteractor implements IPayAppointmentInteractor {
     return appointmentResult;
   }
 
-  private checkPatientConsistency(
-    fmpId: PatientDM['fmpId'],
+  private createAuthorizationPayload(
+    sitedsModel: SitedsModel,
     body: PayAppointmentBodyDTO,
-    session: SignInSessionModel,
-  ): void {
-    const { siteds } = body;
-    const detail = siteds.details[0];
-    const patient = session.getPatient(fmpId);
-
-    if (patient.documentNumber !== detail.patientDocumentNumber) {
-      throw ErrorModel.badRequest({ message: 'Patient info does not match siteds payload' });
-    }
-  }
-
-  private createAxionalPayload(body: PayAppointmentBodyDTO, session: SignInSessionModel): AxionalPayloadDTO {
-    const { patient: client } = session;
-    const { siteds } = body;
-    const detail = siteds.details[0];
-    const coverage = detail.coverages[0];
-
-    return {
-      ipressId: siteds.ipressId,
-      iafaId: siteds.iafaId,
-      date: siteds.date,
-      time: siteds.time,
-      patientEntityType: detail.patientEntityType,
-      patientLastName: detail.patientLastName,
-      patientFirstName: detail.patientFirstName,
-      patientMemberId: detail.patientMemberId,
-      patientSecondLastName: detail.patientSecondLastName,
-      patientDocumentType: detail.patientDocumentType,
-      patientDocumentNumber: detail.patientDocumentNumber,
-      clientLastName: client.lastName,
-      clientFirstName: client.firstName,
-      clientDocumentType: client.documentType,
-      clientDocumentNumber: client.documentNumber,
-      productCode: detail.productCode,
-      productDescription: detail.productDescription,
-      contractorEntityType: detail.contractorEntityType,
-      contractorFirstName: detail.contractorFirstName,
-      contractorDocumentType: detail.contractorDocumentType,
-      contractorIdQualifier: detail.contractorIdQualifier,
-      contractorId: detail.contractorId,
-      coverageTypeCode: coverage.coverageTypeCode,
-      coverageSubtypeCode: coverage.coverageSubtypeCode,
-      currencyCode: coverage.currencyCode,
-      copayFixed: coverage.copayFixed,
-      serviceCalcCode: coverage.serviceCalcCode,
-      serviceCalcQuantity: coverage.serviceCalcQuantity,
-      copayVariable: coverage.copayVariable,
-      taxAmount: coverage.taxAmount,
-      preTaxAmount: coverage.preTaxAmount,
-    };
-  }
-
-  private createAuthorizationPayload(body: PayAppointmentBodyDTO, patient: PatientExternalModel): POSAuthorizationDTO {
-    const coverage = body.siteds.details[0].coverages[0];
+    patient: PatientExternalModel,
+  ): POSAuthorizationDTO {
+    const coverage = sitedsModel.details?.[0]?.coverages?.[0];
     return {
       purchaseNumber: body.authorization.correlative,
       tokenId: body.authorization.tokenId,
       commerceCode: body.authorization.commerceCode,
-      amount: coverage.copayFixed,
+      amount: coverage!.copayFixed!,
       email: patient.email,
     };
   }

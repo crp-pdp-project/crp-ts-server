@@ -21,6 +21,7 @@ export class SitedsDetailModel extends BaseModel {
   readonly patientSecondLastName?: string;
   readonly patientDocumentType?: string;
   readonly patientDocumentNumber?: string;
+  readonly patientStatusCode?: string;
   readonly productCode?: string;
   readonly productDescription?: string;
   readonly contractorEntityType?: string;
@@ -43,6 +44,7 @@ export class SitedsDetailModel extends BaseModel {
     this.patientSecondLastName = sitedsDetail.patientSecondLastName;
     this.patientDocumentType = sitedsDetail.patientDocumentType;
     this.patientDocumentNumber = sitedsDetail.patientDocumentNumber;
+    this.patientStatusCode = sitedsDetail.patientStatusCode;
     this.productCode = sitedsDetail.productCode;
     this.productDescription = sitedsDetail.productDescription;
     this.contractorEntityType = sitedsDetail.contractorEntityType;
@@ -50,6 +52,7 @@ export class SitedsDetailModel extends BaseModel {
     this.contractorIdQualifier = sitedsDetail.contractorIdQualifier;
     this.contractorId = sitedsDetail.contractorId;
     this.contractorDocumentType = sitedsDetail.contractorDocumentType;
+    this.#coverages = sitedsDetail.coverages ? this.resolveValidCoverages(sitedsDetail.coverages) : undefined;
   }
 
   get coverages(): SitedsCoverageModel[] | undefined {
