@@ -1,8 +1,8 @@
 import { ConAse270DTO } from 'src/app/entities/dtos/service/conAse270.dto';
 import { ConNom271DTO } from 'src/app/entities/dtos/service/conNom271.dto';
 import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
-import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { SitedsClient, SitedsServices } from 'src/clients/siteds.client';
+import { LoggerClient } from 'src/clients/logger/logger.client';
+import { SitedsClient, SitedsServices } from 'src/clients/siteds/siteds.client';
 import { SitedsConstants } from 'src/general/contants/siteds.constants';
 import { DocumentTypeMapper, SitedsDocumentType } from 'src/general/enums/patientInfo.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
@@ -24,13 +24,13 @@ type GetSitedsPatientOutput = {
 };
 
 export interface IGetSitedsPatientRepository {
-  execute(patient: PatientDTO, iafaId: string, correlative: string): Promise<ConNom271DTO>;
+  execute(patient: PatientDTO, iafaId: string, correlative?: string): Promise<ConNom271DTO>;
 }
 
 export class GetSitedsPatientRepository implements IGetSitedsPatientRepository {
   private readonly x12Manager = X12ManagerBuild.buildConNom();
 
-  async execute(patient: PatientDTO, iafaId: string, correlative: string): Promise<ConNom271DTO> {
+  async execute(patient: PatientDTO, iafaId: string, correlative?: string): Promise<ConNom271DTO> {
     const methodPayload = this.parseInput(patient, iafaId, correlative);
     const instance = await SitedsClient.getInstance();
     const rawResult = await instance.client.call<GetSitedsPatientOutput>(
@@ -40,14 +40,14 @@ export class GetSitedsPatientRepository implements IGetSitedsPatientRepository {
     return this.parseOutput(rawResult);
   }
 
-  private parseInput(patient: PatientDTO, iafaId: string, correlative: string): GetSitedsPatientInput {
+  private parseInput(patient: PatientDTO, iafaId: string, correlative?: string): GetSitedsPatientInput {
     const normalizedDocumentType = patient.documentType
       ? DocumentTypeMapper.getSitedsDocumentType(patient.documentType)
       : SitedsDocumentType.DNI;
 
     const payload: ConAse270DTO = {
       iafaId,
-      correlative,
+      correlative: correlative ?? TextHelper.generateUniqueCode(9),
       ipressId: SitedsConstants.IPRESS_ID,
       date: DateHelper.dateNow('crpDate'),
       time: DateHelper.dateNow('crpTime'),
@@ -84,7 +84,8 @@ export class GetSitedsPatientRepository implements IGetSitedsPatientRepository {
 
     if (!SitedsConstants.SUCCESS_CODES.has(coError)) {
       const errorMessage = SitedsConstants.ERROR_MESSAGES[coError as keyof typeof SitedsConstants.ERROR_MESSAGES];
-      throw ErrorModel.notFound({ message: errorMessage ?? 'Unkown error consuming siteds' });
+      LoggerClient.instance.error(errorMessage ?? 'Unkown error consuming siteds');
+      return {};
     }
 
     const result = this.x12Manager.decode(txRespuesta);

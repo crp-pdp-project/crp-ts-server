@@ -1,6 +1,6 @@
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { CRPClient, CRPServicePaths } from 'src/clients/crp.client';
+import { CRPClient, CRPServicePaths } from 'src/clients/crp/crp.client';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 import { TextHelper } from 'src/general/helpers/text.helper';
 

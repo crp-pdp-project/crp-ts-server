@@ -1,6 +1,6 @@
 import nodemailer, { Transporter } from 'nodemailer';
 
-import { LoggerClient } from 'src/clients/logger.client';
+import { LoggerClient } from 'src/clients/logger/logger.client';
 import { EmailConstants } from 'src/general/contants/email.constants';
 import { EmailSubjects } from 'src/general/enums/emailSubject.enum';
 import { EnvHelper } from 'src/general/helpers/env.helper';

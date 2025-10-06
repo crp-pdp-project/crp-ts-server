@@ -73,7 +73,7 @@ export class PDPClient {
   }
 
   private isTokenValid(): boolean {
-    return !!this.token && !DateHelper.checkExpired(this.tokenExpiresAt);
+    return !!this.token && !DateHelper.isBeforeNow(this.tokenExpiresAt);
   }
 
   private parseTokenInput(): AuthTokenInput {

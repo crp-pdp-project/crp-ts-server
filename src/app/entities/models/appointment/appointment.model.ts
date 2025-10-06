@@ -11,6 +11,7 @@ import {
   PaymentActionStatesMapper,
   PayStatesMapper,
 } from 'src/general/enums/appointmentState.enum';
+import { InsuranceTypes } from 'src/general/enums/insuranceType.enum';
 import { TipsType, TipsTypeUtils } from 'src/general/enums/tipsTypes.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 
@@ -20,6 +21,7 @@ import { AppointmentTypeModel } from '../appointmentType/appointmentType.model';
 import { BaseModel } from '../base.model';
 import { DoctorModel } from '../doctor/doctor.model';
 import { InsuranceModel } from '../insurance/insurance.model';
+import { SitedsModel } from '../siteds/siteds.model';
 import { SpecialtyModel } from '../specialty/specialty.model';
 import { TipModel } from '../tip/tip.model';
 
@@ -35,11 +37,12 @@ export class AppointmentModel extends BaseModel {
   readonly appointmentType?: AppointmentTypeModel;
   readonly cancelAction?: CancelActionStates;
   readonly rescheduleAction?: RescheduleActionStates;
-  readonly payAction?: PaymentActionStates;
   readonly payState?: PayStates;
 
   #tips?: TipModel[];
   #documents?: AppointmentDocumentModel[];
+  #siteds?: SitedsModel;
+  #payAction?: PaymentActionStates;
 
   constructor(appointment: AppointmentDTO) {
     super();
@@ -61,9 +64,7 @@ export class AppointmentModel extends BaseModel {
     this.rescheduleAction = appointment.rescheduleAction
       ? RescheduleActionStatesMapper.getRescheduleActionState(appointment.rescheduleAction)
       : undefined;
-    this.payAction = appointment.payAction
-      ? PaymentActionStatesMapper.getPaymentActionState(appointment.payAction)
-      : undefined;
+    this.#payAction = appointment.payAction ? this.resolvePaymentActions(appointment.payAction) : undefined;
     this.payState = appointment.payState ? PayStatesMapper.getPayState(appointment.payState) : undefined;
     this.#tips = this.resolveDefaultTips();
   }
@@ -74,6 +75,14 @@ export class AppointmentModel extends BaseModel {
 
   get documents(): AppointmentDocumentModel[] | undefined {
     return this.#documents;
+  }
+
+  get siteds(): SitedsModel | undefined {
+    return this.#siteds;
+  }
+
+  get payAction(): PaymentActionStates | undefined {
+    return this.#payAction;
   }
 
   overrideTips(type: TipsType): this {
@@ -89,10 +98,44 @@ export class AppointmentModel extends BaseModel {
     return this;
   }
 
+  inyectSiteds(sitedsModel: SitedsModel): this {
+    this.#siteds = sitedsModel;
+
+    return this;
+  }
+
+  shouldFetchDocuments(): boolean {
+    return DateHelper.isBeforeNow(this.date ?? '');
+  }
+
+  shouldFetchSiteds(): boolean {
+    return this.payAction === PaymentActionStates.ALLOWED;
+  }
+
+  refreshStates(): void {
+    if (this.#siteds?.isValidInsurance() || this.payState === PayStates.PAYED) return;
+    this.#siteds = undefined;
+    this.overrideTips(TipsType.PAY_BLOCKED);
+    this.#payAction = PaymentActionStates.BLOCKED;
+  }
+
+  private resolvePaymentActions(payAction: string): PaymentActionStates {
+    const defaultState =
+      this.payState === PayStates.PAYED ? PaymentActionStates.ALREADY_PAYED : PaymentActionStates.BLOCKED;
+
+    if (this.insurance?.type !== InsuranceTypes.SITEDS) {
+      return defaultState;
+    }
+
+    return PaymentActionStatesMapper.getPaymentActionState(payAction);
+  }
+
   private resolveDefaultTips(): TipModel[] | undefined {
     const defaultTipsMap: Record<PaymentActionStates, TipsType> = {
       [PaymentActionStates.ALLOWED]: TipsType.DEFAULT,
-      [PaymentActionStates.BLOCKED]: TipsType.PAY_DEADLINE,
+      [PaymentActionStates.DISABLED]: TipsType.PAY_DEADLINE,
+      [PaymentActionStates.ALREADY_PAYED]: TipsType.DEFAULT,
+      [PaymentActionStates.BLOCKED]: TipsType.PAY_BLOCKED,
     };
 
     const tips = this.payAction ? TipsTypeUtils.getTipsByType(defaultTipsMap[this.payAction]) : undefined;

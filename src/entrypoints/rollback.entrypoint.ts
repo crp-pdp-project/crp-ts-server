@@ -2,8 +2,8 @@ import 'dotenv/config';
 
 import { Migrator, Kysely } from 'kysely';
 
-import { LoggerClient } from 'src/clients/logger.client';
-import { Database, MysqlClient } from 'src/clients/mysql.client';
+import { LoggerClient } from 'src/clients/logger/logger.client';
+import { Database, MysqlClient } from 'src/clients/mysql/mysql.client';
 import { MigrationLoader } from 'src/migrations/migrations.loader';
 
 export class Rollback {

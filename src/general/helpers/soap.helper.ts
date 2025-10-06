@@ -1,7 +1,7 @@
 import { Client, createClientAsync, WSSecurity } from 'soap';
 
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { LoggerClient } from 'src/clients/logger.client';
+import { LoggerClient } from 'src/clients/logger/logger.client';
 
 import { CRPConstants } from '../contants/crp.constants';
 

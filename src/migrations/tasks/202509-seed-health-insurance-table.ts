@@ -1,6 +1,6 @@
 import { Insertable, Kysely } from 'kysely';
 
-import { Database } from 'src/clients/mysql.client';
+import { Database } from 'src/clients/mysql/mysql.client';
 
 const HEALTH_INSURANCE_SEED = {
   id: 1,

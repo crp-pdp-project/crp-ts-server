@@ -5,7 +5,7 @@ import { HttpMethod } from 'src/general/enums/methods.enum';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 import { ResponseType, RestHelper } from 'src/general/helpers/rest.helper';
 
-import { CRPClient, CRPServicePaths } from './crp.client';
+import { CRPClient, CRPServicePaths } from '../crp/crp.client';
 
 type GetPOSConfigInput = {
   tipoCanal: string;

@@ -17,7 +17,7 @@ export const ConNom271DTOSchema = z.object({
   receiverTaxId: z.string().optional(),
   groupControlNumber: z.string().optional(),
   transactionSetControlNumber: z.string().optional(),
-  details: z.array(ConNom271DetailDTOSchema).default([]),
+  details: z.array(ConNom271DetailDTOSchema).optional(),
 });
 
 export type ConNom271DTO = z.infer<typeof ConNom271DTOSchema>;

@@ -1,8 +1,8 @@
 import { ConAse270DTO } from 'src/app/entities/dtos/service/conAse270.dto';
 import { ConCod271DTO } from 'src/app/entities/dtos/service/conCod271.dto';
 import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
-import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { SitedsClient, SitedsServices } from 'src/clients/siteds.client';
+import { LoggerClient } from 'src/clients/logger/logger.client';
+import { SitedsClient, SitedsServices } from 'src/clients/siteds/siteds.client';
 import { SitedsConstants } from 'src/general/contants/siteds.constants';
 import { DocumentTypeMapper, SitedsDocumentType } from 'src/general/enums/patientInfo.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
@@ -83,7 +83,8 @@ export class GetSitedsInsuranceRepository implements IGetSitedsInsuranceReposito
 
     if (!SitedsConstants.SUCCESS_CODES.has(coError)) {
       const errorMessage = SitedsConstants.ERROR_MESSAGES[coError as keyof typeof SitedsConstants.ERROR_MESSAGES];
-      throw ErrorModel.notFound({ message: errorMessage ?? 'Unkown error consuming siteds' });
+      LoggerClient.instance.error(errorMessage ?? 'Unkown error consuming siteds');
+      return {};
     }
 
     const result = this.x12Manager.decode(txRespuesta);

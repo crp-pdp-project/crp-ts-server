@@ -1,5 +1,5 @@
 import { HealthInsuranceDTO } from 'src/app/entities/dtos/service/healthInsurance.dto';
-import { MysqlClient } from 'src/clients/mysql.client';
+import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IGetHealthInsuranceRepository {
   execute(): Promise<HealthInsuranceDTO | undefined>;

@@ -35,9 +35,9 @@ export class SitedsPriceInteractor implements ISitedsPriceInteractor {
     await this.validateRelatives(params.fmpId, session);
     const patientModel = session.getPatient(params.fmpId);
     const sitedsModel = await this.getSitedsPatientInfo(body, patientModel);
-    sitedsModel.validateInsurances();
+    sitedsModel.validateDetails();
     await this.obtainSitedsCoverages(sitedsModel, patientModel);
-    sitedsModel.sanitizeDetails();
+    sitedsModel.sanitizeDetails().validateInsurance();
 
     return sitedsModel;
   }

@@ -1,4 +1,4 @@
-import { LoggerClient } from 'src/clients/logger.client';
+import { LoggerClient } from 'src/clients/logger/logger.client';
 import { SitedsConstants } from 'src/general/contants/siteds.constants';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { DocumentTypeMapper, SitedsDocumentType } from 'src/general/enums/patientInfo.enum';
@@ -73,21 +73,39 @@ export class SitedsModel extends BaseModel {
     return filteredModels;
   }
 
-  validateInsurances(): void {
-    if (!this.#details?.length) {
+  hasValidDetails(): boolean {
+    return !!this.#details?.length;
+  }
+
+  isValidInsurance(): boolean {
+    return (
+      this.#details.length === 1 &&
+      this.#details[0].coverages?.length === 1 &&
+      (this.#details[0].coverages?.[0]?.copayFixed ?? 0) > 0
+    );
+  }
+
+  validateDetails(): void {
+    if (!this.hasValidDetails()) {
       ErrorModel.notFound({ detail: ClientErrorMessages.INSURANCE_NOT_EXIST });
     }
   }
 
-  sanitizeDetails(): void {
-    const detailsWithCoverages = this.#details.filter((detail) => detail.coverages?.length);
-    if (!detailsWithCoverages.length) {
+  validateInsurance(): void {
+    if (!this.isValidInsurance()) {
       ErrorModel.notFound({ detail: ClientErrorMessages.INSURANCE_NOT_EXIST });
     }
+  }
 
-    const validDetail = detailsWithCoverages[0];
-    validDetail.sanitizeCoverages();
-    this.#details = [validDetail];
+  sanitizeDetails(): this {
+    const detailsWithCoverages = this.#details.filter((detail) => detail.coverages?.length);
+    if (detailsWithCoverages.length > 0) {
+      const validDetail = detailsWithCoverages[0];
+      validDetail.sanitizeCoverages();
+      this.#details = [validDetail];
+    }
+
+    return this;
   }
 
   getMainPayload(): ConAse270DTO {

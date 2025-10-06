@@ -4,7 +4,7 @@ import path, { resolve } from 'path';
 
 import { FileMigrationProvider } from 'kysely';
 
-import { LoggerClient } from 'src/clients/logger.client';
+import { LoggerClient } from 'src/clients/logger/logger.client';
 
 export class MigrationLoader {
   private readonly logger: LoggerClient = LoggerClient.instance;

@@ -1,6 +1,6 @@
 import { AvailabilityRequestDTO } from 'src/app/entities/dtos/service/availabilityRequest.dto';
 import { DoctorAvailabilityDTO } from 'src/app/entities/dtos/service/doctorAvailability.dto';
-import { InetumAppointmentServices, InetumClient } from 'src/clients/inetum.client';
+import { InetumAppointmentServices, InetumClient } from 'src/clients/inetum/inetum.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';

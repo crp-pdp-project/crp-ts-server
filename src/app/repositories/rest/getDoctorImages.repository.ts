@@ -1,6 +1,6 @@
 import { DoctorDTO } from 'src/app/entities/dtos/service/doctor.dto';
 import { SpecialtyDTO } from 'src/app/entities/dtos/service/specialty.dto';
-import { PDPClient, PDPServicePaths } from 'src/clients/pdp.client';
+import { PDPClient, PDPServicePaths } from 'src/clients/pdp/pdp.client';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 
 type GetDoctorImagesInput = {

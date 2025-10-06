@@ -14,8 +14,8 @@ import {
   IUpdateSessionOTPRepository,
   UpdateSessionOTPRepository,
 } from 'src/app/repositories/database/updateSessionOTP.repository';
-import { EmailClient } from 'src/clients/email.client';
-import { InfobipClient } from 'src/clients/infobip.client';
+import { EmailClient } from 'src/clients/email/email.client';
+import { InfobipClient } from 'src/clients/infobip/infobip.client';
 import { InfobipConstants } from 'src/general/contants/infobip.constants';
 import { TextHelper } from 'src/general/helpers/text.helper';
 

@@ -3,7 +3,7 @@ import { URL } from 'url';
 import { request } from 'undici';
 
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { LoggerClient } from 'src/clients/logger.client';
+import { LoggerClient } from 'src/clients/logger/logger.client';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 
 export enum ResponseType {

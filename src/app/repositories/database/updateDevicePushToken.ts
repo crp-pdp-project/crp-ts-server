@@ -1,7 +1,7 @@
 import { UpdateResult } from 'kysely';
 
 import { DeviceDM } from 'src/app/entities/dms/devices.dm';
-import { MysqlClient } from 'src/clients/mysql.client';
+import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IUpdateDevicePushTokenRepository {
   execute(id: DeviceDM['id'], pushToken: DeviceDM['pushToken']): Promise<UpdateResult>;

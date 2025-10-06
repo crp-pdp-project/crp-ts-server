@@ -1,6 +1,6 @@
 import { DeviceDM } from 'src/app/entities/dms/devices.dm';
 import { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
-import { MysqlClient } from 'src/clients/mysql.client';
+import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IGetPatientSessionRepository {
   execute(jti: string, os: DeviceDM['os'], identifier: DeviceDM['identifier']): Promise<SessionDTO | undefined>;

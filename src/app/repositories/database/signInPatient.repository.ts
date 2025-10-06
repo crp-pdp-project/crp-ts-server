@@ -1,6 +1,6 @@
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
-import { MysqlClient } from 'src/clients/mysql.client';
+import { MysqlClient } from 'src/clients/mysql/mysql.client';
 import { SqlJSONHelper } from 'src/general/helpers/sqlJson.helper';
 
 export interface ISignInPatientRepository {

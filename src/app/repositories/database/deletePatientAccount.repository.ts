@@ -1,7 +1,7 @@
 import { DeleteResult } from 'kysely';
 
 import { AccountDM } from 'src/app/entities/dms/accounts.dm';
-import { MysqlClient } from 'src/clients/mysql.client';
+import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IDeletePatientAccountRepository {
   execute(id: AccountDM['id']): Promise<DeleteResult>;

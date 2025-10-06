@@ -84,11 +84,11 @@ export class AuthAttemptModel extends BaseModel {
   }
 
   private isBlocked(): boolean {
-    return !!this.#blockExpiresAt && !DateHelper.checkExpired(this.#blockExpiresAt);
+    return !!this.#blockExpiresAt && !DateHelper.isBeforeNow(this.#blockExpiresAt);
   }
 
   private refreshState(): void {
-    if (!this.#tryCountExpiresAt || DateHelper.checkExpired(this.#tryCountExpiresAt)) {
+    if (!this.#tryCountExpiresAt || DateHelper.isBeforeNow(this.#tryCountExpiresAt)) {
       this.#tryCount = 0;
     }
 

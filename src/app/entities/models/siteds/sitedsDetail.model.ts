@@ -1,4 +1,4 @@
-import { LoggerClient } from 'src/clients/logger.client';
+import { LoggerClient } from 'src/clients/logger/logger.client';
 import { SitedsConstants } from 'src/general/contants/siteds.constants';
 
 import { ConAse270DTO } from '../../dtos/service/conAse270.dto';
@@ -80,8 +80,13 @@ export class SitedsDetailModel extends BaseModel {
 
   sanitizeCoverages(): void {
     if (this.#coverages?.length) {
-      this.#coverages = this.#coverages?.slice(0, 1);
+      const sortedList = this.sortCoverages(this.#coverages);
+      this.#coverages = [sortedList[0]];
     }
+  }
+
+  private sortCoverages(list: SitedsCoverageModel[]): SitedsCoverageModel[] {
+    return list.sort((a, b) => (b.copayFixed ?? 0) - (a.copayFixed ?? 0));
   }
 
   private resolveValidCoverages(details: ConCod271DetailDTO[]): SitedsCoverageModel[] {

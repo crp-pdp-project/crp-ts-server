@@ -1,4 +1,4 @@
-import { LoggerClient } from 'src/clients/logger.client';
+import { LoggerClient } from 'src/clients/logger/logger.client';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 import { RestHelper } from 'src/general/helpers/rest.helper';

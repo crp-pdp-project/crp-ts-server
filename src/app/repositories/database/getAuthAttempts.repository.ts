@@ -1,6 +1,6 @@
 import { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
 import { AuthAttemptDTO } from 'src/app/entities/dtos/service/authAttempt.dto';
-import { MysqlClient } from 'src/clients/mysql.client';
+import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IGetAuthAttemptsRepository {
   execute(

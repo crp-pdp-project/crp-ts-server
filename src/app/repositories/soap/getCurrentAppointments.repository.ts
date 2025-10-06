@@ -1,6 +1,6 @@
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
-import { InetumAppointmentServices, InetumClient } from 'src/clients/inetum.client';
+import { InetumAppointmentServices, InetumClient } from 'src/clients/inetum/inetum.client';
 import { AppointmentConstants } from 'src/general/contants/appointment.constants';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { AppointmentFilters } from 'src/general/enums/appointmentFilters.enum';

@@ -1,6 +1,6 @@
 import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExternal.dto';
-import { InetumClient, InetumFmpServices } from 'src/clients/inetum.client';
+import { InetumClient, InetumFmpServices } from 'src/clients/inetum/inetum.client';
 import { DateHelper } from 'src/general/helpers/date.helper';
 
 type SearchPatientInput = {

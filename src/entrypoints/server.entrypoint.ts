@@ -84,7 +84,7 @@ import { SitedsPriceV1Docs } from 'src/app/controllers/sitedsPriceV1/sitedsPrice
 import { SitedsPriceV1Router } from 'src/app/controllers/sitedsPriceV1/sitedsPrice.router';
 import { SpecialtiesListV1Docs } from 'src/app/controllers/specialtiesListV1/specialtiesList.docs';
 import { SpecialtiesListV1Router } from 'src/app/controllers/specialtiesListV1/specialtiesList.routes';
-import { LoggerClient } from 'src/clients/logger.client';
+import { LoggerClient } from 'src/clients/logger/logger.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { Environments } from 'src/general/enums/environments.enum';
 import { EnvHelper } from 'src/general/helpers/env.helper';

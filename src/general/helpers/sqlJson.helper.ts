@@ -9,7 +9,7 @@ import {
   IdentifierNode,
 } from 'kysely';
 
-import { Database } from 'src/clients/mysql.client';
+import { Database } from 'src/clients/mysql/mysql.client';
 
 type AnyExpression = ExpressionWrapper<Database, never, unknown> | AliasedRawBuilder<unknown, string>;
 

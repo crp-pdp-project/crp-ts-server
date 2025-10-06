@@ -2,7 +2,7 @@ import { UpdateResult } from 'kysely';
 
 import { DeviceDM } from 'src/app/entities/dms/devices.dm';
 import { DeviceDTO } from 'src/app/entities/dtos/service/device.dto';
-import { MysqlClient } from 'src/clients/mysql.client';
+import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface ISaveBiometricPasswordRepository {
   execute(id: DeviceDM['id'], device: DeviceDTO): Promise<UpdateResult>;

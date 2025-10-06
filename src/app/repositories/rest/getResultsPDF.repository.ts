@@ -1,5 +1,5 @@
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { CRPClient, CRPServicePaths } from 'src/clients/crp.client';
+import { CRPClient, CRPServicePaths } from 'src/clients/crp/crp.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 import { ResponseType } from 'src/general/helpers/rest.helper';

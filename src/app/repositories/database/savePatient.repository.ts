@@ -2,7 +2,7 @@ import { Insertable, InsertResult } from 'kysely';
 
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
-import { MysqlClient } from 'src/clients/mysql.client';
+import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface ISavePatientRepository {
   execute(patient: PatientDTO): Promise<InsertResult>;

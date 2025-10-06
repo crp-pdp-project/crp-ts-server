@@ -1,7 +1,7 @@
 import { DeleteResult } from 'kysely';
 
 import { SessionDM } from 'src/app/entities/dms/sessions.dm';
-import { MysqlClient } from 'src/clients/mysql.client';
+import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface ICleanSessionRepository {
   execute(jti: SessionDM['jti'], patientId: SessionDM['patientId']): Promise<DeleteResult>;

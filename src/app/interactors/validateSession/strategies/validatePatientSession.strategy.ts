@@ -24,7 +24,7 @@ export class ValidateSignInSessionStrategy implements IValidateSessionStrategy {
   ): Promise<SignInSessionModel> {
     const { data, success } = SignInSessionPayloadDTOSchema.safeParse({ patient: payload.patient });
 
-    if (!session.jti || !session.expiresAt || !success || DateHelper.checkExpired(session.expiresAt)) {
+    if (!session.jti || !session.expiresAt || !success || DateHelper.isBeforeNow(session.expiresAt)) {
       throw ErrorModel.forbidden({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
     }
     await this.updateSessionExpire.execute(session.jti, data.patient.id, newExpireAt);

@@ -1,7 +1,7 @@
 import { AppointmentRequestDTO } from 'src/app/entities/dtos/service/appointmentRequest.dto';
 import { AppointmentTransactionResultDTO } from 'src/app/entities/dtos/service/appointmentTransactionResult.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { InetumAppointmentServices, InetumClient } from 'src/clients/inetum.client';
+import { InetumAppointmentServices, InetumClient } from 'src/clients/inetum/inetum.client';
 import { AppointmentConstants } from 'src/general/contants/appointment.constants';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';

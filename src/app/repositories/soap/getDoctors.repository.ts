@@ -1,5 +1,5 @@
 import { DoctorDTO } from 'src/app/entities/dtos/service/doctor.dto';
-import { InetumCatalogServices, InetumClient } from 'src/clients/inetum.client';
+import { InetumCatalogServices, InetumClient } from 'src/clients/inetum/inetum.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 

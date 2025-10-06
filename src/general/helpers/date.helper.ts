@@ -40,7 +40,7 @@ export class DateHelper {
     return this.parse(date).format(dateTimeConstants[formatKey]);
   }
 
-  static checkExpired(date: string | Date): boolean {
+  static isBeforeNow(date: string | Date): boolean {
     const parsedDate = this.parse(date);
     return parsedDate.isBefore(dayjs());
   }

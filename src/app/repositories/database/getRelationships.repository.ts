@@ -1,5 +1,5 @@
 import { RelationshipDTO } from 'src/app/entities/dtos/service/relationship.dto';
-import { MysqlClient } from 'src/clients/mysql.client';
+import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IGetRelationshipsRepository {
   execute(): Promise<RelationshipDTO[]>;

@@ -1,7 +1,7 @@
 import { UpdateResult } from 'kysely';
 
 import { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
-import { MysqlClient } from 'src/clients/mysql.client';
+import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IUpdateBlockedRepository {
   execute(id: AuthAttemptDM['id'], blockExpiresAt: AuthAttemptDM['blockExpiresAt']): Promise<UpdateResult>;

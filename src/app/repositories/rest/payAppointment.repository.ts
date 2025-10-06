@@ -2,7 +2,7 @@ import { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
 import { AxionalPayloadDTO } from 'src/app/entities/dtos/service/axionalPayload.dto';
 import { POSAuthorizationDTO } from 'src/app/entities/dtos/service/posAuthorization.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { CRPClient, CRPServicePaths } from 'src/clients/crp.client';
+import { CRPClient, CRPServicePaths } from 'src/clients/crp/crp.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { PosConstants } from 'src/general/contants/pos.constants';
 import { HttpMethod } from 'src/general/enums/methods.enum';

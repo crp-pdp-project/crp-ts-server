@@ -1,7 +1,7 @@
 import { DeleteResult, sql } from 'kysely';
 
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { MysqlClient } from 'src/clients/mysql.client';
+import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface ICleanUnusedDevicesRepository {
   execute(patientId: PatientDM['id']): Promise<DeleteResult>;

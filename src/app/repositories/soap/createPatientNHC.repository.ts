@@ -1,5 +1,5 @@
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { InetumClient, InetumUserServices } from 'src/clients/inetum.client';
+import { InetumClient, InetumUserServices } from 'src/clients/inetum/inetum.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 

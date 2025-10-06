@@ -10,7 +10,7 @@ import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { PushConfigDM } from 'src/app/entities/dms/pushConfigs.dm';
 import { RelationshipDM } from 'src/app/entities/dms/relationships.dm';
 import { SessionDM } from 'src/app/entities/dms/sessions.dm';
-import { LoggerClient } from 'src/clients/logger.client';
+import { LoggerClient } from 'src/clients/logger/logger.client';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 
 export interface Database {

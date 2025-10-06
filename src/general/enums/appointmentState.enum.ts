@@ -80,23 +80,23 @@ export class CancelActionStatesMapper {
 
 export enum RescheduleActionStates {
   ALLOWED = 1,
-  BLOCKED_AFTER_DEADLINE = 2,
-  BLOCKED_ALREADY_RESCHEDULE = 3,
+  DISABLED_AFTER_DEADLINE = 2,
+  DISABLED_ALREADY_RESCHEDULE = 3,
   BLOCKED = 4,
 }
 
 export enum RescheduleActionTextStates {
   ALLOWED = 'R01',
-  BLOCKED_AFTER_DEADLINE = 'R02',
-  BLOCKED_ALREADY_RESCHEDULE = 'R03',
+  DISABLED_AFTER_DEADLINE = 'R02',
+  DISABLED_ALREADY_RESCHEDULE = 'R03',
   BLOCKED = 'R04',
 }
 
 export class RescheduleActionStatesMapper {
   private static readonly rescheduleActionStatesMap: Record<RescheduleActionTextStates, RescheduleActionStates> = {
     [RescheduleActionTextStates.ALLOWED]: RescheduleActionStates.ALLOWED,
-    [RescheduleActionTextStates.BLOCKED_ALREADY_RESCHEDULE]: RescheduleActionStates.BLOCKED_ALREADY_RESCHEDULE,
-    [RescheduleActionTextStates.BLOCKED_AFTER_DEADLINE]: RescheduleActionStates.BLOCKED_AFTER_DEADLINE,
+    [RescheduleActionTextStates.DISABLED_ALREADY_RESCHEDULE]: RescheduleActionStates.DISABLED_ALREADY_RESCHEDULE,
+    [RescheduleActionTextStates.DISABLED_AFTER_DEADLINE]: RescheduleActionStates.DISABLED_AFTER_DEADLINE,
     [RescheduleActionTextStates.BLOCKED]: RescheduleActionStates.BLOCKED,
   };
   static getRescheduleActionState(state: string): RescheduleActionStates {
@@ -109,17 +109,23 @@ export class RescheduleActionStatesMapper {
 
 export enum PaymentActionStates {
   ALLOWED = 1,
-  BLOCKED = 2,
+  DISABLED = 2,
+  ALREADY_PAYED = 3,
+  BLOCKED = 4,
 }
 
 export enum PaymentActionTextStates {
   ALLOWED = 'P01',
-  BLOCKED = 'P02',
+  DISABLED = 'P02',
+  ALREADY_PAYED = 'P03',
+  BLOCKED = 'P04',
 }
 
 export class PaymentActionStatesMapper {
   private static readonly paymentActionStatesMap: Record<PaymentActionTextStates, PaymentActionStates> = {
     [PaymentActionTextStates.ALLOWED]: PaymentActionStates.ALLOWED,
+    [PaymentActionTextStates.DISABLED]: PaymentActionStates.DISABLED,
+    [PaymentActionTextStates.ALREADY_PAYED]: PaymentActionStates.ALREADY_PAYED,
     [PaymentActionTextStates.BLOCKED]: PaymentActionStates.BLOCKED,
   };
   static getPaymentActionState(state: string): PaymentActionStates {

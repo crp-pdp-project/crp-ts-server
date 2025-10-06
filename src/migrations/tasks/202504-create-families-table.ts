@@ -1,6 +1,6 @@
 import { Kysely, sql } from 'kysely';
 
-import { Database } from 'src/clients/mysql.client';
+import { Database } from 'src/clients/mysql/mysql.client';
 
 const tableName = 'Families';
 
