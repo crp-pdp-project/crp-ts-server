@@ -4,6 +4,7 @@ import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 import { ResponseType, RestHelper } from 'src/general/helpers/rest.helper';
+import { TextHelper } from 'src/general/helpers/text.helper';
 
 import { CRPClient, CRPServicePaths } from '../crp/crp.client';
 
@@ -35,7 +36,6 @@ export enum NiubizServicePaths {
 }
 
 export class NiubizClient {
-  private static instances = new Map<DeviceDM['os'], NiubizClient>();
   private readonly overridePinHash?: string = EnvHelper.getOptional('NIUBIZ_PIN_HASH');
   private readonly config: POSConfigDTO;
   private readonly rest: RestHelper;
@@ -75,12 +75,9 @@ export class NiubizClient {
   }
 
   static async getInstance(os: DeviceDM['os']): Promise<NiubizClient> {
-    const existing = this.instances.get(os);
-    if (existing) return existing;
-
     const config = await this.getConfig(os);
     const client = new NiubizClient(config);
-    this.instances.set(os, client);
+
     return client;
   }
 
@@ -113,7 +110,7 @@ export class NiubizClient {
       password: data.contrasenia,
       commerceCode: data.comercio,
       channel: data.canal,
-      host: data.url,
+      host: TextHelper.normalizeHost(data.url),
       MDDList: data.merchantDefineData,
       correlative: data.purchaseNumber,
     };

@@ -33,6 +33,26 @@ export class TextHelper {
     }
   }
 
+  static normalizeHost(host?: string): string | undefined {
+    if (host == null) return host;
+
+    let value = host.trim().toLowerCase();
+
+    if (value.startsWith('//')) {
+      value = value.slice(2);
+    }
+
+    if (!value.startsWith('http://') && !value.startsWith('https://')) {
+      value = `https://${value}`;
+    }
+
+    while (value.length > 0 && value[value.length - 1] === '/') {
+      value = value.slice(0, -1);
+    }
+
+    return `${value}/`;
+  }
+
   static normalizeAppointmentId(appointmentId: string): string {
     const cleaned = appointmentId.toUpperCase().startsWith('C') ? appointmentId : `C${appointmentId}`;
     return cleaned;
