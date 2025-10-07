@@ -104,7 +104,7 @@ export class DateHelper {
 
   static countFromNow(baseDate: string | Date, granularity: ManipulateType): number {
     const date = baseDate ? this.parse(baseDate) : dayjs();
-    return dayjs().diff(date, granularity);
+    return dayjs().diff(date, granularity) + 1;
   }
 
   private static parse(input: string | Date | Dayjs): Dayjs {

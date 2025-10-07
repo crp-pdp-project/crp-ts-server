@@ -1,3 +1,4 @@
+import { PosConstants } from 'src/general/contants/pos.constants';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 import { TextHelper } from 'src/general/helpers/text.helper';
 
@@ -54,6 +55,7 @@ export class POSConfigModel extends BaseModel {
   readonly correlative?: string;
   readonly token?: string;
   readonly pinHash?: string;
+  readonly email?: string;
   readonly env: string;
   readonly MDD?: Record<string, unknown>;
 
@@ -68,6 +70,7 @@ export class POSConfigModel extends BaseModel {
     this.correlative = posConfig.correlative ? TextHelper.padTextLength(posConfig.correlative) : undefined;
     this.token = posConfig.token;
     this.pinHash = posConfig.pinHash;
+    this.email = external.email ?? PosConstants.DEFAULT_EMAIL;
     this.env = EnvHelper.get('NIUBIZ_ENVIRONMENT');
     this.MDD = posConfig.MDDList ? this.generateMDDObject(posConfig.MDDList, session, external) : undefined;
   }

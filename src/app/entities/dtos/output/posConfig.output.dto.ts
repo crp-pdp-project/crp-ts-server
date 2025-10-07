@@ -28,6 +28,10 @@ export const POSConfigOutputDTOSchema = z
       description: 'Unique number of the transaction',
       example: '000000006',
     }),
+    email: z.email().openapi({
+      description: 'Email of the patient, default test@crp.com.pe',
+      example: 'test@crp.com.pe',
+    }),
     token: z.string().openapi({
       description: 'Token of the POS',
       example: 'anyToken',
