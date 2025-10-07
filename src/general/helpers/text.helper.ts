@@ -50,7 +50,7 @@ export class TextHelper {
       value = value.slice(0, -1);
     }
 
-    return `${value}/`;
+    return value;
   }
 
   static normalizeAppointmentId(appointmentId: string): string {
