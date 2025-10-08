@@ -51,23 +51,23 @@ export class PayStatesMapper {
 
 export enum CancelActionStates {
   ALLOWED = 1,
-  ALLOWED_AFTER_DEADLINE = 2,
-  ALLOWED_PAYED_BEFORE_DEADLINE = 3,
+  ALLOWED_PAYED_BEFORE_DEADLINE = 2,
+  ALLOWED_PAYED_AFTER_DEADLINE = 3,
   BLOCKED = 4,
 }
 
 export enum CancelActionTextStates {
   ALLOWED = 'A01',
-  ALLOWED_AFTER_DEADLINE = 'A02',
-  ALLOWED_PAYED_BEFORE_DEADLINE = 'A03',
+  ALLOWED_PAYED_BEFORE_DEADLINE = 'A02',
+  ALLOWED_PAYED_AFTER_DEADLINE = 'A03',
   BLOCKED = 'A04',
 }
 
 export class CancelActionStatesMapper {
   private static readonly cancelActionStatesMap: Record<CancelActionTextStates, CancelActionStates> = {
     [CancelActionTextStates.ALLOWED]: CancelActionStates.ALLOWED,
-    [CancelActionTextStates.ALLOWED_AFTER_DEADLINE]: CancelActionStates.ALLOWED_AFTER_DEADLINE,
     [CancelActionTextStates.ALLOWED_PAYED_BEFORE_DEADLINE]: CancelActionStates.ALLOWED_PAYED_BEFORE_DEADLINE,
+    [CancelActionTextStates.ALLOWED_PAYED_AFTER_DEADLINE]: CancelActionStates.ALLOWED_PAYED_AFTER_DEADLINE,
     [CancelActionTextStates.BLOCKED]: CancelActionStates.BLOCKED,
   };
   static getCancelState(state: string): CancelActionStates {
@@ -110,22 +110,20 @@ export class RescheduleActionStatesMapper {
 export enum PaymentActionStates {
   ALLOWED = 1,
   DISABLED = 2,
-  ALREADY_PAYED = 3,
-  BLOCKED = 4,
+  BLOCKED = 3,
+  CANNOT_PAY = 4,
 }
 
 export enum PaymentActionTextStates {
   ALLOWED = 'P01',
   DISABLED = 'P02',
-  ALREADY_PAYED = 'P03',
-  BLOCKED = 'P04',
+  BLOCKED = 'P03',
 }
 
 export class PaymentActionStatesMapper {
   private static readonly paymentActionStatesMap: Record<PaymentActionTextStates, PaymentActionStates> = {
     [PaymentActionTextStates.ALLOWED]: PaymentActionStates.ALLOWED,
     [PaymentActionTextStates.DISABLED]: PaymentActionStates.DISABLED,
-    [PaymentActionTextStates.ALREADY_PAYED]: PaymentActionStates.ALREADY_PAYED,
     [PaymentActionTextStates.BLOCKED]: PaymentActionStates.BLOCKED,
   };
   static getPaymentActionState(state: string): PaymentActionStates {

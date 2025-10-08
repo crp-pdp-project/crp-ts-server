@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import {
+  PatientResultURLBodyDTOSchema,
   PatientResultURLInputDTO,
   PatientResultURLParamsDTOSchema,
 } from 'src/app/entities/dtos/input/patientResultURL.input.dto';
@@ -29,8 +30,9 @@ export class PatientResultURLController implements IPatientResultURLController {
   async handle(input: FastifyRequest<PatientResultURLInputDTO>, reply: FastifyReply): Promise<void> {
     try {
       const params = PatientResultURLParamsDTOSchema.parse(input.params);
+      const body = PatientResultURLBodyDTOSchema.parse(input.body);
       const session = SessionModel.validateSessionInstance(SessionType.SIGN_IN, input.session);
-      const model = await this.patientResultURL.obtain(params, session);
+      const model = await this.patientResultURL.obtain(body, params, session);
       this.response = this.responseManager.validateResponse(model);
     } catch (error) {
       const errorModel = ErrorModel.fromError(error);

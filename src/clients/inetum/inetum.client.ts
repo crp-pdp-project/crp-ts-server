@@ -14,7 +14,6 @@ export enum InetumUserServices {
 
 export enum InetumAppointmentServices {
   LIST_CURRENT_APPOINTMENTS = 'ListadoCitas',
-  LIST_HISTORIC_APPOINTMENTS = 'ListadoConsultas',
   GET_DOCTOR_AVAILABILITY = 'ListadoHuecosDisponibles',
   CREATE_APPOINTMENT = 'AltaCita',
   RESCHEDULE_APPOINTMENT = 'ModificarCita',

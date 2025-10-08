@@ -1,5 +1,8 @@
 import { BaseHeadersDTOSchema } from 'src/app/entities/dtos/input/baseHeaders.input.dto';
-import { PatientResultURLParamsDTOSchema } from 'src/app/entities/dtos/input/patientResultURL.input.dto';
+import {
+  PatientResultURLBodyDTOSchema,
+  PatientResultURLParamsDTOSchema,
+} from 'src/app/entities/dtos/input/patientResultURL.input.dto';
 import { PatientResultURLOutputDTOSchema } from 'src/app/entities/dtos/output/patientResultURL.output.dto';
 import { OkResponseDTOSchema } from 'src/app/entities/dtos/response/ok.response.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
@@ -13,11 +16,12 @@ export class PatientResultURLV1Docs {
 
   registerDocs(): void {
     this.manager.registerRoute({
-      method: HttpSpecMethod.GET,
-      path: `${this.version}/patients/{fmpId}/results/url/{accessNumber}`,
+      method: HttpSpecMethod.POST,
+      path: `${this.version}/patients/{fmpId}/results/url`,
       description: 'Obtain an patient result url',
       tags: ['patients', 'results'],
       params: PatientResultURLParamsDTOSchema,
+      body: PatientResultURLBodyDTOSchema,
       headers: BaseHeadersDTOSchema,
       responses: {
         [StatusCode.OK]: OkResponseDTOSchema.extend({

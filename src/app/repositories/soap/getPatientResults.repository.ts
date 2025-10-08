@@ -36,6 +36,7 @@ type GetPatientResultsOutput = {
         EsImagen: string;
         TieneInforme: string;
         EsDefinitivo: string;
+        Nhc: string;
         Gidenpac: string;
         Accesnumber: string;
         idSociedad: string;
@@ -94,8 +95,8 @@ export class GetPatientResultsRepository implements IGetPatientResultsRepository
       specialty: { name: result.NombreAgrupacion },
       appointmentType: { name: result.NombrePrestacion },
       type: result.TipoPrueba,
-      AccessNumber: result.Accesnumber,
-      Gidenpac: result.Gidenpac,
+      accessNumber: result.Accesnumber,
+      gidenpac: result.Gidenpac,
     }));
 
     return results;
@@ -113,11 +114,11 @@ export class GetPatientResultsRepositoryMock implements IGetPatientResultsReposi
         doctor: { name: 'CESAR OMAR PE' },
         specialty: { name: 'Cardiología' },
         appointmentType: {
-          name: 'ELE) CONSULTA PRIMERA (AUTOADMISION POR ADELANTADO, INCLUYE PAGO Y EVITE COLAS) (500101)',
+          name: 'ECOGRAFIA DE PARTES BLANDAS - HOMBRO (250801)',
         },
         type: 'L',
-        AccessNumber: 'CLIRPC2437762803',
-        Gidenpac: '733480',
+        accessNumber: 'CLIRPC2437762803',
+        gidenpac: '733480',
       },
     ];
   }

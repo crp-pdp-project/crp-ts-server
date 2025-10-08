@@ -28,8 +28,8 @@ export class PatientResultURLV1Router {
 
   registerRouter(): void {
     this.fastify.route({
-      method: HttpMethod.GET,
-      url: `${this.version}/patients/:fmpId/results/url/:accessNumber`,
+      method: HttpMethod.POST,
+      url: `${this.version}/patients/:fmpId/results/url`,
       preHandler: RouterHelper.wrapPreHandlers(
         this.validateHeadersController.validate.bind(this.validateHeadersController),
         this.validateSessionController.validate.bind(this.validateSessionController),

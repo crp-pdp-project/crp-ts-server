@@ -30,7 +30,7 @@ export class PatientResultModel extends BaseModel {
       ? new AppointmentTypeModel(patientResult.appointmentType)
       : undefined;
     this.type = patientResult.type ? PatientResultTypesMapper.getResultType(patientResult.type) : undefined;
-    this.accessNumber = patientResult.AccessNumber;
-    this.gidenpac = patientResult.Gidenpac;
+    this.accessNumber = patientResult.accessNumber;
+    this.gidenpac = patientResult.gidenpac;
   }
 }

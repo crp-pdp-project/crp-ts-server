@@ -13,8 +13,8 @@ export const PatientResultDTOSchema = z.object({
   specialty: SpecialtyDTOSchema.pick({ name: true }).optional(),
   appointmentType: AppointmentTypeDTOSchema.pick({ name: true }).optional(),
   type: z.string().optional(),
-  AccessNumber: z.string().optional(),
-  Gidenpac: z.string().optional(),
+  accessNumber: z.string().optional(),
+  gidenpac: z.string().optional(),
 });
 
 export type PatientResultDTO = z.infer<typeof PatientResultDTOSchema>;

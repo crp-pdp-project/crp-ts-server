@@ -63,13 +63,6 @@ export class TextHelper {
     return cleaned;
   }
 
-  static stripLeadingZeros(text?: string): string | undefined {
-    if (!text) return text;
-
-    const number = Number(text);
-    return Number.isNaN(number) ? text : String(number);
-  }
-
   static generateUniqueCode(length = 5): string {
     const charset = '0123456789';
     let otp = '';
@@ -87,6 +80,8 @@ export class TextHelper {
   }
 
   static padTextLength(text: string | number, length = 9, char = '0'): string {
+    if (String(text).length > length) return String(text);
+
     const pad = char.repeat(length);
     const paddedText = `${pad}${text}`;
 

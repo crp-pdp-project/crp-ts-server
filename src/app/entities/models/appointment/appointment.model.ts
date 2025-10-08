@@ -99,43 +99,44 @@ export class AppointmentModel extends BaseModel {
   }
 
   inyectSiteds(sitedsModel: SitedsModel): this {
-    this.#siteds = sitedsModel;
+    if (!sitedsModel.isValidInsurance()) {
+      this.overrideTips(TipsType.PAY_BLOCKED);
+      this.#payAction = PaymentActionStates.BLOCKED;
+      return this;
+    }
 
+    this.#siteds = sitedsModel;
     return this;
   }
 
   shouldFetchDocuments(): boolean {
-    return DateHelper.isBeforeNow(this.date ?? '');
+    return DateHelper.isBeforeNow(this.date ?? '') && this.status === AppointmentStates.FINISHED;
   }
 
   shouldFetchSiteds(): boolean {
     return this.payAction === PaymentActionStates.ALLOWED;
   }
 
-  refreshStates(): void {
-    if (this.#siteds?.isValidInsurance() || this.payState === PayStates.PAYED) return;
-    this.#siteds = undefined;
-    this.overrideTips(TipsType.PAY_BLOCKED);
-    this.#payAction = PaymentActionStates.BLOCKED;
-  }
-
   private resolvePaymentActions(payAction: string): PaymentActionStates {
-    const defaultState =
-      this.payState === PayStates.PAYED ? PaymentActionStates.ALREADY_PAYED : PaymentActionStates.BLOCKED;
+    const defaultAction = PaymentActionStatesMapper.getPaymentActionState(payAction);
 
-    if (this.insurance?.type !== InsuranceTypes.SITEDS) {
-      return defaultState;
+    switch (true) {
+      case defaultAction === PaymentActionStates.ALLOWED && this.insurance?.type !== InsuranceTypes.SITEDS:
+        return PaymentActionStates.CANNOT_PAY;
+      case this.payState === PayStates.PAYED:
+      case this.status !== AppointmentStates.PROGRAMMED:
+        return PaymentActionStates.BLOCKED;
+      default:
+        return defaultAction;
     }
-
-    return PaymentActionStatesMapper.getPaymentActionState(payAction);
   }
 
   private resolveDefaultTips(): TipModel[] | undefined {
     const defaultTipsMap: Record<PaymentActionStates, TipsType> = {
       [PaymentActionStates.ALLOWED]: TipsType.DEFAULT,
       [PaymentActionStates.DISABLED]: TipsType.PAY_DEADLINE,
-      [PaymentActionStates.ALREADY_PAYED]: TipsType.DEFAULT,
-      [PaymentActionStates.BLOCKED]: TipsType.PAY_BLOCKED,
+      [PaymentActionStates.BLOCKED]: TipsType.DEFAULT,
+      [PaymentActionStates.CANNOT_PAY]: TipsType.PAY_BLOCKED,
     };
 
     const tips = this.payAction ? TipsTypeUtils.getTipsByType(defaultTipsMap[this.payAction]) : undefined;

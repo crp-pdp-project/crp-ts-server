@@ -6,8 +6,7 @@ import {
   IPatientRelativesValidationRepository,
   PatientRelativesValidationRepository,
 } from 'src/app/repositories/database/patientRelativesValidation.repository';
-import { GetCurrentAppointmentsRepository } from 'src/app/repositories/soap/getCurrentAppointments.repository';
-import { GetHistoricAppointmentsRepository } from 'src/app/repositories/soap/getHistoricAppointments.repository';
+import { GetAppointmentsRepository } from 'src/app/repositories/soap/getAppointments.repository';
 
 import { CurrentAppointmentsStrategy } from './strategies/currentAppointments.strategy';
 import { HistoryAppointmentsStrategy } from './strategies/historicAppointments.strategy';
@@ -39,28 +38,24 @@ export class PatientAppointmentsInteractor implements IPatientAppointmentsIntera
 }
 
 export class PatientAppointmentsInteractorBuilder {
-  private static readonly relativesRepository = new PatientRelativesValidationRepository();
-  private static readonly currentRepository = new GetCurrentAppointmentsRepository();
-  private static readonly historicRepository = new GetHistoricAppointmentsRepository();
-
   static buildNext(): PatientAppointmentsInteractor {
     return new PatientAppointmentsInteractor(
-      this.relativesRepository,
-      new NextAppointmentStrategy(this.currentRepository),
+      new PatientRelativesValidationRepository(),
+      new NextAppointmentStrategy(new GetAppointmentsRepository()),
     );
   }
 
   static buildCurrent(): PatientAppointmentsInteractor {
     return new PatientAppointmentsInteractor(
-      this.relativesRepository,
-      new CurrentAppointmentsStrategy(this.currentRepository),
+      new PatientRelativesValidationRepository(),
+      new CurrentAppointmentsStrategy(new GetAppointmentsRepository()),
     );
   }
 
   static buildHistoric(): PatientAppointmentsInteractor {
     return new PatientAppointmentsInteractor(
-      this.relativesRepository,
-      new HistoryAppointmentsStrategy(this.historicRepository),
+      new PatientRelativesValidationRepository(),
+      new HistoryAppointmentsStrategy(new GetAppointmentsRepository()),
     );
   }
 }
