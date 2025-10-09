@@ -1,0 +1,19 @@
+name: Clean Caches
+on:
+  schedule:
+    - cron: "0 6 * * 1" # Mondays 06:00 UTC
+  workflow_dispatch:
+
+jobs:
+  prune:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Delete caches older than 7 days
+        run: |
+          gh extension install actions/gh-actions-cache || true
+          for BR in $(git for-each-ref --format='%(refname:short)' refs/heads/); do
+            gh actions-cache delete --branch "$BR" --confirm --jq '.createdAt' --json createdAt --older-than 7d || true
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
