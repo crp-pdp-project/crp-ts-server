@@ -15,7 +15,7 @@ type PayHealthInsuranceInput = {
   };
   planSalud: {
     idContrato: number;
-    numDocument: string[];
+    numDocumento: string[];
   };
 };
 
@@ -56,7 +56,7 @@ export class PayHealthInsuranceRepository implements IPayHealthInsuranceReposito
       },
       planSalud: {
         idContrato: Number(contractId),
-        numDocument: documents,
+        numDocumento: documents,
       },
     };
   }

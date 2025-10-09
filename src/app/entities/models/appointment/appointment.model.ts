@@ -101,7 +101,7 @@ export class AppointmentModel extends BaseModel {
   inyectSiteds(sitedsModel: SitedsModel): this {
     if (!sitedsModel.isValidInsurance()) {
       this.overrideTips(TipsType.PAY_BLOCKED);
-      this.#payAction = PaymentActionStates.BLOCKED;
+      this.#payAction = PaymentActionStates.CANNOT_PAY;
       return this;
     }
 
