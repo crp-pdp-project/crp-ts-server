@@ -59,7 +59,7 @@ export class SitedsModel extends BaseModel {
   }
 
   get amount(): number | undefined {
-    return this.#details?.[0]?.coverages?.[0].copayFixed;
+    return this.#details?.[0]?.coverages?.[0]?.copayFixed;
   }
 
   static fromDTO(

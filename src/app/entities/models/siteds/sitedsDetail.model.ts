@@ -89,7 +89,7 @@ export class SitedsDetailModel extends BaseModel {
   }
 
   private sortCoverages(list: SitedsCoverageModel[]): SitedsCoverageModel[] {
-    return list.sort((a, b) => (b.copayFixed ?? 0) - (a.copayFixed ?? 0));
+    return list.sort((a, b) => (b?.copayFixed ?? 0) - (a?.copayFixed ?? 0));
   }
 
   private resolveValidCoverages(details: ConCod271DetailDTO[]): SitedsCoverageModel[] {
