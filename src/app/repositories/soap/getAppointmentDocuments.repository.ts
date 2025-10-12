@@ -118,7 +118,7 @@ export class GetAppointmentDocumentsRepository implements IGetAppointmentDocumen
 
 export class GetAppointmentDocumentsRepositoryMock implements IGetAppointmentDocumentsRepository {
   async execute(): Promise<AppointmentDocumentDTO[]> {
-    return [
+    return Promise.resolve([
       {
         documentId: '#b731d7bf-edea-cdce-1da3-08dd0351629c',
         episodeId: 'C24CLIRP37649542',
@@ -133,6 +133,6 @@ export class GetAppointmentDocumentsRepositoryMock implements IGetAppointmentDoc
         type: 'C',
         documentCategory: 'INF RECETA',
       },
-    ];
+    ]);
   }
 }

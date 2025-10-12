@@ -73,11 +73,11 @@ export class GetAppointmentTypesRepository implements IGetAppointmentTypesReposi
 
 export class GetAppointmentTypesRepositoryMock implements IGetAppointmentTypesRepository {
   async execute(): Promise<AppointmentTypeDTO[]> {
-    return [
+    return Promise.resolve([
       {
         id: '3300-10010942',
         name: '(ONC) CONSULTA NO PRESENCIAL (VIDEOCONFERENCIA) (ONCOLOGÍA MÉDICA) (500101) (ONCOLOGÍA MÉDICA)',
       },
-    ];
+    ]);
   }
 }

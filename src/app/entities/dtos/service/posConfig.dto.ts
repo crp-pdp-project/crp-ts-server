@@ -9,6 +9,7 @@ export const POSConfigDTOSchema = z.object({
   MDDList: z.string().optional(),
   correlative: z.number().optional(),
   token: z.string().optional(),
+  environment: z.string().optional(),
   pinHash: z.string().optional(),
 });
 

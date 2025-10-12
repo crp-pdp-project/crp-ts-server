@@ -20,7 +20,7 @@ import {
 } from 'src/general/managers/jwt/jwt.manager';
 
 import { ValidateEnrollSessionStrategy } from './strategies/validateEnrollSession.strategy';
-import { ValidateSignInSessionStrategy } from './strategies/validatePatientSession.strategy';
+import { ValidatePatientSessionStrategy } from './strategies/validatePatientSession.strategy';
 import { ValidateRecoverSessionStrategy } from './strategies/validateRecoverSession.strategy';
 
 export interface IValidateSessionStrategy {
@@ -86,7 +86,7 @@ export class ValidateSessionInteractorBuilder {
   static buildSignIn(): ValidateSessionInteractor {
     return new ValidateSessionInteractor(
       JWTManagerBuilder.buildSessionConfig(),
-      new ValidateSignInSessionStrategy(new UpdateSessionExpireRepository(), new UpdateDevicePushTokenRepository()),
+      new ValidatePatientSessionStrategy(new UpdateSessionExpireRepository(), new UpdateDevicePushTokenRepository()),
       new GetPatientSessionRepository(),
     );
   }

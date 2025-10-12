@@ -18,4 +18,5 @@ export enum ClientErrorMessages {
   OTP_SEND_LIMIT = 'Recuerda que solo puedes enviar un número limitado de códigos de verificación. Intenta nuevamente más tarde',
   RELATIVE_EXISTS = 'El familiar ya se encuentra registrado',
   INSURANCE_NOT_EXIST = 'No tiene coberturas para el seguro seleccionado en la cita, realice el pago personalmente en clínica',
+  EMPLOYEE_AUTH_INVALID = 'Usuario o contraseña incorrectos.',
 }

@@ -20,9 +20,9 @@ export class SavePatientAccountRepository implements ISavePatientAccountReposito
 
 export class SavePatientAccountRepositoryMock implements ISavePatientAccountRepository {
   async execute(): Promise<InsertResult> {
-    return {
+    return Promise.resolve({
       insertId: BigInt(1),
       numInsertedOrUpdatedRows: BigInt(1),
-    };
+    });
   }
 }

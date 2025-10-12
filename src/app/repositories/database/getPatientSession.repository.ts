@@ -23,12 +23,12 @@ export class GetPatientSessionRepository implements IGetPatientSessionRepository
 
 export class GetPatientSessionRepositoryMock implements IGetPatientSessionRepository {
   async execute(): Promise<SessionDTO | undefined> {
-    return {
+    return Promise.resolve({
       jti: '1c8302e7-6368-4c04-8923-4dadbccfe53e',
       expiresAt: '2025-04-24 02:58:01',
       otp: null,
       otpSendCount: null,
       isValidated: false,
-    };
+    });
   }
 }

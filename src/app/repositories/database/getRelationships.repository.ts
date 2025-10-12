@@ -15,12 +15,12 @@ export class GetRelationshipsRepository implements IGetRelationshipsRepository {
 
 export class GetRelationshipsRepositoryMock implements IGetRelationshipsRepository {
   async execute(): Promise<RelationshipDTO[]> {
-    return [
+    return Promise.resolve([
       {
         id: 1,
         name: 'Hijo/a menor de edad',
         isDependant: true,
       },
-    ];
+    ]);
   }
 }

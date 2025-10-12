@@ -24,6 +24,7 @@ export class GetPOSConfigRepositoryMock implements IGetPOSConfigRepository {
       commerceCode: 'anyCode',
       MDDList: 'MDD4,MDD32,MDD75,MDD77',
       correlative: 6,
+      environment: 'dev',
       token: 'anyToken',
       pinHash: 'anyHash',
     };

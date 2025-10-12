@@ -20,6 +20,6 @@ export class UpdateBlockedRepository implements IUpdateBlockedRepository {
 
 export class UpdateBlockedRepositoryMock implements IUpdateBlockedRepository {
   async execute(): Promise<UpdateResult> {
-    return { numUpdatedRows: BigInt(1) };
+    return Promise.resolve({ numUpdatedRows: BigInt(1) });
   }
 }

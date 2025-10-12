@@ -23,6 +23,6 @@ export class CleanBiometricPasswordRepository implements ICleanBiometricPassword
 
 export class CleanBiometricPasswordRepositoryMock implements ICleanBiometricPasswordRepository {
   async execute(): Promise<UpdateResult> {
-    return { numUpdatedRows: BigInt(1) };
+    return Promise.resolve({ numUpdatedRows: BigInt(1) });
   }
 }

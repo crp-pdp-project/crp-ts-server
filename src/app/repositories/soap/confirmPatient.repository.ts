@@ -97,9 +97,9 @@ export class ConfirmPatientRepository implements IConfirmPatientRepository {
 
 export class ConfirmPatientRepositoryMock implements IConfirmPatientRepository {
   async execute(): Promise<PatientConfirmationDTO> {
-    return {
+    return Promise.resolve({
       fmpId: '239254',
       confirmInCenter: false,
-    };
+    });
   }
 }

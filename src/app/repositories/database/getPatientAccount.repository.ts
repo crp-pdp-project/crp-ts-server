@@ -32,6 +32,6 @@ export class GetPatientAccountRepository implements IGetPatientAccountRepository
 
 export class GetPatientAccountRepositoryMock implements IGetPatientAccountRepository {
   async execute(): Promise<PatientDTO | undefined> {
-    return { id: 1, account: null };
+    return Promise.resolve({ id: 1, account: null });
   }
 }

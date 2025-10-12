@@ -53,7 +53,7 @@ export class GetInsurancesRepository implements IGetInsurancesRepository {
 
 export class GetInsurancesRepositoryMock implements IGetInsurancesRepository {
   async execute(): Promise<InsuranceDTO[]> {
-    return [
+    return Promise.resolve([
       {
         id: '16004',
         name: 'LA POSITIVA SEGUROS Y REASEGUROS',
@@ -62,6 +62,6 @@ export class GetInsurancesRepositoryMock implements IGetInsurancesRepository {
         iafaId: '40005',
         fasId: '00041488',
       },
-    ];
+    ]);
   }
 }

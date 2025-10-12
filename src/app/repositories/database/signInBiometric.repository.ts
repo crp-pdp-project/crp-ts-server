@@ -52,7 +52,7 @@ export class SignInBiometricRepository implements ISignInBiometricRepository {
 
 export class SignInBiometricRepositoryMock implements ISignInBiometricRepository {
   async execute(): Promise<PatientDTO | undefined> {
-    return {
+    return Promise.resolve({
       id: 1,
       fmpId: '239254',
       nhcId: '239254',
@@ -68,6 +68,6 @@ export class SignInBiometricRepositoryMock implements ISignInBiometricRepository
         biometricHash: '',
         biometricSalt: '',
       },
-    };
+    });
   }
 }

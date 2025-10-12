@@ -79,7 +79,7 @@ export class GetInsuredPatientDuesRepository implements IGetInsuredPatientDuesRe
 
 export class GetInsuredPatientDuesRepositoryMock implements IGetInsuredPatientDuesRepository {
   async execute(): Promise<InsuredPatientDuesDTO[]> {
-    return [
+    return Promise.resolve([
       {
         versionNumber: 1,
         dueList: [
@@ -96,6 +96,6 @@ export class GetInsuredPatientDuesRepositoryMock implements IGetInsuredPatientDu
           },
         ],
       },
-    ];
+    ]);
   }
 }

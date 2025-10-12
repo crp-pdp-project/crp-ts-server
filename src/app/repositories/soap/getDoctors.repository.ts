@@ -73,7 +73,7 @@ export class GetDoctorsRepository implements IGetDoctorsRepository {
 
 export class GetDoctorsRepositoryMock implements IGetDoctorsRepository {
   async execute(): Promise<DoctorDTO[]> {
-    return [
+    return Promise.resolve([
       {
         id: '70358611',
         name: 'MARÍA DEL CARMEN PA JA',
@@ -82,6 +82,6 @@ export class GetDoctorsRepositoryMock implements IGetDoctorsRepository {
           name: 'Medicina Física y Rehabilitación',
         },
       },
-    ];
+    ]);
   }
 }

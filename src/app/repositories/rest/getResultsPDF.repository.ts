@@ -45,6 +45,6 @@ export class GetResultPDFRepository implements IGetResultPDFRepository {
 
 export class GetResultPDFRepositoryMock implements IGetResultPDFRepository {
   async execute(): Promise<Buffer> {
-    return Buffer.from(new ArrayBuffer());
+    return Promise.resolve(Buffer.from(new ArrayBuffer()));
   }
 }

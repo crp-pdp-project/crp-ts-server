@@ -27,11 +27,11 @@ export class GetAuthAttemptsRepository implements IGetAuthAttemptsRepository {
 
 export class GetAuthAttemptsRepositoryMock implements IGetAuthAttemptsRepository {
   async execute(): Promise<AuthAttemptDTO | undefined> {
-    return {
+    return Promise.resolve({
       id: 1,
       tryCount: 1,
       blockExpiresAt: null,
       tryCountExpiresAt: null,
-    };
+    });
   }
 }

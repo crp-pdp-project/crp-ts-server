@@ -24,6 +24,6 @@ export class SaveBiometricPasswordRepository implements ISaveBiometricPasswordRe
 
 export class SaveBiometricPasswordRepositoryMock implements ISaveBiometricPasswordRepository {
   async execute(): Promise<UpdateResult> {
-    return { numUpdatedRows: BigInt(1) };
+    return Promise.resolve({ numUpdatedRows: BigInt(1) });
   }
 }

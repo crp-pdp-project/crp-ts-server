@@ -95,7 +95,7 @@ export class GetSitedsPatientRepository implements IGetSitedsPatientRepository {
 
 export class GetSitedsPatientRepositoryMock implements IGetSitedsPatientRepository {
   async execute(): Promise<ConNom271DTO> {
-    return {
+    return Promise.resolve({
       ipressId: '20001',
       iafaId: '980001C',
       date: '20171025',
@@ -138,6 +138,6 @@ export class GetSitedsPatientRepositoryMock implements IGetSitedsPatientReposito
           contractorId: '20120877055',
         },
       ],
-    };
+    });
   }
 }

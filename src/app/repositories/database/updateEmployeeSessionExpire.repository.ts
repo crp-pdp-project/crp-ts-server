@@ -1,28 +1,25 @@
 import { UpdateResult } from 'kysely';
+import { EmployeeSessionDM } from 'src/app/entities/dms/employeeSessions.dm';
 
-import { SessionDM } from 'src/app/entities/dms/sessions.dm';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IUpdateSessionExpireRepository {
   execute(
-    jti: SessionDM['jti'],
-    patientId: SessionDM['patientId'],
-    expiresAt: SessionDM['expiresAt'],
+    jti: EmployeeSessionDM['jti'],
+    expiresAt: EmployeeSessionDM['expiresAt'],
   ): Promise<UpdateResult>;
 }
 
 export class UpdateSessionExpireRepository implements IUpdateSessionExpireRepository {
   async execute(
-    jti: SessionDM['jti'],
-    patientId: SessionDM['patientId'],
-    expiresAt: SessionDM['expiresAt'],
+    jti: EmployeeSessionDM['jti'],
+    expiresAt: EmployeeSessionDM['expiresAt'],
   ): Promise<UpdateResult> {
     const db = MysqlClient.instance.getDb();
     return db
-      .updateTable('Sessions')
+      .updateTable('EmployeeSessions')
       .set({ expiresAt })
       .where('jti', '=', jti)
-      .where('patientId', '=', patientId)
       .executeTakeFirstOrThrow();
   }
 }

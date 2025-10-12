@@ -115,7 +115,7 @@ export class GetAppointmentDetailRepository implements IGetAppointmentDetailRepo
 
 export class GetAppointmentDetailRepositoryMock implements IGetAppointmentDetailRepository {
   async execute(): Promise<AppointmentDTO> {
-    return {
+    return Promise.resolve({
       id: 'C202538212187',
       episodeId: 'C25CLIRP38212187',
       date: '11:00:00 2025-04-15',
@@ -145,6 +145,6 @@ export class GetAppointmentDetailRepositoryMock implements IGetAppointmentDetail
       rescheduleAction: 'R03',
       payAction: 'P02',
       payState: 'Pagado',
-    };
+    });
   }
 }

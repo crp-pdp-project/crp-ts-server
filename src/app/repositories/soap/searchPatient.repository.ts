@@ -106,7 +106,7 @@ export class SearchPatientRepository implements ISearchPatientRepository {
 
 export class SearchPatientRepositoryMock implements ISearchPatientRepository {
   async execute(): Promise<PatientExternalDTO> {
-    return {
+    return Promise.resolve({
       fmpId: '239254',
       nhcId: '00733480',
       firstName: 'MARIA DEL PILAR LILIANA',
@@ -127,6 +127,6 @@ export class SearchPatientRepositoryMock implements ISearchPatientRepository {
       provinceId: null,
       districtId: '150130',
       zipCode: null,
-    };
+    });
   }
 }

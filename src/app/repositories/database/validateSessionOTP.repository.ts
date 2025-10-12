@@ -21,6 +21,6 @@ export class ValidateSessionOTPRepository implements IValidateSessionOTPReposito
 
 export class ValidateSessionOTPRepositoryMock implements IValidateSessionOTPRepository {
   async execute(): Promise<UpdateResult> {
-    return { numUpdatedRows: BigInt(1) };
+    return Promise.resolve({ numUpdatedRows: BigInt(1) });
   }
 }

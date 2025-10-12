@@ -86,7 +86,7 @@ export class GetGuaranteeLetterRepository implements IGetGuaranteeLetterReposito
 
 export class GetGuaranteeLetterRepositoryMock implements IGetGuaranteeLetterRepository {
   async execute(): Promise<GuaranteeLetterDTO[]> {
-    return [
+    return Promise.resolve([
       {
         letterNumber: '2024DI026736',
         referenceNumber: null,
@@ -99,6 +99,6 @@ export class GetGuaranteeLetterRepositoryMock implements IGetGuaranteeLetterRepo
         rejectReason: null,
         notes: null,
       },
-    ];
+    ]);
   }
 }

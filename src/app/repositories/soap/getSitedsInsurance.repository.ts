@@ -94,7 +94,7 @@ export class GetSitedsInsuranceRepository implements IGetSitedsInsuranceReposito
 
 export class GetSitedsInsuranceRepositoryMock implements IGetSitedsInsuranceRepository {
   async execute(): Promise<ConCod271DTO> {
-    return {
+    return Promise.resolve({
       ipressId: '40007',
       iafaId: '980001C',
       date: '20171025',
@@ -169,6 +169,6 @@ export class GetSitedsInsuranceRepositoryMock implements IGetSitedsInsuranceRepo
           eliminationPeriodEndDate: '00000000',
         },
       ],
-    };
+    });
   }
 }

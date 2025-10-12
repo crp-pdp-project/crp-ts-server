@@ -105,7 +105,7 @@ export class GetDoctorAvailabilityRepository implements IGetDoctorAvailabilityRe
 
 export class GetDoctorAvailabilityRepositoryMock implements IGetDoctorAvailabilityRepository {
   async execute(): Promise<DoctorAvailabilityDTO[]> {
-    return [
+    return Promise.resolve([
       {
         specialtyId: '900',
         doctorId: '44789755',
@@ -115,6 +115,6 @@ export class GetDoctorAvailabilityRepositoryMock implements IGetDoctorAvailabili
         date: '20250508',
         time: '150000',
       },
-    ];
+    ]);
   }
 }

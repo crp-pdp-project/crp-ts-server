@@ -5,6 +5,7 @@ import { jwtDecrypt, JWTPayload, EncryptJWT } from 'jose';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import {
   IJWTConfig,
+  JWTConfigEmployee,
   JWTConfigEnroll,
   JWTConfigRecover,
   JWTConfigSession,
@@ -83,5 +84,9 @@ export class JWTManagerBuilder {
 
   static buildSessionConfig<T extends JWTPayload>(): JWTManager<T> {
     return new JWTManager<T>(new JWTConfigSession());
+  }
+
+  static buildEmployeeConfig<T extends JWTPayload>(): JWTManager<T> {
+    return new JWTManager<T>(new JWTConfigEmployee());
   }
 }
