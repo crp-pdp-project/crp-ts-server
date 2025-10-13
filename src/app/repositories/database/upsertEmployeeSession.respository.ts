@@ -1,32 +1,29 @@
 import { Insertable, InsertResult } from 'kysely';
 
 import { SessionDM } from 'src/app/entities/dms/sessions.dm';
-import { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
+import { EmployeeSessionDTO } from 'src/app/entities/dtos/service/employeeSession.dto';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
-export interface IUpsertSessionRepository {
-  execute(session: SessionDTO): Promise<InsertResult>;
+export interface IUpsertEmployeeSessionRepository {
+  execute(session: EmployeeSessionDTO): Promise<InsertResult>;
 }
 
-export class UpsertSessionRepository implements IUpsertSessionRepository {
-  async execute(session: SessionDTO): Promise<InsertResult> {
+export class UpsertEmployeeSessionRepository implements IUpsertEmployeeSessionRepository {
+  async execute(session: EmployeeSessionDTO): Promise<InsertResult> {
     const db = MysqlClient.instance.getDb();
     return db
       .insertInto('Sessions')
       .values(session as Insertable<SessionDM>)
       .onDuplicateKeyUpdate((eb) => ({
         jti: eb.val(session.jti),
+        username: eb.val(session.username),
         expiresAt: eb.val(session.expiresAt),
-        deviceId: eb.val(session.deviceId),
-        otp: eb.val(session.otp ?? null),
-        otpSendCount: eb.val(session.otpSendCount ?? null),
-        isValidated: eb.val(session.isValidated ?? false),
       }))
       .executeTakeFirstOrThrow();
   }
 }
 
-export class UpsertSessionRepositoryMock implements IUpsertSessionRepository {
+export class UpsertEmployeeSessionRepositoryMock implements IUpsertEmployeeSessionRepository {
   async execute(): Promise<InsertResult> {
     return Promise.resolve({
       insertId: BigInt(1),

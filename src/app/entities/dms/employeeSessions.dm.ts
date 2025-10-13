@@ -7,6 +7,10 @@ export const EmployeeSessionDMSchema = z.object({
     description: 'Unique ID of the session',
     example: 1,
   }),
+  username: z.string().openapi({
+    description: 'Username of the employee',
+    example: 'PRUEBA',
+  }),
   jti: z.string().openapi({
     description: 'Unique Identifier of the JWT',
     example: 'AnyJTI',

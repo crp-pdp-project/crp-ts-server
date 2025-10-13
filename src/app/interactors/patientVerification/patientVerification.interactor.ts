@@ -4,7 +4,7 @@ import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.
 import { AuthAttemptModel, AuthFlowIdentifier } from 'src/app/entities/models/authAttempt/authAttempt.model';
 import { DeviceModel } from 'src/app/entities/models/device/device.model';
 import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
-import { PatientExternalSessionModel } from 'src/app/entities/models/patient/patientExternalSession.model';
+import { PatientExternalTokenModel } from 'src/app/entities/models/patient/patientExternalToken.model';
 import {
   GetAuthAttemptsRepository,
   IGetAuthAttemptsRepository,
@@ -32,7 +32,7 @@ export interface IPatientVerificationStrategy {
 }
 
 export interface IPatientVerificationInteractor {
-  verify(body: PatientVerificationBodyDTO, device: DeviceModel): Promise<PatientExternalSessionModel>;
+  verify(body: PatientVerificationBodyDTO, device: DeviceModel): Promise<PatientExternalTokenModel>;
 }
 
 export class PatientVerificationInteractor implements IPatientVerificationInteractor {
@@ -46,7 +46,7 @@ export class PatientVerificationInteractor implements IPatientVerificationIntera
     private readonly verificationStrategy: IPatientVerificationStrategy,
   ) {}
 
-  async verify(body: PatientVerificationBodyDTO, device: DeviceModel): Promise<PatientExternalSessionModel> {
+  async verify(body: PatientVerificationBodyDTO, device: DeviceModel): Promise<PatientExternalTokenModel> {
     const attemptModel = await this.fetchAttempt(body.documentNumber);
     attemptModel.validateAttempt();
     const externalPatientModel = await this.searchPatient(body);
@@ -76,14 +76,14 @@ export class PatientVerificationInteractor implements IPatientVerificationIntera
   private async generateJwtToken(
     sessionPayload: SessionPayloadDTO,
     patientExternalModel: PatientExternalModel,
-  ): Promise<PatientExternalSessionModel> {
+  ): Promise<PatientExternalTokenModel> {
     const token = await this.jwtManager.generateToken(sessionPayload);
-    const externalSessionModel = new PatientExternalSessionModel(patientExternalModel, token);
+    const externalSessionModel = new PatientExternalTokenModel(patientExternalModel, token);
 
     return externalSessionModel;
   }
 
-  private async persistSession(sessionModel: PatientExternalSessionModel): Promise<void> {
+  private async persistSession(sessionModel: PatientExternalTokenModel): Promise<void> {
     await this.saveSessionRepository.execute(sessionModel.toPersisSessionPayload());
   }
 }

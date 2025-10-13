@@ -5,7 +5,7 @@ import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.
 import { AuthAttemptModel, AuthFlowIdentifier } from 'src/app/entities/models/authAttempt/authAttempt.model';
 import { DeviceModel } from 'src/app/entities/models/device/device.model';
 import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
-import { PatientExternalSessionModel } from 'src/app/entities/models/patient/patientExternalSession.model';
+import { PatientExternalTokenModel } from 'src/app/entities/models/patient/patientExternalToken.model';
 import {
   GetAuthAttemptsRepository,
   IGetAuthAttemptsRepository,
@@ -35,7 +35,7 @@ import { ISearchPatientRepository, SearchPatientRepository } from 'src/app/repos
 import { IJWTManager, JWTManagerBuilder } from 'src/general/managers/jwt/jwt.manager';
 
 export interface ICreatePatientInteractor {
-  create(body: CreatePatientBodyDTO, device: DeviceModel): Promise<PatientExternalSessionModel>;
+  create(body: CreatePatientBodyDTO, device: DeviceModel): Promise<PatientExternalTokenModel>;
 }
 
 export class CreatePatientInteractor implements ICreatePatientInteractor {
@@ -51,7 +51,7 @@ export class CreatePatientInteractor implements ICreatePatientInteractor {
     private readonly jwtManager: IJWTManager<SessionPayloadDTO>,
   ) {}
 
-  async create(body: CreatePatientBodyDTO, device: DeviceModel): Promise<PatientExternalSessionModel> {
+  async create(body: CreatePatientBodyDTO, device: DeviceModel): Promise<PatientExternalTokenModel> {
     const attemptModel = await this.fetchAttempt(body.documentNumber);
     attemptModel.validateAttempt();
     const newFmpId = await this.patientCreation(body);
@@ -115,9 +115,9 @@ export class CreatePatientInteractor implements ICreatePatientInteractor {
     }
   }
 
-  private async generateJwtToken(patientExternalModel: PatientExternalModel): Promise<PatientExternalSessionModel> {
+  private async generateJwtToken(patientExternalModel: PatientExternalModel): Promise<PatientExternalTokenModel> {
     const token = await this.jwtManager.generateToken(patientExternalModel.toEnrollSession());
-    const externalSessionModel = new PatientExternalSessionModel(patientExternalModel, token);
+    const externalSessionModel = new PatientExternalTokenModel(patientExternalModel, token);
 
     return externalSessionModel;
   }
@@ -134,7 +134,7 @@ export class CreatePatientInteractor implements ICreatePatientInteractor {
     patient.inyectNewDevice(Number(insertId));
   }
 
-  private async persistSession(sessionModel: PatientExternalSessionModel): Promise<void> {
+  private async persistSession(sessionModel: PatientExternalTokenModel): Promise<void> {
     await this.saveSessionRepository.execute(sessionModel.toPersisSessionPayload());
   }
 }

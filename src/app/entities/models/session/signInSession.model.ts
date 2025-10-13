@@ -2,12 +2,12 @@ import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
 import { SignInSessionPayloadDTO } from 'src/app/entities/dtos/service/signInSessionPayload.dto';
+import { Audiences } from 'src/general/enums/audience.enum';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 import { ErrorModel } from '../error/error.model';
 import { PatientModel } from '../patient/patient.model';
 
-import { SessionType } from './session.model';
 import { SessionModel } from './session.model';
 import { SessionSelfOnlyStrategy } from './strategies/sessionSelfOnly.strategy';
 import { SessionSelfOrDependantsStrategy } from './strategies/sessionSelfOrDependants.strategy';
@@ -51,14 +51,14 @@ export class ValidateFmpIdStrategyFactory {
 }
 
 export class SignInSessionModel extends SessionModel {
-  readonly type = SessionType.SIGN_IN;
+  readonly type = Audiences.SIGN_IN;
   readonly patient: SignInSessionPayloadDTO['patient'];
   private readonly selfId: PatientDM['fmpId'];
 
   #relatives?: PatientModel[];
 
   constructor(session: SessionDTO, payload: SignInSessionPayloadDTO) {
-    super(session);
+    super(session.jti, session.expiresAt);
 
     this.patient = payload.patient;
     this.selfId = payload.patient.fmpId;

@@ -6,11 +6,12 @@ import {
 } from 'src/app/entities/dtos/input/createRelative.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import { SessionModel, SessionType } from 'src/app/entities/models/session/session.model';
+import { SessionModel } from 'src/app/entities/models/session/session.model';
 import {
   CreateRelativeInteractorBuilder,
   ICreateRelativeInteractor,
 } from 'src/app/interactors/createRelative/createRelative.interactor';
+import { Audiences } from 'src/general/enums/audience.enum';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface ICreateRelativeController {
@@ -28,7 +29,7 @@ export class CreateRelativeController implements ICreateRelativeController {
   async handle(input: FastifyRequest<CreateRelativeInputDTO>, reply: FastifyReply): Promise<void> {
     try {
       const body = CreateRelativeBodyDTOSchema.parse(input.body);
-      const session = SessionModel.validateSessionInstance(SessionType.SIGN_IN, input.session);
+      const session = SessionModel.validateSessionInstance(Audiences.SIGN_IN, input.session);
       await this.createRelative.create(body, session);
       this.response = this.responseManager.validateResponse();
     } catch (error) {

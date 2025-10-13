@@ -7,11 +7,12 @@ import {
 } from 'src/app/entities/dtos/input/payAppointment.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import { SessionModel, SessionType } from 'src/app/entities/models/session/session.model';
+import { SessionModel } from 'src/app/entities/models/session/session.model';
 import {
   IPayAppointmentInteractor,
   PayAppointmentInteractorBuilder,
 } from 'src/app/interactors/payAppointment/payAppointment.interactor';
+import { Audiences } from 'src/general/enums/audience.enum';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IPayAppointmentController {
@@ -30,7 +31,7 @@ export class PayAppointmentController implements IPayAppointmentController {
     try {
       const body = PayAppointmentBodyDTOSchema.parse(input.body);
       const params = PayAppointmentParamsDTOSchema.parse(input.params);
-      const session = SessionModel.validateSessionInstance(SessionType.SIGN_IN, input.session);
+      const session = SessionModel.validateSessionInstance(Audiences.SIGN_IN, input.session);
       await this.payAppointment.pay(body, params, session);
       this.response = this.responseManager.validateResponse();
     } catch (error) {

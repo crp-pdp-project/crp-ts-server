@@ -3,11 +3,12 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { HealthInsuranceViewOutputDTOSchema } from 'src/app/entities/dtos/output/healthInsuranceView.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import { SessionModel, SessionType } from 'src/app/entities/models/session/session.model';
+import { SessionModel } from 'src/app/entities/models/session/session.model';
 import {
   HealthInsuranceViewInteractorBuilder,
   IHealthInsuranceViewInteractor,
 } from 'src/app/interactors/healthInsuranceView/healthInsuranceView.interactor';
+import { Audiences } from 'src/general/enums/audience.enum';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IHealthInsuranceViewController {
@@ -24,7 +25,7 @@ export class HealthInsuranceViewController implements IHealthInsuranceViewContro
 
   async handle(input: FastifyRequest, reply: FastifyReply): Promise<void> {
     try {
-      SessionModel.validateSessionInstance(SessionType.SIGN_IN, input.session);
+      SessionModel.validateSessionInstance(Audiences.SIGN_IN, input.session);
       const model = await this.healthInsuranceInteractor.getView();
       this.response = this.responseManager.validateResponse(model);
     } catch (error) {

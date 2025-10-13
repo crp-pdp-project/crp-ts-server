@@ -18,13 +18,13 @@ abstract class BaseJWTConfig implements IJWTConfig {
 }
 
 export class JWTConfigSession extends BaseJWTConfig {
-  readonly audience = Audiences.SING_IN;
+  readonly audience = Audiences.SIGN_IN;
   readonly tokenExpTime = '1y';
   readonly SessionExpTime = 15;
 }
 
 export class JWTConfigEmployee extends BaseJWTConfig {
-  readonly audience = Audiences.EMPLOYEE_SING_IN;
+  readonly audience = Audiences.EMPLOYEE_SIGN_IN;
   readonly tokenExpTime = '1y';
   readonly SessionExpTime = 15;
 }

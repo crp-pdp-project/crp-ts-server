@@ -7,11 +7,12 @@ import {
 import { RelativeVerificationOutputDTOSchema } from 'src/app/entities/dtos/output/relativeVerification.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import { SessionModel, SessionType } from 'src/app/entities/models/session/session.model';
+import { SessionModel } from 'src/app/entities/models/session/session.model';
 import {
   IRelativeVerificationInteractor,
   RelativeVerificationInteractorBuilder,
 } from 'src/app/interactors/relativeVerification/relativeVefirication.interactor';
+import { Audiences } from 'src/general/enums/audience.enum';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IRelativeVerificationController {
@@ -29,7 +30,7 @@ export class RelativeVerificationController implements IRelativeVerificationCont
   async handle(input: FastifyRequest<RelativeVerificationInputDTO>, reply: FastifyReply): Promise<void> {
     try {
       const body = RelativeVerificationBodyDTOSchema.parse(input.body);
-      const session = SessionModel.validateSessionInstance(SessionType.SIGN_IN, input.session);
+      const session = SessionModel.validateSessionInstance(Audiences.SIGN_IN, input.session);
       const model = await this.relativeVerification.verify(body, session);
       this.response = this.responseManager.validateResponse(model);
     } catch (error) {

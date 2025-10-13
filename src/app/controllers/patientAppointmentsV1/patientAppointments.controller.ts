@@ -9,11 +9,12 @@ import { PatientHistoricAppointmentsOutputDTOSchema } from 'src/app/entities/dto
 import { PatientNextAppointmentOutputDTOSchema } from 'src/app/entities/dtos/output/patientNextAppointment.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import { SessionModel, SessionType } from 'src/app/entities/models/session/session.model';
+import { SessionModel } from 'src/app/entities/models/session/session.model';
 import {
   IPatientAppointmentsInteractor,
   PatientAppointmentsInteractorBuilder,
 } from 'src/app/interactors/patientAppointments/patientAppointments.interactor';
+import { Audiences } from 'src/general/enums/audience.enum';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IPatientApointmentsController {
@@ -31,7 +32,7 @@ export class PatientApointmentsController implements IPatientApointmentsControll
   async handle(input: FastifyRequest<PatientAppointmentsInputDTO>, reply: FastifyReply): Promise<void> {
     try {
       const params = PatientAppointmentsParamsDTOSchema.parse(input.params);
-      const session = SessionModel.validateSessionInstance(SessionType.SIGN_IN, input.session);
+      const session = SessionModel.validateSessionInstance(Audiences.SIGN_IN, input.session);
       const model = await this.patientAppointmentsInteractor.getAppointmentInfo(params, session);
       this.response = this.responseManager.validateResponse(model ?? undefined);
     } catch (error) {

@@ -8,11 +8,12 @@ import {
 import { RescheduleAppointmentOutputDTOSchema } from 'src/app/entities/dtos/output/rescheduleAppointment.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import { SessionModel, SessionType } from 'src/app/entities/models/session/session.model';
+import { SessionModel } from 'src/app/entities/models/session/session.model';
 import {
   IRescheduleAppointmentInteractor,
   RescheduleAppointmentInteractorBuilder,
 } from 'src/app/interactors/rescheduleAppointment/rescheduleAppointment.interactor';
+import { Audiences } from 'src/general/enums/audience.enum';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IRescheduleAppointmentController {
@@ -31,7 +32,7 @@ export class RescheduleAppointmentController implements IRescheduleAppointmentCo
     try {
       const params = RescheduleAppointmentParamsDTOSchema.parse(input.params);
       const body = RescheduleAppointmentBodyDTOSchema.parse(input.body);
-      const session = SessionModel.validateSessionInstance(SessionType.SIGN_IN, input.session);
+      const session = SessionModel.validateSessionInstance(Audiences.SIGN_IN, input.session);
       const model = await this.rescheduleAppointment.reschedule(body, params, session);
       this.response = this.responseManager.validateResponse(model);
     } catch (error) {

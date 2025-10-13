@@ -5,11 +5,12 @@ import {
   PatientResultPDFParamsDTOSchema,
 } from 'src/app/entities/dtos/input/patientResultPDF.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { SessionModel, SessionType } from 'src/app/entities/models/session/session.model';
+import { SessionModel } from 'src/app/entities/models/session/session.model';
 import {
   IPatientResultPDFInteractor,
   PatientResultPDFInteractorBuilder,
 } from 'src/app/interactors/patientResultPDF/patientResultPDF.interactor';
+import { Audiences } from 'src/general/enums/audience.enum';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IPatientResultPDFController {
@@ -25,7 +26,7 @@ export class PatientResultPDFController implements IPatientResultPDFController {
   async handle(input: FastifyRequest<PatientResultPDFInputDTO>, reply: FastifyReply): Promise<void> {
     try {
       const params = PatientResultPDFParamsDTOSchema.parse(input.params);
-      const session = SessionModel.validateSessionInstance(SessionType.SIGN_IN, input.session);
+      const session = SessionModel.validateSessionInstance(Audiences.SIGN_IN, input.session);
       const model = await this.appointmentPDF.obtain(params, session);
 
       reply

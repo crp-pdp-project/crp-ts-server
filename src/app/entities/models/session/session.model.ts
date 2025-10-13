@@ -1,5 +1,5 @@
-import { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
 import { BaseModel } from 'src/app/entities/models/base.model';
+import { Audiences } from 'src/general/enums/audience.enum';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 import { ErrorModel } from '../error/error.model';
@@ -8,38 +8,26 @@ import { EnrollSessionModel } from './enrollSession.model';
 import { RecoverSessionModel } from './recoverSession.model';
 import { SignInSessionModel } from './signInSession.model';
 
-export enum SessionType {
-  ENROLL = 'enroll',
-  RECOVER = 'recover',
-  SIGN_IN = 'signIn',
-}
-
 type SessionTypeMap = {
-  [SessionType.ENROLL]: EnrollSessionModel;
-  [SessionType.RECOVER]: RecoverSessionModel;
-  [SessionType.SIGN_IN]: SignInSessionModel;
+  [Audiences.ENROLL]: EnrollSessionModel;
+  [Audiences.RECOVER]: RecoverSessionModel;
+  [Audiences.SIGN_IN]: SignInSessionModel;
 };
-export type SessionByType<T extends SessionType> = SessionTypeMap[T];
+export type SessionByType<T extends keyof SessionTypeMap> = SessionTypeMap[T];
 
 export abstract class SessionModel extends BaseModel {
   readonly jti: string;
-  readonly otp: string | null;
-  readonly otpSendCount: number | null;
-  readonly isValidated: boolean;
   readonly expiresAt: string;
-  abstract readonly type: SessionType;
+  abstract readonly type: Audiences;
 
-  constructor(session: SessionDTO) {
+  constructor(jti?: string, expiresAt?: string) {
     super();
 
-    this.jti = session.jti ?? '';
-    this.otp = session.otp ?? null;
-    this.otpSendCount = session.otpSendCount ?? null;
-    this.isValidated = session.isValidated ?? false;
-    this.expiresAt = session.expiresAt ?? '';
+    this.jti = jti ?? '';
+    this.expiresAt = expiresAt ?? '';
   }
 
-  static validateSessionInstance<T extends SessionType>(expected: T, session?: SessionModel): SessionByType<T> {
+  static validateSessionInstance<T extends keyof SessionTypeMap>(expected: T, session?: SessionModel): SessionByType<T> {
     if (!session || session.type !== expected) {
       throw ErrorModel.forbidden({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
     }

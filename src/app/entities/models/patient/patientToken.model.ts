@@ -3,7 +3,7 @@ import { BaseModel } from 'src/app/entities/models/base.model';
 import { PatientModel } from 'src/app/entities/models/patient/patient.model';
 import { GenerationResponse } from 'src/general/managers/jwt/jwt.manager';
 
-export class PatientSessionModel extends BaseModel {
+export class PatientTokenModel extends BaseModel {
   readonly patient: PatientModel;
   readonly token: string;
   readonly #jti: string;

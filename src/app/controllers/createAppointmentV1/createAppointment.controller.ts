@@ -8,11 +8,12 @@ import {
 import { CreateAppointmentOutputDTOSchema } from 'src/app/entities/dtos/output/createAppointment.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import { SessionModel, SessionType } from 'src/app/entities/models/session/session.model';
+import { SessionModel } from 'src/app/entities/models/session/session.model';
 import {
   CreateAppointmentInteractorBuilder,
   ICreateAppointmentInteractor,
 } from 'src/app/interactors/createAppointment/createAppointment.interactor';
+import { Audiences } from 'src/general/enums/audience.enum';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface ICreateAppointmentController {
@@ -31,7 +32,7 @@ export class CreateAppointmentController implements ICreateAppointmentController
     try {
       const body = CreateAppointmentBodyDTOSchema.parse(input.body);
       const params = CreateAppointmentParamsDTOSchema.parse(input.params);
-      const session = SessionModel.validateSessionInstance(SessionType.SIGN_IN, input.session);
+      const session = SessionModel.validateSessionInstance(Audiences.SIGN_IN, input.session);
       const model = await this.appointmentInteractor.create(body, params, session);
       this.response = this.responseManager.validateResponse(model);
     } catch (error) {

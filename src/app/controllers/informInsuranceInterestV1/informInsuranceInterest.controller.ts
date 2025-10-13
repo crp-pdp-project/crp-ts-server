@@ -2,11 +2,12 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import { SessionModel, SessionType } from 'src/app/entities/models/session/session.model';
+import { SessionModel } from 'src/app/entities/models/session/session.model';
 import {
   IInformInsuranceInterestInteractor,
   InformInsuranceInterestInteractorBuilder,
 } from 'src/app/interactors/informInsuranceInterest/informInsuranceInterest.interactor';
+import { Audiences } from 'src/general/enums/audience.enum';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IInformInsuranceInterestController {
@@ -23,7 +24,7 @@ export class InformInsuranceInterestController implements IInformInsuranceIntere
 
   async handle(input: FastifyRequest, reply: FastifyReply): Promise<void> {
     try {
-      const session = SessionModel.validateSessionInstance(SessionType.SIGN_IN, input.session);
+      const session = SessionModel.validateSessionInstance(Audiences.SIGN_IN, input.session);
       await this.insuranceInterest.inform(session);
       this.response = this.responseManager.validateResponse();
     } catch (error) {

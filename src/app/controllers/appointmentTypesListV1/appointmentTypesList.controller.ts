@@ -7,11 +7,12 @@ import {
 import { AppointmentTypesListOutputDTOSchema } from 'src/app/entities/dtos/output/appointmentTypesList.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import { SessionModel, SessionType } from 'src/app/entities/models/session/session.model';
+import { SessionModel } from 'src/app/entities/models/session/session.model';
 import {
   AppointmentTypesListInteractorBuilder,
   IAppointmentTypesListInteractor,
 } from 'src/app/interactors/appointmentTypesList/appointmentTypesList.interactor';
+import { Audiences } from 'src/general/enums/audience.enum';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IAppointmentTypesListController {
@@ -29,7 +30,7 @@ export class AppointmentTypesListController implements IAppointmentTypesListCont
   async handle(input: FastifyRequest<AppointmentTypesListInputDTO>, reply: FastifyReply): Promise<void> {
     try {
       const query = AppointmentTypesListQueryDTOSchema.parse(input.query);
-      SessionModel.validateSessionInstance(SessionType.SIGN_IN, input.session);
+      SessionModel.validateSessionInstance(Audiences.SIGN_IN, input.session);
       const model = await this.appointmentTypesInteractor.list(query);
       this.response = this.responseManager.validateResponse(model);
     } catch (error) {

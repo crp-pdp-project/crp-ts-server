@@ -6,11 +6,12 @@ import {
 } from 'src/app/entities/dtos/input/deleteRelative.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import { SessionModel, SessionType } from 'src/app/entities/models/session/session.model';
+import { SessionModel } from 'src/app/entities/models/session/session.model';
 import {
   DeleteRelativeInteractorBuilder,
   IDeleteRelativeInteractor,
 } from 'src/app/interactors/deleteRelative/deleteRelative.interactor';
+import { Audiences } from 'src/general/enums/audience.enum';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IDeleteRelativeController {
@@ -28,7 +29,7 @@ export class DeleteRelativeController implements IDeleteRelativeController {
   async handle(input: FastifyRequest<DeleteRelativeInputDTO>, reply: FastifyReply): Promise<void> {
     try {
       const params = DeleteRelativeParamsDTOSchema.parse(input.params);
-      const session = SessionModel.validateSessionInstance(SessionType.SIGN_IN, input.session);
+      const session = SessionModel.validateSessionInstance(Audiences.SIGN_IN, input.session);
       await this.deleteRelative.delete(params, session);
       this.response = this.responseManager.validateResponse();
     } catch (error) {

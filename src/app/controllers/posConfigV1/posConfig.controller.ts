@@ -4,8 +4,9 @@ import { POSConfigOutputDTOSchema } from 'src/app/entities/dtos/output/posConfig
 import { DeviceModel } from 'src/app/entities/models/device/device.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import { SessionModel, SessionType } from 'src/app/entities/models/session/session.model';
+import { SessionModel } from 'src/app/entities/models/session/session.model';
 import { IPOSConfigInteractor, POSConfigInteractorBuilder } from 'src/app/interactors/posConfig/posConfig.interactor';
+import { Audiences } from 'src/general/enums/audience.enum';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IPOSConfigController {
@@ -22,7 +23,7 @@ export class POSConfigController implements IPOSConfigController {
 
   async handle(input: FastifyRequest, reply: FastifyReply): Promise<void> {
     try {
-      const session = SessionModel.validateSessionInstance(SessionType.SIGN_IN, input.session);
+      const session = SessionModel.validateSessionInstance(Audiences.SIGN_IN, input.session);
       const device = DeviceModel.extractDevice(input.device);
       const model = await this.posConfig.config(session, device);
       this.response = this.responseManager.validateResponse(model);

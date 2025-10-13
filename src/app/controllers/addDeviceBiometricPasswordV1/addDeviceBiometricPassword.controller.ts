@@ -6,11 +6,12 @@ import {
 } from 'src/app/entities/dtos/input/addDeviceBiometricPassword.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import { SessionModel, SessionType } from 'src/app/entities/models/session/session.model';
+import { SessionModel } from 'src/app/entities/models/session/session.model';
 import {
   AddDeviceBiometricPasswordInteractorBuilder,
   IAddDeviceBiometricPasswordInteractor,
 } from 'src/app/interactors/addDeviceBiometricPassword/addDeviceBiometricPassword.interactor';
+import { Audiences } from 'src/general/enums/audience.enum';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IAddDeviceBiometricPasswordController {
@@ -28,7 +29,7 @@ export class AddDeviceBiometricPasswordController implements IAddDeviceBiometric
   async handle(input: FastifyRequest<AddDeviceBiometricPasswordInputDTO>, reply: FastifyReply): Promise<void> {
     try {
       const body = AddDeviceBiometricPasswordBodyDTOSchema.parse(input.body);
-      const session = SessionModel.validateSessionInstance(SessionType.SIGN_IN, input.session);
+      const session = SessionModel.validateSessionInstance(Audiences.SIGN_IN, input.session);
       await this.addDeviceBiometricPassword.add(body, session);
       this.response = this.responseManager.validateResponse();
     } catch (error) {

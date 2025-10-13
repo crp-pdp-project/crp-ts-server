@@ -1,9 +1,11 @@
-import { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
 import { BaseModel } from 'src/app/entities/models/base.model';
 import { GenerationResponse } from 'src/general/managers/jwt/jwt.manager';
+
+import { EmployeeSessionDTO } from '../../dtos/service/employeeSession.dto';
+
 import { EmployeeModel } from './employee.model';
 
-export class EmployeeSessionModel extends BaseModel {
+export class EmployeeTokenModel extends BaseModel {
   readonly employee: EmployeeModel;
   readonly token: string;
   readonly #jti: string;
@@ -18,9 +20,10 @@ export class EmployeeSessionModel extends BaseModel {
     this.#expiresAt = token.expiresAt;
   }
 
-  toPersisSessionPayload(): SessionDTO {
+  toPersisSessionPayload(): EmployeeSessionDTO {
     return {
       jti: this.#jti,
+      username: this.employee.username,
       expiresAt: this.#expiresAt,
     };
   }

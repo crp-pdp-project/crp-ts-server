@@ -5,11 +5,12 @@ import {
   AppointmentDocumentPDFParamsDTOSchema,
 } from 'src/app/entities/dtos/input/appointmentDocumentPDF.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { SessionModel, SessionType } from 'src/app/entities/models/session/session.model';
+import { SessionModel } from 'src/app/entities/models/session/session.model';
 import {
   AppointmentDocumentPDFInteractorBuilder,
   IAppointmentDocumentPDFInteractor,
 } from 'src/app/interactors/appointmentDocumentPDF/appointmentDocumentPDF.interactor';
+import { Audiences } from 'src/general/enums/audience.enum';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IAppointmentDocumentPDFController {
@@ -25,7 +26,7 @@ export class AppointmentDocumentPDFController implements IAppointmentDocumentPDF
   async handle(input: FastifyRequest<AppointmentDocumentPDFInputDTO>, reply: FastifyReply): Promise<void> {
     try {
       const params = AppointmentDocumentPDFParamsDTOSchema.parse(input.params);
-      const session = SessionModel.validateSessionInstance(SessionType.SIGN_IN, input.session);
+      const session = SessionModel.validateSessionInstance(Audiences.SIGN_IN, input.session);
       const model = await this.appointmentPDF.obtain(params, session);
 
       reply
