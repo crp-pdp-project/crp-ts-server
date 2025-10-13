@@ -145,7 +145,7 @@ export class Server {
   }
 
   private static registerHooks(): void {
-    this.app.addHook('onRequest', async (request: FastifyRequest) => {
+    this.app.addHook('preHandler', async (request: FastifyRequest) => {
       this.logger.info('Incoming Request', {
         method: request.method,
         url: request.url,
