@@ -123,9 +123,6 @@ export class AppointmentModel extends BaseModel {
     switch (true) {
       case defaultAction === PaymentActionStates.ALLOWED && this.insurance?.type !== InsuranceTypes.SITEDS:
         return PaymentActionStates.CANNOT_PAY;
-      case this.payState === PayStates.PAYED:
-      case this.status !== AppointmentStates.PROGRAMMED:
-        return PaymentActionStates.BLOCKED;
       default:
         return defaultAction;
     }

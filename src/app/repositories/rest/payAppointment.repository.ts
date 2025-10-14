@@ -91,7 +91,7 @@ export class PayAppointmentRepository implements IPayAppointmentRepository {
     const methodPayload = this.parseInput(authorization, axional, appointment);
     const rawResult = await this.crp.call<PayAppointmentOutput>({
       method: HttpMethod.POST,
-      path: CRPServicePaths.PAY_CLINIC_INSURANCE,
+      path: CRPServicePaths.PAY_APPOINTMENT,
       body: methodPayload,
     });
     this.checkOutput(rawResult);
