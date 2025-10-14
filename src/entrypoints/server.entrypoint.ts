@@ -133,9 +133,17 @@ export class Server {
     this.registerRoutes();
     await this.app.register(cors, {
       origin: true,
+      credentials: false,
       methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization'],
-      credentials: true,
+      allowedHeaders: [
+        'Content-Type',
+        'Authorization',
+        'X-Os',
+        'X-Device-Id',
+        'X-Device-Name',
+        'X-Push-Token',
+      ],
+      maxAge: 86400,
     });
 
     if (EnvHelper.getCurrentEnv() !== Environments.PRD) {
