@@ -1,6 +1,6 @@
 import { Insertable, InsertResult } from 'kysely';
+import { EmployeeSessionDM } from 'src/app/entities/dms/employeeSessions.dm';
 
-import { SessionDM } from 'src/app/entities/dms/sessions.dm';
 import { EmployeeSessionDTO } from 'src/app/entities/dtos/service/employeeSession.dto';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
@@ -12,8 +12,8 @@ export class UpsertEmployeeSessionRepository implements IUpsertEmployeeSessionRe
   async execute(session: EmployeeSessionDTO): Promise<InsertResult> {
     const db = MysqlClient.instance.getDb();
     return db
-      .insertInto('Sessions')
-      .values(session as Insertable<SessionDM>)
+      .insertInto('EmployeeSessions')
+      .values(session as Insertable<EmployeeSessionDM>)
       .onDuplicateKeyUpdate((eb) => ({
         jti: eb.val(session.jti),
         username: eb.val(session.username),

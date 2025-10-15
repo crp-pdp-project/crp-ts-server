@@ -1,13 +1,22 @@
 import { DeviceDM } from 'src/app/entities/dms/devices.dm';
+import { SessionDM } from 'src/app/entities/dms/sessions.dm';
 import { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IGetPatientSessionRepository {
-  execute(jti: string, os: DeviceDM['os'], identifier: DeviceDM['identifier']): Promise<SessionDTO | undefined>;
+  execute(
+    jti: SessionDM['jti'],
+    os: DeviceDM['os'],
+    identifier: DeviceDM['identifier'],
+  ): Promise<SessionDTO | undefined>;
 }
 
 export class GetPatientSessionRepository implements IGetPatientSessionRepository {
-  async execute(jti: string, os: DeviceDM['os'], identifier: DeviceDM['identifier']): Promise<SessionDTO | undefined> {
+  async execute(
+    jti: SessionDM['jti'],
+    os: DeviceDM['os'],
+    identifier: DeviceDM['identifier'],
+  ): Promise<SessionDTO | undefined> {
     const db = MysqlClient.instance.getDb();
     const result = await db
       .selectFrom('Sessions')

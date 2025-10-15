@@ -6,5 +6,6 @@ declare module 'fastify' {
   interface FastifyRequest {
     device?: DeviceModel;
     session?: SessionModel;
+    employee?: EmployeeSessionModel;
   }
 }

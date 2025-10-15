@@ -5,12 +5,12 @@ import { EmployeeConstants } from 'src/general/contants/employee.constants';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 
-type LoginEmployeeInput = {
+type SignInEmployeeInput = {
   usuario: string;
   contrasenia: string;
 };
 
-type LoginEmployeeOutput = {
+type SignInEmployeeOutput = {
   data: {
     status: string;
     mensaje: string;
@@ -30,16 +30,16 @@ type LoginEmployeeOutput = {
   esCorrecto: boolean;
 };
 
-export interface ILoginEmployeeRepository {
+export interface ISignInEmployeeRepository {
   execute(username: string, password: string): Promise<EmployeeDTO>;
 }
 
-export class LoginEmployeeRepository implements ILoginEmployeeRepository {
+export class SignInEmployeeRepository implements ISignInEmployeeRepository {
   private readonly crp = CRPClient.instance;
 
   async execute(username: string, password: string): Promise<EmployeeDTO> {
     const input = this.parseInput(username, password);
-    const rawResult = await this.crp.call<LoginEmployeeOutput>({
+    const rawResult = await this.crp.call<SignInEmployeeOutput>({
       method: HttpMethod.POST,
       path: CRPServicePaths.AUTH_EMPLOYEES,
       body: input,
@@ -47,14 +47,14 @@ export class LoginEmployeeRepository implements ILoginEmployeeRepository {
     return this.parseOutput(rawResult, username);
   }
 
-  private parseInput(username: string, password: string): LoginEmployeeInput {
+  private parseInput(username: string, password: string): SignInEmployeeInput {
     return {
       usuario: username,
       contrasenia: password,
     };
   }
 
-  private parseOutput(rawResult: LoginEmployeeOutput, username: string): EmployeeDTO {
+  private parseOutput(rawResult: SignInEmployeeOutput, username: string): EmployeeDTO {
     const { data, esCorrecto } = rawResult;
 
     if (!esCorrecto || !data) {
@@ -74,7 +74,7 @@ export class LoginEmployeeRepository implements ILoginEmployeeRepository {
   }
 }
 
-export class LoginEmployeeRepositoryMock implements ILoginEmployeeRepository {
+export class SignInEmployeeRepositoryMock implements ISignInEmployeeRepository {
   async execute(): Promise<EmployeeDTO> {
     return Promise.resolve({
       username: 'PRUEBA',

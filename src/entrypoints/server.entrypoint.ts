@@ -76,6 +76,8 @@ import { RescheduleAppointmentV1Docs } from 'src/app/controllers/rescheduleAppoi
 import { RescheduleAppointmentV1Router } from 'src/app/controllers/rescheduleAppointmentV1/rescheduleAppointment.router';
 import { SendVerificationOTPV1Docs } from 'src/app/controllers/sendVerificationOtpV1/sendVerificationOtp.docs';
 import { SendVerificationOTPV1Router } from 'src/app/controllers/sendVerificationOtpV1/sendVerificationOtp.routes';
+import { SignInEmployeeV1Docs } from 'src/app/controllers/signInEmployeeV1/signInEmployee.docs';
+import { SignInEmployeeV1Router } from 'src/app/controllers/signInEmployeeV1/signInEmployee.routes';
 import { SignInPatientV1Docs } from 'src/app/controllers/signInPatientV1/signInPatient.docs';
 import { SignInPatientV1Router } from 'src/app/controllers/signInPatientV1/signInPatient.routes';
 import { SignOutPatientV1Docs } from 'src/app/controllers/signOutPatientV1/signOutPatient.docs';
@@ -135,14 +137,7 @@ export class Server {
       origin: true,
       credentials: false,
       methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-      allowedHeaders: [
-        'Content-Type',
-        'Authorization',
-        'X-Os',
-        'X-Device-Id',
-        'X-Device-Name',
-        'X-Push-Token',
-      ],
+      allowedHeaders: ['Content-Type', 'Authorization', 'X-Os', 'X-Device-Id', 'X-Device-Name', 'X-Push-Token'],
       maxAge: 86400,
     });
 
@@ -214,6 +209,7 @@ export class Server {
     new PatientResultPDFV1Docs(this.manager).registerDocs();
     new PatientResultURLV1Docs(this.manager).registerDocs();
     new PayAppointmentV1Docs(this.manager).registerDocs();
+    new SignInEmployeeV1Docs(this.manager).registerDocs();
   }
 
   private static registerRoutes(): void {
@@ -256,6 +252,7 @@ export class Server {
     new PatientResultPDFV1Router(this.app).registerRouter();
     new PatientResultURLV1Router(this.app).registerRouter();
     new PayAppointmentV1Router(this.app).registerRouter();
+    new SignInEmployeeV1Router(this.app).registerRouter();
   }
 
   private static setupDocsEndpoint(): void {

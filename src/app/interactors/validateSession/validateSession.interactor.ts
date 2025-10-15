@@ -1,7 +1,5 @@
 import { IncomingHttpHeaders } from 'http2';
 
-import { EmployeeSessionDTO } from 'src/app/entities/dtos/service/employeeSession.dto';
-import { EmployeeSessionPayloadDTO } from 'src/app/entities/dtos/service/employeeSessionPayload.dto';
 import { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
 import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
 import { DeviceModel } from 'src/app/entities/models/device/device.model';
@@ -27,8 +25,8 @@ import { ValidateRecoverSessionStrategy } from './strategies/validateRecoverSess
 
 export interface IValidateSessionStrategy {
   generateSession(
-    session: SessionDTO | EmployeeSessionDTO,
-    payload: SessionPayloadDTO | EmployeeSessionPayloadDTO,
+    session: SessionDTO,
+    payload: SessionPayloadDTO,
     newExpireAt: string,
     device: DeviceModel,
   ): Promise<SessionModel>;

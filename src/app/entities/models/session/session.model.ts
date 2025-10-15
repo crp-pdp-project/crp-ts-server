@@ -23,11 +23,22 @@ export abstract class SessionModel extends BaseModel {
   constructor(jti?: string, expiresAt?: string) {
     super();
 
-    this.jti = jti ?? '';
-    this.expiresAt = expiresAt ?? '';
+    this.jti = this.validateRequiredString(jti);
+    this.expiresAt = this.validateRequiredString(expiresAt);
   }
 
-  static validateSessionInstance<T extends keyof SessionTypeMap>(expected: T, session?: SessionModel): SessionByType<T> {
+  private validateRequiredString(value?: string | null): string {
+    if (!value) {
+      throw ErrorModel.unauthorized({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
+    }
+
+    return value;
+  }
+
+  static validateSessionInstance<T extends keyof SessionTypeMap>(
+    expected: T,
+    session?: SessionModel,
+  ): SessionByType<T> {
     if (!session || session.type !== expected) {
       throw ErrorModel.forbidden({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
     }
