@@ -6,6 +6,7 @@ import { GenerateMDDStrategy, MDDVariants } from '../posConfig.model';
 
 export class MDD4Strategy implements GenerateMDDStrategy {
   genMDD(_: SignInSessionModel, patient: PatientExternalDTO): Record<string, string> {
-    return { [MDDVariants.MDD4]: patient.email ?? PosConstants.DEFAULT_EMAIL };
+    // return { [MDDVariants.MDD4]: patient.email ?? PosConstants.DEFAULT_EMAIL };
+    return { [MDDVariants.MDD4]: 'ACCEPT@SASTEST.COM' };
   }
 }

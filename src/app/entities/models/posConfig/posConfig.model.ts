@@ -69,7 +69,9 @@ export class POSConfigModel extends BaseModel {
     this.correlative = posConfig.correlative ? TextHelper.padTextLength(posConfig.correlative) : undefined;
     this.token = posConfig.token;
     this.pinHash = posConfig.pinHash;
-    this.email = external.email ?? PosConstants.DEFAULT_EMAIL;
+    // this.email = external.email ?? PosConstants.DEFAULT_EMAIL;
+    this.email = 'ACCEPT@SASTEST.COM';
+    
     this.env = posConfig.environment;
     this.MDD = posConfig.MDDList ? this.generateMDDObject(posConfig.MDDList, session, external) : undefined;
   }
