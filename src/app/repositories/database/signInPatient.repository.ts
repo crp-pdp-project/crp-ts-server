@@ -43,7 +43,7 @@ export class SignInPatientRepository implements ISignInPatientRepository {
 
 export class SignInPatientRepositoryMock implements ISignInPatientRepository {
   async execute(): Promise<PatientDTO | undefined> {
-    return {
+    return Promise.resolve({
       id: 1,
       fmpId: '239254',
       nhcId: '239254',
@@ -56,6 +56,6 @@ export class SignInPatientRepositoryMock implements ISignInPatientRepository {
         passwordHash: '',
         passwordSalt: '',
       },
-    };
+    });
   }
 }

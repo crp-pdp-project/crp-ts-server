@@ -10,7 +10,7 @@ import { IUpdateSessionExpireRepository } from 'src/app/repositories/database/up
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 
-export class ValidateSignInSessionStrategy implements IValidateSessionStrategy {
+export class ValidatePatientSessionStrategy implements IValidateSessionStrategy {
   constructor(
     private readonly updateSessionExpire: IUpdateSessionExpireRepository,
     private readonly updateDevicePushToken: IUpdateDevicePushTokenRepository,

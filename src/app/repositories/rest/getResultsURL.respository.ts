@@ -57,6 +57,6 @@ export class GetResultsURLRepository implements IGetResultsURLRepository {
 
 export class GetResultsURLRepositoryMock implements IGetResultsURLRepository {
   async execute(): Promise<string> {
-    return 'https://any.any.com.pe/portal/default.aspx?urltoken=YPM';
+    return Promise.resolve('https://any.any.com.pe/portal/default.aspx?urltoken=YPM');
   }
 }

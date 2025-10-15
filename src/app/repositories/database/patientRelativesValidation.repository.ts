@@ -31,7 +31,7 @@ export class PatientRelativesValidationRepository implements IPatientRelativesVa
 
 export class PatientRelativesValidationRepositoryMock implements IPatientRelativesValidationRepository {
   async execute(): Promise<PatientDTO[]> {
-    return [
+    return Promise.resolve([
       {
         fmpId: '239254',
         isVerified: true,
@@ -39,6 +39,6 @@ export class PatientRelativesValidationRepositoryMock implements IPatientRelativ
           isDependant: true,
         },
       },
-    ];
+    ]);
   }
 }

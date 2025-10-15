@@ -122,7 +122,7 @@ export class GetAppointmentsRepository implements IGetAppointmentsRepository {
 
 export class GetAppointmentsRepositoryMock implements IGetAppointmentsRepository {
   async execute(): Promise<AppointmentDTO[]> {
-    return [
+    return Promise.resolve([
       {
         id: 'C202336100432',
         episodeId: 'C23CLIRP36100432',
@@ -146,6 +146,6 @@ export class GetAppointmentsRepositoryMock implements IGetAppointmentsRepository
           inspectionId: '99',
         },
       },
-    ];
+    ]);
   }
 }

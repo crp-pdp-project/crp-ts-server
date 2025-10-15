@@ -105,7 +105,7 @@ export class GetPatientResultsRepository implements IGetPatientResultsRepository
 
 export class GetPatientResultsRepositoryMock implements IGetPatientResultsRepository {
   async execute(): Promise<PatientResultDTO[]> {
-    return [
+    return Promise.resolve([
       {
         resultId: 'C24CLIRP377628032025031308200010041633|40504165',
         episodeId: 'C24CLIRP37649542',
@@ -120,6 +120,6 @@ export class GetPatientResultsRepositoryMock implements IGetPatientResultsReposi
         accessNumber: 'CLIRPC2437762803',
         gidenpac: '733480',
       },
-    ];
+    ]);
   }
 }

@@ -82,10 +82,10 @@ export class RescheduleAppointmentRepository implements IRescheduleAppointmentRe
 
 export class RescheduleAppointmentRepositoryMock implements IRescheduleAppointmentRepository {
   async execute(): Promise<AppointmentTransactionResultDTO> {
-    return {
+    return Promise.resolve({
       id: 'C202335563796',
       errorCode: 0,
       errorDescription: null,
-    };
+    });
   }
 }

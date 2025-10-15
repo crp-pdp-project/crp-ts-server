@@ -16,6 +16,6 @@ export class DeletePatientAccountRepository implements IDeletePatientAccountRepo
 
 export class DeletePatientAccountRepositoryMock implements IDeletePatientAccountRepository {
   async execute(): Promise<DeleteResult> {
-    return { numDeletedRows: BigInt(1) };
+    return Promise.resolve({ numDeletedRows: BigInt(1) });
   }
 }

@@ -4,8 +4,9 @@ import {
   ConfirmVerificationOTPBodyDTOSchema,
   ConfirmVerificationOTPInputDTO,
 } from 'src/app/entities/dtos/input/validateVerificationOtp.input.dto';
-import { SessionModel, SessionType } from 'src/app/entities/models/session/session.model';
+import { SessionModel } from 'src/app/entities/models/session/session.model';
 import { IConfirmVerificationOTPInteractor } from 'src/app/interactors/confirmVerificationOtp/confirmVerificationOtp.interactor';
+import { Audiences } from 'src/general/enums/audience.enum';
 
 import { IConfirmVerificationOTPControllerStrategy } from '../confirmVerificationOtp.controller';
 
@@ -15,7 +16,7 @@ export class ConfirmEnrollOTPControllerStrategy implements IConfirmVerificationO
     interactor: IConfirmVerificationOTPInteractor,
   ): Promise<void> {
     const body = ConfirmVerificationOTPBodyDTOSchema.parse(input.body);
-    const session = SessionModel.validateSessionInstance(SessionType.ENROLL, input.session);
+    const session = SessionModel.validateSessionInstance(Audiences.ENROLL, input.session);
     await interactor.confirm(body, session);
   }
 }

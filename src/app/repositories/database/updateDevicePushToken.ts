@@ -16,6 +16,6 @@ export class UpdateDevicePushTokenRepository implements IUpdateDevicePushTokenRe
 
 export class UpdateDevicePushTokenRepositoryMock implements IUpdateDevicePushTokenRepository {
   async execute(): Promise<UpdateResult> {
-    return { numUpdatedRows: BigInt(1) };
+    return Promise.resolve({ numUpdatedRows: BigInt(1) });
   }
 }

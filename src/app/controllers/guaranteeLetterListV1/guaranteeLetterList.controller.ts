@@ -7,11 +7,12 @@ import {
 import { GuaranteeLetterListOutputDTOSchema } from 'src/app/entities/dtos/output/guaranteeLetterList.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import { SessionModel, SessionType } from 'src/app/entities/models/session/session.model';
+import { SessionModel } from 'src/app/entities/models/session/session.model';
 import {
   GuaranteeLetterListInteractorBuilder,
   IGuaranteeLetterListInteractor,
 } from 'src/app/interactors/guaranteeLetterList/guaranteeLetterList.interactor';
+import { Audiences } from 'src/general/enums/audience.enum';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IGuaranteeLetterListController {
@@ -29,7 +30,7 @@ export class GuaranteeLetterListController implements IGuaranteeLetterListContro
   async handle(input: FastifyRequest<GuaranteeLetterListInputDTO>, reply: FastifyReply): Promise<void> {
     try {
       const params = GuaranteeLetterListParamsDTOSchema.parse(input.params);
-      const session = SessionModel.validateSessionInstance(SessionType.SIGN_IN, input.session);
+      const session = SessionModel.validateSessionInstance(Audiences.SIGN_IN, input.session);
       const model = await this.guaranteeLetterInteractor.list(params, session);
       this.response = this.responseManager.validateResponse(model);
     } catch (error) {

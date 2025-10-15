@@ -1,13 +1,22 @@
 import { DeviceDM } from 'src/app/entities/dms/devices.dm';
+import { SessionDM } from 'src/app/entities/dms/sessions.dm';
 import { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IGetPatientSessionRepository {
-  execute(jti: string, os: DeviceDM['os'], identifier: DeviceDM['identifier']): Promise<SessionDTO | undefined>;
+  execute(
+    jti: SessionDM['jti'],
+    os: DeviceDM['os'],
+    identifier: DeviceDM['identifier'],
+  ): Promise<SessionDTO | undefined>;
 }
 
 export class GetPatientSessionRepository implements IGetPatientSessionRepository {
-  async execute(jti: string, os: DeviceDM['os'], identifier: DeviceDM['identifier']): Promise<SessionDTO | undefined> {
+  async execute(
+    jti: SessionDM['jti'],
+    os: DeviceDM['os'],
+    identifier: DeviceDM['identifier'],
+  ): Promise<SessionDTO | undefined> {
     const db = MysqlClient.instance.getDb();
     const result = await db
       .selectFrom('Sessions')
@@ -23,12 +32,12 @@ export class GetPatientSessionRepository implements IGetPatientSessionRepository
 
 export class GetPatientSessionRepositoryMock implements IGetPatientSessionRepository {
   async execute(): Promise<SessionDTO | undefined> {
-    return {
+    return Promise.resolve({
       jti: '1c8302e7-6368-4c04-8923-4dadbccfe53e',
       expiresAt: '2025-04-24 02:58:01',
       otp: null,
       otpSendCount: null,
       isValidated: false,
-    };
+    });
   }
 }

@@ -19,7 +19,7 @@ export class GetHealthInsuranceRepository implements IGetHealthInsuranceReposito
 
 export class GetHealthInsuranceRepositoryMock implements IGetHealthInsuranceRepository {
   async execute(): Promise<HealthInsuranceDTO | undefined> {
-    return {
+    return Promise.resolve({
       title: 'Conoce PlanSalud',
       paragraph:
         'Recibe la mejor cobertura en atención integral médica y quirúrgica en los servicios de consulta externa, emergencia, hospitalización y más.',
@@ -33,6 +33,6 @@ export class GetHealthInsuranceRepositoryMock implements IGetHealthInsuranceRepo
       banner: 'https://www.vecteezy.com/free-vector/background-banner',
       pdfUrl:
         'https://portal.susalud.gob.pe/wp-content/uploads/archivo/documentacion-proyectos/siteds/componente/Especificacion-Tecnica%20SITEDSv.024.pdf',
-    };
+    });
   }
 }

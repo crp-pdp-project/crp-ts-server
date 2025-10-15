@@ -1,5 +1,4 @@
 import { PosConstants } from 'src/general/contants/pos.constants';
-import { EnvHelper } from 'src/general/helpers/env.helper';
 import { TextHelper } from 'src/general/helpers/text.helper';
 
 import { PatientExternalDTO } from '../../dtos/service/patientExternal.dto';
@@ -56,7 +55,7 @@ export class POSConfigModel extends BaseModel {
   readonly token?: string;
   readonly pinHash?: string;
   readonly email?: string;
-  readonly env: string;
+  readonly env?: string;
   readonly MDD?: Record<string, unknown>;
 
   constructor(posConfig: POSConfigDTO, session: SignInSessionModel, external: PatientExternalDTO) {
@@ -71,7 +70,7 @@ export class POSConfigModel extends BaseModel {
     this.token = posConfig.token;
     this.pinHash = posConfig.pinHash;
     this.email = external.email ?? PosConstants.DEFAULT_EMAIL;
-    this.env = EnvHelper.get('NIUBIZ_ENVIRONMENT');
+    this.env = posConfig.environment;
     this.MDD = posConfig.MDDList ? this.generateMDDObject(posConfig.MDDList, session, external) : undefined;
   }
 

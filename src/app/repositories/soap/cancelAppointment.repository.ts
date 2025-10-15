@@ -73,9 +73,9 @@ export class CancelAppointmentRepository implements ICancelAppointmentRepository
 
 export class CancelAppointmentRepositoryMock implements ICancelAppointmentRepository {
   async execute(): Promise<AppointmentTransactionResultDTO> {
-    return {
+    return Promise.resolve({
       errorCode: 0,
       errorDescription: null,
-    };
+    });
   }
 }

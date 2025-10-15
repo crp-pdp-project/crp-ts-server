@@ -22,6 +22,6 @@ export class CleanUnusedDevicesRepository implements ICleanUnusedDevicesReposito
 
 export class CleanUnusedDevicesRepositoryMock implements ICleanUnusedDevicesRepository {
   async execute(): Promise<DeleteResult> {
-    return { numDeletedRows: BigInt(1) };
+    return Promise.resolve({ numDeletedRows: BigInt(1) });
   }
 }

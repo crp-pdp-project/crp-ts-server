@@ -20,6 +20,6 @@ export class DeleteRelativeRepository implements IDeleteRelativeRepository {
 
 export class DeleteRelativeRepositoryMock implements IDeleteRelativeRepository {
   async execute(): Promise<DeleteResult> {
-    return { numDeletedRows: BigInt(1) };
+    return Promise.resolve({ numDeletedRows: BigInt(1) });
   }
 }

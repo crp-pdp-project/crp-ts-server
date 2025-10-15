@@ -32,6 +32,6 @@ export class VerifyRelativeRepository implements IVerifyRelativeRepository {
 
 export class VerifyRelativeRepositoryMock implements IVerifyRelativeRepository {
   async execute(): Promise<FamilyDTO> {
-    return { id: 1 };
+    return Promise.resolve({ id: 1 });
   }
 }

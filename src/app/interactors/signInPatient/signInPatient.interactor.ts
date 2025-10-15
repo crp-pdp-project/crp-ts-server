@@ -4,7 +4,7 @@ import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.
 import { AuthAttemptModel, AuthFlowIdentifier } from 'src/app/entities/models/authAttempt/authAttempt.model';
 import { DeviceModel } from 'src/app/entities/models/device/device.model';
 import { PatientModel } from 'src/app/entities/models/patient/patient.model';
-import { PatientSessionModel } from 'src/app/entities/models/patient/patientSession.model';
+import { PatientTokenModel } from 'src/app/entities/models/patient/patientToken.model';
 import { CleanBlockedRepository } from 'src/app/repositories/database/cleanBlocked.repository';
 import {
   CleanUnusedDevicesRepository,
@@ -37,7 +37,7 @@ export interface ISignInStrategy {
 }
 
 export interface ISignInPatientInteractor {
-  signIn(body: SignInPatientBodyDTO, device: DeviceModel): Promise<PatientSessionModel>;
+  signIn(body: SignInPatientBodyDTO, device: DeviceModel): Promise<PatientTokenModel>;
 }
 
 export class SignInPatientInteractor implements ISignInPatientInteractor {
@@ -52,7 +52,7 @@ export class SignInPatientInteractor implements ISignInPatientInteractor {
     private readonly jwtManager: IJWTManager<SessionPayloadDTO>,
   ) {}
 
-  async signIn(body: SignInPatientBodyDTO, device: DeviceModel): Promise<PatientSessionModel> {
+  async signIn(body: SignInPatientBodyDTO, device: DeviceModel): Promise<PatientTokenModel> {
     const attemptModel = await this.fetchAttempt(body.documentNumber);
     attemptModel.validateAttempt();
     const patient = await this.signInStrategy.verifySignIn(body, attemptModel, device);
@@ -86,14 +86,14 @@ export class SignInPatientInteractor implements ISignInPatientInteractor {
     await this.cleanUnusedDevices.execute(patient.account!.id!);
   }
 
-  private async generateJwtToken(patient: PatientModel): Promise<PatientSessionModel> {
+  private async generateJwtToken(patient: PatientModel): Promise<PatientTokenModel> {
     const token = await this.jwtManager.generateToken(patient.toSessionPayload());
-    const patientSessionModel = new PatientSessionModel(patient, token);
+    const patientTokenModel = new PatientTokenModel(patient, token);
 
-    return patientSessionModel;
+    return patientTokenModel;
   }
 
-  private async persistSession(sessionModel: PatientSessionModel): Promise<void> {
+  private async persistSession(sessionModel: PatientTokenModel): Promise<void> {
     await this.saveSessionRepository.execute(sessionModel.toPersisSessionPayload());
   }
 }

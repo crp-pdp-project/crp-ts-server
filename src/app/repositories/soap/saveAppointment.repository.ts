@@ -101,10 +101,10 @@ export class SaveAppointmentRepository implements ISaveAppointmentRepository {
 
 export class SaveAppointmentRepositoryMock implements ISaveAppointmentRepository {
   async execute(): Promise<AppointmentTransactionResultDTO> {
-    return {
+    return Promise.resolve({
       id: 'C202335563796',
       errorCode: 0,
       errorDescription: null,
-    };
+    });
   }
 }

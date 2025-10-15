@@ -64,6 +64,6 @@ export class ObtainPDFDocumentRepository implements IObtainPDFDocumentRepository
 
 export class ObtainPDFDocumentRepositoryMock implements IObtainPDFDocumentRepository {
   async execute(): Promise<string> {
-    return 'base64';
+    return Promise.resolve('base64');
   }
 }

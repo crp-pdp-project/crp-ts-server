@@ -31,6 +31,6 @@ export class UpdateSessionOTPRepository implements IUpdateSessionOTPRepository {
 
 export class UpdateSessionOTPRepositoryMock implements IUpdateSessionOTPRepository {
   async execute(): Promise<UpdateResult> {
-    return { numUpdatedRows: BigInt(1) };
+    return Promise.resolve({ numUpdatedRows: BigInt(1) });
   }
 }

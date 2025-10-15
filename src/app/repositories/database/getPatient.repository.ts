@@ -20,6 +20,6 @@ export class GetPatientRepository implements IGetPatientRepository {
 
 export class GetPatientRepositoryMock implements IGetPatientRepository {
   async execute(): Promise<PatientDTO | undefined> {
-    return { id: 1, documentType: 14, documentNumber: '88888888' };
+    return Promise.resolve({ id: 1, documentType: 14, documentNumber: '88888888' });
   }
 }

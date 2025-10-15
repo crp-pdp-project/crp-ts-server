@@ -56,9 +56,9 @@ export class GetInsuredPatientRepository implements IGetInsuredPatientRepository
 
 export class GetInsuredPatientRepositoryMock implements IGetInsuredPatientRepository {
   async execute(): Promise<InsuredPatientDTO> {
-    return {
+    return Promise.resolve({
       name: 'VI***  BA*** DE***',
       contractState: 'SUSPENDIDO',
-    };
+    });
   }
 }

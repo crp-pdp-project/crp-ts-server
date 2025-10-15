@@ -29,9 +29,9 @@ export class SaveRelativeRepository implements ISaveRelativeRepository {
 
 export class SaveRelativeRepositoryMock implements ISaveRelativeRepository {
   async execute(): Promise<InsertResult> {
-    return {
+    return Promise.resolve({
       insertId: BigInt(1),
       numInsertedOrUpdatedRows: BigInt(1),
-    };
+    });
   }
 }

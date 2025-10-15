@@ -3,11 +3,12 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { PatientRelativesOutputDTOSchema } from 'src/app/entities/dtos/output/patientRelatives.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import { SessionModel, SessionType } from 'src/app/entities/models/session/session.model';
+import { SessionModel } from 'src/app/entities/models/session/session.model';
 import {
   IPatientRelativesInteractor,
   PatientRelativesInteractorBuilder,
 } from 'src/app/interactors/patientRelatives/patientRelatives.interactor';
+import { Audiences } from 'src/general/enums/audience.enum';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IPatientRelativesController {
@@ -24,7 +25,7 @@ export class PatientRelativesController implements IPatientRelativesController {
 
   async handle(input: FastifyRequest, reply: FastifyReply): Promise<void> {
     try {
-      const session = SessionModel.validateSessionInstance(SessionType.SIGN_IN, input.session);
+      const session = SessionModel.validateSessionInstance(Audiences.SIGN_IN, input.session);
       const model = await this.relativesInteractor.relatives(session);
       this.response = this.responseManager.validateResponse(model);
     } catch (error) {

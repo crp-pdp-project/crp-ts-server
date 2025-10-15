@@ -4,7 +4,7 @@ import { GenerationResponse } from 'src/general/managers/jwt/jwt.manager';
 
 import { PatientExternalModel } from './patientExternal.model';
 
-export class PatientExternalSessionModel extends BaseModel {
+export class PatientExternalTokenModel extends BaseModel {
   readonly patientExternal: PatientExternalModel;
   readonly token: string;
   readonly #jti: string;

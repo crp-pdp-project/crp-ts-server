@@ -16,6 +16,6 @@ export class CleanBlockedRepository implements ICleanBlockedRepository {
 
 export class CleanBlockedRepositoryMock implements ICleanBlockedRepository {
   async execute(): Promise<DeleteResult> {
-    return { numDeletedRows: BigInt(1) };
+    return Promise.resolve({ numDeletedRows: BigInt(1) });
   }
 }

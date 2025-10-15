@@ -52,12 +52,12 @@ export class GetDoctorImagesRepository implements IGetDoctorImagesRepository {
 
 export class GetDoctorImagesRepositoryMock implements IGetDoctorImagesRepository {
   async execute(): Promise<DoctorDTO[]> {
-    return [
+    return Promise.resolve([
       {
         id: '000075631',
         profileImage:
           'https://svsiwnapdev02.crp.com.pe/DatosMedicosApiRest/api/Medico/VerImagen?nombreImagen=bMgK7XmYN6gC2lPS3uC2Vg',
       },
-    ];
+    ]);
   }
 }

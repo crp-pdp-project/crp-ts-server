@@ -60,7 +60,7 @@ export class PatientRelativesRepository implements IPatientRelativesRepository {
 
 export class PatientRelativesRepositoryMock implements IPatientRelativesRepository {
   async execute(): Promise<PatientDTO> {
-    return {
+    return Promise.resolve({
       id: 1,
       fmpId: '239254',
       nhcId: '00612719',
@@ -87,6 +87,6 @@ export class PatientRelativesRepositoryMock implements IPatientRelativesReposito
           },
         },
       ],
-    };
+    });
   }
 }

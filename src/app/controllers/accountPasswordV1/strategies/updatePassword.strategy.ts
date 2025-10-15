@@ -4,8 +4,9 @@ import {
   UpdatePatientPasswordBodyDTOSchema,
   UpdatePatientPasswordInputDTO,
 } from 'src/app/entities/dtos/input/updatePatientPassword.input.dto';
-import { SessionModel, SessionType } from 'src/app/entities/models/session/session.model';
+import { SessionModel } from 'src/app/entities/models/session/session.model';
 import { IAccountPasswordInteractor } from 'src/app/interactors/accountPassword/accountPassword.interactor';
+import { Audiences } from 'src/general/enums/audience.enum';
 
 import { IAccountPasswordControllerStrategy } from '../accountPassword.controller';
 
@@ -15,7 +16,7 @@ export class UpdatePasswordControllerStrategy implements IAccountPasswordControl
     interactor: IAccountPasswordInteractor,
   ): Promise<void> {
     const body = UpdatePatientPasswordBodyDTOSchema.parse(input.body);
-    const session = SessionModel.validateSessionInstance(SessionType.RECOVER, input.session);
+    const session = SessionModel.validateSessionInstance(Audiences.RECOVER, input.session);
     await interactor.persist(body, session);
   }
 }

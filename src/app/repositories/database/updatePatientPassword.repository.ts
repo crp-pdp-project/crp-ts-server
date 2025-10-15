@@ -24,6 +24,6 @@ export class UpdatePatientPasswordRepository implements IUpdatePatientPasswordRe
 
 export class UpdatePatientPasswordRepositoryMock implements IUpdatePatientPasswordRepository {
   async execute(): Promise<UpdateResult> {
-    return { numUpdatedRows: BigInt(1) };
+    return Promise.resolve({ numUpdatedRows: BigInt(1) });
   }
 }

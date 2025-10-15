@@ -1,5 +1,6 @@
 export enum Audiences {
-  SING_IN = 'signIn',
+  SIGN_IN = 'signIn',
+  EMPLOYEE_SIGN_IN = 'employeeSignIn',
   RECOVER = 'recover',
   ENROLL = 'enroll',
 }

@@ -3,11 +3,12 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { SpecialtiesListOutputDTOSchema } from 'src/app/entities/dtos/output/specialtiesList.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import { SessionModel, SessionType } from 'src/app/entities/models/session/session.model';
+import { SessionModel } from 'src/app/entities/models/session/session.model';
 import {
   ISpecialtiesListInteractor,
   SpecialtiesListInteractorBuilder,
 } from 'src/app/interactors/specialtiesList/specialtiesList.interactor';
+import { Audiences } from 'src/general/enums/audience.enum';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface ISpecialtiesListController {
@@ -24,7 +25,7 @@ export class SpecialtiesListController implements ISpecialtiesListController {
 
   async handle(input: FastifyRequest, reply: FastifyReply): Promise<void> {
     try {
-      SessionModel.validateSessionInstance(SessionType.SIGN_IN, input.session);
+      SessionModel.validateSessionInstance(Audiences.SIGN_IN, input.session);
       const specialtiesList = await this.specialtyInteractor.list();
       this.response = this.responseManager.validateResponse(specialtiesList);
     } catch (error) {

@@ -23,9 +23,9 @@ export class UpsertDeviceRepository implements IUpsertDeviceRepository {
 
 export class UpsertDeviceRepositoryMock implements IUpsertDeviceRepository {
   async execute(): Promise<InsertResult> {
-    return {
+    return Promise.resolve({
       insertId: BigInt(1),
       numInsertedOrUpdatedRows: BigInt(1),
-    };
+    });
   }
 }

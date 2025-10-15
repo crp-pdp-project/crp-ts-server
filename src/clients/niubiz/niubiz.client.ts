@@ -20,6 +20,7 @@ type GetPOSConfigOutput = {
     url: string;
     comercio: string;
     merchantDefineData: string;
+    environment: string;
     purchaseNumber: number;
   };
   esCorrecto: boolean;
@@ -111,6 +112,7 @@ export class NiubizClient {
       commerceCode: data.comercio,
       channel: data.canal,
       host: TextHelper.normalizeHost(data.url),
+      environment: data.environment,
       MDDList: data.merchantDefineData,
       correlative: data.purchaseNumber,
     };

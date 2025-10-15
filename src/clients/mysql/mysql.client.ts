@@ -4,6 +4,7 @@ import { createPool } from 'mysql2';
 import { AccountDM } from 'src/app/entities/dms/accounts.dm';
 import { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
 import { DeviceDM } from 'src/app/entities/dms/devices.dm';
+import { EmployeeSessionDM } from 'src/app/entities/dms/employeeSessions.dm';
 import { FamilyDM } from 'src/app/entities/dms/families.dm';
 import { HealthInsurancesDM } from 'src/app/entities/dms/healthInsurances.dm';
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
@@ -23,6 +24,7 @@ export interface Database {
   PushConfigs: PushConfigDM;
   Devices: DeviceDM;
   HealthInsurances: HealthInsurancesDM;
+  EmployeeSessions: EmployeeSessionDM;
 }
 
 class KyselyLogger {

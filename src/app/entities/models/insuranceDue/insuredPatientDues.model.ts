@@ -35,9 +35,12 @@ export class InsuredPatientDuesModel extends BaseModel {
       else regularDues.push(due);
     });
 
-    return [
-      new InsuranceDueSectionModel({ title: HealthInsuranceConstants.SPECIAL_TITLE, dues: specialDues }),
-      new InsuranceDueSectionModel({ title: HealthInsuranceConstants.REGULAR_TITLE, dues: regularDues }),
-    ];
+    const result = [];
+    if (specialDues.length)
+      result.push(new InsuranceDueSectionModel({ title: HealthInsuranceConstants.SPECIAL_TITLE, dues: specialDues }));
+    if (regularDues.length)
+      result.push(new InsuranceDueSectionModel({ title: HealthInsuranceConstants.REGULAR_TITLE, dues: regularDues }));
+
+    return result;
   }
 }

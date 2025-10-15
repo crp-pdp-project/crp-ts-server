@@ -20,6 +20,6 @@ export class CleanSessionRepository implements ICleanSessionRepository {
 
 export class CleanSessionRepositoryMock implements ICleanSessionRepository {
   async execute(): Promise<DeleteResult> {
-    return { numDeletedRows: BigInt(1) };
+    return Promise.resolve({ numDeletedRows: BigInt(1) });
   }
 }

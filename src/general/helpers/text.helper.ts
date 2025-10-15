@@ -80,7 +80,7 @@ export class TextHelper {
   }
 
   static padTextLength(text: string | number, length = 9, char = '0'): string {
-    if (String(text).length > length) return String(text);
+    if (String(text).length >= length) return String(text);
 
     const pad = char.repeat(length);
     const paddedText = `${pad}${text}`;

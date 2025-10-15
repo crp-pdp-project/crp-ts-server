@@ -29,6 +29,6 @@ export class UpdateSessionExpireRepository implements IUpdateSessionExpireReposi
 
 export class UpdateSessionExpireRepositoryMock implements IUpdateSessionExpireRepository {
   async execute(): Promise<UpdateResult> {
-    return { numUpdatedRows: BigInt(1) };
+    return Promise.resolve({ numUpdatedRows: BigInt(1) });
   }
 }

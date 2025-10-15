@@ -68,11 +68,11 @@ export class GetSpecialtiesRepository implements IGetSpecialtiesRepository {
 
 export class GetSpecialtiesRepositoryMock implements IGetSpecialtiesRepository {
   async execute(): Promise<SpecialtyDTO[]> {
-    return [
+    return Promise.resolve([
       {
         id: '3706',
         name: 'Medicina Física y Rehabilitación',
       },
-    ];
+    ]);
   }
 }

@@ -6,11 +6,12 @@ import {
 } from 'src/app/entities/dtos/input/payHealthInsurance.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import { SessionModel, SessionType } from 'src/app/entities/models/session/session.model';
+import { SessionModel } from 'src/app/entities/models/session/session.model';
 import {
   IPayHealthInsuranceInteractor,
   PayHealthInsuranceInteractorBuilder,
 } from 'src/app/interactors/payHealthInsurance/payHealthInsurance.interactor';
+import { Audiences } from 'src/general/enums/audience.enum';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IPayHealthInsuranceController {
@@ -28,7 +29,7 @@ export class PayHealthInsuranceController implements IPayHealthInsuranceControll
   async handle(input: FastifyRequest<PayHealthInsuranceInputDTO>, reply: FastifyReply): Promise<void> {
     try {
       const body = PayHealthInsuranceBodyDTOSchema.parse(input.body);
-      const session = SessionModel.validateSessionInstance(SessionType.SIGN_IN, input.session);
+      const session = SessionModel.validateSessionInstance(Audiences.SIGN_IN, input.session);
       await this.payHealthInsurance.pay(body, session);
       this.response = this.responseManager.validateResponse();
     } catch (error) {

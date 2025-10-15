@@ -24,9 +24,9 @@ export class UpsertTryCountRepository implements IUpsertTryCountRepository {
 
 export class UpdateAccountTryCountRepositoryMock implements IUpsertTryCountRepository {
   async execute(): Promise<InsertResult> {
-    return {
+    return Promise.resolve({
       insertId: BigInt(1),
       numInsertedOrUpdatedRows: BigInt(1),
-    };
+    });
   }
 }
