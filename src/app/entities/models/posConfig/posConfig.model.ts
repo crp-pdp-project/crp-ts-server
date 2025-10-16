@@ -1,4 +1,5 @@
 import { PosConstants } from 'src/general/contants/pos.constants';
+import { EnvHelper } from 'src/general/helpers/env.helper';
 import { TextHelper } from 'src/general/helpers/text.helper';
 
 import { PatientExternalDTO } from '../../dtos/service/patientExternal.dto';
@@ -46,6 +47,9 @@ export class GenerateMDDStrategyFactory {
 }
 
 export class POSConfigModel extends BaseModel {
+  private readonly overrideEmail?: string = EnvHelper.getOptional('NIUBIZ_EMAIL');
+  private readonly overridePinHash?: string = EnvHelper.getOptional('NIUBIZ_PIN_HASH');
+
   readonly user?: string;
   readonly password?: string;
   readonly commerceCode?: string;
@@ -68,10 +72,8 @@ export class POSConfigModel extends BaseModel {
     this.host = posConfig.host;
     this.correlative = posConfig.correlative ? TextHelper.padTextLength(posConfig.correlative) : undefined;
     this.token = posConfig.token;
-    this.pinHash = posConfig.pinHash;
-    // this.email = external.email ?? PosConstants.DEFAULT_EMAIL;
-    this.email = 'ACCEPT@SASTEST.COM';
-    
+    this.pinHash = this.overridePinHash ?? posConfig.pinHash;
+    this.email = this.overrideEmail ?? external.email ?? PosConstants.DEFAULT_EMAIL;
     this.env = posConfig.environment;
     this.MDD = posConfig.MDDList ? this.generateMDDObject(posConfig.MDDList, session, external) : undefined;
   }

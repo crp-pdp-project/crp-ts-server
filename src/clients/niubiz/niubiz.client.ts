@@ -2,7 +2,6 @@ import { DeviceDM } from 'src/app/entities/dms/devices.dm';
 import { POSConfigDTO, POSConfigDTOSchema } from 'src/app/entities/dtos/service/posConfig.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { HttpMethod } from 'src/general/enums/methods.enum';
-import { EnvHelper } from 'src/general/helpers/env.helper';
 import { ResponseType, RestHelper } from 'src/general/helpers/rest.helper';
 import { TextHelper } from 'src/general/helpers/text.helper';
 
@@ -37,7 +36,6 @@ export enum NiubizServicePaths {
 }
 
 export class NiubizClient {
-  private readonly overridePinHash?: string = EnvHelper.getOptional('NIUBIZ_PIN_HASH');
   private readonly config: POSConfigDTO;
   private readonly rest: RestHelper;
 
@@ -54,23 +52,20 @@ export class NiubizClient {
 
   async getConfig(): Promise<POSConfigDTO> {
     const token = await this.getToken();
+    const result = await this.rest.send<GetPinHashOutput>({
+      path: `${NiubizServicePaths.GET_HASH}/${this.config.commerceCode}`,
+      method: HttpMethod.POST,
+      headers: {
+        Authorization: token,
+      },
+      responseType: ResponseType.JSON,
+    });
+
     const response: POSConfigDTO = {
       ...this.config,
       token: token,
-      pinHash: this.overridePinHash,
+      pinHash: result.pinHash,
     };
-
-    if (!this.overridePinHash) {
-      const result = await this.rest.send<GetPinHashOutput>({
-        path: `${NiubizServicePaths.GET_HASH}/${this.config.commerceCode}`,
-        method: HttpMethod.POST,
-        headers: {
-          Authorization: token,
-        },
-        responseType: ResponseType.JSON,
-      });
-      response.pinHash = result.pinHash;
-    }
 
     return response;
   }
