@@ -8,6 +8,7 @@ export enum StatusCode {
   CONFLICT = 409,
   UNPROCESSABLE_ENTITY = 422,
   LOCKED = 423,
+  PRECONDITION_REQUIRED = 428,
   INTERNAL_SERVER_ERROR = 500,
 }
 
@@ -21,6 +22,7 @@ export enum StatusMessage {
   CONFLICT = 'Conflict',
   UNPROCESSABLE_ENTITY = 'Unprocessable Entity',
   LOCKED = 'Locked',
+  PRECONDITION_REQUIRED = 'Precondition Required',
   INTERNAL_SERVER_ERROR = 'Internal Server Error',
 }
 
@@ -35,6 +37,7 @@ export class StatusCodesMapper {
     [StatusCode.CONFLICT]: StatusMessage.CONFLICT,
     [StatusCode.UNPROCESSABLE_ENTITY]: StatusMessage.UNPROCESSABLE_ENTITY,
     [StatusCode.LOCKED]: StatusMessage.LOCKED,
+    [StatusCode.PRECONDITION_REQUIRED]: StatusMessage.PRECONDITION_REQUIRED,
     [StatusCode.INTERNAL_SERVER_ERROR]: StatusMessage.INTERNAL_SERVER_ERROR,
   };
 

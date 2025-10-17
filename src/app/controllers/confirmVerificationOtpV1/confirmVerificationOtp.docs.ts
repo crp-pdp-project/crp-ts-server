@@ -14,7 +14,7 @@ export class ConfirmVerificationOTPV1Docs {
     this.manager.registerRoute({
       method: HttpSpecMethod.POST,
       path: `${this.version}/patients/enroll/otp/validate`,
-      description: 'Validate Sent OTP to enrolling patient ',
+      description: 'Validate Sent OTP to enrolling patient',
       tags: ['patients', 'enroll'],
       body: ConfirmVerificationOTPBodyDTOSchema,
       headers: BaseHeadersDTOSchema,
@@ -27,8 +27,21 @@ export class ConfirmVerificationOTPV1Docs {
     this.manager.registerRoute({
       method: HttpSpecMethod.POST,
       path: `${this.version}/patients/recover-password/otp/validate`,
-      description: 'Validate Sent OTP to recovering patient ',
+      description: 'Validate Sent OTP to recovering patient',
       tags: ['patients', 'recover'],
+      body: ConfirmVerificationOTPBodyDTOSchema,
+      headers: BaseHeadersDTOSchema,
+      responses: {
+        [StatusCode.NO_CONTENT]: NoContentResponseDTOSchema,
+      },
+      secure: true,
+    });
+
+    this.manager.registerRoute({
+      method: HttpSpecMethod.POST,
+      path: `${this.version}/patients/operation/otp/validate`,
+      description: 'Validate Sent OTP to authorize an operation',
+      tags: ['patients'],
       body: ConfirmVerificationOTPBodyDTOSchema,
       headers: BaseHeadersDTOSchema,
       responses: {

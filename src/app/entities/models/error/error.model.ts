@@ -68,6 +68,9 @@ export class ErrorModel extends Error {
   static locked(options?: { detail?: ClientErrorMessages; message?: string }): ErrorModel {
     return this.generateInstanceAndLog(StatusCode.LOCKED, options?.message, options?.detail);
   }
+  static precondition(options?: { detail?: ClientErrorMessages; message?: string }): ErrorModel {
+    return this.generateInstanceAndLog(StatusCode.PRECONDITION_REQUIRED, options?.message, options?.detail);
+  }
   static server(options?: { detail?: ClientErrorMessages; message?: string }): ErrorModel {
     return this.generateInstanceAndLog(StatusCode.INTERNAL_SERVER_ERROR, options?.message, options?.detail);
   }

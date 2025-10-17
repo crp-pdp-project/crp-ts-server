@@ -18,7 +18,7 @@ export interface IAddDeviceBiometricPasswordInteractor {
 
 export class AddDeviceBiometricPasswordInteractor implements IAddDeviceBiometricPasswordInteractor {
   constructor(
-    private readonly saveBiometricPassowrd: ISaveBiometricPasswordRepository,
+    private readonly saveBiometricPassword: ISaveBiometricPasswordRepository,
     private readonly encryptionManager: IEncryptionManager,
   ) {}
 
@@ -35,7 +35,7 @@ export class AddDeviceBiometricPasswordInteractor implements IAddDeviceBiometric
   }
 
   private async persistPassword(id: DeviceDM['id'], device: DeviceDTO): Promise<void> {
-    await this.saveBiometricPassowrd.execute(id, device);
+    await this.saveBiometricPassword.execute(id, device);
   }
 }
 

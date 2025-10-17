@@ -7,6 +7,7 @@ import { InternalServerErrorResponseDTOSchema } from 'src/app/entities/dtos/resp
 import { LockedResponseDTOSchema } from 'src/app/entities/dtos/response/locked.response.dto';
 import { NoContentResponseDTOSchema } from 'src/app/entities/dtos/response/noContent.response.dto';
 import { NotFoundResponseDTOSchema } from 'src/app/entities/dtos/response/notFound.response.dto';
+import { PreconditionRequiredResponseDTOSchema } from 'src/app/entities/dtos/response/preconditionRequired.response.dto';
 import { UnauthorizedResponseDTOSchema } from 'src/app/entities/dtos/response/unauthorized.response.dto';
 import { UnprocessableEntityResponseDTOSchema } from 'src/app/entities/dtos/response/unprocessableEntity.response.dto';
 
@@ -23,6 +24,7 @@ export class EmptyResponseStrategy implements IResponseStrategy {
       ConflictResponseDTOSchema,
       UnprocessableEntityResponseDTOSchema,
       LockedResponseDTOSchema,
+      PreconditionRequiredResponseDTOSchema,
       InternalServerErrorResponseDTOSchema,
     ]);
   }

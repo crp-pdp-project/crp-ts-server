@@ -33,5 +33,17 @@ export class SendVerificationOTPV1Docs {
       },
       secure: true,
     });
+
+    this.manager.registerRoute({
+      method: HttpSpecMethod.POST,
+      path: `${this.version}/patients/operation/otp/send`,
+      description: 'Send OTP to authorize an operation',
+      tags: ['patients'],
+      headers: BaseHeadersDTOSchema,
+      responses: {
+        [StatusCode.NO_CONTENT]: NoContentResponseDTOSchema,
+      },
+      secure: true,
+    });
   }
 }
