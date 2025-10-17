@@ -58,7 +58,7 @@ export class SignInSessionModel extends SessionModel {
   #relatives?: PatientModel[];
 
   constructor(session: SessionDTO, payload: SignInSessionPayloadDTO) {
-    super(session.jti, session.expiresAt);
+    super(session);
 
     this.patient = payload.patient;
     this.selfId = payload.patient.fmpId;

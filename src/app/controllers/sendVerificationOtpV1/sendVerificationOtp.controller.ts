@@ -2,18 +2,12 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
+import { SessionModel } from 'src/app/entities/models/session/session.model';
 import {
   ISendVerificationOTPInteractor,
   SendVerificationOTPInteractorBuilder,
 } from 'src/app/interactors/sendVerificationOtp/sendVerificationOtp.interactor';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
-
-import { SendEnrollOTPControllerStrategy } from './strategies/sendEnrollOtp.strategy';
-import { SendRecoverOTPControllerStrategy } from './strategies/sendRecoverOtp.strategy';
-
-export interface ISendVerificationOTPControllerStrategy {
-  execute(input: FastifyRequest, interactor: ISendVerificationOTPInteractor): Promise<void>;
-}
 
 export interface ISendVerificationOTPController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;
@@ -24,13 +18,13 @@ export class SendVerificationOTPController implements ISendVerificationOTPContro
 
   constructor(
     private readonly sendOTPInteractor: ISendVerificationOTPInteractor,
-    private readonly sendOTPStrategy: ISendVerificationOTPControllerStrategy,
     private readonly responseManager: IResponseManager,
   ) {}
 
   async handle(input: FastifyRequest, reply: FastifyReply): Promise<void> {
     try {
-      await this.sendOTPStrategy.execute(input, this.sendOTPInteractor);
+      const session = SessionModel.validateRawSession(input.session);
+      await this.sendOTPInteractor.sendOTP(session);
       this.response = this.responseManager.validateResponse();
     } catch (error) {
       const errorModel = ErrorModel.fromError(error);
@@ -45,14 +39,20 @@ export class SendVerificationOTPControllerBuilder {
   static buildEnroll(): SendVerificationOTPController {
     return new SendVerificationOTPController(
       SendVerificationOTPInteractorBuilder.buildEnroll(),
-      new SendEnrollOTPControllerStrategy(),
       ResponseManagerBuilder.buildEmpty(),
     );
   }
+
   static buildRecover(): SendVerificationOTPController {
     return new SendVerificationOTPController(
       SendVerificationOTPInteractorBuilder.buildRecover(),
-      new SendRecoverOTPControllerStrategy(),
+      ResponseManagerBuilder.buildEmpty(),
+    );
+  }
+
+  static buildAuth(): SendVerificationOTPController {
+    return new SendVerificationOTPController(
+      SendVerificationOTPInteractorBuilder.buildAuth(),
       ResponseManagerBuilder.buildEmpty(),
     );
   }

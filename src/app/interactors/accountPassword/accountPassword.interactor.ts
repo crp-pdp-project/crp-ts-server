@@ -17,7 +17,7 @@ import { UpdatePasswordStrategy } from './strategies/updatePassword.strategy';
 type CombinedTransacSession = EnrollSessionModel | RecoverSessionModel;
 type CombinedInputBody = CreateEnrolledAccountBodyDTO | UpdatePatientPasswordBodyDTO;
 
-export interface IAccountPassowrdStrategy {
+export interface IAccountPasswordStrategy {
   transactionPassword(
     hashedPassword: PasswordHashResult,
     session: CombinedTransacSession,
@@ -32,7 +32,7 @@ export interface IAccountPasswordInteractor {
 export class AccountPasswordInteractor implements IAccountPasswordInteractor {
   constructor(
     private readonly cleanSession: ICleanSessionRepository,
-    private readonly accountPasswordStrategy: IAccountPassowrdStrategy,
+    private readonly accountPasswordStrategy: IAccountPasswordStrategy,
     private readonly encryptionManager: IEncryptionManager,
   ) {}
 

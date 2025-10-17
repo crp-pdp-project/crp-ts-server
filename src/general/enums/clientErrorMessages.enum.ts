@@ -19,4 +19,5 @@ export enum ClientErrorMessages {
   RELATIVE_EXISTS = 'El familiar ya se encuentra registrado',
   INSURANCE_NOT_EXIST = 'No tiene coberturas para el seguro seleccionado en la cita, realice el pago personalmente en clínica',
   EMPLOYEE_AUTH_INVALID = 'Usuario o contraseña incorrectos.',
+  SAFE_OPERATION_NOT_ALLOWED = 'Inicia el proceso de verificación ingresando el código OTP enviado a tu correo o teléfono.',
 }

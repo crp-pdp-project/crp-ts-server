@@ -8,6 +8,10 @@ import {
   ValidateHeadersControllerBuilder,
 } from '../validateHeadersV1/validateHeaders.controller';
 import {
+  IValidateSafeOperationController,
+  ValidateSafeOperationControllerBuilder,
+} from '../validateSafeOperationV1/validateSafeOperation.controller';
+import {
   IValidateSessionController,
   ValidateSessionControllerBuilder,
 } from '../validateSessionV1/validateSession.controller';
@@ -22,11 +26,13 @@ export class AppointmentDocumentPDFV1Router {
   private readonly appointmentDocumentPDFController: IAppointmentDocumentPDFController;
   private readonly validateHeadersController: IValidateHeadersController;
   private readonly validateSessionController: IValidateSessionController;
+  private readonly validateSafeOperationController: IValidateSafeOperationController;
 
   constructor(private readonly fastify: FastifyInstance) {
     this.appointmentDocumentPDFController = AppointmentDocumentPDFControllerBuilder.build();
     this.validateHeadersController = ValidateHeadersControllerBuilder.build();
     this.validateSessionController = ValidateSessionControllerBuilder.buildSignIn();
+    this.validateSafeOperationController = ValidateSafeOperationControllerBuilder.build();
   }
 
   registerRouter(): void {
@@ -36,6 +42,7 @@ export class AppointmentDocumentPDFV1Router {
       preHandler: RouterHelper.wrapPreHandlers(
         this.validateHeadersController.validate.bind(this.validateHeadersController),
         this.validateSessionController.validate.bind(this.validateSessionController),
+        this.validateSafeOperationController.validate.bind(this.validateSafeOperationController),
       ),
       handler: this.appointmentDocumentPDFController.handle.bind(this.appointmentDocumentPDFController),
     });

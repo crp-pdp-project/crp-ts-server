@@ -3,9 +3,9 @@ import { EnrollSessionModel } from 'src/app/entities/models/session/enrollSessio
 import { ISavePatientAccountRepository } from 'src/app/repositories/database/savePatientAccount.repository';
 import { PasswordHashResult } from 'src/general/managers/encryption/encryption.manager';
 
-import { IAccountPassowrdStrategy } from '../accountPassword.interactor';
+import { IAccountPasswordStrategy } from '../accountPassword.interactor';
 
-export class CreatePasswordStrategy implements IAccountPassowrdStrategy {
+export class CreatePasswordStrategy implements IAccountPasswordStrategy {
   constructor(private readonly savePatientAccount: ISavePatientAccountRepository) {}
 
   async transactionPassword(

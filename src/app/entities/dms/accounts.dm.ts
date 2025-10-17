@@ -12,7 +12,7 @@ export const AccountDMSchema = z.object({
     example: 1,
   }),
   passwordHash: z.string().openapi({
-    description: 'Hashed Passowrd of the patient',
+    description: 'Hashed Password of the patient',
     example: 'AnyHash',
   }),
   passwordSalt: z.string().openapi({
