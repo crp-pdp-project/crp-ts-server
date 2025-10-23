@@ -20,6 +20,10 @@ export const POSConfigOutputDTOSchema = z
       description: 'Host of the POS',
       example: 'https://anyHost.com',
     }),
+    certificatedHost: z.string().openapi({
+      description: 'Host of the POS without protocol',
+      example: 'https://anyHost.com',
+    }),
     env: z.string().openapi({
       description: 'Environment of the POS config',
       example: 'dev',

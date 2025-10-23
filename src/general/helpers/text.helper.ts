@@ -34,16 +34,26 @@ export class TextHelper {
   }
 
   static normalizeHost(host?: string): string | undefined {
-    if (host == null) return host;
+    const baseDomain = this.normalizeDomain(host);
+    if (baseDomain == null) return baseDomain;
 
-    let value = host.trim().toLowerCase();
+    return `https://${baseDomain}`;
+  }
 
-    if (value.startsWith('//')) {
-      value = value.slice(2);
-    }
+  static normalizeDomain(host?: string): string | undefined {
+    let value = host?.trim()?.toLowerCase();
+    if (!value) return undefined;
 
-    if (!value.startsWith('http://') && !value.startsWith('https://')) {
-      value = `https://${value}`;
+    switch (true) {
+      case value.startsWith('//'):
+        value = value.slice(2);
+        break;
+      case value.startsWith('http://'):
+        value = value.slice(7);
+        break;
+      case value.startsWith('https://'):
+        value = value.slice(8);
+        break;
     }
 
     while (value.length > 0 && value[value.length - 1] === '/') {

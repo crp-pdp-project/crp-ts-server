@@ -55,6 +55,7 @@ export class POSConfigModel extends BaseModel {
   readonly commerceCode?: string;
   readonly channel?: string;
   readonly host?: string;
+  readonly certificatedHost?: string;
   readonly correlative?: string;
   readonly token?: string;
   readonly pinHash?: string;
@@ -70,9 +71,10 @@ export class POSConfigModel extends BaseModel {
     this.commerceCode = posConfig.commerceCode;
     this.channel = posConfig.channel;
     this.host = posConfig.host;
+    this.certificatedHost = TextHelper.normalizeDomain(posConfig.host);
     this.correlative = posConfig.correlative ? TextHelper.padTextLength(posConfig.correlative) : undefined;
     this.token = posConfig.token;
-    this.pinHash = this.overridePinHash ?? posConfig.pinHash;
+    this.pinHash = `${PosConstants.HASH_PREFIX}${this.overridePinHash ?? posConfig.pinHash}`;
     this.email = this.overrideEmail ?? external.email ?? PosConstants.DEFAULT_EMAIL;
     this.env = posConfig.environment;
     this.MDD = posConfig.MDDList ? this.generateMDDObject(posConfig.MDDList, session, external) : undefined;
