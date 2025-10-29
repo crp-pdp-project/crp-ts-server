@@ -332,34 +332,39 @@ export class X12Manager<EncodeConf extends X12ManagerConfig, DecodeConf extends 
     return `${rawSegments.join(normalizedDelimiter)}${normalizedDelimiter}`;
   }
 
-  private sliceChild(x12: string, child: ChildLocation): string | undefined {
-    const { segmentDelimiter, elementDelimiter } = this.encodeConfig;
-    const rawSegments = x12.split(segmentDelimiter).filter(Boolean);
+  private findOccurrenceIndex(segments: string[], tag: string, occurrence: number): number {
+    const { elementDelimiter } = this.encodeConfig;
 
-    let startIndex = -1;
-    let endIndex = -1;
-    let startSeen = 0;
-    let endSeen = 0;
+    if (occurrence <= 0) return -1;
 
-    for (const [index, segment] of rawSegments.entries()) {
-      if (segment.startsWith(`${child.startTag}${elementDelimiter}`)) {
-        startSeen += 1;
-        if (startSeen === child.startOccurrence) {
-          startIndex = index + 1;
-        }
-      }
-      if (segment.startsWith(`${child.endTag}${elementDelimiter}`)) {
-        endSeen += 1;
-        if (endSeen === child.endOccurrence) {
-          endIndex = index;
-          if (startIndex >= 0) break;
-        }
+    let seen = 0;
+    const prefix = `${tag}${elementDelimiter}`;
+
+    for (const [index, segment] of segments.entries()) {
+      if (segment.startsWith(prefix)) {
+        seen += 1;
+        if (seen === occurrence) return index;
       }
     }
 
-    if (!startIndex || !endIndex || endIndex <= startIndex) return undefined;
+    return -1;
+  }
 
-    const slice = rawSegments.slice(startIndex, endIndex).join(segmentDelimiter);
+  private sliceChild(x12: string, child: ChildLocation): string | undefined {
+    const { segmentDelimiter } = this.encodeConfig;
+    const { startTag, startOccurrence, endTag, endOccurrence } = child;
+    const rawSegments = x12.split(segmentDelimiter).filter(Boolean);
+
+    const startTagIndex = this.findOccurrenceIndex(rawSegments, startTag, startOccurrence);
+
+    const endTagIndex = this.findOccurrenceIndex(rawSegments, endTag, endOccurrence);
+
+    const isInvalid = startTagIndex < 0 || endTagIndex < 0 || endTagIndex <= startTagIndex;
+
+    if (isInvalid) return undefined;
+
+    const contentStartIndex = startTagIndex + 1;
+    const slice = rawSegments.slice(contentStartIndex, endTagIndex).join(segmentDelimiter);
     return slice ? `${slice}${segmentDelimiter}` : undefined;
   }
 

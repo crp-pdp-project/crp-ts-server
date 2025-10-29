@@ -67,7 +67,7 @@ export class POSConfigModel extends BaseModel {
     super();
 
     this.user = posConfig.user;
-    this.password = posConfig.password;
+    this.password = posConfig.pass;
     this.commerceCode = posConfig.commerceCode;
     this.channel = posConfig.channel;
     this.host = posConfig.host;

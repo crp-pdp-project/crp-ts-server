@@ -1,6 +1,6 @@
 import { BaseHeadersDTOSchema } from 'src/app/entities/dtos/input/baseHeaders.input.dto';
-import { CreateRelativeInformationBodyDTOSchema } from 'src/app/entities/dtos/input/createRelativeInformation.input.dto';
-import { RelativeVerificationOutputDTOSchema } from 'src/app/entities/dtos/output/relativeVerification.output.dto';
+import { CreatePatientBodyDTOSchema } from 'src/app/entities/dtos/input/createPatient.input.dto';
+import { PatientProfileOutputDTOSchema } from 'src/app/entities/dtos/output/patientProfile.output.dto';
 import { OkResponseDTOSchema } from 'src/app/entities/dtos/response/ok.response.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { StatusCode } from 'src/general/enums/status.enum';
@@ -18,10 +18,10 @@ export class CreateRelativeInformationV1Docs {
       description: 'Create a new relative information',
       tags: ['patients', 'relatives'],
       headers: BaseHeadersDTOSchema,
-      body: CreateRelativeInformationBodyDTOSchema,
+      body: CreatePatientBodyDTOSchema,
       responses: {
         [StatusCode.OK]: OkResponseDTOSchema.extend({
-          data: RelativeVerificationOutputDTOSchema,
+          data: PatientProfileOutputDTOSchema,
         }),
       },
       secure: true,

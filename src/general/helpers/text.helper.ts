@@ -1,4 +1,4 @@
-import { randomBytes, randomUUID } from 'crypto';
+import { randomBytes, randomUUID } from 'node:crypto';
 
 export class TextHelper {
   static addCityCode(phone?: string | null): string | undefined | null {
@@ -56,7 +56,7 @@ export class TextHelper {
         break;
     }
 
-    while (value.length > 0 && value[value.length - 1] === '/') {
+    while (value.length > 0 && value.endsWith('/')) {
       value = value.slice(0, -1);
     }
 

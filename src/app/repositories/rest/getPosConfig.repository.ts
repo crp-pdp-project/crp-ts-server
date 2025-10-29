@@ -18,7 +18,7 @@ export class GetPOSConfigRepositoryMock implements IGetPOSConfigRepository {
   async execute(): Promise<POSConfigDTO> {
     return {
       user: 'anyemai@test.com',
-      password: 'anyPass',
+      pass: 'anyPass',
       channel: 'web',
       host: 'https://anyDomain.test/',
       commerceCode: 'anyCode',

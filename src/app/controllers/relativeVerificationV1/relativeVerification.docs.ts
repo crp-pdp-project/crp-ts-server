@@ -1,6 +1,6 @@
 import { BaseHeadersDTOSchema } from 'src/app/entities/dtos/input/baseHeaders.input.dto';
-import { RelativeVerificationBodyDTOSchema } from 'src/app/entities/dtos/input/relativeVerification.input.dto';
-import { RelativeVerificationOutputDTOSchema } from 'src/app/entities/dtos/output/relativeVerification.output.dto';
+import { PatientVerificationBodyDTOSchema } from 'src/app/entities/dtos/input/patientVerification.input.dto';
+import { PatientProfileOutputDTOSchema } from 'src/app/entities/dtos/output/patientProfile.output.dto';
 import { OkResponseDTOSchema } from 'src/app/entities/dtos/response/ok.response.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { StatusCode } from 'src/general/enums/status.enum';
@@ -18,10 +18,10 @@ export class RelativeVerificationV1Docs {
       description: 'Verify if relative exists',
       tags: ['patients', 'relatives'],
       headers: BaseHeadersDTOSchema,
-      body: RelativeVerificationBodyDTOSchema,
+      body: PatientVerificationBodyDTOSchema,
       responses: {
         [StatusCode.OK]: OkResponseDTOSchema.extend({
-          data: RelativeVerificationOutputDTOSchema,
+          data: PatientProfileOutputDTOSchema,
         }),
       },
       secure: true,

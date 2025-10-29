@@ -13,7 +13,7 @@ export abstract class ViewElementModel extends BaseModel {
 }
 
 export abstract class ViewModel extends BaseModel {
-  #elements: ViewElementModel[] = [];
+  readonly #elements: ViewElementModel[] = [];
 
   get view(): ViewElementModel[] {
     return this.#elements;
