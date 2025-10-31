@@ -11,6 +11,6 @@ export default [
   },
   {
     title: 'Sobre el pago:',
-    content: ['Podrás realizar el pago de tu cita por aquí 7 días antes de la fecha de agendamiento.'],
+    content: ['Podrás realizar el pago de tu cita desde 7 días antes y hasta 2 horas antes del horario agendado.'],
   },
 ] as const satisfies readonly TipDTO[];
