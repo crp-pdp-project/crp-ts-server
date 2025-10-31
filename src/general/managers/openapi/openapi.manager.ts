@@ -11,6 +11,8 @@ import { UnauthorizedResponseDTOSchema } from 'src/app/entities/dtos/response/un
 import { UnprocessableEntityResponseDTOSchema } from 'src/app/entities/dtos/response/unprocessableEntity.response.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { StatusCode } from 'src/general/enums/status.enum';
+import { PreconditionRequiredResponseDTOSchema } from 'src/app/entities/dtos/response/preconditionRequired.response.dto';
+import { GatewayTimeoutResponseDTOSchema } from 'src/app/entities/dtos/response/gatewayTimeout.response.dto';
 
 type LooseZodObject = ZodObject | ZodPipe<ZodTransform>;
 
@@ -49,7 +51,9 @@ export class OpenApiManager implements IOpenApiManager {
     [StatusCode.CONFLICT]: ConflictResponseDTOSchema,
     [StatusCode.UNPROCESSABLE_ENTITY]: UnprocessableEntityResponseDTOSchema,
     [StatusCode.LOCKED]: LockedResponseDTOSchema,
+    [StatusCode.PRECONDITION_REQUIRED]: PreconditionRequiredResponseDTOSchema,
     [StatusCode.INTERNAL_SERVER_ERROR]: InternalServerErrorResponseDTOSchema,
+    [StatusCode.GATEWAY_TIMEOUT]: GatewayTimeoutResponseDTOSchema,
   };
 
   constructor(private readonly registry: OpenAPIRegistry) {

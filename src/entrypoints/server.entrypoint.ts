@@ -93,6 +93,9 @@ import { EnvHelper } from 'src/general/helpers/env.helper';
 import { OpenApiManager } from 'src/general/managers/openapi/openapi.manager';
 import swaggerMeta from 'src/general/static/swaggerMeta.static';
 import swaggerTemplate from 'src/general/templates/swagger.template';
+import { ResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseModel } from 'src/app/entities/models/response/response.model';
+import { ErrorModel } from 'src/app/entities/models/error/error.model';
 
 export class Server {
   private static readonly app: FastifyInstance = Fastify({ logger: false });
@@ -140,6 +143,8 @@ export class Server {
       allowedHeaders: ['Content-Type', 'Authorization', 'X-Os', 'X-Device-Id', 'X-Device-Name', 'X-Push-Token'],
       maxAge: 86400,
     });
+    this.app.server.setTimeout(CRPConstants.REQUEST_TIMEOUT);
+    this.app.server.requestTimeout = CRPConstants.REQUEST_TIMEOUT;
 
     if (EnvHelper.getCurrentEnv() !== Environments.PRD) {
       this.setupDocsEndpoint();
@@ -166,6 +171,18 @@ export class Server {
         url: request.url,
         statusCode: reply.statusCode,
       });
+    });
+
+    this.app.addHook('onRequest', async (_, reply) => {
+      const timer = setTimeout(() => {
+        if (!reply.sent) {
+          const error = ErrorModel.timeout({ message: 'Request timeout' })
+          const response = new ResponseModel(error);
+          reply.code(response.statusCode).send(response.body);
+        }
+      }, CRPConstants.REQUEST_TIMEOUT);
+      reply.raw.once('close', () => clearTimeout(timer));
+      reply.raw.once('finish', () => clearTimeout(timer));
     });
   }
 
@@ -278,7 +295,6 @@ export class Server {
       ...https.globalAgent.options,
       rejectUnauthorized: false,
       keepAlive: true,
-      timeout: CRPConstants.SOAP_TIMEOUT,
       checkServerIdentity: () => undefined,
     };
   }

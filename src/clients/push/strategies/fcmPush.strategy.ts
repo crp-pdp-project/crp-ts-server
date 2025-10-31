@@ -35,16 +35,14 @@ export class FcmPushStrategy implements PushStrategy {
       path: this.path,
       headers: { Authorization: `Bearer ${token}` },
       body: {
-        to: payload.token,
-        notification: {
-          title: payload.title,
-          body: payload.body,
-        },
-        data: payload.url ? { url: payload.url } : undefined,
+        message: {
+          token: payload.token,
+          notification: { title: payload.title, body: payload.body },
+          data: payload.url ? { url: payload.url } : undefined,
+        }
       },
     });
     this.logger.info('FCM push queued', {
-      token: payload.token,
       title: payload.title,
       hasUrl: Boolean(payload.url),
     });
@@ -79,14 +77,16 @@ export class FcmPushStrategy implements PushStrategy {
       scopes: [...FirebaseConstants.DEFAULT_SCOPES],
     });
 
-    const { access_token } = await jwt.authorize();
+    const { access_token, expiry_date } = await jwt.authorize();
 
     if (!access_token) {
       throw ErrorModel.server({ message: 'Unprocessable Firebase JWT' });
     }
 
     this.token = access_token;
-    this.tokenExpiresAt = DateHelper.addMinutes(FirebaseConstants.TOKEN_TIMEOUT, 'dbDateTime');
+    this.tokenExpiresAt = expiry_date
+      ? DateHelper.toFormatDateTime(expiry_date, 'dbDateTime')
+      : DateHelper.addMinutes(FirebaseConstants.TOKEN_TIMEOUT, 'dbDateTime');
 
     return access_token;
   }

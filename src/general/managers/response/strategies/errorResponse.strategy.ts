@@ -11,6 +11,7 @@ import { UnauthorizedResponseDTOSchema } from 'src/app/entities/dtos/response/un
 import { UnprocessableEntityResponseDTOSchema } from 'src/app/entities/dtos/response/unprocessableEntity.response.dto';
 
 import { IResponseStrategy } from '../response.manager';
+import { GatewayTimeoutResponseDTOSchema } from 'src/app/entities/dtos/response/gatewayTimeout.response.dto';
 
 export class ErrorResponseStrategy implements IResponseStrategy {
   getSchema(): ZodDiscriminatedUnion {
@@ -24,6 +25,7 @@ export class ErrorResponseStrategy implements IResponseStrategy {
       LockedResponseDTOSchema,
       PreconditionRequiredResponseDTOSchema,
       InternalServerErrorResponseDTOSchema,
+      GatewayTimeoutResponseDTOSchema
     ]);
   }
 }

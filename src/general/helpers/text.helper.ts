@@ -63,6 +63,16 @@ export class TextHelper {
     return value;
   }
 
+  static joinHostPath(host: string, path: string): string {
+    const hasSlash = host.endsWith('/');
+    const hasLead = path.startsWith('/');
+    switch(true) {
+      case hasSlash && hasLead: return `${host}${path.slice(1)}`;
+      case !hasSlash && !hasLead: return `${host}/${path}`;
+      default: return `${host}${path}`;
+    }
+  }
+
   static normalizeAppointmentId(appointmentId: string): string {
     const cleaned = appointmentId.toUpperCase().startsWith('C') ? appointmentId : `C${appointmentId}`;
     return cleaned;

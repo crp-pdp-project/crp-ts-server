@@ -10,6 +10,7 @@ export enum StatusCode {
   LOCKED = 423,
   PRECONDITION_REQUIRED = 428,
   INTERNAL_SERVER_ERROR = 500,
+  GATEWAY_TIMEOUT = 504,
 }
 
 export enum StatusMessage {
@@ -24,6 +25,7 @@ export enum StatusMessage {
   LOCKED = 'Locked',
   PRECONDITION_REQUIRED = 'Precondition Required',
   INTERNAL_SERVER_ERROR = 'Internal Server Error',
+  GATEWAY_TIMEOUT = 'Gateway Timeout',
 }
 
 export class StatusCodesMapper {
@@ -39,6 +41,7 @@ export class StatusCodesMapper {
     [StatusCode.LOCKED]: StatusMessage.LOCKED,
     [StatusCode.PRECONDITION_REQUIRED]: StatusMessage.PRECONDITION_REQUIRED,
     [StatusCode.INTERNAL_SERVER_ERROR]: StatusMessage.INTERNAL_SERVER_ERROR,
+    [StatusCode.GATEWAY_TIMEOUT]: StatusMessage.GATEWAY_TIMEOUT,
   };
 
   static getStatusMessage(statusCode: StatusCode): StatusMessage {
