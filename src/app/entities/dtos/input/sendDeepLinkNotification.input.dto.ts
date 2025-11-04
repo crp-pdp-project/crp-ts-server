@@ -3,13 +3,15 @@ import { z } from 'zod';
 
 import { PatientDMSchema } from 'src/app/entities/dms/patients.dm';
 
+import { DeviceDMSchema } from '../../dms/devices.dm';
+
 extendZodWithOpenApi(z);
 
 export const SendDeepLinkNotificationParamsDTOSchema = z
   .object({
     screen: z.string().openapi({
       description: 'Screen to redirect on push notification',
-      example: 'appointments',
+      example: 'appointment',
     }),
   })
   .strict()
@@ -22,6 +24,7 @@ export const SendDeepLinkNotificationBodyDTOSchema = PatientDMSchema.pick({
   documentNumber: true,
 })
   .extend({
+    device: DeviceDMSchema.shape.os,
     title: z.string().openapi({
       description: 'Title of the push notification',
       example: 'Titulo',
@@ -30,7 +33,7 @@ export const SendDeepLinkNotificationBodyDTOSchema = PatientDMSchema.pick({
       description: 'Body of the push notification',
       example: 'Mensaje del push',
     }),
-    params: z.unknown().openapi({
+    params: z.record(z.string(), z.unknown()).openapi({
       description: 'Extra params for deeplink notification in object form',
       example: { appointmentId: 'test' },
     }),

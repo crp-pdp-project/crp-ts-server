@@ -132,7 +132,7 @@ export const SitedsPriceOutputDTOSchema = z
         description: 'Array of siteds patient details',
       }),
   })
-  .strict()
+  .strip()
   .openapi({
     description: 'Siteds Price Response Body',
   });

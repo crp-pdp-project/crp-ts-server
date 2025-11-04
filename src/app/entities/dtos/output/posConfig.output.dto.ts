@@ -57,7 +57,7 @@ export const POSConfigOutputDTOSchema = z
         example: { MDD21: 0 },
       }),
   })
-  .strict()
+  .strip()
   .openapi({
     description: 'POS Config Response Body',
   });

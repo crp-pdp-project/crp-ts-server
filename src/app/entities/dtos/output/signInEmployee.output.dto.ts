@@ -24,7 +24,7 @@ export const SignInEmployeeOutputDTOSchema = z
       example: 'Valid JWE',
     }),
   })
-  .strict()
+  .strip()
   .openapi({
     description: 'Sign In Employee Response Body',
   });

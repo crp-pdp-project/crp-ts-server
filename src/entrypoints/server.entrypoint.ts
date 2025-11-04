@@ -38,6 +38,8 @@ import { DoctorsListV1Docs } from 'src/app/controllers/doctorsListV1/doctorsList
 import { DoctorsListV1Router } from 'src/app/controllers/doctorsListV1/doctorsList.router';
 import { GuaranteeLetterListV1Docs } from 'src/app/controllers/guaranteeLetterListV1/guaranteeLetterList.docs';
 import { GuaranteeLetterListV1Router } from 'src/app/controllers/guaranteeLetterListV1/guaranteeLetterList.router';
+import { HealthInsuranceDataV1Docs } from 'src/app/controllers/healthInsuranceDataV1/healthInsuranceData.docs';
+import { HealthInsuranceDataV1Router } from 'src/app/controllers/healthInsuranceDataV1/healthInsuranceData.router';
 import { HealthInsuranceViewV1Docs } from 'src/app/controllers/healthInsuranceViewV1/healthInsuranceView.docs';
 import { HealthInsuranceViewV1Router } from 'src/app/controllers/healthInsuranceViewV1/healthInsuranceView.routes';
 import { InformInsuranceInterestV1Docs } from 'src/app/controllers/informInsuranceInterestV1/informInsuranceInterest.docs';
@@ -60,6 +62,8 @@ import { PatientResultsListV1Docs } from 'src/app/controllers/patientResultsList
 import { PatientResultsListV1Router } from 'src/app/controllers/patientResultsListV1/patientResultsList.router';
 import { PatientResultURLV1Docs } from 'src/app/controllers/patientResultURLV1/patientResultURL.docs';
 import { PatientResultURLV1Router } from 'src/app/controllers/patientResultURLV1/patientResultURL.router';
+import { PatientsListV1Docs } from 'src/app/controllers/patientsListV1/patientAppointments.docs';
+import { PatientsListV1Router } from 'src/app/controllers/patientsListV1/patientsList.router';
 import { PatientVerificationV1Docs } from 'src/app/controllers/patientVerificationV1/patientVerification.docs';
 import { PatientVerificationV1Router } from 'src/app/controllers/patientVerificationV1/patientVerification.routes';
 import { PayAppointmentV1Router } from 'src/app/controllers/payAppointmentV1/payAppointment.router';
@@ -68,12 +72,18 @@ import { PayHealthInsuranceV1Docs } from 'src/app/controllers/payHealthInsurance
 import { PayHealthInsuranceV1Router } from 'src/app/controllers/payHealthInsuranceV1/payHealthInsurance.router';
 import { POSConfigV1Docs } from 'src/app/controllers/posConfigV1/posConfig.docs';
 import { POSConfigV1Router } from 'src/app/controllers/posConfigV1/posConfig.router';
+import { RejectRelativeV1Docs } from 'src/app/controllers/rejectRelativeV1/rejectRelative.docs';
+import { RejectRelativeV1Router } from 'src/app/controllers/rejectRelativeV1/rejectRelative.router';
 import { RelationshipsListV1Docs } from 'src/app/controllers/relationshipsListV1/relationshipsList.docs';
 import { RelationshipsListV1Router } from 'src/app/controllers/relationshipsListV1/relationshipsList.router';
 import { RelativeVerificationV1Docs } from 'src/app/controllers/relativeVerificationV1/relativeVerification.docs';
 import { RelativeVerificationV1Router } from 'src/app/controllers/relativeVerificationV1/relativeVerification.router';
 import { RescheduleAppointmentV1Docs } from 'src/app/controllers/rescheduleAppointmentV1/rescheduleAppointment.docs';
 import { RescheduleAppointmentV1Router } from 'src/app/controllers/rescheduleAppointmentV1/rescheduleAppointment.router';
+import { SendDeepLinkNotificationV1Docs } from 'src/app/controllers/sendDeepLinkNotificationV1/sendDeepLinkNotification.docs';
+import { SendDeepLinkNotificationV1Router } from 'src/app/controllers/sendDeepLinkNotificationV1/sendDeepLinkNotification.router';
+import { SendNotificationV1Docs } from 'src/app/controllers/sendNotificationV1/sendNotification.docs';
+import { SendNotificationV1Router } from 'src/app/controllers/sendNotificationV1/sendNotification.router';
 import { SendVerificationOTPV1Docs } from 'src/app/controllers/sendVerificationOtpV1/sendVerificationOtp.docs';
 import { SendVerificationOTPV1Router } from 'src/app/controllers/sendVerificationOtpV1/sendVerificationOtp.routes';
 import { SignInEmployeeV1Docs } from 'src/app/controllers/signInEmployeeV1/signInEmployee.docs';
@@ -86,6 +96,12 @@ import { SitedsPriceV1Docs } from 'src/app/controllers/sitedsPriceV1/sitedsPrice
 import { SitedsPriceV1Router } from 'src/app/controllers/sitedsPriceV1/sitedsPrice.router';
 import { SpecialtiesListV1Docs } from 'src/app/controllers/specialtiesListV1/specialtiesList.docs';
 import { SpecialtiesListV1Router } from 'src/app/controllers/specialtiesListV1/specialtiesList.routes';
+import { UpdateHealthInsuranceV1Docs } from 'src/app/controllers/updateHealthInsuranceV1/updateHealthInsurance.docs';
+import { UpdateHealthInsuranceV1Router } from 'src/app/controllers/updateHealthInsuranceV1/updateHealthInsurance.router';
+import { VerifyRelativeV1Docs } from 'src/app/controllers/verifyRelativeV1/verifyRelative.docs';
+import { VerifyRelativeV1Router } from 'src/app/controllers/verifyRelativeV1/verifyRelative.router';
+import { ErrorModel } from 'src/app/entities/models/error/error.model';
+import { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { LoggerClient } from 'src/clients/logger/logger.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { Environments } from 'src/general/enums/environments.enum';
@@ -93,9 +109,6 @@ import { EnvHelper } from 'src/general/helpers/env.helper';
 import { OpenApiManager } from 'src/general/managers/openapi/openapi.manager';
 import swaggerMeta from 'src/general/static/swaggerMeta.static';
 import swaggerTemplate from 'src/general/templates/swagger.template';
-import { ResponseManager } from 'src/general/managers/response/response.manager';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import { ErrorModel } from 'src/app/entities/models/error/error.model';
 
 export class Server {
   private static readonly app: FastifyInstance = Fastify({ logger: false });
@@ -139,7 +152,7 @@ export class Server {
     await this.app.register(cors, {
       origin: true,
       credentials: false,
-      methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+      methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization', 'X-Os', 'X-Device-Id', 'X-Device-Name', 'X-Push-Token'],
       maxAge: 86400,
     });
@@ -176,7 +189,7 @@ export class Server {
     this.app.addHook('onRequest', async (_, reply) => {
       const timer = setTimeout(() => {
         if (!reply.sent) {
-          const error = ErrorModel.timeout({ message: 'Request timeout' })
+          const error = ErrorModel.timeout({ message: 'Request timeout' });
           const response = new ResponseModel(error);
           reply.code(response.statusCode).send(response.body);
         }
@@ -227,6 +240,13 @@ export class Server {
     new PatientResultURLV1Docs(this.manager).registerDocs();
     new PayAppointmentV1Docs(this.manager).registerDocs();
     new SignInEmployeeV1Docs(this.manager).registerDocs();
+    new PatientsListV1Docs(this.manager).registerDocs();
+    new HealthInsuranceDataV1Docs(this.manager).registerDocs();
+    new UpdateHealthInsuranceV1Docs(this.manager).registerDocs();
+    new VerifyRelativeV1Docs(this.manager).registerDocs();
+    new RejectRelativeV1Docs(this.manager).registerDocs();
+    new SendNotificationV1Docs(this.manager).registerDocs();
+    new SendDeepLinkNotificationV1Docs(this.manager).registerDocs();
   }
 
   private static registerRoutes(): void {
@@ -270,6 +290,13 @@ export class Server {
     new PatientResultURLV1Router(this.app).registerRouter();
     new PayAppointmentV1Router(this.app).registerRouter();
     new SignInEmployeeV1Router(this.app).registerRouter();
+    new PatientsListV1Router(this.app).registerRouter();
+    new HealthInsuranceDataV1Router(this.app).registerRouter();
+    new UpdateHealthInsuranceV1Router(this.app).registerRouter();
+    new VerifyRelativeV1Router(this.app).registerRouter();
+    new RejectRelativeV1Router(this.app).registerRouter();
+    new SendNotificationV1Router(this.app).registerRouter();
+    new SendDeepLinkNotificationV1Router(this.app).registerRouter();
   }
 
   private static setupDocsEndpoint(): void {

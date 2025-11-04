@@ -3,12 +3,10 @@ import { Client, createClientAsync, WSSecurity } from 'soap';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { LoggerClient } from 'src/clients/logger/logger.client';
 
-import { CRPConstants } from '../contants/crp.constants';
-
 type GenericSoapFunction<TOutput> = (
   payload: Record<string, unknown>,
   options?: Record<string, unknown>,
-  extraHeaders?: Record<string, string>
+  extraHeaders?: Record<string, string>,
 ) => Promise<[TOutput, unknown]>;
 
 type WSSecurityCredentials = {
@@ -21,18 +19,22 @@ type WSSecurityCredentials = {
 export class SoapHelper<TInput> {
   private readonly logger: LoggerClient = LoggerClient.instance;
 
-  private constructor(private readonly client: Client) {}
+  private constructor(
+    private readonly client: Client,
+    private readonly timeoutMs: number,
+  ) {}
 
   static async initClient<TInput>(
     wsdlUrl: string,
     bindingUrl: string,
+    timeoutMs: number,
     credentials?: WSSecurityCredentials,
   ): Promise<SoapHelper<TInput>> {
     try {
       const client = await createClientAsync(wsdlUrl, {
         endpoint: bindingUrl,
         wsdl_options: {
-          timeout: CRPConstants.EXTERNAL_REQUEST_TIMEOUT,
+          timeout: timeoutMs,
         },
       });
 
@@ -45,8 +47,8 @@ export class SoapHelper<TInput> {
         LoggerClient.instance.debug('SOAP Request Sent', { xml });
       });
 
-      return new SoapHelper<TInput>(client);
-    } catch(error) {
+      return new SoapHelper<TInput>(client, timeoutMs);
+    } catch (error) {
       throw this.mapTimeoutError(error);
     }
   }
@@ -64,7 +66,7 @@ export class SoapHelper<TInput> {
     this.logger.info(`Calling SOAP method "${String(methodName)}"`, { payload });
 
     try {
-      const [result, rawResponse] = await fn(payload, { timeout: CRPConstants.EXTERNAL_REQUEST_TIMEOUT });
+      const [result, rawResponse] = await fn(payload, { timeout: this.timeoutMs });
       this.logger.debug('SOAP Response Received', { result, rawResponse });
 
       return result;
@@ -77,16 +79,15 @@ export class SoapHelper<TInput> {
     const typedError = error as { code?: string; connect?: boolean; message?: string };
     const msg = (typedError?.message ?? '').toLowerCase();
     const code = (typedError?.code ?? '').toUpperCase();
-    const isTimeoutError = (
+    const isTimeoutError =
       code === 'ETIMEDOUT' ||
       code === 'ESOCKETTIMEDOUT' ||
       code === 'ECONNABORTED' ||
       typedError?.connect === true ||
-      msg.includes('timeout')
-    );
+      msg.includes('timeout');
 
-    if(isTimeoutError) {
-      return ErrorModel.timeout({ message: 'SOAP request timeout' })
+    if (isTimeoutError) {
+      return ErrorModel.timeout({ message: 'SOAP request timeout' });
     }
 
     return error instanceof Error ? error : new Error(String(error));

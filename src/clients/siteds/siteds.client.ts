@@ -1,3 +1,4 @@
+import { CRPConstants } from 'src/general/contants/crp.constants';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 import { SoapHelper } from 'src/general/helpers/soap.helper';
 
@@ -19,6 +20,7 @@ export class SitedsClient {
       const client = await SoapHelper.initClient<SitedsServices>(
         EnvHelper.get('SITEDS_URL'),
         EnvHelper.get('SITEDS_BINDING_URL'),
+        CRPConstants.SITEDS_REQUEST_TIMEOUT,
         {
           username: EnvHelper.get('SITEDS_USER'),
           password: EnvHelper.get('SITEDS_PASSWORD'),

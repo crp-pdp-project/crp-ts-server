@@ -70,7 +70,7 @@ export const PatientResultsListOutputDTOSchema = z
         description: 'Array of results',
       }),
   })
-  .strict()
+  .strip()
   .openapi({
     description: 'Patient Results Response Body',
   });

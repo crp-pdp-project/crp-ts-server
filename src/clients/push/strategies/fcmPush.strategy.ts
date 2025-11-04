@@ -8,13 +8,15 @@ import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 import { RestHelper } from 'src/general/helpers/rest.helper';
 
-import { PushPayload, PushStrategy } from '../push.client';
+import { PushPayload, PushStrategy, Tokens } from '../push.client';
 
 type ServiceAccountJson = {
   type: 'service_account';
   client_email: string;
   private_key: string;
 };
+
+type PromiseFunctionArray = (() => Promise<void>)[];
 
 export class FcmPushStrategy implements PushStrategy {
   private readonly projectId: string = EnvHelper.get('FCM_PROJECT_ID');
@@ -27,28 +29,72 @@ export class FcmPushStrategy implements PushStrategy {
   private tokenExpiresAt = '';
   private tokenPromise: Promise<string> | null = null;
 
-  async sendPush(payload: PushPayload): Promise<void> {
-    const token = await this.getToken();
+  async sendPush(payload: PushPayload, tokens: Tokens): Promise<void> {
+    const accessToken = await this.getAccessToken();
+    const tasks = this.createPromiseArray(payload, tokens, accessToken);
+    const chunkedTasks = this.chunkTasks(tasks);
+    const results = await this.runChunks(chunkedTasks);
 
-    await this.rest.send({
-      method: HttpMethod.POST,
-      path: this.path,
-      headers: { Authorization: `Bearer ${token}` },
-      body: {
-        message: {
-          token: payload.token,
-          notification: { title: payload.title, body: payload.body },
-          data: payload.url ? { url: payload.url } : undefined,
-        }
-      },
-    });
+    const fulfilledResults = results.filter((result) => result.status === 'fulfilled');
+    const rejectedResults = results.filter((result) => result.status === 'rejected');
+
     this.logger.info('FCM push queued', {
-      title: payload.title,
-      hasUrl: Boolean(payload.url),
+      fulfilled: fulfilledResults.length,
+      rejected: rejectedResults.length,
+      payload,
     });
   }
 
-  private async getToken(): Promise<string> {
+  private async runChunks(chunks: PromiseFunctionArray[]): Promise<PromiseSettledResult<void>[]> {
+    const results: PromiseSettledResult<void>[] = [];
+
+    for (const chunk of chunks) {
+      const promises = chunk.map((run) => run());
+      const settled = await Promise.allSettled(promises);
+
+      results.push(...settled);
+    }
+
+    return results;
+  }
+
+  private chunkTasks(tasks: PromiseFunctionArray): PromiseFunctionArray[] {
+    const chunks = [];
+    const chunkSize = FirebaseConstants.BATCH_SIZE;
+    for (let index = 0; index < tasks.length; index += chunkSize) {
+      chunks.push(tasks.slice(index, index + chunkSize));
+    }
+
+    return chunks;
+  }
+
+  private createPromiseArray(payload: PushPayload, tokens: Tokens, accessToken: string): PromiseFunctionArray {
+    const tasks = tokens.map((deviceToken) => async (): Promise<void> => {
+      try {
+        await this.rest.send({
+          method: HttpMethod.POST,
+          path: this.path,
+          headers: { Authorization: `Bearer ${accessToken}` },
+          body: {
+            message: {
+              token: deviceToken,
+              notification: { title: payload.title, body: payload.body },
+              data: payload.url ? { url: payload.url } : undefined,
+            },
+          },
+        });
+      } catch (error) {
+        const formattedError = ErrorModel.fromError(error);
+        this.logger.error('FCM push failed', { token: deviceToken, message: formattedError.message });
+
+        throw formattedError;
+      }
+    });
+
+    return tasks;
+  }
+
+  private async getAccessToken(): Promise<string> {
     if (this.isTokenValid()) {
       return this.token;
     }

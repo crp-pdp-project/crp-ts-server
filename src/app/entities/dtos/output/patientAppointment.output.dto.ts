@@ -147,7 +147,7 @@ export const PatientAppointmentOutputDTOSchema = z
         description: 'Array of tips',
       }),
   })
-  .strict()
+  .strip()
   .openapi({
     description: 'Patient Appointment Response Body',
   });

@@ -1,11 +1,11 @@
 import { HealthInsuranceDTO } from 'src/app/entities/dtos/service/healthInsurance.dto';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
-export interface IGetHealthInsuranceRepository {
+export interface IGetHealthInsuranceViewRepository {
   execute(): Promise<HealthInsuranceDTO | undefined>;
 }
 
-export class GetHealthInsuranceRepository implements IGetHealthInsuranceRepository {
+export class GetHealthInsuranceViewRepository implements IGetHealthInsuranceViewRepository {
   async execute(): Promise<HealthInsuranceDTO | undefined> {
     const db = MysqlClient.instance.getDb();
     const result = await db
@@ -17,7 +17,7 @@ export class GetHealthInsuranceRepository implements IGetHealthInsuranceReposito
   }
 }
 
-export class GetHealthInsuranceRepositoryMock implements IGetHealthInsuranceRepository {
+export class GetHealthInsuranceViewRepositoryMock implements IGetHealthInsuranceViewRepository {
   async execute(): Promise<HealthInsuranceDTO | undefined> {
     return Promise.resolve({
       title: 'Conoce PlanSalud',

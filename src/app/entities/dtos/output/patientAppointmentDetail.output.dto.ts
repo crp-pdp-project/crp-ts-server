@@ -22,7 +22,7 @@ export const PatientAppointmentDetailOutputDTOSchema = PatientAppointmentOutputD
       description: 'Siteds result',
     }),
 })
-  .strict()
+  .strip()
   .openapi({
     description: 'Patient Appointment Detail Response Body',
   });

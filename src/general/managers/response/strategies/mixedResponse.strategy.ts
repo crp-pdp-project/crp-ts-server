@@ -3,6 +3,7 @@ import { z, ZodDiscriminatedUnion, ZodObject, ZodRawShape } from 'zod';
 import { BadRequestResponseDTOSchema } from 'src/app/entities/dtos/response/badRequest.response.dto';
 import { ConflictResponseDTOSchema } from 'src/app/entities/dtos/response/conflict.response.dto';
 import { ForbiddenResponseDTOSchema } from 'src/app/entities/dtos/response/forbidden.response.dto';
+import { GatewayTimeoutResponseDTOSchema } from 'src/app/entities/dtos/response/gatewayTimeout.response.dto';
 import { InternalServerErrorResponseDTOSchema } from 'src/app/entities/dtos/response/internalServerError.response.dto';
 import { LockedResponseDTOSchema } from 'src/app/entities/dtos/response/locked.response.dto';
 import { NoContentResponseDTOSchema } from 'src/app/entities/dtos/response/noContent.response.dto';
@@ -13,14 +14,13 @@ import { UnauthorizedResponseDTOSchema } from 'src/app/entities/dtos/response/un
 import { UnprocessableEntityResponseDTOSchema } from 'src/app/entities/dtos/response/unprocessableEntity.response.dto';
 
 import { IResponseStrategy } from '../response.manager';
-import { GatewayTimeoutResponseDTOSchema } from 'src/app/entities/dtos/response/gatewayTimeout.response.dto';
 
 export class MixedResponseStrategy implements IResponseStrategy {
   constructor(private readonly dataSchema: ZodObject<ZodRawShape>) {}
 
   getSchema(): ZodDiscriminatedUnion {
     return z.discriminatedUnion('statusCode', [
-      OkResponseDTOSchema.extend({ data: this.dataSchema.strip() }).strip(),
+      OkResponseDTOSchema.extend({ data: this.dataSchema }),
       NoContentResponseDTOSchema,
       BadRequestResponseDTOSchema,
       UnauthorizedResponseDTOSchema,
@@ -31,7 +31,7 @@ export class MixedResponseStrategy implements IResponseStrategy {
       LockedResponseDTOSchema,
       PreconditionRequiredResponseDTOSchema,
       InternalServerErrorResponseDTOSchema,
-      GatewayTimeoutResponseDTOSchema
+      GatewayTimeoutResponseDTOSchema,
     ]);
   }
 }

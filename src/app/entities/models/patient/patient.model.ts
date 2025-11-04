@@ -4,6 +4,7 @@ import { BaseModel } from 'src/app/entities/models/base.model';
 import { RelationshipModel } from 'src/app/entities/models/relationship/relationship.model';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { PatientDocumentType } from 'src/general/enums/patientInfo.enum';
+import { DateHelper } from 'src/general/helpers/date.helper';
 import defaultRelationshipStatic from 'src/general/static/defaultRelationship.static';
 
 import { DeviceDM } from '../../dms/devices.dm';
@@ -20,11 +21,13 @@ export class PatientModel extends BaseModel {
   readonly secondLastName?: string | null;
   readonly documentNumber?: string;
   readonly documentType?: PatientDocumentType;
+  readonly birthDate?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   readonly account?: AccountModel;
   readonly relationship?: RelationshipModel;
   readonly relatives?: PatientModel[];
+  readonly principal?: PatientModel;
   readonly isVerified?: boolean;
 
   #device?: DeviceModel;
@@ -40,12 +43,14 @@ export class PatientModel extends BaseModel {
     this.secondLastName = patient.secondLastName;
     this.documentNumber = patient.documentNumber;
     this.documentType = patient.documentType;
-    this.createdAt = patient.createdAt;
-    this.updatedAt = patient.updatedAt;
+    this.birthDate = patient.birthDate ? DateHelper.toFormatDate(patient.birthDate, 'spanishDate') : undefined;
+    this.createdAt = patient.createdAt ? DateHelper.toFormatDateTime(patient.createdAt, 'spanishDateTime') : undefined;
+    this.updatedAt = patient.updatedAt ? DateHelper.toFormatDateTime(patient.updatedAt, 'spanishDateTime') : undefined;
     this.isVerified = patient.isVerified != null ? !!patient.isVerified : undefined;
     this.account = patient.account ? new AccountModel(patient.account) : undefined;
     this.relationship = this.resolvePrincipalRelationship(patient);
     this.relatives = this.resolveRelatives(patient.relatives);
+    this.principal = patient.principal ? new PatientModel(patient.principal) : undefined;
     this.#device = patient.device ? new DeviceModel(patient.device) : undefined;
   }
 
@@ -77,7 +82,7 @@ export class PatientModel extends BaseModel {
 
   validatePatient(): void {
     if (!this.id) {
-      ErrorModel.notFound({ detail: ClientErrorMessages.PATIENT_NOT_REGISTERED });
+      throw ErrorModel.notFound({ detail: ClientErrorMessages.PATIENT_NOT_REGISTERED });
     }
   }
 

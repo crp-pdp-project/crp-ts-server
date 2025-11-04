@@ -30,7 +30,7 @@ export const PatientProfileOutputDTOSchema = PatientDMSchema.pick({
       example: '******999',
     }),
   })
-  .strict()
+  .strip()
   .openapi({
     description: 'Patient Profile Response Body',
   });

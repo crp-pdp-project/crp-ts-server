@@ -94,13 +94,13 @@ export class SitedsModel extends BaseModel {
 
   validateDetails(): void {
     if (!this.hasValidDetails()) {
-      ErrorModel.notFound({ detail: ClientErrorMessages.INSURANCE_NOT_EXIST });
+      throw ErrorModel.notFound({ detail: ClientErrorMessages.INSURANCE_NOT_EXIST });
     }
   }
 
   validateInsurance(): void {
     if (!this.isValidInsurance()) {
-      ErrorModel.notFound({ detail: ClientErrorMessages.INSURANCE_NOT_EXIST });
+      throw ErrorModel.notFound({ detail: ClientErrorMessages.INSURANCE_NOT_EXIST });
     }
   }
 

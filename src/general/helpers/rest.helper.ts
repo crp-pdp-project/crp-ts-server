@@ -5,8 +5,10 @@ import { Dispatcher, request } from 'undici';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { LoggerClient } from 'src/clients/logger/logger.client';
 import { HttpMethod } from 'src/general/enums/methods.enum';
-import { TextHelper } from './text.helper';
+
 import { CRPConstants } from '../contants/crp.constants';
+
+import { TextHelper } from './text.helper';
 
 export enum ResponseType {
   JSON,
@@ -60,9 +62,9 @@ export class RestHelper {
         statusCode: response.statusCode,
         result: errorText.slice(0, 2000),
       });
-      throw ErrorModel.server({  message: `HTTP ${response.statusCode} error`, });
+      throw ErrorModel.server({ message: `HTTP ${response.statusCode} error` });
     }
-    
+
     return this.handleResponse<T>(response, responseType, method, fullUrl);
   }
 
@@ -70,29 +72,29 @@ export class RestHelper {
     url: string,
     headers: Record<string, string>,
     method: HttpMethod,
-    body?: Record<string, unknown>
+    body?: Record<string, unknown>,
   ): Promise<Dispatcher.ResponseData> {
     const controller = new AbortController();
     const requestOptions = {
       method,
       headers,
       body: body ? JSON.stringify(body) : undefined,
-      signal: controller.signal,  
+      signal: controller.signal,
     } satisfies Parameters<typeof request>[1];
-    
+
     const timer = setTimeout(() => controller.abort(), CRPConstants.EXTERNAL_REQUEST_TIMEOUT);
     try {
       return request(url, requestOptions);
-    } catch(error) {
-      if(error instanceof Error && error?.name === 'AbortError') {
+    } catch (error) {
+      if (error instanceof Error && error?.name === 'AbortError') {
         throw ErrorModel.timeout({ message: 'External request timeout' });
       }
-      
+
       throw error;
-    }finally {
+    } finally {
       clearTimeout(timer);
     }
-  } 
+  }
 
   private async handleResponse<T = unknown>(
     response: Dispatcher.ResponseData,

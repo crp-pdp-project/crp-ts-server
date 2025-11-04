@@ -3,6 +3,8 @@ import { z } from 'zod';
 
 import { PatientDMSchema } from 'src/app/entities/dms/patients.dm';
 
+import { DeviceDMSchema } from '../../dms/devices.dm';
+
 extendZodWithOpenApi(z);
 
 export const SendNotificationBodyDTOSchema = PatientDMSchema.pick({
@@ -10,6 +12,7 @@ export const SendNotificationBodyDTOSchema = PatientDMSchema.pick({
   documentNumber: true,
 })
   .extend({
+    device: DeviceDMSchema.shape.os,
     title: z.string().openapi({
       description: 'Title of the push notification',
       example: 'Titulo',

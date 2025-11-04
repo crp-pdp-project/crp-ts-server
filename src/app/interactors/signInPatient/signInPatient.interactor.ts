@@ -75,6 +75,7 @@ export class SignInPatientInteractor implements ISignInPatientInteractor {
       patientId: patient.id!,
       os: device.os,
       identifier: device.identifier,
+      pushToken: device.pushToken,
       name: device.name,
       expiresAt: device.expiresAt,
     });

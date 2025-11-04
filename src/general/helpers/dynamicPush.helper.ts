@@ -1,6 +1,5 @@
 import { z, ZodObject, ZodRawShape, ZodType } from 'zod';
 
-import { SendDeepLinkNotificationBodyDTOSchema } from 'src/app/entities/dtos/input/sendDeepLinkNotification.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 
 import { PushDataTypes } from '../enums/pushDataTypes.enum';
@@ -20,12 +19,9 @@ export class DynamicPushHelper {
   };
 
   static getPushSchema(config: MapConfig[]): ZodObject<ZodRawShape> {
-    const extension = this.buildShape(config);
-    const extendedSchema = SendDeepLinkNotificationBodyDTOSchema.extend({
-      params: extension,
-    });
+    const schema = this.buildShape(config);
 
-    return extendedSchema;
+    return schema;
   }
 
   private static buildShape(config: MapConfig[]): ZodObject<ZodRawShape> {

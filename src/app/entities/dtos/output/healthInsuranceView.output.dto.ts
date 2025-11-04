@@ -15,7 +15,7 @@ export const HealthInsuranceViewOutputDTOSchema = z
       example: 'C202335563796',
     }),
   })
-  .strict()
+  .strip()
   .openapi({
     description: 'Patient Appointment Response Body',
   });

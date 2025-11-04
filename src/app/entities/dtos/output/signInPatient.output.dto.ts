@@ -22,7 +22,7 @@ export const SignInPatientOutputDTOSchema = z
       example: 'Valid JWE',
     }),
   })
-  .strict()
+  .strip()
   .openapi({
     description: 'Sign In Patient Response Body',
   });

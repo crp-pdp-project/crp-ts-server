@@ -1,3 +1,4 @@
+import { CRPConstants } from 'src/general/contants/crp.constants';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 import { SoapHelper } from 'src/general/helpers/soap.helper';
 
@@ -57,22 +58,27 @@ export class InetumClient {
       const catalogClient = await SoapHelper.initClient<InetumCatalogServices>(
         EnvHelper.get('INETUM_CATALOG_URL'),
         EnvHelper.get('INETUM_CATALOG_BINDING_URL'),
+        CRPConstants.EXTERNAL_REQUEST_TIMEOUT,
       );
       const userClient = await SoapHelper.initClient<InetumUserServices>(
         EnvHelper.get('INETUM_USER_URL'),
         EnvHelper.get('INETUM_USER_BINDING_URL'),
+        CRPConstants.EXTERNAL_REQUEST_TIMEOUT,
       );
       const appointmentClient = await SoapHelper.initClient<InetumAppointmentServices>(
         EnvHelper.get('INETUM_APPOINTMENT_URL'),
         EnvHelper.get('INETUM_APPOINTMENT_BINDING_URL'),
+        CRPConstants.EXTERNAL_REQUEST_TIMEOUT,
       );
       const historyClient = await SoapHelper.initClient<InetumHistoryServices>(
         EnvHelper.get('INETUM_HISTORY_URL'),
         EnvHelper.get('INETUM_HISTORY_BINDING_URL'),
+        CRPConstants.EXTERNAL_REQUEST_TIMEOUT,
       );
       const fmpClient = await SoapHelper.initClient<InetumFmpServices>(
         EnvHelper.get('INETUM_FMP_URL'),
         EnvHelper.get('INETUM_FMP_BINDING_URL'),
+        CRPConstants.EXTERNAL_REQUEST_TIMEOUT,
       );
 
       this.instance = new InetumClient(catalogClient, userClient, appointmentClient, historyClient, fmpClient);

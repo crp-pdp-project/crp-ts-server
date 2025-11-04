@@ -9,7 +9,7 @@ export const PatientResultURLOutputDTOSchema = z
       example: 'https://anyHost.com',
     }),
   })
-  .strict()
+  .strip()
   .openapi({
     description: 'Patient result url Response Body',
   });

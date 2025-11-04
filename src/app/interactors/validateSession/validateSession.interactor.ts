@@ -9,7 +9,7 @@ import {
   GetPatientSessionRepository,
   IGetPatientSessionRepository,
 } from 'src/app/repositories/database/getPatientSession.repository';
-import { UpdateDevicePushTokenRepository } from 'src/app/repositories/database/updateDevicePushToken';
+import { UpdateDevicePushTokenRepository } from 'src/app/repositories/database/updateDevicePushToken.repository';
 import { UpdateSessionExpireRepository } from 'src/app/repositories/database/updateSessionExpire.repository';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import {

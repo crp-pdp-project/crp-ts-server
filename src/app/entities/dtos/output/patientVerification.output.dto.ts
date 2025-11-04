@@ -13,7 +13,7 @@ export const PatientVerificationOutputDTOSchema = z
       example: 'Valid JWE',
     }),
   })
-  .strict()
+  .strip()
   .openapi({
     description: 'Patient Verification Response Body',
   });

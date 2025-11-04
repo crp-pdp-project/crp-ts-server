@@ -9,7 +9,7 @@ export const PatientAppointmentListOutputDTOSchema = z
   .object({
     appointments: z.array(PatientAppointmentItemOutputDTOSchema),
   })
-  .strict()
+  .strip()
   .openapi({
     description: 'Patient Appointment Response Body',
   });

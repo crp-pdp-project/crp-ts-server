@@ -23,7 +23,7 @@ export const HealthInsurancesDMSchema = z.object({
     description: 'Bullet array of the health insurance',
     example: ['Afiliación sin límite de edad'],
   }),
-  banner: z.string().openapi({
+  banner: z.string().nullable().openapi({
     description: 'Banner url of the health insurance',
     example: 'https://...',
   }),

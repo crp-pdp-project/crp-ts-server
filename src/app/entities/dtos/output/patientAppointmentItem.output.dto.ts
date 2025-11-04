@@ -84,7 +84,7 @@ export const PatientAppointmentItemOutputDTOSchema = z
         description: 'Appointment type model',
       }),
   })
-  .strict()
+  .strip()
   .openapi({
     description: 'Patient Appointment Response Body',
   });

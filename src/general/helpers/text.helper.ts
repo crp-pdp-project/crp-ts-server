@@ -66,10 +66,13 @@ export class TextHelper {
   static joinHostPath(host: string, path: string): string {
     const hasSlash = host.endsWith('/');
     const hasLead = path.startsWith('/');
-    switch(true) {
-      case hasSlash && hasLead: return `${host}${path.slice(1)}`;
-      case !hasSlash && !hasLead: return `${host}/${path}`;
-      default: return `${host}${path}`;
+    switch (true) {
+      case hasSlash && hasLead:
+        return `${host}${path.slice(1)}`;
+      case !hasSlash && !hasLead:
+        return `${host}/${path}`;
+      default:
+        return `${host}${path}`;
     }
   }
 
@@ -97,6 +100,10 @@ export class TextHelper {
     }
 
     return otp;
+  }
+
+  static normalizeSearch(raw: string): string {
+    return raw.trim().replace(/\s+/g, ' ').toLowerCase();
   }
 
   static padTextLength(text: string | number, length = 9, char = '0'): string {
