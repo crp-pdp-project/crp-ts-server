@@ -11,7 +11,7 @@ export class HealthInsuranceDataV1Docs {
 
   registerDocs(): void {
     this.manager.registerRoute({
-      method: HttpSpecMethod.PATCH,
+      method: HttpSpecMethod.GET,
       path: `${this.version}/health-insurance`,
       description: 'Get current health insurance data',
       tags: ['back-office'],

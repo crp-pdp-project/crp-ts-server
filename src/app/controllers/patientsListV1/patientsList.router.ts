@@ -35,7 +35,7 @@ export class PatientsListV1Router {
     });
     this.fastify.route({
       method: HttpMethod.GET,
-      url: `${this.version}/patients/:id/relatives`,
+      url: `${this.version}/patients/:patientId/relatives`,
       preHandler: RouterHelper.wrapPreHandlers(
         this.validateEmployeeSessionController.validate.bind(this.validateEmployeeSessionController),
       ),

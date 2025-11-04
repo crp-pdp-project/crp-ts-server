@@ -1,13 +1,15 @@
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 import { z } from 'zod';
 
-import { PatientDMSchema } from '../../dms/patients.dm';
-
 extendZodWithOpenApi(z);
 
-export const PatientsListParamsDTOSchema = PatientDMSchema.pick({
-  id: true,
-})
+export const PatientsListParamsDTOSchema = z
+  .object({
+    patientId: z.coerce.number().positive().openapi({
+      description: 'Unique ID of the patient',
+      example: 1,
+    }),
+  })
   .strict()
   .openapi({
     description: 'List patients path params',

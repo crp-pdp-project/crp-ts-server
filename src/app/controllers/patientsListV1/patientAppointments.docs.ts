@@ -34,7 +34,7 @@ export class PatientsListV1Docs {
 
     this.manager.registerRoute({
       method: HttpSpecMethod.GET,
-      path: `${this.version}/patients/{id}/relatives`,
+      path: `${this.version}/patients/{patientId}/relatives`,
       description: 'Patient relatives list',
       tags: ['back-office'],
       params: PatientsListParamsDTOSchema,
