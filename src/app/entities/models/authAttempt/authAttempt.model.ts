@@ -21,7 +21,7 @@ export enum AuthFlowIdentifier {
 }
 
 export class AttemptConfigFactory {
-  private static configs: Record<AuthFlowIdentifier, new () => IAuthAttemptConfig> = {
+  private static readonly configs: Record<AuthFlowIdentifier, new () => IAuthAttemptConfig> = {
     [AuthFlowIdentifier.ENROLL]: AuthAttemptEnroll,
     [AuthFlowIdentifier.RECOVER]: AuthAttemptRecover,
     [AuthFlowIdentifier.SIGN_IN]: AuthAttemptSignIn,

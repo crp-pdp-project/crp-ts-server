@@ -5,7 +5,7 @@ import { PatientDocumentType } from 'src/general/enums/patientInfo.enum';
 extendZodWithOpenApi(z);
 
 export const PatientDMSchema = z.object({
-  id: z.number().int().positive().openapi({
+  id: z.coerce.number().int().positive().openapi({
     description: 'Unique ID of the patient',
     example: 1,
   }),

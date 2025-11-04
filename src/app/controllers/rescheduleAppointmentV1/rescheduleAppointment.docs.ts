@@ -3,7 +3,7 @@ import {
   RescheduleAppointmentBodyDTOSchema,
   RescheduleAppointmentParamsDTOSchema,
 } from 'src/app/entities/dtos/input/rescheduleAppointment.input.dto';
-import { RescheduleAppointmentOutputDTOSchema } from 'src/app/entities/dtos/output/rescheduleAppointment.output.dto';
+import { PatientAppointmentOutputDTOSchema } from 'src/app/entities/dtos/output/patientAppointment.output.dto';
 import { OkResponseDTOSchema } from 'src/app/entities/dtos/response/ok.response.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { StatusCode } from 'src/general/enums/status.enum';
@@ -25,7 +25,7 @@ export class RescheduleAppointmentV1Docs {
       headers: BaseHeadersDTOSchema,
       responses: {
         [StatusCode.OK]: OkResponseDTOSchema.extend({
-          data: RescheduleAppointmentOutputDTOSchema,
+          data: PatientAppointmentOutputDTOSchema,
         }),
       },
       secure: true,

@@ -6,18 +6,18 @@ const HEALTH_INSURANCE_SEED = {
   id: 1,
   title: 'Conoce PlanSalud',
   paragraph:
-    'Recibe la mejor cobertura en atención integral médica y quirúrgica en los servicios de consulta externa, emergencia, hospitalización y más.',
+    'La Clínica Ricardo Palma, en su constante búsqueda por brindar a nuestra comunidad excelencia en servicios integrales de salud, ha desarrollado PlanSalud, un programa con exclusivos beneficios en el mercado.',
   subtitle: 'Beneficios:',
   bullets: JSON.stringify([
-    'Afiliación sin límite de edad',
-    'Mayor cobertura para enfermedades preexistentes',
-    'Mayor beneficio anual por persona',
-    'Más de 400 profesionales de la salud, más de 250 consultorios y más 170 camas de hospitalización.',
+    'Afiliación sin límite de edad.',
+    'Mayor cobertura para enfermedades preexistentes.',
+    'Mayor beneficio anual por persona.',
+    'Más de 400 profesionales de la salud, más de 250 consultorios y más 170 camas de hospitalización a tu servicio.',
+    'Plantel médico exclusivo PlanSalud.',
+    'Beneficios en consulta externa, farmacia, emergencias, hospitalización, entre otros.',
+    'Chequeo anual preventivo sin costo pasado los 90 días de carencia.',
   ]),
-  banner:
-    'https://static.vecteezy.com/system/resources/thumbnails/005/720/479/small_2x/banner-abstract-background-board-for-text-and-message-design-modern-free-vector.jpg',
-  pdfUrl:
-    'https://portal.susalud.gob.pe/wp-content/uploads/archivo/documentacion-proyectos/siteds/componente/Especificacion-Tecnica%20SITEDSv.024.pdf',
+  pdfUrl: 'https://www.crp.com.pe/wp-content/uploads/2018/10/Folleto-Informativo-PlanSalud.pdf',
   enabled: true,
 } as unknown as Insertable<Database['HealthInsurances']>;
 

@@ -1,10 +1,10 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import {
-  RelativeVerificationBodyDTOSchema,
-  RelativeVerificationInputDTO,
-} from 'src/app/entities/dtos/input/relativeVerification.input.dto';
-import { RelativeVerificationOutputDTOSchema } from 'src/app/entities/dtos/output/relativeVerification.output.dto';
+  PatientVerificationBodyDTOSchema,
+  PatientVerificationInputDTO,
+} from 'src/app/entities/dtos/input/patientVerification.input.dto';
+import { PatientProfileOutputDTOSchema } from 'src/app/entities/dtos/output/patientProfile.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
@@ -27,9 +27,9 @@ export class RelativeVerificationController implements IRelativeVerificationCont
     private readonly responseManager: IResponseManager,
   ) {}
 
-  async handle(input: FastifyRequest<RelativeVerificationInputDTO>, reply: FastifyReply): Promise<void> {
+  async handle(input: FastifyRequest<PatientVerificationInputDTO>, reply: FastifyReply): Promise<void> {
     try {
-      const body = RelativeVerificationBodyDTOSchema.parse(input.body);
+      const body = PatientVerificationBodyDTOSchema.parse(input.body);
       const session = SessionModel.validateSessionInstance(Audiences.SIGN_IN, input.session);
       const model = await this.relativeVerification.verify(body, session);
       this.response = this.responseManager.validateResponse(model);
@@ -46,7 +46,7 @@ export class RelativeVerificationControllerBuilder {
   static build(): RelativeVerificationController {
     return new RelativeVerificationController(
       RelativeVerificationInteractorBuilder.build(),
-      ResponseManagerBuilder.buildData(RelativeVerificationOutputDTOSchema),
+      ResponseManagerBuilder.buildData(PatientProfileOutputDTOSchema),
     );
   }
 }

@@ -51,7 +51,7 @@ export const PatientRelativesOutputDTOSchema = PatientDMSchema.pick({
       description: 'Relationship of the patient',
     }),
   })
-  .strict()
+  .strip()
   .openapi({
     description: 'Patient Profile Response Body',
   });

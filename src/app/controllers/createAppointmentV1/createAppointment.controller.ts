@@ -5,7 +5,7 @@ import {
   CreateAppointmentInputDTO,
   CreateAppointmentParamsDTOSchema,
 } from 'src/app/entities/dtos/input/createAppointment.input.dto';
-import { CreateAppointmentOutputDTOSchema } from 'src/app/entities/dtos/output/createAppointment.output.dto';
+import { PatientAppointmentDetailOutputDTOSchema } from 'src/app/entities/dtos/output/patientAppointmentDetail.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
@@ -48,7 +48,7 @@ export class CreateAppointmentControllerBuilder {
   static build(): CreateAppointmentController {
     return new CreateAppointmentController(
       CreateAppointmentInteractorBuilder.build(),
-      ResponseManagerBuilder.buildData(CreateAppointmentOutputDTOSchema),
+      ResponseManagerBuilder.buildData(PatientAppointmentDetailOutputDTOSchema),
     );
   }
 }

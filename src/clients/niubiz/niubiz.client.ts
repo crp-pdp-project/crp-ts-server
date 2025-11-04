@@ -103,7 +103,7 @@ export class NiubizClient {
 
     const configuration: POSConfigDTO = {
       user: data.usuario,
-      password: data.contrasenia,
+      pass: data.contrasenia,
       commerceCode: data.comercio,
       channel: data.canal,
       host: TextHelper.normalizeHost(data.url),
@@ -122,7 +122,7 @@ export class NiubizClient {
   }
 
   private async fetchNewToken(): Promise<string> {
-    const signature = Buffer.from(`${this.config.user}:${this.config.password}`).toString('base64');
+    const signature = Buffer.from(`${this.config.user}:${this.config.pass}`).toString('base64');
 
     const token = await this.rest.send<string>({
       method: HttpMethod.GET,

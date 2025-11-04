@@ -51,7 +51,6 @@ export class ValidateEmployeeSessionInteractor implements IValidateEmployeeSessi
 
   private async decodeJWEToken(token: string): Promise<ValidationResponse<EmployeeSessionPayloadDTO>> {
     const result = await this.jwtManager.verifyToken(token);
-
     if (!result.payload || !result.payload?.jti) {
       throw ErrorModel.unauthorized({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
     }
@@ -62,6 +61,7 @@ export class ValidateEmployeeSessionInteractor implements IValidateEmployeeSessi
   private async fetchSession(payload: EnrichedPayload<EmployeeSessionPayloadDTO>): Promise<EmployeeSessionModel> {
     const session = await this.getEmployeeSession.execute(payload.jti, payload.employee.username);
     const model = new EmployeeSessionModel(payload, session);
+    model.validateExpiration();
 
     return model;
   }

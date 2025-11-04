@@ -20,7 +20,7 @@ export interface IValidateOSStrategy {
 }
 
 export class DeviceValidationFactory {
-  private static strategies: Record<Devices, new (device: DeviceModel) => IValidateOSStrategy> = {
+  private static readonly strategies: Record<Devices, new (device: DeviceModel) => IValidateOSStrategy> = {
     [Devices.WEB]: ValidateWebStrategy,
     [Devices.IOS]: ValidateMobileStrategy,
     [Devices.ANDROID]: ValidateMobileStrategy,

@@ -5,7 +5,7 @@ import {
   RescheduleAppointmentInputDTO,
   RescheduleAppointmentParamsDTOSchema,
 } from 'src/app/entities/dtos/input/rescheduleAppointment.input.dto';
-import { RescheduleAppointmentOutputDTOSchema } from 'src/app/entities/dtos/output/rescheduleAppointment.output.dto';
+import { PatientAppointmentOutputDTOSchema } from 'src/app/entities/dtos/output/patientAppointment.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
@@ -48,7 +48,7 @@ export class RescheduleAppointmentControllerBuilder {
   static build(): RescheduleAppointmentController {
     return new RescheduleAppointmentController(
       RescheduleAppointmentInteractorBuilder.build(),
-      ResponseManagerBuilder.buildData(RescheduleAppointmentOutputDTOSchema),
+      ResponseManagerBuilder.buildData(PatientAppointmentOutputDTOSchema),
     );
   }
 }

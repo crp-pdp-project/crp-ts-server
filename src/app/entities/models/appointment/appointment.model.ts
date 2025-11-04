@@ -120,12 +120,11 @@ export class AppointmentModel extends BaseModel {
   private resolvePaymentActions(payAction: string): PaymentActionStates {
     const defaultAction = PaymentActionStatesMapper.getPaymentActionState(payAction);
 
-    switch (true) {
-      case defaultAction === PaymentActionStates.ALLOWED && this.insurance?.type !== InsuranceTypes.SITEDS:
-        return PaymentActionStates.CANNOT_PAY;
-      default:
-        return defaultAction;
+    if (defaultAction === PaymentActionStates.ALLOWED && this.insurance?.type !== InsuranceTypes.SITEDS) {
+      return PaymentActionStates.CANNOT_PAY;
     }
+
+    return defaultAction;
   }
 
   private resolveDefaultTips(): TipModel[] | undefined {

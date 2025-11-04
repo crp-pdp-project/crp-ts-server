@@ -1,4 +1,3 @@
-import { HealthInsuranceDTO } from '../../dtos/service/healthInsurance.dto';
 import { BulletsElementModel } from '../view/bulletsElement.model';
 import { ImageElementModel } from '../view/imageElement.model';
 import { ParagraphElementModel } from '../view/paragraphElement.model';
@@ -6,10 +5,12 @@ import { SubTitleElementModel } from '../view/subTitleElement.model';
 import { TitleElementModel } from '../view/titleElement.model';
 import { ViewModel } from '../view/view.model';
 
+import { HealthInsuranceModel } from './healthInsurance.model';
+
 export class HealthInsuranceViewModel extends ViewModel {
   readonly pdfUrl?: string;
 
-  constructor(healthInsurance: HealthInsuranceDTO) {
+  constructor(healthInsurance: HealthInsuranceModel) {
     super();
 
     this.pdfUrl = healthInsurance.pdfUrl;

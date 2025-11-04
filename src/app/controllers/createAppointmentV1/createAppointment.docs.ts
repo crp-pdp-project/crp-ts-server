@@ -3,7 +3,7 @@ import {
   CreateAppointmentBodyDTOSchema,
   CreateAppointmentParamsDTOSchema,
 } from 'src/app/entities/dtos/input/createAppointment.input.dto';
-import { CreateAppointmentOutputDTOSchema } from 'src/app/entities/dtos/output/createAppointment.output.dto';
+import { PatientAppointmentDetailOutputDTOSchema } from 'src/app/entities/dtos/output/patientAppointmentDetail.output.dto';
 import { OkResponseDTOSchema } from 'src/app/entities/dtos/response/ok.response.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { StatusCode } from 'src/general/enums/status.enum';
@@ -25,7 +25,7 @@ export class CreateAppointmentV1Docs {
       headers: BaseHeadersDTOSchema,
       responses: {
         [StatusCode.OK]: OkResponseDTOSchema.extend({
-          data: CreateAppointmentOutputDTOSchema,
+          data: PatientAppointmentDetailOutputDTOSchema,
         }),
       },
       secure: true,

@@ -52,7 +52,7 @@ export const GuaranteeLetterListOutputDTOSchema = z
       }),
     ),
   })
-  .strict()
+  .strip()
   .openapi({
     description: 'Availability List Response Body',
   });

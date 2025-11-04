@@ -40,7 +40,7 @@ export const DoctorsListOutputDTOSchema = z
       }),
     ),
   })
-  .strict()
+  .strip()
   .openapi({
     description: 'Doctors List Response Body',
   });

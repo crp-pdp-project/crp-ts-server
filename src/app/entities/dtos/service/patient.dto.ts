@@ -16,6 +16,7 @@ export const PatientDTOSchema = PatientDMSchema.partial().extend({
       }).partial(),
     )
     .optional(),
+  principal: PatientDMSchema.partial().optional(),
   relationship: RelationshipDMSchema.partial().optional(),
   account: AccountDMSchema.partial().nullable().optional(),
   isVerified: FamilyDMSchema.shape.isVerified.optional(),

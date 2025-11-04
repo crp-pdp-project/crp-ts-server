@@ -12,7 +12,7 @@ import { InsuranceTypes } from 'src/general/enums/insuranceType.enum';
 
 extendZodWithOpenApi(z);
 
-export const CreateAppointmentOutputDTOSchema = z
+export const PatientAppointmentOutputDTOSchema = z
   .object({
     id: z.string().openapi({
       description: 'Unique ID of the appointment',
@@ -146,25 +146,10 @@ export const CreateAppointmentOutputDTOSchema = z
       .openapi({
         description: 'Array of tips',
       }),
-    siteds: z
-      .object({
-        base64: z.string().openapi({
-          description: 'Encoded siteds response',
-          example: 'anyBase64',
-        }),
-        amount: z.number().openapi({
-          description: 'Amount to pay',
-          example: 0,
-        }),
-      })
-      .optional()
-      .openapi({
-        description: 'Siteds result',
-      }),
   })
-  .strict()
+  .strip()
   .openapi({
     description: 'Patient Appointment Response Body',
   });
 
-export type CreateAppointmentOutputDTO = z.infer<typeof CreateAppointmentOutputDTOSchema>;
+export type PatientAppointmentOutputDTO = z.infer<typeof PatientAppointmentOutputDTOSchema>;

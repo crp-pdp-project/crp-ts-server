@@ -1,8 +1,7 @@
 import { BaseHeadersDTOSchema } from 'src/app/entities/dtos/input/baseHeaders.input.dto';
 import { PatientAppointmentsParamsDTOSchema } from 'src/app/entities/dtos/input/patientAppointment.input.dto';
-import { PatientCurrentAppointmentsOutputDTOSchema } from 'src/app/entities/dtos/output/patientCurrentAppointment.output.dto';
-import { PatientHistoricAppointmentsOutputDTOSchema } from 'src/app/entities/dtos/output/patientHistoricAppointment.output.dto';
-import { PatientNextAppointmentOutputDTOSchema } from 'src/app/entities/dtos/output/patientNextAppointment.output.dto';
+import { PatientAppointmentItemOutputDTOSchema } from 'src/app/entities/dtos/output/patientAppointmentItem.output.dto';
+import { PatientAppointmentListOutputDTOSchema } from 'src/app/entities/dtos/output/patientHistoricAppointment.output.dto';
 import { NoContentResponseDTOSchema } from 'src/app/entities/dtos/response/noContent.response.dto';
 import { OkResponseDTOSchema } from 'src/app/entities/dtos/response/ok.response.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
@@ -24,7 +23,7 @@ export class PatientAppointmentsV1Docs {
       headers: BaseHeadersDTOSchema,
       responses: {
         [StatusCode.OK]: OkResponseDTOSchema.extend({
-          data: PatientCurrentAppointmentsOutputDTOSchema,
+          data: PatientAppointmentListOutputDTOSchema,
         }),
       },
       secure: true,
@@ -39,7 +38,7 @@ export class PatientAppointmentsV1Docs {
       headers: BaseHeadersDTOSchema,
       responses: {
         [StatusCode.OK]: OkResponseDTOSchema.extend({
-          data: PatientHistoricAppointmentsOutputDTOSchema,
+          data: PatientAppointmentListOutputDTOSchema,
         }),
       },
       secure: true,
@@ -54,7 +53,7 @@ export class PatientAppointmentsV1Docs {
       headers: BaseHeadersDTOSchema,
       responses: {
         [StatusCode.OK]: OkResponseDTOSchema.extend({
-          data: PatientNextAppointmentOutputDTOSchema,
+          data: PatientAppointmentItemOutputDTOSchema,
         }),
         [StatusCode.NO_CONTENT]: NoContentResponseDTOSchema,
       },

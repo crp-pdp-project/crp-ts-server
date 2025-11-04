@@ -14,7 +14,7 @@ export const RelationshipsListOutputDTOSchema = z
       }),
     ),
   })
-  .strict()
+  .strip()
   .openapi({
     description: 'Relationships List Response Body',
   });

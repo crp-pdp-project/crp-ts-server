@@ -4,9 +4,11 @@ import { ZodObject, ZodTransform, ZodPipe } from 'zod';
 import { BadRequestResponseDTOSchema } from 'src/app/entities/dtos/response/badRequest.response.dto';
 import { ConflictResponseDTOSchema } from 'src/app/entities/dtos/response/conflict.response.dto';
 import { ForbiddenResponseDTOSchema } from 'src/app/entities/dtos/response/forbidden.response.dto';
+import { GatewayTimeoutResponseDTOSchema } from 'src/app/entities/dtos/response/gatewayTimeout.response.dto';
 import { InternalServerErrorResponseDTOSchema } from 'src/app/entities/dtos/response/internalServerError.response.dto';
 import { LockedResponseDTOSchema } from 'src/app/entities/dtos/response/locked.response.dto';
 import { NotFoundResponseDTOSchema } from 'src/app/entities/dtos/response/notFound.response.dto';
+import { PreconditionRequiredResponseDTOSchema } from 'src/app/entities/dtos/response/preconditionRequired.response.dto';
 import { UnauthorizedResponseDTOSchema } from 'src/app/entities/dtos/response/unauthorized.response.dto';
 import { UnprocessableEntityResponseDTOSchema } from 'src/app/entities/dtos/response/unprocessableEntity.response.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
@@ -49,7 +51,9 @@ export class OpenApiManager implements IOpenApiManager {
     [StatusCode.CONFLICT]: ConflictResponseDTOSchema,
     [StatusCode.UNPROCESSABLE_ENTITY]: UnprocessableEntityResponseDTOSchema,
     [StatusCode.LOCKED]: LockedResponseDTOSchema,
+    [StatusCode.PRECONDITION_REQUIRED]: PreconditionRequiredResponseDTOSchema,
     [StatusCode.INTERNAL_SERVER_ERROR]: InternalServerErrorResponseDTOSchema,
+    [StatusCode.GATEWAY_TIMEOUT]: GatewayTimeoutResponseDTOSchema,
   };
 
   constructor(private readonly registry: OpenAPIRegistry) {

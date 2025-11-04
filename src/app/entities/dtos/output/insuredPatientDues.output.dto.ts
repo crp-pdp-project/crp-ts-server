@@ -54,7 +54,7 @@ export const InsuredPatientDuesOutputDTOSchema = z
         description: 'List of yearly pay dues',
       }),
   })
-  .strict()
+  .strip()
   .openapi({
     description: 'Insured Patient Dues Response Body',
   });

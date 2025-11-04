@@ -1,4 +1,5 @@
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
+import { DateHelper } from 'src/general/helpers/date.helper';
 
 import { EmployeeSessionDTO } from '../../dtos/service/employeeSession.dto';
 import { EmployeeSessionPayloadDTO } from '../../dtos/service/employeeSessionPayload.dto';
@@ -28,6 +29,13 @@ export class EmployeeSessionModel extends BaseModel {
   refreshExiresAt(expiresAt: string): this {
     this.#expiresAt = expiresAt;
 
+    return this;
+  }
+
+  validateExpiration(): this {
+    if (DateHelper.isBeforeNow(this.#expiresAt)) {
+      throw ErrorModel.forbidden({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
+    }
     return this;
   }
 

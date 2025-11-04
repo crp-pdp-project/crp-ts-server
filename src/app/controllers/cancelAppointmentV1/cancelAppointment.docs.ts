@@ -1,6 +1,6 @@
 import { BaseHeadersDTOSchema } from 'src/app/entities/dtos/input/baseHeaders.input.dto';
 import { CancelAppointmentParamsDTOSchema } from 'src/app/entities/dtos/input/cancelAppointment.input.dto';
-import { CancelAppointmentOutputDTOSchema } from 'src/app/entities/dtos/output/cancelAppointment.output.dto';
+import { PatientAppointmentOutputDTOSchema } from 'src/app/entities/dtos/output/patientAppointment.output.dto';
 import { OkResponseDTOSchema } from 'src/app/entities/dtos/response/ok.response.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { StatusCode } from 'src/general/enums/status.enum';
@@ -21,7 +21,7 @@ export class CancelAppointmentV1Docs {
       headers: BaseHeadersDTOSchema,
       responses: {
         [StatusCode.OK]: OkResponseDTOSchema.extend({
-          data: CancelAppointmentOutputDTOSchema,
+          data: PatientAppointmentOutputDTOSchema,
         }),
       },
       secure: true,

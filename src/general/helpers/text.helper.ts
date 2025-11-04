@@ -1,4 +1,4 @@
-import { randomBytes, randomUUID } from 'crypto';
+import { randomBytes, randomUUID } from 'node:crypto';
 
 export class TextHelper {
   static addCityCode(phone?: string | null): string | undefined | null {
@@ -56,11 +56,24 @@ export class TextHelper {
         break;
     }
 
-    while (value.length > 0 && value[value.length - 1] === '/') {
+    while (value.length > 0 && value.endsWith('/')) {
       value = value.slice(0, -1);
     }
 
     return value;
+  }
+
+  static joinHostPath(host: string, path: string): string {
+    const hasSlash = host.endsWith('/');
+    const hasLead = path.startsWith('/');
+    switch (true) {
+      case hasSlash && hasLead:
+        return `${host}${path.slice(1)}`;
+      case !hasSlash && !hasLead:
+        return `${host}/${path}`;
+      default:
+        return `${host}${path}`;
+    }
   }
 
   static normalizeAppointmentId(appointmentId: string): string {
@@ -87,6 +100,10 @@ export class TextHelper {
     }
 
     return otp;
+  }
+
+  static normalizeSearch(raw: string): string {
+    return raw.trim().replace(/\s+/g, ' ').toLowerCase();
   }
 
   static padTextLength(text: string | number, length = 9, char = '0'): string {

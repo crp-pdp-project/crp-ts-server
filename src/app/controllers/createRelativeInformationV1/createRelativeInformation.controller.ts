@@ -1,10 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
-import {
-  CreateRelativeInformationBodyDTOSchema,
-  CreateRelativeInformationInputDTO,
-} from 'src/app/entities/dtos/input/createRelativeInformation.input.dto';
-import { RelativeVerificationOutputDTOSchema } from 'src/app/entities/dtos/output/relativeVerification.output.dto';
+import { CreatePatientBodyDTOSchema, CreatePatientInputDTO } from 'src/app/entities/dtos/input/createPatient.input.dto';
+import { PatientProfileOutputDTOSchema } from 'src/app/entities/dtos/output/patientProfile.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
@@ -27,9 +24,9 @@ export class CreateRelativeInformationController implements ICreateRelativeInfor
     private readonly responseManager: IResponseManager,
   ) {}
 
-  async handle(input: FastifyRequest<CreateRelativeInformationInputDTO>, reply: FastifyReply): Promise<void> {
+  async handle(input: FastifyRequest<CreatePatientInputDTO>, reply: FastifyReply): Promise<void> {
     try {
-      const body = CreateRelativeInformationBodyDTOSchema.parse(input.body);
+      const body = CreatePatientBodyDTOSchema.parse(input.body);
       const session = SessionModel.validateSessionInstance(Audiences.SIGN_IN, input.session);
       const model = await this.createRelativeInformation.create(body, session);
       this.response = this.responseManager.validateResponse(model);
@@ -46,7 +43,7 @@ export class CreateRelativeInformationControllerBuilder {
   static build(): CreateRelativeInformationController {
     return new CreateRelativeInformationController(
       CreateRelativeInformationInteractorBuilder.build(),
-      ResponseManagerBuilder.buildData(RelativeVerificationOutputDTOSchema),
+      ResponseManagerBuilder.buildData(PatientProfileOutputDTOSchema),
     );
   }
 }

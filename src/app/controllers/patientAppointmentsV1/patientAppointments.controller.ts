@@ -4,9 +4,8 @@ import {
   PatientAppointmentsInputDTO,
   PatientAppointmentsParamsDTOSchema,
 } from 'src/app/entities/dtos/input/patientAppointment.input.dto';
-import { PatientCurrentAppointmentsOutputDTOSchema } from 'src/app/entities/dtos/output/patientCurrentAppointment.output.dto';
-import { PatientHistoricAppointmentsOutputDTOSchema } from 'src/app/entities/dtos/output/patientHistoricAppointment.output.dto';
-import { PatientNextAppointmentOutputDTOSchema } from 'src/app/entities/dtos/output/patientNextAppointment.output.dto';
+import { PatientAppointmentItemOutputDTOSchema } from 'src/app/entities/dtos/output/patientAppointmentItem.output.dto';
+import { PatientAppointmentListOutputDTOSchema } from 'src/app/entities/dtos/output/patientHistoricAppointment.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
@@ -48,21 +47,21 @@ export class PatientApointmentsControllerBuilder {
   static buildNext(): PatientApointmentsController {
     return new PatientApointmentsController(
       PatientAppointmentsInteractorBuilder.buildNext(),
-      ResponseManagerBuilder.buildMixed(PatientNextAppointmentOutputDTOSchema),
+      ResponseManagerBuilder.buildMixed(PatientAppointmentItemOutputDTOSchema),
     );
   }
 
   static buildCurrent(): PatientApointmentsController {
     return new PatientApointmentsController(
       PatientAppointmentsInteractorBuilder.buildCurrent(),
-      ResponseManagerBuilder.buildData(PatientCurrentAppointmentsOutputDTOSchema),
+      ResponseManagerBuilder.buildData(PatientAppointmentListOutputDTOSchema),
     );
   }
 
   static buildHistoric(): PatientApointmentsController {
     return new PatientApointmentsController(
       PatientAppointmentsInteractorBuilder.buildHistoric(),
-      ResponseManagerBuilder.buildData(PatientHistoricAppointmentsOutputDTOSchema),
+      ResponseManagerBuilder.buildData(PatientAppointmentListOutputDTOSchema),
     );
   }
 }

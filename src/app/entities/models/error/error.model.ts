@@ -74,6 +74,9 @@ export class ErrorModel extends Error {
   static server(options?: { detail?: ClientErrorMessages; message?: string }): ErrorModel {
     return this.generateInstanceAndLog(StatusCode.INTERNAL_SERVER_ERROR, options?.message, options?.detail);
   }
+  static timeout(options?: { detail?: ClientErrorMessages; message?: string }): ErrorModel {
+    return this.generateInstanceAndLog(StatusCode.GATEWAY_TIMEOUT, options?.message, options?.detail);
+  }
 
   private static generateFromZodError(error: ZodError): ErrorModel {
     this.logger.error('Zod validation failed', { errors: error.issues });

@@ -1,37 +1,35 @@
-import { HealthInsuranceDTO } from 'src/app/entities/dtos/service/healthInsurance.dto';
-import { ErrorModel } from 'src/app/entities/models/error/error.model';
+import { HealthInsuranceModel } from 'src/app/entities/models/healthInsurance/healthInsurance.model';
 import { HealthInsuranceViewModel } from 'src/app/entities/models/healthInsurance/healthInsuranceView.model';
 import {
-  GetHealthInsuranceRepository,
-  IGetHealthInsuranceRepository,
-} from 'src/app/repositories/database/getHealthPlan.repository';
+  GetHealthInsuranceViewRepository,
+  IGetHealthInsuranceViewRepository,
+} from 'src/app/repositories/database/getHealthInsuranceView.repository';
 
 export interface IHealthInsuranceViewInteractor {
   getView(): Promise<HealthInsuranceViewModel>;
 }
 
 export class HealthInsuranceViewInteractor implements IHealthInsuranceViewInteractor {
-  constructor(private readonly getHealthInsurance: IGetHealthInsuranceRepository) {}
+  constructor(private readonly getHealthInsurance: IGetHealthInsuranceViewRepository) {}
 
   async getView(): Promise<HealthInsuranceViewModel> {
-    const healthInsurance = await this.getViewInfo();
+    const healthInsuranceModel = await this.getViewInfo();
 
-    return new HealthInsuranceViewModel(healthInsurance);
+    return new HealthInsuranceViewModel(healthInsuranceModel);
   }
 
-  private async getViewInfo(): Promise<HealthInsuranceDTO> {
+  private async getViewInfo(): Promise<HealthInsuranceModel> {
     const healthInsurance = await this.getHealthInsurance.execute();
+    const model = new HealthInsuranceModel(healthInsurance);
 
-    if (!healthInsurance) {
-      throw ErrorModel.notFound({ message: 'No health insurance view available' });
-    }
+    model.validateInsurance();
 
-    return healthInsurance;
+    return model;
   }
 }
 
 export class HealthInsuranceViewInteractorBuilder {
   static build(): HealthInsuranceViewInteractor {
-    return new HealthInsuranceViewInteractor(new GetHealthInsuranceRepository());
+    return new HealthInsuranceViewInteractor(new GetHealthInsuranceViewRepository());
   }
 }

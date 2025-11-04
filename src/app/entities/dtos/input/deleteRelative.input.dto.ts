@@ -12,7 +12,7 @@ export const DeleteRelativeParamsDTOSchema = z
   })
   .strict()
   .openapi({
-    description: 'Cancel appointment request params',
+    description: 'Delete relative request params',
   });
 
 export type DeleteRelativeParamsDTO = z.infer<typeof DeleteRelativeParamsDTOSchema>;

@@ -1,5 +1,5 @@
-import { randomBytes, pbkdf2 } from 'crypto';
-import { promisify } from 'util';
+import { randomBytes, pbkdf2 } from 'node:crypto';
+import { promisify } from 'node:util';
 
 import { EncryptionConfigSha512, IEncryptionConfig } from 'src/general/managers/encryption/config/encryption.config';
 

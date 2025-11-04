@@ -1,5 +1,5 @@
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { CreateRelativeInformationBodyDTO } from 'src/app/entities/dtos/input/createRelativeInformation.input.dto';
+import { CreatePatientBodyDTO } from 'src/app/entities/dtos/input/createPatient.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
 import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
@@ -24,7 +24,7 @@ import { ISearchPatientRepository, SearchPatientRepository } from 'src/app/repos
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 export interface ICreateRelativeInformationInteractor {
-  create(body: CreateRelativeInformationBodyDTO, session: SignInSessionModel): Promise<PatientExternalModel>;
+  create(body: CreatePatientBodyDTO, session: SignInSessionModel): Promise<PatientExternalModel>;
 }
 
 export class CreateRelativeInformationInteractor implements ICreateRelativeInformationInteractor {
@@ -37,7 +37,7 @@ export class CreateRelativeInformationInteractor implements ICreateRelativeInfor
     private readonly verifyRelativeRepository: IVerifyRelativeRepository,
   ) {}
 
-  async create(body: CreateRelativeInformationBodyDTO, session: SignInSessionModel): Promise<PatientExternalModel> {
+  async create(body: CreatePatientBodyDTO, session: SignInSessionModel): Promise<PatientExternalModel> {
     await this.verifyRelationship(body, session);
     const newFmpId = await this.patientCreation(body);
     const patientExternalModel = await this.searchPatient(newFmpId, body.documentType, body.documentNumber);
@@ -47,7 +47,7 @@ export class CreateRelativeInformationInteractor implements ICreateRelativeInfor
     return patientExternalModel;
   }
 
-  private async patientCreation(body: CreateRelativeInformationBodyDTO): Promise<PatientDM['fmpId']> {
+  private async patientCreation(body: CreatePatientBodyDTO): Promise<PatientDM['fmpId']> {
     const creationResult = await this.confirmPatientRepository.execute({
       firstName: body.firstName,
       lastName: body.lastName,
@@ -90,7 +90,7 @@ export class CreateRelativeInformationInteractor implements ICreateRelativeInfor
     }
   }
 
-  private async verifyRelationship(body: CreateRelativeInformationBodyDTO, session: SignInSessionModel): Promise<void> {
+  private async verifyRelationship(body: CreatePatientBodyDTO, session: SignInSessionModel): Promise<void> {
     const verifyResult = await this.verifyRelativeRepository.execute(
       session.patient.id,
       body.documentNumber,
