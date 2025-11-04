@@ -65,7 +65,7 @@ export class RestHelper {
       throw ErrorModel.server({ message: `HTTP ${response.statusCode} error` });
     }
 
-    return this.handleResponse<T>(response, responseType, method, fullUrl);
+    return this.handleResponse<T>(response, method, fullUrl, responseType);
   }
 
   private async handleRequest(
@@ -84,7 +84,8 @@ export class RestHelper {
 
     const timer = setTimeout(() => controller.abort(), CRPConstants.EXTERNAL_REQUEST_TIMEOUT);
     try {
-      return request(url, requestOptions);
+      const result = await request(url, requestOptions);
+      return result;
     } catch (error) {
       if (error instanceof Error && error?.name === 'AbortError') {
         throw ErrorModel.timeout({ message: 'External request timeout' });
@@ -98,9 +99,9 @@ export class RestHelper {
 
   private async handleResponse<T = unknown>(
     response: Dispatcher.ResponseData,
-    responseType: ResponseType = ResponseType.JSON,
     method: HttpMethod,
     url: string,
+    responseType: ResponseType = ResponseType.JSON,
   ): Promise<T> {
     let responseData: T;
     let logResponse = false;

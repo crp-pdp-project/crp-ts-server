@@ -54,7 +54,7 @@ export class VerificationRequestListRepository implements IVerificationRequestLi
       .orderBy('Families.createdAt', 'desc')
       .where('isVerified', '=', false);
 
-    if (search && search.trim()) {
+    if (search?.trim()) {
       const normalizedSearch = TextHelper.normalizeSearch(search);
       query = query.where((eb) => this.buildSearchPredicate(eb, normalizedSearch));
     }

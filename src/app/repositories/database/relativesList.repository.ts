@@ -46,7 +46,7 @@ export class RelativesListRepository implements IRelativesListRepository {
       .orderBy('Patients.id', 'asc')
       .where('principalId', '=', principalId);
 
-    if (search && search.trim()) {
+    if (search?.trim()) {
       const normalizedSearch = TextHelper.normalizeSearch(search);
       query = query.where((eb) => this.buildSearchPredicate(eb, normalizedSearch));
     }

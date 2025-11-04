@@ -14,7 +14,7 @@ export class PatientsListRepository implements IPatientsListRepository {
     const db = MysqlClient.instance.getDb();
     let query = db.selectFrom('Patients').selectAll().orderBy('id', 'asc');
 
-    if (search && search.trim()) {
+    if (search?.trim()) {
       const normalizedSearch = TextHelper.normalizeSearch(search);
       query = query.where((eb) => this.buildSearchPredicate(eb, normalizedSearch));
     }
