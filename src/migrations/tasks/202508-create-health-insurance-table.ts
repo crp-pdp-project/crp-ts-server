@@ -12,7 +12,7 @@ export async function up(db: Kysely<Database>): Promise<void> {
     .addColumn('paragraph', 'varchar(512)', (col) => col.notNull())
     .addColumn('subtitle', 'varchar(255)', (col) => col.notNull())
     .addColumn('bullets', 'json', (col) => col.notNull())
-    .addColumn('banner', 'varchar(255)', (col) => col.notNull())
+    .addColumn('banner', 'varchar(255)')
     .addColumn('pdfUrl', 'varchar(255)', (col) => col.notNull())
     .addColumn('enabled', 'boolean', (col) => col.notNull().defaultTo(false))
     .addColumn('createdAt', 'datetime', (col) => col.notNull().defaultTo(sql`CURRENT_TIMESTAMP`))
