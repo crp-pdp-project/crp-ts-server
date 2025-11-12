@@ -15,6 +15,7 @@ import { InfobipClient } from 'src/clients/infobip/infobip.client';
 import { LoggerClient } from 'src/clients/logger/logger.client';
 import { InfobipConstants } from 'src/general/contants/infobip.constants';
 import { EmailSubjects } from 'src/general/enums/emailSubject.enum';
+import { EnvHelper } from 'src/general/helpers/env.helper';
 import { TextHelper } from 'src/general/helpers/text.helper';
 import otpEmailTemplate from 'src/general/templates/otpEmail.template';
 import otpSmsTemplate from 'src/general/templates/otpSMS.template';
@@ -35,6 +36,8 @@ export interface ISendVerificationOTPInteractor {
 export class SendVerificationOTPInteractor implements ISendVerificationOTPInteractor {
   private readonly infobipClient: InfobipClient = InfobipClient.instance;
   private readonly emailClient: EmailClient = EmailClient.instance;
+  private readonly dryRun: boolean = !!EnvHelper.getOptional('DRY_RUN_OTP');
+  private readonly logger: LoggerClient = LoggerClient.instance;
 
   constructor(
     private readonly sendOTPStrategy: ISendVerificationOTPStrategy,
@@ -44,7 +47,7 @@ export class SendVerificationOTPInteractor implements ISendVerificationOTPIntera
   async sendOTP(session: SessionModel): Promise<void> {
     const patient = await this.sendOTPStrategy.validate(session);
     const otp = TextHelper.generateUniqueCode();
-    await this.sendOtp(patient, otp);
+    await this.send(patient, otp);
     await this.addOtpToSession(session, patient, otp);
   }
 
@@ -56,14 +59,22 @@ export class SendVerificationOTPInteractor implements ISendVerificationOTPIntera
     return result.status === 'rejected';
   }
 
-  private async sendOtp(patient: PatientExternalModel, otp: SessionDM['otp']): Promise<void> {
+  private async send(patient: PatientExternalModel, otp: SessionDM['otp']): Promise<void> {
+    if (!this.dryRun) {
+      await this.executeSend(patient, otp);
+    } else {
+      this.logger.info('dry run otp', { otp });
+    }
+  }
+
+  private async executeSend(patient: PatientExternalModel, otp: SessionDM['otp']): Promise<void> {
     const promiseResult = await Promise.allSettled([this.sendEmail(patient, otp), this.sendSms(patient, otp)]);
 
     const fulfilledCount = promiseResult.filter((result) => this.isFulfilled(result)).length;
     const errorArray = promiseResult.filter((result) => this.isRejected(result));
 
     errorArray.forEach((error) => {
-      LoggerClient.instance.error('Send OTP handled error', { error: error.reason });
+      this.logger.error('Send OTP handled error', { error: error.reason });
     });
 
     if (fulfilledCount === 0) {
