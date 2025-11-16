@@ -16,7 +16,7 @@ export class UpdateHealthInsuranceRepository implements IUpdateHealthInsuranceRe
         title: healthInsurance.title,
         paragraph: healthInsurance.paragraph,
         subtitle: healthInsurance.subtitle,
-        bullets: healthInsurance.bullets,
+        bullets: JSON.stringify(healthInsurance.bullets) as unknown as string[],
         banner: healthInsurance.banner ?? null,
         pdfUrl: healthInsurance.pdfUrl,
       })

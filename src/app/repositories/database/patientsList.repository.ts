@@ -20,7 +20,7 @@ export class PatientsListRepository implements IPatientsListRepository {
     }
 
     if (cursor != null) {
-      query = query.where('id', '>', cursor);
+      query = query.where('id', '>=', cursor);
     }
 
     const result = await query.limit(limit + 1).execute();

@@ -52,7 +52,7 @@ export class RelativesListRepository implements IRelativesListRepository {
     }
 
     if (cursor != null) {
-      query = query.where('Patients.id', '>', cursor);
+      query = query.where('Patients.id', '>=', cursor);
     }
 
     const result = await query.limit(limit + 1).execute();

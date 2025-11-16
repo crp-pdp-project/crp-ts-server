@@ -18,7 +18,7 @@ export class VerificationRequestListRepository implements IVerificationRequestLi
     let query = db
       .selectFrom('Families')
       .innerJoin('Patients', 'Patients.id', 'Families.relativeId')
-      .innerJoin('Patients as Principal', 'Patients.id', 'Families.principalId')
+      .innerJoin('Patients as Principal', 'Principal.id', 'Families.principalId')
       .innerJoin('Relationships', 'Relationships.id', 'Families.relationshipId')
       .select((eb) => [
         'Patients.id',
@@ -52,7 +52,7 @@ export class VerificationRequestListRepository implements IVerificationRequestLi
         ).as('principal'),
       ])
       .orderBy('Families.createdAt', 'desc')
-      .where('isVerified', '=', false);
+      .where('Families.isVerified', '=', false);
 
     if (search?.trim()) {
       const normalizedSearch = TextHelper.normalizeSearch(search);
@@ -60,7 +60,7 @@ export class VerificationRequestListRepository implements IVerificationRequestLi
     }
 
     if (cursor != null) {
-      query = query.where('Patients.id', '>', cursor);
+      query = query.where('Patients.id', '>=', cursor);
     }
 
     const result = await query.limit(limit + 1).execute();

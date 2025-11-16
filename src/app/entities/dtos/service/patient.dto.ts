@@ -20,6 +20,7 @@ export const PatientDTOSchema = PatientDMSchema.partial().extend({
   relationship: RelationshipDMSchema.partial().optional(),
   account: AccountDMSchema.partial().nullable().optional(),
   isVerified: FamilyDMSchema.shape.isVerified.optional(),
+  isDependant: RelationshipDMSchema.shape.isDependant.optional(),
   device: DeviceDMSchema.partial().nullable().optional(),
 });
 

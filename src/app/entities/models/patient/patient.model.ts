@@ -29,6 +29,7 @@ export class PatientModel extends BaseModel {
   readonly relatives?: PatientModel[];
   readonly principal?: PatientModel;
   readonly isVerified?: boolean;
+  readonly isDependant?: boolean;
 
   #device?: DeviceModel;
 
@@ -47,6 +48,7 @@ export class PatientModel extends BaseModel {
     this.createdAt = patient.createdAt ? DateHelper.toFormatDateTime(patient.createdAt, 'spanishDateTime') : undefined;
     this.updatedAt = patient.updatedAt ? DateHelper.toFormatDateTime(patient.updatedAt, 'spanishDateTime') : undefined;
     this.isVerified = patient.isVerified != null ? !!patient.isVerified : undefined;
+    this.isDependant = patient.isDependant != null ? !!patient.isDependant : undefined;
     this.account = patient.account ? new AccountModel(patient.account) : undefined;
     this.relationship = this.resolvePrincipalRelationship(patient);
     this.relatives = this.resolveRelatives(patient.relatives);
