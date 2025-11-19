@@ -41,6 +41,7 @@ export class GetSitedsInsuranceRepository implements IGetSitedsInsuranceReposito
       ...payloadOptions,
       purposeCode: SitedsConstants.DEFAULT_PURPOSE_CODE,
       transactionId: SitedsConstants.DEFAULT_TRANSAC_ID,
+      senderTaxId: SitedsConstants.RUC_NUMBER,
       requestText: SitedsConstants.COD_REQUEST,
     };
 
