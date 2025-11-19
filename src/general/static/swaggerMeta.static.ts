@@ -1,7 +1,7 @@
 export default {
   openapi: '3.0.3',
   info: {
-    version: '1.2.0',
+    version: '1.2.1',
     title: 'CRP TypeScript Fastify Backend Server - OpenAPI Spec',
     description: `
       Fastify TypeScript server on a custom architecture based on VIPER, adapted for backend services: DICER
