@@ -36,7 +36,7 @@ export class SitedsPriceInteractor implements ISitedsPriceInteractor {
     const patientModel = session.getPatient(params.fmpId);
     const sitedsModel = await this.getSitedsPatientInfo(body, patientModel);
     sitedsModel.validateDetails();
-    await this.obtainSitedsCoverages(sitedsModel, patientModel);
+    await this.obtainSitedsCoverages(sitedsModel);
     sitedsModel.sanitizeDetails().validateInsurance();
 
     return sitedsModel;
@@ -54,9 +54,9 @@ export class SitedsPriceInteractor implements ISitedsPriceInteractor {
     return model;
   }
 
-  private async obtainSitedsCoverages(sitedsModel: SitedsModel, patient: PatientModel): Promise<void> {
+  private async obtainSitedsCoverages(sitedsModel: SitedsModel): Promise<void> {
     for (const detail of sitedsModel.details) {
-      const coverageData = await this.getSitedsInsurance.execute(patient, {
+      const coverageData = await this.getSitedsInsurance.execute({
         ...sitedsModel.getMainPayload(),
         ...detail.genCoveragePayload(),
       });

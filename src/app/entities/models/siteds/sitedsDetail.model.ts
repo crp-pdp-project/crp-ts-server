@@ -31,7 +31,6 @@ export class SitedsDetailModel extends BaseModel {
   readonly contractorId?: string;
 
   #coverages?: SitedsCoverageModel[];
-  #rawCoverageData?: ConCod271DTO;
 
   constructor(sitedsDetail: ConNom271DetailDTO) {
     super();
@@ -61,21 +60,28 @@ export class SitedsDetailModel extends BaseModel {
 
   genCoveragePayload(): ConAse270DTO {
     return {
+      patientFirstName: this.patientFirstName,
+      patientLastName: this.patientLastName,
+      patientSecondLastName: this.patientSecondLastName,
+      patientDocumentType: this.patientDocumentType,
+      patientDocumentNumber: this.patientDocumentNumber,
       patientMemberId: this.patientMemberId,
+      patientEntityType: this.patientEntityType,
       planNumber: this.#rawData.planNumber,
       productCode: this.productCode,
-      relationshipCode: this.#rawCoverageData?.relationshipCode,
+      productDescription: this.productDescription,
+      relationshipCode: this.#rawData?.relationshipCode,
       contractorDocumentType: this.contractorDocumentType,
       contractorIdQualifier: this.contractorIdQualifier,
       contractorId: this.contractorId,
       contractorEntityType: this.contractorEntityType,
+      contractorLastName: this.#rawData?.contractorLastName,
+      contractorSecondLastName: this.#rawData?.contractorSecondLastName,
     };
   }
 
   inyectCoverages(coverageInfo: ConCod271DTO): this {
     this.#logger.info(`Siteds Coverage Data for ${this.patientMemberId}`, this.#rawData);
-
-    this.#rawCoverageData = coverageInfo;
     this.#coverages = this.resolveValidCoverages(coverageInfo.details ?? []);
 
     return this;

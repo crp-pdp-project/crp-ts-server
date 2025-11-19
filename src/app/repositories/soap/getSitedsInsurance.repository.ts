@@ -1,12 +1,8 @@
 import { ConAse270DTO } from 'src/app/entities/dtos/service/conAse270.dto';
 import { ConCod271DTO } from 'src/app/entities/dtos/service/conCod271.dto';
-import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import { LoggerClient } from 'src/clients/logger/logger.client';
 import { SitedsClient, SitedsServices } from 'src/clients/siteds/siteds.client';
 import { SitedsConstants } from 'src/general/contants/siteds.constants';
-import { DocumentTypeMapper, SitedsDocumentType } from 'src/general/enums/patientInfo.enum';
-import { DateHelper } from 'src/general/helpers/date.helper';
-import { TextHelper } from 'src/general/helpers/text.helper';
 import { X12ManagerBuild } from 'src/general/managers/x12/x12.manager';
 
 type GetSitedsInsuranceInput = {
@@ -24,14 +20,14 @@ type GetSitedsInsuranceOutput = {
 };
 
 export interface IGetSitedsInsuranceRepository {
-  execute(patient: PatientDTO, payloadOptions: ConAse270DTO): Promise<ConCod271DTO>;
+  execute(payloadOptions: ConAse270DTO): Promise<ConCod271DTO>;
 }
 
 export class GetSitedsInsuranceRepository implements IGetSitedsInsuranceRepository {
   private readonly x12Manager = X12ManagerBuild.buildConCod();
 
-  async execute(patient: PatientDTO, payloadOptions: ConAse270DTO): Promise<ConCod271DTO> {
-    const methodPayload = this.parseInput(patient, payloadOptions);
+  async execute(payloadOptions: ConAse270DTO): Promise<ConCod271DTO> {
+    const methodPayload = this.parseInput(payloadOptions);
     const instance = await SitedsClient.getInstance();
     const rawResult = await instance.client.call<GetSitedsInsuranceOutput>(
       SitedsServices.INSURANCE_PRICES,
@@ -40,33 +36,12 @@ export class GetSitedsInsuranceRepository implements IGetSitedsInsuranceReposito
     return this.parseOutput(rawResult);
   }
 
-  private parseInput(patient: PatientDTO, payloadOptions: ConAse270DTO): GetSitedsInsuranceInput {
-    const normalizedDocumentType = patient.documentType
-      ? DocumentTypeMapper.getSitedsDocumentType(patient.documentType)
-      : SitedsDocumentType.DNI;
-
+  private parseInput(payloadOptions: ConAse270DTO): GetSitedsInsuranceInput {
     const payload: ConAse270DTO = {
       ...payloadOptions,
-      ipressId: SitedsConstants.IPRESS_ID,
-      date: payloadOptions.date ?? DateHelper.dateNow('crpDate'),
-      time: payloadOptions.time ?? DateHelper.dateNow('crpTime'),
-      shortDate: payloadOptions.shortDate ?? DateHelper.dateNow('crpDateShort'),
-      shortTime: payloadOptions.shortTime ?? DateHelper.dateNow('crpTimeShort'),
-      senderEntityType: SitedsConstants.DEFAULT_ENTITY_TYPE,
-      receiverEntityType: SitedsConstants.DEFAULT_ENTITY_TYPE,
-      senderTaxId: SitedsConstants.RUC_NUMBER,
       purposeCode: SitedsConstants.DEFAULT_PURPOSE_CODE,
       transactionId: SitedsConstants.DEFAULT_TRANSAC_ID,
-      patientEntityType: SitedsConstants.DEFAULT_PATIENT_TYPE,
-      contractorIdQualifier: SitedsConstants.DEFAULT_QUALIFIER,
-      requestText: SitedsConstants.DEFAULT_REQUEST,
-      groupControlNumber: payloadOptions.groupControlNumber ?? TextHelper.generateUniqueCode(8),
-      transactionSetControlNumber: payloadOptions.transactionSetControlNumber ?? TextHelper.generateUniqueCode(8),
-      patientFirstName: patient.firstName?.toUpperCase(),
-      patientLastName: patient.lastName?.toUpperCase(),
-      patientSecondLastName: patient.secondLastName?.toUpperCase() ?? undefined,
-      patientDocumentType: normalizedDocumentType,
-      patientDocumentNumber: patient.documentNumber,
+      requestText: SitedsConstants.COD_REQUEST,
     };
 
     const x12Payload = this.x12Manager.encode(payload);

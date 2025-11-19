@@ -48,6 +48,8 @@ import { InsurancesListV1Docs } from 'src/app/controllers/insurancesListV1/insur
 import { InsurancesListV1Router } from 'src/app/controllers/insurancesListV1/insurancesList.router';
 import { InsuredPatientDuesV1Docs } from 'src/app/controllers/insuredPatientDuesV1/insuredPatientDues.docs';
 import { InsuredPatientDuesV1Router } from 'src/app/controllers/insuredPatientDuesV1/insuredPatientDues.router';
+import { OperateX12V1Docs } from 'src/app/controllers/operateX12V1/operateX12.docs';
+import { OperateX12V1Router } from 'src/app/controllers/operateX12V1/operateX12.router';
 import { PatientAppointmentDetailV1Docs } from 'src/app/controllers/patientAppointmentDetailV1/patientAppointmentDetail.docs';
 import { PatientAppointmentDetailV1Router } from 'src/app/controllers/patientAppointmentDetailV1/patientAppointmentDetail.router';
 import { PatientAppointmentsV1Docs } from 'src/app/controllers/patientAppointmentsV1/patientAppointments.docs';
@@ -247,6 +249,7 @@ export class Server {
     new RejectRelativeV1Docs(this.manager).registerDocs();
     new SendNotificationV1Docs(this.manager).registerDocs();
     new SendDeepLinkNotificationV1Docs(this.manager).registerDocs();
+    new OperateX12V1Docs(this.manager).registerDocs();
   }
 
   private static registerRoutes(): void {
@@ -297,6 +300,7 @@ export class Server {
     new RejectRelativeV1Router(this.app).registerRouter();
     new SendNotificationV1Router(this.app).registerRouter();
     new SendDeepLinkNotificationV1Router(this.app).registerRouter();
+    new OperateX12V1Router(this.app).registerRouter();
   }
 
   private static setupDocsEndpoint(): void {

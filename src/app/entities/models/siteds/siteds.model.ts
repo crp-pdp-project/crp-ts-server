@@ -131,6 +131,8 @@ export class SitedsModel extends BaseModel {
       shortDate: this.#rawData.shortDate,
       shortTime: this.#rawData.shortTime,
       correlative: this.#rawData.correlative,
+      senderEntityType: this.#rawData.senderEntityType,
+      receiverEntityType: this.#rawData.receiverEntityType,
       groupControlNumber: this.#rawData.groupControlNumber,
       transactionSetControlNumber: this.#rawData.transactionSetControlNumber,
     };

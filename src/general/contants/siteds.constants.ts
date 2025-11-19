@@ -8,8 +8,9 @@ export const SitedsConstants = {
   SUCCESS_CODES: new Set<string>(['0000', '1200']),
   DEFAULT_TRANSAC_NAME: '270_CON_ASE',
   DEFAULT_TRANSAC_ID: '270',
-  DEFAULT_QUALIFIER: 'A4',
+  DEFAULT_QUALIFIER: '4A',
   DEFAULT_REQUEST: 'CN',
+  COD_REQUEST: 'CC',
   ERROR_MESSAGES: {
     '0010': 'Estructura XML de entrada no corresponde a la definida',
     '0020': 'Error ocurrido en el flujo de proceso',

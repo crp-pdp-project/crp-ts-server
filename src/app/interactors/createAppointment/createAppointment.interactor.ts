@@ -96,14 +96,14 @@ export class CreateAppointmentInteractor implements ICreateAppointmentInteractor
     if (appointment.shouldFetchSiteds()) {
       const decodedPatient = await this.getSitedsPatient.execute(patient, appointment.insurance!.iafaId!);
       const sitedsModel = SitedsModel.fromDTO(decodedPatient, patient.documentNumber!, patient.documentType!);
-      await this.obtainSitedsCoverages(sitedsModel, patient);
+      await this.obtainSitedsCoverages(sitedsModel);
       appointment.inyectSiteds(sitedsModel.sanitizeDetails().generateBase64());
     }
   }
 
-  private async obtainSitedsCoverages(sitedsModel: SitedsModel, patient: PatientModel): Promise<void> {
+  private async obtainSitedsCoverages(sitedsModel: SitedsModel): Promise<void> {
     for (const detail of sitedsModel.details) {
-      const coverageData = await this.getSitedsInsurance.execute(patient, {
+      const coverageData = await this.getSitedsInsurance.execute({
         ...sitedsModel.getMainPayload(),
         ...detail.genCoveragePayload(),
       });
