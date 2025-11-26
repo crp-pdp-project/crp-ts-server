@@ -33,6 +33,7 @@ import {
   ISaveAppointmentRepository,
   SaveAppointmentRepository,
 } from 'src/app/repositories/soap/saveAppointment.repository';
+import { LoggerClient } from 'src/clients/logger/logger.client';
 
 export interface ICreateAppointmentInteractor {
   create(
@@ -62,7 +63,11 @@ export class CreateAppointmentInteractor implements ICreateAppointmentInteractor
     const payload = this.genPayload(params.fmpId, body);
     const appointmentId = await this.createAppointment(payload);
     const appointmentModel = await this.getNewAppointment(appointmentId);
-    await this.addSiteds(patient, appointmentModel);
+    await this.addSiteds(patient, appointmentModel).catch((error) => {
+      LoggerClient.instance.error('Error adding siteds, bypassed', {
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
+    });
 
     return appointmentModel;
   }
@@ -86,8 +91,12 @@ export class CreateAppointmentInteractor implements ICreateAppointmentInteractor
   }
 
   private async getNewAppointment(appointmentId: string): Promise<AppointmentModel> {
-    const appointment = await this.appointmentDetail.execute(appointmentId);
-    const payload = appointment.id ? appointment : ({ id: appointmentId } as AppointmentDTO);
+    const appointment = await this.appointmentDetail.execute(appointmentId).catch((error) => {
+      LoggerClient.instance.error('Error obtaining Appointment Detail, bypassed', {
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
+    });
+    const payload = appointment?.id ? appointment : ({ id: appointmentId } as AppointmentDTO);
 
     return new AppointmentModel(payload);
   }
