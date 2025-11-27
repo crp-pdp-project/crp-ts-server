@@ -3,13 +3,13 @@ import {
   CreateAppointmentBodyDTO,
   CreateAppointmentParamsDTO,
 } from 'src/app/entities/dtos/input/createAppointment.input.dto';
-import { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
 import {
   AppointmentRequestDTO,
   AppointmentRequestDTOSchema,
 } from 'src/app/entities/dtos/service/appointmentRequest.dto';
 import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import { AppointmentModel } from 'src/app/entities/models/appointment/appointment.model';
+import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { PatientModel } from 'src/app/entities/models/patient/patient.model';
 import { SignInSessionModel, ValidationRules } from 'src/app/entities/models/session/signInSession.model';
 import { SitedsModel } from 'src/app/entities/models/siteds/siteds.model';
@@ -34,6 +34,7 @@ import {
   SaveAppointmentRepository,
 } from 'src/app/repositories/soap/saveAppointment.repository';
 import { LoggerClient } from 'src/clients/logger/logger.client';
+import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 export interface ICreateAppointmentInteractor {
   create(
@@ -91,14 +92,11 @@ export class CreateAppointmentInteractor implements ICreateAppointmentInteractor
   }
 
   private async getNewAppointment(appointmentId: string): Promise<AppointmentModel> {
-    const appointment = await this.appointmentDetail.execute(appointmentId).catch((error) => {
-      LoggerClient.instance.error('Error obtaining Appointment Detail, bypassed', {
-        errorMessage: error instanceof Error ? error.message : String(error),
-      });
+    const appointment = await this.appointmentDetail.execute(appointmentId).catch(() => {
+      throw ErrorModel.conflict({ detail: ClientErrorMessages.APPOINTMENT_PARTIAL_SUCCESS });
     });
-    const payload = appointment?.id ? appointment : ({ id: appointmentId } as AppointmentDTO);
 
-    return new AppointmentModel(payload);
+    return new AppointmentModel(appointment);
   }
 
   private async addSiteds(patient: PatientModel, appointment: AppointmentModel): Promise<void> {

@@ -13,6 +13,7 @@ import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.
 import { BaseModel } from 'src/app/entities/models/base.model';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
+import { PatientDocumentType } from 'src/general/enums/patientInfo.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { TextHelper } from 'src/general/helpers/text.helper';
 
@@ -30,7 +31,7 @@ export class PatientExternalModel extends BaseModel {
   readonly maskedPhone?: string | null;
   readonly fmpId?: string;
   readonly documentNumber?: string;
-  readonly documentType?: number;
+  readonly documentType?: PatientDocumentType;
   readonly birthDate?: string;
   readonly account?: AccountModel;
 
@@ -56,7 +57,7 @@ export class PatientExternalModel extends BaseModel {
     this.fmpId = external.fmpId;
     this.documentNumber = external.documentNumber;
     this.#nhcId = external.nhcId;
-    this.documentType = external.documentType;
+    this.documentType = this.ensureDocumentType(external.documentType);
     this.account = patient?.account ? new AccountModel(patient.account) : undefined;
     this.#searchResult = external;
   }
@@ -144,6 +145,16 @@ export class PatientExternalModel extends BaseModel {
 
   getRawSearchResult(): PatientExternalDTO {
     return this.#searchResult;
+  }
+
+  private ensureDocumentType(documentType?: unknown): PatientDocumentType {
+    const values = Object.values(PatientDocumentType);
+
+    if (!values.includes(documentType as PatientDocumentType)) {
+      throw ErrorModel.conflict({ detail: ClientErrorMessages.ERROR_PATIENT });
+    }
+
+    return documentType as PatientDocumentType;
   }
 
   private toSessionPayload(): SessionPayloadDTO {

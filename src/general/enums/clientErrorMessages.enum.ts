@@ -4,6 +4,7 @@ export enum ClientErrorMessages {
   WRONG_OTP = 'El código ingresado no es válido. Prueba otra vez o solicita uno nuevo',
   PATIENT_NOT_FOUND = 'No tienes una historia clínica registrada',
   UNPROCESSABLE_PATIENT = 'No tienes correo ni celular registrado. Contáctate con la clínica para actualizar los datos de contacto',
+  ERROR_PATIENT = 'Hay un error con los datos. Contáctate con la clínica para actualizar los datos de contacto',
   PATIENT_NOT_CREATED = 'No se pudo registrar los datos del paciente. Contáctate con la clínica para revisar tus datos',
   PATIENT_REGISTERED = 'Ya tienes una cuenta registrada. Puedes iniciar sesión',
   PATIENT_NOT_REGISTERED = 'No tienes una cuenta registrada. Registra una cuenta ingresando tus datos',
@@ -20,4 +21,5 @@ export enum ClientErrorMessages {
   INSURANCE_NOT_EXIST = 'No tiene coberturas para el seguro seleccionado en la cita, realice el pago personalmente en clínica',
   EMPLOYEE_AUTH_INVALID = 'Usuario o contraseña incorrectos.',
   SAFE_OPERATION_NOT_ALLOWED = 'Inicia el proceso de verificación ingresando el código OTP enviado a tu correo o teléfono.',
+  APPOINTMENT_PARTIAL_SUCCESS = 'Tu cita fue creada correctamente, pero no podemos mostrar los detalles en este momento. Regresa al inicio para verla.',
 }
