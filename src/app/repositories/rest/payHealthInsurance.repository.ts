@@ -1,3 +1,4 @@
+import { InsuranceDueDTO } from 'src/app/entities/dtos/service/insuranceDue.dto';
 import { POSAuthorizationDTO } from 'src/app/entities/dtos/service/posAuthorization.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { CRPClient, CRPServicePaths } from 'src/clients/crp/crp.client';
@@ -15,7 +16,10 @@ type PayHealthInsuranceInput = {
   };
   planSalud: {
     idContrato: number;
-    numDocumento: string[];
+    documento: {
+      numDocumento: string;
+      importe: number;
+    }[];
   };
 };
 
@@ -24,13 +28,13 @@ type PayHealthInsuranceOutput = {
 };
 
 export interface IPayHealthInsuranceRepository {
-  execute(authorization: POSAuthorizationDTO, contractId: string, documents: string[]): Promise<void>;
+  execute(authorization: POSAuthorizationDTO, contractId: string, documents: InsuranceDueDTO[]): Promise<void>;
 }
 
 export class PayHealthInsuranceRepository implements IPayHealthInsuranceRepository {
   private readonly crp = CRPClient.instance;
 
-  async execute(authorization: POSAuthorizationDTO, contractId: string, documents: string[]): Promise<void> {
+  async execute(authorization: POSAuthorizationDTO, contractId: string, documents: InsuranceDueDTO[]): Promise<void> {
     const methodPayload = this.parseInput(authorization, contractId, documents);
     const rawResult = await this.crp.call<PayHealthInsuranceOutput>({
       method: HttpMethod.POST,
@@ -43,7 +47,7 @@ export class PayHealthInsuranceRepository implements IPayHealthInsuranceReposito
   private parseInput(
     authorization: POSAuthorizationDTO,
     contractId: string,
-    documents: string[],
+    documents: InsuranceDueDTO[],
   ): PayHealthInsuranceInput {
     return {
       authorization: {
@@ -56,7 +60,10 @@ export class PayHealthInsuranceRepository implements IPayHealthInsuranceReposito
       },
       planSalud: {
         idContrato: Number(contractId),
-        numDocumento: documents,
+        documento: documents.map((document) => ({
+          numDocumento: document.id ?? '',
+          importe: document.amount ?? 0,
+        })),
       },
     };
   }
