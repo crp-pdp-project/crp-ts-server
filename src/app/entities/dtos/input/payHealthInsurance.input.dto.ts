@@ -25,22 +25,10 @@ export const PayHealthInsuranceBodyDTOSchema = z
       description: 'Unique code of the tokenized card',
       example: 'anyCode',
     }),
-    documents: z
-      .array(
-        z.object({
-          id: z.string().openapi({
-            description: 'Unique ID of the due',
-            example: '123124-1-12',
-          }),
-          amount: z.number().openapi({
-            description: 'Amount to pay for the due',
-            example: 132.65,
-          }),
-        }),
-      )
-      .openapi({
-        description: 'Array of selected dues',
-      }),
+    documents: z.array(z.string()).openapi({
+      description: 'Array of documentIds of the selected dues',
+      example: ['123124-1-1', '123124-1-2'],
+    }),
   })
   .strict()
   .openapi({
