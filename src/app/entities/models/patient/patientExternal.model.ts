@@ -57,7 +57,7 @@ export class PatientExternalModel extends BaseModel {
     this.fmpId = external.fmpId;
     this.documentNumber = external.documentNumber;
     this.#nhcId = external.nhcId;
-    this.documentType = this.ensureDocumentType(external.documentType);
+    this.documentType = external.documentType ? this.ensureDocumentType(external.documentType) : undefined;
     this.account = patient?.account ? new AccountModel(patient.account) : undefined;
     this.#searchResult = external;
   }
@@ -147,7 +147,7 @@ export class PatientExternalModel extends BaseModel {
     return this.#searchResult;
   }
 
-  private ensureDocumentType(documentType?: unknown): PatientDocumentType {
+  private ensureDocumentType(documentType: unknown): PatientDocumentType {
     const values = Object.values(PatientDocumentType);
 
     if (!values.includes(documentType as PatientDocumentType)) {
