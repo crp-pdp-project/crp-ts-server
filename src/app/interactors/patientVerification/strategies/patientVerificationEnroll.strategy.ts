@@ -2,11 +2,20 @@ import { EnrollSessionPayloadDTO } from 'src/app/entities/dtos/service/enrollSes
 import { DeviceModel } from 'src/app/entities/models/device/device.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
-import { ISavePatientRepository } from 'src/app/repositories/database/savePatient.repository';
-import { IUpsertDeviceRepository } from 'src/app/repositories/database/upsertDevice.respository';
-import { IConfirmPatientRepository } from 'src/app/repositories/soap/confirmPatient.repository';
-import { ICreatePatientNHCRepository } from 'src/app/repositories/soap/createPatientNHC.repository';
-import { ISearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
+import { ISavePatientRepository, SavePatientRepository } from 'src/app/repositories/database/savePatient.repository';
+import {
+  IUpsertDeviceRepository,
+  UpsertDeviceRepository,
+} from 'src/app/repositories/database/upsertDevice.respository';
+import {
+  ConfirmPatientRepository,
+  IConfirmPatientRepository,
+} from 'src/app/repositories/soap/confirmPatient.repository';
+import {
+  CreatePatientNHCRepository,
+  ICreatePatientNHCRepository,
+} from 'src/app/repositories/soap/createPatientNHC.repository';
+import { ISearchPatientRepository, SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 import { IPatientVerificationStrategy } from '../patientVerification.interactor';
@@ -69,5 +78,17 @@ export class PatientVerificationEnrollStrategy implements IPatientVerificationSt
     });
 
     patientExternalModel.inyectNewDevice(Number(insertId));
+  }
+}
+
+export class PatientVerificationEnrollStrategyBuilder {
+  static build(): PatientVerificationEnrollStrategy {
+    return new PatientVerificationEnrollStrategy(
+      new ConfirmPatientRepository(),
+      new CreatePatientNHCRepository(),
+      new SearchPatientRepository(),
+      new SavePatientRepository(),
+      new UpsertDeviceRepository(),
+    );
   }
 }

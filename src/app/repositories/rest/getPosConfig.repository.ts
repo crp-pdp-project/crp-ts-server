@@ -16,7 +16,7 @@ export class GetPOSConfigRepository implements IGetPOSConfigRepository {
 
 export class GetPOSConfigRepositoryMock implements IGetPOSConfigRepository {
   async execute(): Promise<POSConfigDTO> {
-    return {
+    return Promise.resolve({
       user: 'anyemai@test.com',
       pass: 'anyPass',
       channel: 'web',
@@ -27,6 +27,6 @@ export class GetPOSConfigRepositoryMock implements IGetPOSConfigRepository {
       environment: 'dev',
       token: 'anyToken',
       pinHash: 'anyHash',
-    };
+    });
   }
 }

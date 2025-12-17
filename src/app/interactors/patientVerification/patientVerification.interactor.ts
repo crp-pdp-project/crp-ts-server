@@ -13,19 +13,15 @@ import {
   GetPatientAccountRepository,
   IGetPatientAccountRepository,
 } from 'src/app/repositories/database/getPatientAccount.repository';
-import { SavePatientRepository } from 'src/app/repositories/database/savePatient.repository';
-import { UpsertDeviceRepository } from 'src/app/repositories/database/upsertDevice.respository';
 import {
   IUpsertSessionRepository,
   UpsertSessionRepository,
 } from 'src/app/repositories/database/upsertSession.respository';
-import { ConfirmPatientRepository } from 'src/app/repositories/soap/confirmPatient.repository';
-import { CreatePatientNHCRepository } from 'src/app/repositories/soap/createPatientNHC.repository';
 import { ISearchPatientRepository, SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
 import { IJWTManager, JWTManagerBuilder } from 'src/general/managers/jwt/jwt.manager';
 
-import { PatientVerificationEnrollStrategy } from './strategies/patientVerificationEnroll.strategy';
-import { PatientVerificationRecoverStrategy } from './strategies/patientVerificationRecover.strategy';
+import { PatientVerificationEnrollStrategyBuilder } from './strategies/patientVerificationEnroll.strategy';
+import { PatientVerificationRecoverStrategyBuilder } from './strategies/patientVerificationRecover.strategy';
 
 export interface IPatientVerificationStrategy {
   generateSession(patientExternalModel: PatientExternalModel, device: DeviceModel): Promise<SessionPayloadDTO>;
@@ -97,13 +93,7 @@ export class PatientVerificationInteractorBuilder {
       new GetAuthAttemptsRepository(),
       new UpsertSessionRepository(),
       JWTManagerBuilder.buildEnrollConfig<SessionPayloadDTO>(),
-      new PatientVerificationEnrollStrategy(
-        new ConfirmPatientRepository(),
-        new CreatePatientNHCRepository(),
-        new SearchPatientRepository(),
-        new SavePatientRepository(),
-        new UpsertDeviceRepository(),
-      ),
+      PatientVerificationEnrollStrategyBuilder.build(),
     );
   }
 
@@ -115,7 +105,7 @@ export class PatientVerificationInteractorBuilder {
       new GetAuthAttemptsRepository(),
       new UpsertSessionRepository(),
       JWTManagerBuilder.buildRecoverConfig<SessionPayloadDTO>(),
-      new PatientVerificationRecoverStrategy(new UpsertDeviceRepository()),
+      PatientVerificationRecoverStrategyBuilder.build(),
     );
   }
 }

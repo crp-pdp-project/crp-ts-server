@@ -3,10 +3,13 @@ import { AuthAttemptModel } from 'src/app/entities/models/authAttempt/authAttemp
 import { DeviceModel } from 'src/app/entities/models/device/device.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { PatientModel } from 'src/app/entities/models/patient/patient.model';
-import { ICleanBlockedRepository } from 'src/app/repositories/database/cleanBlocked.repository';
-import { ISignInBiometricRepository } from 'src/app/repositories/database/signInBiometric.repository';
+import { CleanBlockedRepository, ICleanBlockedRepository } from 'src/app/repositories/database/cleanBlocked.repository';
+import {
+  ISignInBiometricRepository,
+  SignInBiometricRepository,
+} from 'src/app/repositories/database/signInBiometric.repository';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
-import { IEncryptionManager } from 'src/general/managers/encryption/encryption.manager';
+import { EncryptionManagerBuilder, IEncryptionManager } from 'src/general/managers/encryption/encryption.manager';
 
 import { ISignInStrategy } from '../signInPatient.interactor';
 
@@ -55,5 +58,15 @@ export class SignInBiometricStrategy implements ISignInStrategy {
     } else {
       throw ErrorModel.forbidden({ detail: ClientErrorMessages.BIOMETRIC_INVALID });
     }
+  }
+}
+
+export class SignInBiometricStrategyBuilder {
+  static build(): SignInBiometricStrategy {
+    return new SignInBiometricStrategy(
+      new SignInBiometricRepository(),
+      EncryptionManagerBuilder.buildSha512(),
+      new CleanBlockedRepository(),
+    );
   }
 }

@@ -43,9 +43,10 @@ export interface IX12Manager<Input, Output> {
 
 type InferType<Config> = Config extends X12ManagerConfig<infer Type> ? Type : never;
 
-export class X12Manager<EncodeConf extends X12ManagerConfig, DecodeConf extends X12ManagerConfig>
-  implements IX12Manager<InferType<EncodeConf>, InferType<DecodeConf>>
-{
+export class X12Manager<
+  EncodeConf extends X12ManagerConfig,
+  DecodeConf extends X12ManagerConfig,
+> implements IX12Manager<InferType<EncodeConf>, InferType<DecodeConf>> {
   private readonly encodeConfig: EncodeConf;
   private readonly decodeConfig: DecodeConf;
   private readonly rawValues?: boolean;

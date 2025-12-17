@@ -1,13 +1,10 @@
 import { PatientsListParamsDTO, PatientsListQueryDTO } from 'src/app/entities/dtos/input/patientsList.input.dto';
 import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import { PatientListModel } from 'src/app/entities/models/patient/patientList.model';
-import { PatientsListRepository } from 'src/app/repositories/database/patientsList.repository';
-import { RelativesListRepository } from 'src/app/repositories/database/relativesList.repository';
-import { VerificationRequestListRepository } from 'src/app/repositories/database/verificationRequestList.repository';
 
-import { PrincipalsListStrategy } from './strategies/principalsList.strategy';
-import { RelativesListStrategy } from './strategies/relativesList.strategy';
-import { VerificationRequestListStrategy } from './strategies/verificationRequestList.strategy';
+import { PrincipalsListStrategyBuilder } from './strategies/principalsList.strategy';
+import { RelativesListStrategyBuilder } from './strategies/relativesList.strategy';
+import { VerificationRequestListStrategyBuilder } from './strategies/verificationRequestList.strategy';
 
 export interface IPatientsListStrategy {
   getPatients(query: PatientsListQueryDTO, params: PatientsListParamsDTO): Promise<PatientDTO[]>;
@@ -38,14 +35,14 @@ export class PatientsListInteractor implements IPatientsListInteractor {
 
 export class PatientsListInteractorBuilder {
   static buildPrincipal(): PatientsListInteractor {
-    return new PatientsListInteractor(new PrincipalsListStrategy(new PatientsListRepository()));
+    return new PatientsListInteractor(PrincipalsListStrategyBuilder.build());
   }
 
   static buildRelative(): PatientsListInteractor {
-    return new PatientsListInteractor(new RelativesListStrategy(new RelativesListRepository()));
+    return new PatientsListInteractor(RelativesListStrategyBuilder.build());
   }
 
   static buildVerification(): PatientsListInteractor {
-    return new PatientsListInteractor(new VerificationRequestListStrategy(new VerificationRequestListRepository()));
+    return new PatientsListInteractor(VerificationRequestListStrategyBuilder.build());
   }
 }

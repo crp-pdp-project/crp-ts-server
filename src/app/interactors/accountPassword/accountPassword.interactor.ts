@@ -3,16 +3,14 @@ import { UpdatePatientPasswordBodyDTO } from 'src/app/entities/dtos/input/update
 import { EnrollSessionModel } from 'src/app/entities/models/session/enrollSession.model';
 import { RecoverSessionModel } from 'src/app/entities/models/session/recoverSession.model';
 import { CleanSessionRepository, ICleanSessionRepository } from 'src/app/repositories/database/cleanSession.repository';
-import { SavePatientAccountRepository } from 'src/app/repositories/database/savePatientAccount.repository';
-import { UpdatePatientPasswordRepository } from 'src/app/repositories/database/updatePatientPassword.repository';
 import {
   EncryptionManagerBuilder,
   IEncryptionManager,
   PasswordHashResult,
 } from 'src/general/managers/encryption/encryption.manager';
 
-import { CreatePasswordStrategy } from './strategies/createPassword.strategy';
-import { UpdatePasswordStrategy } from './strategies/updatePassword.strategy';
+import { CreatePasswordStrategyBuilder } from './strategies/createPassword.strategy';
+import { UpdatePasswordStrategyBuilder } from './strategies/updatePassword.strategy';
 
 type CombinedTransacSession = EnrollSessionModel | RecoverSessionModel;
 type CombinedInputBody = CreateEnrolledAccountBodyDTO | UpdatePatientPasswordBodyDTO;
@@ -55,14 +53,14 @@ export class AccountPasswordInteractorBuilder {
   static buildCreate(): AccountPasswordInteractor {
     return new AccountPasswordInteractor(
       new CleanSessionRepository(),
-      new CreatePasswordStrategy(new SavePatientAccountRepository()),
+      CreatePasswordStrategyBuilder.build(),
       EncryptionManagerBuilder.buildSha512(),
     );
   }
   static buildUpdate(): AccountPasswordInteractor {
     return new AccountPasswordInteractor(
       new CleanSessionRepository(),
-      new UpdatePasswordStrategy(new UpdatePatientPasswordRepository()),
+      UpdatePasswordStrategyBuilder.build(),
       EncryptionManagerBuilder.buildSha512(),
     );
   }

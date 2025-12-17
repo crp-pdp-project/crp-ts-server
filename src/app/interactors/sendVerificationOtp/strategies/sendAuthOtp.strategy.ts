@@ -1,7 +1,7 @@
 import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
 import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
-import { ISearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
+import { ISearchPatientRepository, SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
 import { Audiences } from 'src/general/enums/audience.enum';
 import { EmailSubjects } from 'src/general/enums/emailSubject.enum';
 
@@ -35,5 +35,11 @@ export class SendAuthOTPStrategy implements ISendVerificationOTPStrategy {
     const externalPatientModel = new PatientExternalModel(searchResult, session.patient);
 
     return externalPatientModel;
+  }
+}
+
+export class SendAuthOTPStrategyBuilder {
+  static build(): SendAuthOTPStrategy {
+    return new SendAuthOTPStrategy(new SearchPatientRepository());
   }
 }

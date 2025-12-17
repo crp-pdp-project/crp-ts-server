@@ -5,8 +5,14 @@ import { DeviceModel } from 'src/app/entities/models/device/device.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
 import { IValidateSessionStrategy } from 'src/app/interactors/validateSession/validateSession.interactor';
-import { IUpdateDevicePushTokenRepository } from 'src/app/repositories/database/updateDevicePushToken.repository';
-import { IUpdateSessionExpireRepository } from 'src/app/repositories/database/updateSessionExpire.repository';
+import {
+  IUpdateDevicePushTokenRepository,
+  UpdateDevicePushTokenRepository,
+} from 'src/app/repositories/database/updateDevicePushToken.repository';
+import {
+  IUpdateSessionExpireRepository,
+  UpdateSessionExpireRepository,
+} from 'src/app/repositories/database/updateSessionExpire.repository';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 
@@ -34,5 +40,14 @@ export class ValidatePatientSessionStrategy implements IValidateSessionStrategy 
     }
 
     return new SignInSessionModel(session, data);
+  }
+}
+
+export class ValidatePatientSessionStrategyBuilder {
+  static build(): ValidatePatientSessionStrategy {
+    return new ValidatePatientSessionStrategy(
+      new UpdateSessionExpireRepository(),
+      new UpdateDevicePushTokenRepository(),
+    );
   }
 }

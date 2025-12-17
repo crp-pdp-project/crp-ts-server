@@ -63,6 +63,8 @@ export class POSConfigModel extends BaseModel {
   readonly env?: string;
   readonly MDD?: Record<string, unknown>;
 
+  #sessionToken?: string;
+
   constructor(posConfig: POSConfigDTO, session: SignInSessionModel, external: PatientExternalDTO) {
     super();
 
@@ -78,6 +80,16 @@ export class POSConfigModel extends BaseModel {
     this.email = this.overrideEmail ?? external.email ?? PosConstants.DEFAULT_EMAIL;
     this.env = posConfig.environment;
     this.MDD = posConfig.MDDList ? this.generateMDDObject(posConfig.MDDList, session, external) : undefined;
+  }
+
+  get sessionToken(): string | undefined {
+    return this.#sessionToken;
+  }
+
+  inyectSessionToken(newToken: string): this {
+    this.#sessionToken = newToken;
+
+    return this;
   }
 
   private generateMDDObject(

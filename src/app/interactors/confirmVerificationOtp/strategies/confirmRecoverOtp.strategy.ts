@@ -4,10 +4,19 @@ import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { PatientModel } from 'src/app/entities/models/patient/patient.model';
 import { RecoverSessionModel } from 'src/app/entities/models/session/recoverSession.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import { ICleanBlockedRepository } from 'src/app/repositories/database/cleanBlocked.repository';
-import { IGetAuthAttemptsRepository } from 'src/app/repositories/database/getAuthAttempts.repository';
-import { IUpdateBlockedRepository } from 'src/app/repositories/database/updateBlocked.repository';
-import { IUpsertTryCountRepository } from 'src/app/repositories/database/upsertTryCount.repository';
+import { CleanBlockedRepository, ICleanBlockedRepository } from 'src/app/repositories/database/cleanBlocked.repository';
+import {
+  GetAuthAttemptsRepository,
+  IGetAuthAttemptsRepository,
+} from 'src/app/repositories/database/getAuthAttempts.repository';
+import {
+  IUpdateBlockedRepository,
+  UpdateBlockedRepository,
+} from 'src/app/repositories/database/updateBlocked.repository';
+import {
+  IUpsertTryCountRepository,
+  UpsertTryCountRepository,
+} from 'src/app/repositories/database/upsertTryCount.repository';
 import { Audiences } from 'src/general/enums/audience.enum';
 
 import { IConfirmVerificationOTPStrategy } from '../confirmVerificationOtp.interactor';
@@ -74,5 +83,16 @@ export class ConfirmRecoverOTPStrategy implements IConfirmVerificationOTPStrateg
     const model = new PatientModel(session.patient);
 
     return model;
+  }
+}
+
+export class ConfirmRecoverOTPStrategyBuilder {
+  static build(): ConfirmRecoverOTPStrategy {
+    return new ConfirmRecoverOTPStrategy(
+      new GetAuthAttemptsRepository(),
+      new UpsertTryCountRepository(),
+      new UpdateBlockedRepository(),
+      new CleanBlockedRepository(),
+    );
   }
 }

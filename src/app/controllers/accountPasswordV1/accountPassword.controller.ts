@@ -2,17 +2,13 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import {
-  AccountPasswordInteractorBuilder,
-  IAccountPasswordInteractor,
-} from 'src/app/interactors/accountPassword/accountPassword.interactor';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
-import { CreatePasswordControllerStrategy } from './strategies/createPassword.strategy';
-import { UpdatePasswordControllerStrategy } from './strategies/updatePassword.strategy';
+import { CreatePasswordControllerStrategyBuilder } from './strategies/createPassword.strategy';
+import { UpdatePasswordControllerStrategyBuilder } from './strategies/updatePassword.strategy';
 
 export interface IAccountPasswordControllerStrategy {
-  execute(input: FastifyRequest, interactor: IAccountPasswordInteractor): Promise<void>;
+  execute(input: FastifyRequest): Promise<void>;
 }
 
 export interface IAccountPasswordController {
@@ -23,14 +19,13 @@ export class AccountPasswordController implements IAccountPasswordController {
   private response?: ResponseModel;
 
   constructor(
-    private readonly accountPasswordInteractor: IAccountPasswordInteractor,
     private readonly accountPasswordStrategy: IAccountPasswordControllerStrategy,
     private readonly responseManager: IResponseManager,
   ) {}
 
   async handle(input: FastifyRequest, reply: FastifyReply): Promise<void> {
     try {
-      await this.accountPasswordStrategy.execute(input, this.accountPasswordInteractor);
+      await this.accountPasswordStrategy.execute(input);
       this.response = this.responseManager.validateResponse();
     } catch (error) {
       const errorModel = ErrorModel.fromError(error);
@@ -44,15 +39,13 @@ export class AccountPasswordController implements IAccountPasswordController {
 export class AccountPasswordControllerBuilder {
   static buildCreate(): AccountPasswordController {
     return new AccountPasswordController(
-      AccountPasswordInteractorBuilder.buildCreate(),
-      new CreatePasswordControllerStrategy(),
+      CreatePasswordControllerStrategyBuilder.build(),
       ResponseManagerBuilder.buildEmpty(),
     );
   }
   static buildUpdate(): AccountPasswordController {
     return new AccountPasswordController(
-      AccountPasswordInteractorBuilder.buildUpdate(),
-      new UpdatePasswordControllerStrategy(),
+      UpdatePasswordControllerStrategyBuilder.build(),
       ResponseManagerBuilder.buildEmpty(),
     );
   }

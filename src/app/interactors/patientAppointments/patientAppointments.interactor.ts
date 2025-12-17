@@ -6,11 +6,10 @@ import {
   IPatientRelativesValidationRepository,
   PatientRelativesValidationRepository,
 } from 'src/app/repositories/database/patientRelativesValidation.repository';
-import { GetAppointmentsRepository } from 'src/app/repositories/soap/getAppointments.repository';
 
-import { CurrentAppointmentsStrategy } from './strategies/currentAppointments.strategy';
-import { HistoryAppointmentsStrategy } from './strategies/historicAppointments.strategy';
-import { NextAppointmentStrategy } from './strategies/nextAppointment.strategy';
+import { CurrentAppointmentsStrategyBuilder } from './strategies/currentAppointments.strategy';
+import { HistoryAppointmentsStrategyBuilder } from './strategies/historicAppointments.strategy';
+import { NextAppointmentStrategyBuilder } from './strategies/nextAppointment.strategy';
 
 export interface IPatientAppointmentsStrategy {
   fetchData(fmpId: PatientDM['fmpId'], session: SignInSessionModel): Promise<BaseModel | void>;
@@ -41,21 +40,21 @@ export class PatientAppointmentsInteractorBuilder {
   static buildNext(): PatientAppointmentsInteractor {
     return new PatientAppointmentsInteractor(
       new PatientRelativesValidationRepository(),
-      new NextAppointmentStrategy(new GetAppointmentsRepository()),
+      NextAppointmentStrategyBuilder.build(),
     );
   }
 
   static buildCurrent(): PatientAppointmentsInteractor {
     return new PatientAppointmentsInteractor(
       new PatientRelativesValidationRepository(),
-      new CurrentAppointmentsStrategy(new GetAppointmentsRepository()),
+      CurrentAppointmentsStrategyBuilder.build(),
     );
   }
 
   static buildHistoric(): PatientAppointmentsInteractor {
     return new PatientAppointmentsInteractor(
       new PatientRelativesValidationRepository(),
-      new HistoryAppointmentsStrategy(new GetAppointmentsRepository()),
+      HistoryAppointmentsStrategyBuilder.build(),
     );
   }
 }

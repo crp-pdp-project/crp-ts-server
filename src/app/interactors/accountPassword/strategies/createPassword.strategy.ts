@@ -1,6 +1,9 @@
 import { CreateEnrolledAccountBodyDTO } from 'src/app/entities/dtos/input/createEnrolledAccount.input.dto';
 import { EnrollSessionModel } from 'src/app/entities/models/session/enrollSession.model';
-import { ISavePatientAccountRepository } from 'src/app/repositories/database/savePatientAccount.repository';
+import {
+  ISavePatientAccountRepository,
+  SavePatientAccountRepository,
+} from 'src/app/repositories/database/savePatientAccount.repository';
 import { PasswordHashResult } from 'src/general/managers/encryption/encryption.manager';
 
 import { IAccountPasswordStrategy } from '../accountPassword.interactor';
@@ -20,5 +23,11 @@ export class CreatePasswordStrategy implements IAccountPasswordStrategy {
       acceptAdvertising: body.acceptAdvertising,
       patientId: session.patient.id,
     });
+  }
+}
+
+export class CreatePasswordStrategyBuilder {
+  static build(): CreatePasswordStrategy {
+    return new CreatePasswordStrategy(new SavePatientAccountRepository());
   }
 }

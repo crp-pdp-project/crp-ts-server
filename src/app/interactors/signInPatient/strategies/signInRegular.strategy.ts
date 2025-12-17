@@ -2,11 +2,20 @@ import { SignInPatientBodyDTO } from 'src/app/entities/dtos/input/signInPatient.
 import { AuthAttemptModel } from 'src/app/entities/models/authAttempt/authAttempt.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { PatientModel } from 'src/app/entities/models/patient/patient.model';
-import { ICleanBlockedRepository } from 'src/app/repositories/database/cleanBlocked.repository';
-import { ISignInPatientRepository } from 'src/app/repositories/database/signInPatient.repository';
-import { IUpdateBlockedRepository } from 'src/app/repositories/database/updateBlocked.repository';
-import { IUpsertTryCountRepository } from 'src/app/repositories/database/upsertTryCount.repository';
-import { IEncryptionManager } from 'src/general/managers/encryption/encryption.manager';
+import { CleanBlockedRepository, ICleanBlockedRepository } from 'src/app/repositories/database/cleanBlocked.repository';
+import {
+  ISignInPatientRepository,
+  SignInPatientRepository,
+} from 'src/app/repositories/database/signInPatient.repository';
+import {
+  IUpdateBlockedRepository,
+  UpdateBlockedRepository,
+} from 'src/app/repositories/database/updateBlocked.repository';
+import {
+  IUpsertTryCountRepository,
+  UpsertTryCountRepository,
+} from 'src/app/repositories/database/upsertTryCount.repository';
+import { EncryptionManagerBuilder, IEncryptionManager } from 'src/general/managers/encryption/encryption.manager';
 
 import { ISignInStrategy } from '../signInPatient.interactor';
 
@@ -61,5 +70,17 @@ export class SignInRegularStrategy implements ISignInStrategy {
     } else {
       await this.handleAttemptFailure(attempt);
     }
+  }
+}
+
+export class SignInRegularStrategyBuilder {
+  static build(): SignInRegularStrategy {
+    return new SignInRegularStrategy(
+      new SignInPatientRepository(),
+      EncryptionManagerBuilder.buildSha512(),
+      new UpsertTryCountRepository(),
+      new UpdateBlockedRepository(),
+      new CleanBlockedRepository(),
+    );
   }
 }

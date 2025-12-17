@@ -2,7 +2,10 @@ import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.
 import { DeviceModel } from 'src/app/entities/models/device/device.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
-import { IUpsertDeviceRepository } from 'src/app/repositories/database/upsertDevice.respository';
+import {
+  IUpsertDeviceRepository,
+  UpsertDeviceRepository,
+} from 'src/app/repositories/database/upsertDevice.respository';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 import { IPatientVerificationStrategy } from '../patientVerification.interactor';
@@ -30,5 +33,11 @@ export class PatientVerificationRecoverStrategy implements IPatientVerificationS
     });
 
     patientExternalModel.inyectNewDevice(Number(insertId));
+  }
+}
+
+export class PatientVerificationRecoverStrategyBuilder {
+  static build(): PatientVerificationRecoverStrategy {
+    return new PatientVerificationRecoverStrategy(new UpsertDeviceRepository());
   }
 }

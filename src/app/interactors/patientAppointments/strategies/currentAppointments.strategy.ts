@@ -1,7 +1,10 @@
 import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { AppointmentListModel } from 'src/app/entities/models/appointment/appointmentsList.model';
 import { SignInSessionModel, ValidationRules } from 'src/app/entities/models/session/signInSession.model';
-import { IGetAppointmentsRepository } from 'src/app/repositories/soap/getAppointments.repository';
+import {
+  GetAppointmentsRepository,
+  IGetAppointmentsRepository,
+} from 'src/app/repositories/soap/getAppointments.repository';
 import { AppointmentFilters } from 'src/general/enums/appointmentFilters.enum';
 import { SortOrder } from 'src/general/enums/sort.enum';
 
@@ -15,5 +18,11 @@ export class CurrentAppointmentsStrategy implements IPatientAppointmentsStrategy
     const currentAppointments = await this.getAppointments.execute(fmpId, AppointmentFilters.All);
 
     return new AppointmentListModel(currentAppointments, SortOrder.ASC);
+  }
+}
+
+export class CurrentAppointmentsStrategyBuilder {
+  static build(): CurrentAppointmentsStrategy {
+    return new CurrentAppointmentsStrategy(new GetAppointmentsRepository());
   }
 }
