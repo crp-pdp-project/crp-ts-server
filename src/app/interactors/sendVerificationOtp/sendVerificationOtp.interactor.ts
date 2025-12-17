@@ -4,12 +4,10 @@ import { SessionDM } from 'src/app/entities/dms/sessions.dm';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import { GetAuthAttemptsRepository } from 'src/app/repositories/database/getAuthAttempts.repository';
 import {
   IUpdateSessionOTPRepository,
   UpdateSessionOTPRepository,
 } from 'src/app/repositories/database/updateSessionOTP.repository';
-import { SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
 import { EmailClient } from 'src/clients/email/email.client';
 import { InfobipClient } from 'src/clients/infobip/infobip.client';
 import { LoggerClient } from 'src/clients/logger/logger.client';
@@ -20,9 +18,9 @@ import { TextHelper } from 'src/general/helpers/text.helper';
 import otpEmailTemplate from 'src/general/templates/otpEmail.template';
 import otpSmsTemplate from 'src/general/templates/otpSMS.template';
 
-import { SendAuthOTPStrategy } from './strategies/sendAuthOtp.strategy';
-import { SendEnrollOTPStrategy } from './strategies/sendEnrollOtp.strategy';
-import { SendRecoverOTPStrategy } from './strategies/sendRecoverOtp.strategy';
+import { SendAuthOTPStrategyBuilder } from './strategies/sendAuthOtp.strategy';
+import { SendEnrollOTPStrategyBuilder } from './strategies/sendEnrollOtp.strategy';
+import { SendRecoverOTPStrategyBuilder } from './strategies/sendRecoverOtp.strategy';
 
 export interface ISendVerificationOTPStrategy {
   validate(session: SessionModel): Promise<PatientExternalModel>;
@@ -121,21 +119,12 @@ export class SendVerificationOTPInteractor implements ISendVerificationOTPIntera
 
 export class SendVerificationOTPInteractorBuilder {
   static buildEnroll(): SendVerificationOTPInteractor {
-    return new SendVerificationOTPInteractor(
-      new SendEnrollOTPStrategy(new GetAuthAttemptsRepository()),
-      new UpdateSessionOTPRepository(),
-    );
+    return new SendVerificationOTPInteractor(SendEnrollOTPStrategyBuilder.build(), new UpdateSessionOTPRepository());
   }
   static buildRecover(): SendVerificationOTPInteractor {
-    return new SendVerificationOTPInteractor(
-      new SendRecoverOTPStrategy(new GetAuthAttemptsRepository()),
-      new UpdateSessionOTPRepository(),
-    );
+    return new SendVerificationOTPInteractor(SendRecoverOTPStrategyBuilder.build(), new UpdateSessionOTPRepository());
   }
   static buildAuth(): SendVerificationOTPInteractor {
-    return new SendVerificationOTPInteractor(
-      new SendAuthOTPStrategy(new SearchPatientRepository()),
-      new UpdateSessionOTPRepository(),
-    );
+    return new SendVerificationOTPInteractor(SendAuthOTPStrategyBuilder.build(), new UpdateSessionOTPRepository());
   }
 }

@@ -16,12 +16,14 @@ import { POSConfigControllerBuilder, IPOSConfigController } from './posConfig.co
 
 export class POSConfigV1Router {
   private readonly version: string = '/v1';
-  private readonly posConfigController: IPOSConfigController;
+  private readonly webPosConfigController: IPOSConfigController;
+  private readonly mobilePosConfigController: IPOSConfigController;
   private readonly validateHeadersController: IValidateHeadersController;
   private readonly validateSessionController: IValidateSessionController;
 
   constructor(private readonly fastify: FastifyInstance) {
-    this.posConfigController = POSConfigControllerBuilder.build();
+    this.webPosConfigController = POSConfigControllerBuilder.buildWeb();
+    this.mobilePosConfigController = POSConfigControllerBuilder.buildMobile();
     this.validateHeadersController = ValidateHeadersControllerBuilder.build();
     this.validateSessionController = ValidateSessionControllerBuilder.buildSignIn();
   }
@@ -34,7 +36,16 @@ export class POSConfigV1Router {
         this.validateHeadersController.validate.bind(this.validateHeadersController),
         this.validateSessionController.validate.bind(this.validateSessionController),
       ),
-      handler: this.posConfigController.handle.bind(this.posConfigController),
+      handler: this.mobilePosConfigController.handle.bind(this.mobilePosConfigController),
+    });
+    this.fastify.route({
+      method: HttpMethod.POST,
+      url: `${this.version}/pos/config/web`,
+      preHandler: RouterHelper.wrapPreHandlers(
+        this.validateHeadersController.validate.bind(this.validateHeadersController),
+        this.validateSessionController.validate.bind(this.validateSessionController),
+      ),
+      handler: this.webPosConfigController.handle.bind(this.webPosConfigController),
     });
   }
 }

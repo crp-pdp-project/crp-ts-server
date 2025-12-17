@@ -1,18 +1,14 @@
 import { ConfirmVerificationOTPBodyDTO } from 'src/app/entities/dtos/input/validateVerificationOtp.input.dto';
 import { PatientModel } from 'src/app/entities/models/patient/patient.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import { CleanBlockedRepository } from 'src/app/repositories/database/cleanBlocked.repository';
-import { GetAuthAttemptsRepository } from 'src/app/repositories/database/getAuthAttempts.repository';
-import { UpdateBlockedRepository } from 'src/app/repositories/database/updateBlocked.repository';
-import { UpsertTryCountRepository } from 'src/app/repositories/database/upsertTryCount.repository';
 import {
   IValidateSessionOTPRepository,
   ValidateSessionOTPRepository,
 } from 'src/app/repositories/database/validateSessionOTP.repository';
 
 import { ConfirmAuthOTPStrategy } from './strategies/confirmAuthOtp.strategy';
-import { ConfirmEnrollOTPStrategy } from './strategies/confirmEnrollOtp.strategy';
-import { ConfirmRecoverOTPStrategy } from './strategies/confirmRecoverOtp.strategy';
+import { ConfirmEnrollOTPStrategyBuilder } from './strategies/confirmEnrollOtp.strategy';
+import { ConfirmRecoverOTPStrategyBuilder } from './strategies/confirmRecoverOtp.strategy';
 
 export interface IConfirmVerificationOTPStrategy {
   validate(session: SessionModel, otp: string): Promise<PatientModel>;
@@ -41,24 +37,14 @@ export class ConfirmVerificationOTPInteractor implements IConfirmVerificationOTP
 export class ConfirmVerificationOTPInteractorBuilder {
   static buildEnroll(): ConfirmVerificationOTPInteractor {
     return new ConfirmVerificationOTPInteractor(
-      new ConfirmEnrollOTPStrategy(
-        new GetAuthAttemptsRepository(),
-        new UpsertTryCountRepository(),
-        new UpdateBlockedRepository(),
-        new CleanBlockedRepository(),
-      ),
+      ConfirmEnrollOTPStrategyBuilder.build(),
       new ValidateSessionOTPRepository(),
     );
   }
 
   static buildRecover(): ConfirmVerificationOTPInteractor {
     return new ConfirmVerificationOTPInteractor(
-      new ConfirmRecoverOTPStrategy(
-        new GetAuthAttemptsRepository(),
-        new UpsertTryCountRepository(),
-        new UpdateBlockedRepository(),
-        new CleanBlockedRepository(),
-      ),
+      ConfirmRecoverOTPStrategyBuilder.build(),
       new ValidateSessionOTPRepository(),
     );
   }

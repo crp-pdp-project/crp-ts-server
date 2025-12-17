@@ -1,13 +1,18 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 import { POSConfigOutputDTOSchema } from 'src/app/entities/dtos/output/posConfig.output.dto';
-import { DeviceModel } from 'src/app/entities/models/device/device.model';
+import { POSConfigWebOutputDTOSchema } from 'src/app/entities/dtos/output/posConfigWeb.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
+import { POSConfigModel } from 'src/app/entities/models/posConfig/posConfig.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import { SessionModel } from 'src/app/entities/models/session/session.model';
-import { IPOSConfigInteractor, POSConfigInteractorBuilder } from 'src/app/interactors/posConfig/posConfig.interactor';
-import { Audiences } from 'src/general/enums/audience.enum';
 import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+
+import { MobilePosConfigControllerStrategyBuilder } from './strategies/mobilePosConfig.strategy';
+import { WebPosConfigControllerStrategyBuilder } from './strategies/webPosConfig.strategy';
+
+export interface IPOSConfigControllerStrategy {
+  execute(input: FastifyRequest): Promise<POSConfigModel>;
+}
 
 export interface IPOSConfigController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;
@@ -17,15 +22,13 @@ export class POSConfigController implements IPOSConfigController {
   private response?: ResponseModel;
 
   constructor(
-    private readonly posConfig: IPOSConfigInteractor,
+    private readonly posConfigStrategy: IPOSConfigControllerStrategy,
     private readonly responseManager: IResponseManager,
   ) {}
 
   async handle(input: FastifyRequest, reply: FastifyReply): Promise<void> {
     try {
-      const session = SessionModel.validateSessionInstance(Audiences.SIGN_IN, input.session);
-      const device = DeviceModel.extractDevice(input.device);
-      const model = await this.posConfig.config(session, device);
+      const model = await this.posConfigStrategy.execute(input);
       this.response = this.responseManager.validateResponse(model);
     } catch (error) {
       const errorModel = ErrorModel.fromError(error);
@@ -37,9 +40,16 @@ export class POSConfigController implements IPOSConfigController {
 }
 
 export class POSConfigControllerBuilder {
-  static build(): POSConfigController {
+  static buildWeb(): POSConfigController {
     return new POSConfigController(
-      POSConfigInteractorBuilder.build(),
+      WebPosConfigControllerStrategyBuilder.build(),
+      ResponseManagerBuilder.buildData(POSConfigWebOutputDTOSchema),
+    );
+  }
+
+  static buildMobile(): POSConfigController {
+    return new POSConfigController(
+      MobilePosConfigControllerStrategyBuilder.build(),
       ResponseManagerBuilder.buildData(POSConfigOutputDTOSchema),
     );
   }

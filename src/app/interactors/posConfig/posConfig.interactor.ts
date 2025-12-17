@@ -1,29 +1,34 @@
+import { POSConfigWebBodyDTO } from 'src/app/entities/dtos/input/posConfigWeb.input.dto';
 import { DeviceModel } from 'src/app/entities/models/device/device.model';
 import { POSConfigModel } from 'src/app/entities/models/posConfig/posConfig.model';
 import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
-import { GetPOSConfigRepository, IGetPOSConfigRepository } from 'src/app/repositories/rest/getPosConfig.repository';
-import { ISearchPatientRepository, SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
 
+import { MobilePOSConfigStrategyBuilder } from './strategies/mobilePosConfig.strategy';
+import { WebPOSConfigStrategyBuilder } from './strategies/webPosConfig.strategy';
+
+export interface IPOSConfigStrategy {
+  getModel(session: SignInSessionModel, device: DeviceModel, body?: POSConfigWebBodyDTO): Promise<POSConfigModel>;
+}
 export interface IPOSConfigInteractor {
-  config(session: SignInSessionModel, device: DeviceModel): Promise<POSConfigModel>;
+  config(session: SignInSessionModel, device: DeviceModel, body?: POSConfigWebBodyDTO): Promise<POSConfigModel>;
 }
 
 export class POSConfigInteractor implements IPOSConfigInteractor {
-  constructor(
-    private readonly getPOSConfig: IGetPOSConfigRepository,
-    private readonly searchPatientRepository: ISearchPatientRepository,
-  ) {}
+  constructor(private readonly POSConfigStrategy: IPOSConfigStrategy) {}
 
-  async config(session: SignInSessionModel, device: DeviceModel): Promise<POSConfigModel> {
-    const searchResult = await this.searchPatientRepository.execute({ fmpId: session.patient.fmpId });
-    const posConfig = await this.getPOSConfig.execute(device.os!);
+  async config(session: SignInSessionModel, device: DeviceModel, body?: POSConfigWebBodyDTO): Promise<POSConfigModel> {
+    const model = await this.POSConfigStrategy.getModel(session, device, body);
 
-    return new POSConfigModel(posConfig, session, searchResult);
+    return model;
   }
 }
 
 export class POSConfigInteractorBuilder {
-  static build(): POSConfigInteractor {
-    return new POSConfigInteractor(new GetPOSConfigRepository(), new SearchPatientRepository());
+  static buildWeb(): POSConfigInteractor {
+    return new POSConfigInteractor(WebPOSConfigStrategyBuilder.build());
+  }
+
+  static buildMobile(): POSConfigInteractor {
+    return new POSConfigInteractor(MobilePOSConfigStrategyBuilder.build());
   }
 }

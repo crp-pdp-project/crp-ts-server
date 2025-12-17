@@ -5,7 +5,6 @@ import { AuthAttemptModel, AuthFlowIdentifier } from 'src/app/entities/models/au
 import { DeviceModel } from 'src/app/entities/models/device/device.model';
 import { PatientModel } from 'src/app/entities/models/patient/patient.model';
 import { PatientTokenModel } from 'src/app/entities/models/patient/patientToken.model';
-import { CleanBlockedRepository } from 'src/app/repositories/database/cleanBlocked.repository';
 import {
   CleanUnusedDevicesRepository,
   ICleanUnusedDevicesRepository,
@@ -14,9 +13,6 @@ import {
   GetAuthAttemptsRepository,
   IGetAuthAttemptsRepository,
 } from 'src/app/repositories/database/getAuthAttempts.repository';
-import { SignInBiometricRepository } from 'src/app/repositories/database/signInBiometric.repository';
-import { SignInPatientRepository } from 'src/app/repositories/database/signInPatient.repository';
-import { UpdateBlockedRepository } from 'src/app/repositories/database/updateBlocked.repository';
 import {
   IUpsertDeviceRepository,
   UpsertDeviceRepository,
@@ -25,12 +21,10 @@ import {
   IUpsertSessionRepository,
   UpsertSessionRepository,
 } from 'src/app/repositories/database/upsertSession.respository';
-import { UpsertTryCountRepository } from 'src/app/repositories/database/upsertTryCount.repository';
-import { EncryptionManagerBuilder } from 'src/general/managers/encryption/encryption.manager';
 import { IJWTManager, JWTManagerBuilder } from 'src/general/managers/jwt/jwt.manager';
 
-import { SignInBiometricStrategy } from './strategies/signInBiometric.strategy';
-import { SignInRegularStrategy } from './strategies/signInRegular.strategy';
+import { SignInBiometricStrategyBuilder } from './strategies/signInBiometric.strategy';
+import { SignInRegularStrategyBuilder } from './strategies/signInRegular.strategy';
 
 export interface ISignInStrategy {
   verifySignIn(body: SignInPatientBodyDTO, authAttempt: AuthAttemptModel, device: DeviceModel): Promise<PatientModel>;
@@ -103,13 +97,7 @@ export class SignInPatientInteractorBuilder {
   static buildRegular(): SignInPatientInteractor {
     return new SignInPatientInteractor(
       new GetAuthAttemptsRepository(),
-      new SignInRegularStrategy(
-        new SignInPatientRepository(),
-        EncryptionManagerBuilder.buildSha512(),
-        new UpsertTryCountRepository(),
-        new UpdateBlockedRepository(),
-        new CleanBlockedRepository(),
-      ),
+      SignInRegularStrategyBuilder.build(),
       new CleanUnusedDevicesRepository(),
       new UpsertSessionRepository(),
       new UpsertDeviceRepository(),
@@ -120,11 +108,7 @@ export class SignInPatientInteractorBuilder {
   static buildBiometric(): SignInPatientInteractor {
     return new SignInPatientInteractor(
       new GetAuthAttemptsRepository(),
-      new SignInBiometricStrategy(
-        new SignInBiometricRepository(),
-        EncryptionManagerBuilder.buildSha512(),
-        new CleanBlockedRepository(),
-      ),
+      SignInBiometricStrategyBuilder.build(),
       new CleanUnusedDevicesRepository(),
       new UpsertSessionRepository(),
       new UpsertDeviceRepository(),

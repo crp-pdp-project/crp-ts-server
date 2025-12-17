@@ -36,6 +36,8 @@ import { DeleteRelativeV1Docs } from 'src/app/controllers/deleteRelativeV1/delet
 import { DeleteRelativeV1Router } from 'src/app/controllers/deleteRelativeV1/deleteRelative.router';
 import { DoctorsListV1Docs } from 'src/app/controllers/doctorsListV1/doctorsList.docs';
 import { DoctorsListV1Router } from 'src/app/controllers/doctorsListV1/doctorsList.router';
+import { GenerateCardTokenV1Docs } from 'src/app/controllers/generateCardTokenV1/generateCardToken.docs';
+import { GenerateCardTokenV1Router } from 'src/app/controllers/generateCardTokenV1/generateCardToken.router';
 import { GuaranteeLetterListV1Docs } from 'src/app/controllers/guaranteeLetterListV1/guaranteeLetterList.docs';
 import { GuaranteeLetterListV1Router } from 'src/app/controllers/guaranteeLetterListV1/guaranteeLetterList.router';
 import { HealthInsuranceDataV1Docs } from 'src/app/controllers/healthInsuranceDataV1/healthInsuranceData.docs';
@@ -250,6 +252,7 @@ export class Server {
     new SendNotificationV1Docs(this.manager).registerDocs();
     new SendDeepLinkNotificationV1Docs(this.manager).registerDocs();
     new OperateX12V1Docs(this.manager).registerDocs();
+    new GenerateCardTokenV1Docs(this.manager).registerDocs();
   }
 
   private static registerRoutes(): void {
@@ -301,6 +304,7 @@ export class Server {
     new SendNotificationV1Router(this.app).registerRouter();
     new SendDeepLinkNotificationV1Router(this.app).registerRouter();
     new OperateX12V1Router(this.app).registerRouter();
+    new GenerateCardTokenV1Router(this.app).registerRouter();
   }
 
   private static setupDocsEndpoint(): void {

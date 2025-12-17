@@ -65,6 +65,18 @@ export class DeviceModel extends BaseModel {
     DeviceValidationFactory.validate(this);
   }
 
+  validateWebDevice(): void {
+    if (this.os !== Devices.WEB) {
+      throw ErrorModel.badRequest({ detail: ClientErrorMessages.INVALID_API_CALL });
+    }
+  }
+
+  validateMobileDevice(): void {
+    if (this.os !== Devices.IOS && this.os !== Devices.ANDROID) {
+      throw ErrorModel.badRequest({ detail: ClientErrorMessages.INVALID_API_CALL });
+    }
+  }
+
   static extractDevice(model?: DeviceModel): DeviceModel {
     if (!model) {
       throw ErrorModel.badRequest({ detail: ClientErrorMessages.INVALID_API_CALL });

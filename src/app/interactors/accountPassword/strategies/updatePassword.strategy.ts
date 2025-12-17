@@ -1,5 +1,8 @@
 import { RecoverSessionModel } from 'src/app/entities/models/session/recoverSession.model';
-import { IUpdatePatientPasswordRepository } from 'src/app/repositories/database/updatePatientPassword.repository';
+import {
+  IUpdatePatientPasswordRepository,
+  UpdatePatientPasswordRepository,
+} from 'src/app/repositories/database/updatePatientPassword.repository';
 import { PasswordHashResult } from 'src/general/managers/encryption/encryption.manager';
 
 import { IAccountPasswordStrategy } from '../accountPassword.interactor';
@@ -12,5 +15,11 @@ export class UpdatePasswordStrategy implements IAccountPasswordStrategy {
       passwordHash: hashedPassword.hash,
       passwordSalt: hashedPassword.salt,
     });
+  }
+}
+
+export class UpdatePasswordStrategyBuilder {
+  static build(): UpdatePasswordStrategy {
+    return new UpdatePasswordStrategy(new UpdatePatientPasswordRepository());
   }
 }

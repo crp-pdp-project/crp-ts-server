@@ -3,7 +3,10 @@ import { AuthAttemptModel, AuthFlowIdentifier } from 'src/app/entities/models/au
 import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
 import { EnrollSessionModel } from 'src/app/entities/models/session/enrollSession.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import { IGetAuthAttemptsRepository } from 'src/app/repositories/database/getAuthAttempts.repository';
+import {
+  GetAuthAttemptsRepository,
+  IGetAuthAttemptsRepository,
+} from 'src/app/repositories/database/getAuthAttempts.repository';
 import { Audiences } from 'src/general/enums/audience.enum';
 import { EmailSubjects } from 'src/general/enums/emailSubject.enum';
 
@@ -51,5 +54,11 @@ export class SendEnrollOTPStrategy implements ISendVerificationOTPStrategy {
     );
 
     return model;
+  }
+}
+
+export class SendEnrollOTPStrategyBuilder {
+  static build(): SendEnrollOTPStrategy {
+    return new SendEnrollOTPStrategy(new GetAuthAttemptsRepository());
   }
 }

@@ -9,8 +9,6 @@ import {
   GetPatientSessionRepository,
   IGetPatientSessionRepository,
 } from 'src/app/repositories/database/getPatientSession.repository';
-import { UpdateDevicePushTokenRepository } from 'src/app/repositories/database/updateDevicePushToken.repository';
-import { UpdateSessionExpireRepository } from 'src/app/repositories/database/updateSessionExpire.repository';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import {
   EnrichedPayload,
@@ -20,7 +18,7 @@ import {
 } from 'src/general/managers/jwt/jwt.manager';
 
 import { ValidateEnrollSessionStrategy } from './strategies/validateEnrollSession.strategy';
-import { ValidatePatientSessionStrategy } from './strategies/validatePatientSession.strategy';
+import { ValidatePatientSessionStrategyBuilder } from './strategies/validatePatientSession.strategy';
 import { ValidateRecoverSessionStrategy } from './strategies/validateRecoverSession.strategy';
 
 export interface IValidateSessionStrategy {
@@ -86,7 +84,7 @@ export class ValidateSessionInteractorBuilder {
   static buildSignIn(): ValidateSessionInteractor {
     return new ValidateSessionInteractor(
       JWTManagerBuilder.buildSessionConfig(),
-      new ValidatePatientSessionStrategy(new UpdateSessionExpireRepository(), new UpdateDevicePushTokenRepository()),
+      ValidatePatientSessionStrategyBuilder.build(),
       new GetPatientSessionRepository(),
     );
   }

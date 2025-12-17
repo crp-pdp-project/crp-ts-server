@@ -1,6 +1,7 @@
 export enum StatusCode {
   OK = 200,
   NO_CONTENT = 204,
+  SEE_OTHER = 303,
   BAD_REQUEST = 400,
   UNAUTHORIZED = 401,
   FORBIDDEN = 403,
@@ -16,6 +17,7 @@ export enum StatusCode {
 export enum StatusMessage {
   OK = 'Ok',
   NO_CONTENT = 'No Content',
+  SEE_OTHER = 'See Other',
   BAD_REQUEST = 'Bad Request',
   UNAUTHORIZED = 'Unauthorized',
   FORBIDDEN = 'Forbidden',
@@ -32,6 +34,7 @@ export class StatusCodesMapper {
   private static readonly statusMessageMap: Record<StatusCode, StatusMessage> = {
     [StatusCode.OK]: StatusMessage.OK,
     [StatusCode.NO_CONTENT]: StatusMessage.NO_CONTENT,
+    [StatusCode.SEE_OTHER]: StatusMessage.SEE_OTHER,
     [StatusCode.BAD_REQUEST]: StatusMessage.BAD_REQUEST,
     [StatusCode.UNAUTHORIZED]: StatusMessage.UNAUTHORIZED,
     [StatusCode.FORBIDDEN]: StatusMessage.FORBIDDEN,

@@ -1,6 +1,9 @@
 import { DeviceDM } from 'src/app/entities/dms/devices.dm';
+import { CardDTO } from 'src/app/entities/dtos/service/card.dto';
 import { POSConfigDTO, POSConfigDTOSchema } from 'src/app/entities/dtos/service/posConfig.dto';
+import { Devices } from 'src/app/entities/models/device/device.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
+import { PosConstants } from 'src/general/contants/pos.constants';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 import { ResponseType, RestHelper } from 'src/general/helpers/rest.helper';
 import { TextHelper } from 'src/general/helpers/text.helper';
@@ -30,7 +33,14 @@ type GetPinHashOutput = {
   expireDate: string;
 };
 
+type GetSessionOutput = {
+  sessionKey: string;
+  expirationTime: string;
+};
+
 export enum NiubizServicePaths {
+  GENERATE_SESSION = '/api.ecommerce/v2/ecommerce/token/session',
+  GENERATE_CARD_TOKEN = '/api.ecommerce/v2/ecommerce/token/card',
   GENERATE_TOKEN = '/api.security/v1/security',
   GET_HASH = '/api.certificate/v1/query',
 }
@@ -38,8 +48,9 @@ export enum NiubizServicePaths {
 export class NiubizClient {
   private readonly config: POSConfigDTO;
   private readonly rest: RestHelper;
+  private readonly shouldFetchHash: boolean;
 
-  private constructor(config: POSConfigDTO) {
+  private constructor(config: POSConfigDTO, shouldFetchHash: boolean) {
     const parsedConfig = POSConfigDTOSchema.omit({
       token: true,
       pinHash: true,
@@ -48,10 +59,54 @@ export class NiubizClient {
       .parse(config);
     this.config = parsedConfig;
     this.rest = new RestHelper(parsedConfig.host);
+    this.shouldFetchHash = shouldFetchHash;
   }
 
   async getConfig(): Promise<POSConfigDTO> {
     const token = await this.getToken();
+    const baseConfig: POSConfigDTO = { ...this.config, token };
+    if (this.shouldFetchHash) {
+      baseConfig['pinHash'] = await this.getHash(token);
+    }
+
+    return baseConfig;
+  }
+
+  async getSession(amount: number, MDD: Record<string, unknown>): Promise<GetSessionOutput> {
+    const token = await this.getToken();
+    const result = await this.rest.send<GetSessionOutput>({
+      path: `${NiubizServicePaths.GENERATE_SESSION}/${this.config.commerceCode}`,
+      method: HttpMethod.POST,
+      headers: {
+        Authorization: token,
+      },
+      responseType: ResponseType.JSON,
+      body: {
+        purchasenumber: this.config.correlative,
+        channel: PosConstants.WEB_CHANNEL,
+        amount: Number(amount.toFixed(2)),
+        merchantDefineData: MDD,
+      },
+    });
+
+    return result;
+  }
+
+  async getCardToken(transactionToken: string): Promise<CardDTO> {
+    const token = await this.getToken();
+    const result = await this.rest.send<CardDTO>({
+      path: `${NiubizServicePaths.GENERATE_SESSION}/${this.config.commerceCode}/${transactionToken}`,
+      method: HttpMethod.GET,
+      headers: {
+        Authorization: token,
+      },
+      responseType: ResponseType.JSON,
+    });
+
+    return result;
+  }
+
+  private async getHash(token: string): Promise<string> {
     const result = await this.rest.send<GetPinHashOutput>({
       path: `${NiubizServicePaths.GET_HASH}/${this.config.commerceCode}`,
       method: HttpMethod.POST,
@@ -61,18 +116,13 @@ export class NiubizClient {
       responseType: ResponseType.JSON,
     });
 
-    const response: POSConfigDTO = {
-      ...this.config,
-      token: token,
-      pinHash: result.pinHash,
-    };
-
-    return response;
+    return result.pinHash;
   }
 
   static async getInstance(os: DeviceDM['os']): Promise<NiubizClient> {
     const config = await this.getConfig(os);
-    const client = new NiubizClient(config);
+    const shouldFetchHash = os !== Devices.WEB;
+    const client = new NiubizClient(config, shouldFetchHash);
 
     return client;
   }
