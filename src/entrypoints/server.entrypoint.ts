@@ -2,6 +2,7 @@ import 'dotenv/config';
 import https from 'https';
 
 import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi';
+import formbody from '@fastify/formbody'
 import cors from '@fastify/cors';
 import ejs from 'ejs';
 import Fastify, { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
@@ -160,6 +161,7 @@ export class Server {
       allowedHeaders: ['Content-Type', 'Authorization', 'X-Os', 'X-Device-Id', 'X-Device-Name', 'X-Push-Token'],
       maxAge: 86400,
     });
+    this.app.register(formbody)
     this.app.server.setTimeout(CRPConstants.REQUEST_TIMEOUT);
     this.app.server.requestTimeout = CRPConstants.REQUEST_TIMEOUT;
 
