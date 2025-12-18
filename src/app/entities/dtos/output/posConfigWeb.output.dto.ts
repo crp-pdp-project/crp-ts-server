@@ -16,6 +16,10 @@ export const POSConfigWebOutputDTOSchema = z
       description: 'Session token of the POS',
       example: 'anyToken',
     }),
+    env: z.string().openapi({
+      description: 'Environment of the POS config',
+      example: 'dev',
+    })
   })
   .strip()
   .openapi({
