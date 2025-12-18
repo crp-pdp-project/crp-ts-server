@@ -3,7 +3,6 @@ import { CardDTO } from 'src/app/entities/dtos/service/card.dto';
 import { POSConfigDTO, POSConfigDTOSchema } from 'src/app/entities/dtos/service/posConfig.dto';
 import { Devices } from 'src/app/entities/models/device/device.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { PosConstants } from 'src/general/contants/pos.constants';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 import { ResponseType, RestHelper } from 'src/general/helpers/rest.helper';
 import { TextHelper } from 'src/general/helpers/text.helper';
@@ -72,8 +71,7 @@ export class NiubizClient {
     return baseConfig;
   }
 
-  async getSession(amount: number, MDD: Record<string, unknown>): Promise<GetSessionOutput> {
-    const token = await this.getToken();
+  async getSession(amount: number, MDD: Record<string, unknown>, token: string): Promise<GetSessionOutput> {
     const result = await this.rest.send<GetSessionOutput>({
       path: `${NiubizServicePaths.GENERATE_SESSION}/${this.config.commerceCode}`,
       method: HttpMethod.POST,
@@ -83,7 +81,7 @@ export class NiubizClient {
       responseType: ResponseType.JSON,
       body: {
         purchasenumber: this.config.correlative,
-        channel: PosConstants.WEB_CHANNEL,
+        channel: this.config.channel,
         amount: Number(amount.toFixed(2)),
         merchantDefineData: MDD,
       },
@@ -92,10 +90,9 @@ export class NiubizClient {
     return result;
   }
 
-  async getCardToken(transactionToken: string): Promise<CardDTO> {
-    const token = await this.getToken();
+  async getCardToken(transactionToken: string, token: string): Promise<CardDTO> {
     const result = await this.rest.send<CardDTO>({
-      path: `${NiubizServicePaths.GENERATE_SESSION}/${this.config.commerceCode}/${transactionToken}`,
+      path: `${NiubizServicePaths.GENERATE_CARD_TOKEN}/${this.config.commerceCode}/${transactionToken}`,
       method: HttpMethod.GET,
       headers: {
         Authorization: token,
@@ -119,8 +116,8 @@ export class NiubizClient {
     return result.pinHash;
   }
 
-  static async getInstance(os: DeviceDM['os']): Promise<NiubizClient> {
-    const config = await this.getConfig(os);
+  static async createClinet(os: DeviceDM['os'], sharedConfig?: POSConfigDTO): Promise<NiubizClient> {
+    const config = sharedConfig ?? (await this.getConfig(os));
     const shouldFetchHash = os !== Devices.WEB;
     const client = new NiubizClient(config, shouldFetchHash);
 

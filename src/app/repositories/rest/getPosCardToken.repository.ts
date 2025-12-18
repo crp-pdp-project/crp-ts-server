@@ -3,13 +3,13 @@ import { Devices } from 'src/app/entities/models/device/device.model';
 import { NiubizClient } from 'src/clients/niubiz/niubiz.client';
 
 export interface IGetPOSCardTokenRepository {
-  execute(transactionToken: string): Promise<CardDTO>;
+  execute(transactionToken: string, token: string): Promise<CardDTO>;
 }
 
 export class GetPOSCardTokenRepository implements IGetPOSCardTokenRepository {
-  async execute(transactionToken: string): Promise<CardDTO> {
-    const client = await NiubizClient.getInstance(Devices.WEB);
-    const card = await client.getCardToken(transactionToken);
+  async execute(transactionToken: string, token: string): Promise<CardDTO> {
+    const client = await NiubizClient.createClinet(Devices.WEB);
+    const card = await client.getCardToken(transactionToken, token);
     return card;
   }
 }

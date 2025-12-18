@@ -19,7 +19,7 @@ export class WebPOSConfigStrategy implements IPOSConfigStrategy {
     const searchResult = await this.searchPatientRepository.execute({ fmpId: session.patient.fmpId });
     const posConfig = await this.getPOSConfig.execute(device.os!);
     const model = new POSConfigModel(posConfig, session, searchResult);
-    const sessionToken = await this.getPOSSession.execute(device.os!, body.amount, model.MDD!);
+    const sessionToken = await this.getPOSSession.execute(device.os!, model.rawConfig!, body.amount, model.MDD!);
     model.inyectSessionToken(sessionToken);
 
     return model;

@@ -5,10 +5,12 @@ import {
   GenerateCardTokenQueryDTO,
 } from 'src/app/entities/dtos/input/generateCardToken.input.dto';
 import { CardModel } from 'src/app/entities/models/card/card.model';
+import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import {
   GetPOSCardTokenRepository,
   IGetPOSCardTokenRepository,
 } from 'src/app/repositories/rest/getPosCardToken.repository';
+import { LoggerClient } from 'src/clients/logger/logger.client';
 
 export interface IGenerateCardTokenInteractor {
   generate(body: ZodSafeParseResult<GenerateCardTokenBodyDTO>, query: GenerateCardTokenQueryDTO): Promise<CardModel>;
@@ -23,7 +25,12 @@ export class GenerateCardTokenInteractor implements IGenerateCardTokenInteractor
   ): Promise<CardModel> {
     const model = new CardModel(query.redirect);
     if (body.success) {
-      const card = await this.getCardToken.execute(body.data.transactionToken).catch(() => undefined);
+      const card = await this.getCardToken.execute(body.data.transactionToken, query.token).catch((error) => {
+        const model = ErrorModel.fromError(error);
+        LoggerClient.instance.error('Error obtaining CardToken', {
+          message: model.message,
+        });
+      });
 
       model.inyectTokenId(card?.token?.tokenId);
     }

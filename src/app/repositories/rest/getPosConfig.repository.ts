@@ -8,7 +8,7 @@ export interface IGetPOSConfigRepository {
 
 export class GetPOSConfigRepository implements IGetPOSConfigRepository {
   async execute(os: DeviceDM['os']): Promise<POSConfigDTO> {
-    const client = await NiubizClient.getInstance(os);
+    const client = await NiubizClient.createClinet(os);
     const POSConfig = await client.getConfig();
     return POSConfig;
   }

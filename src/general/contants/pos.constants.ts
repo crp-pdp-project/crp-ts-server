@@ -4,5 +4,4 @@ export const PosConstants = {
   DEFAULT_MDD75: 'Registrado',
   DEFAULT_CURRENCY: 'PEN',
   HASH_PREFIX: 'sha256/',
-  WEB_CHANNEL: 'web',
 } as const;

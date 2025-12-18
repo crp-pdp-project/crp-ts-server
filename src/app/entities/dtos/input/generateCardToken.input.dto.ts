@@ -21,6 +21,10 @@ export const GenerateCardTokenBodyDTOSchema = z
 
 export const GenerateCardTokenQueryDTOSchema = z
   .object({
+    token: z.string().openapi({
+      description: 'Token of the POS',
+      example: 'anyToken',
+    }),
     redirect: z.url().openapi({
       description: 'Host URL to redirect',
       example: 'https://any.url.com/path',

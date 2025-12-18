@@ -62,11 +62,14 @@ export class POSConfigModel extends BaseModel {
   readonly email?: string;
   readonly env?: string;
   readonly MDD?: Record<string, unknown>;
+  readonly rawConfig?: POSConfigDTO;
 
   #sessionToken?: string;
 
   constructor(posConfig: POSConfigDTO, session: SignInSessionModel, external: PatientExternalDTO) {
     super();
+
+    this.rawConfig = posConfig;
 
     this.user = posConfig.user;
     this.password = posConfig.pass;
