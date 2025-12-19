@@ -9,12 +9,15 @@ export const GenerateCardTokenBodyDTOSchema = z
       description: 'Transaction token from POS',
       example: 'anyToken',
     }),
-    channel: z.string().openapi({
+    customerEmail: z.string().optional().openapi({
+      description: 'Email of the paying customer',
+      example: 'any@mail.com',
+    }),
+    channel: z.string().optional().openapi({
       description: 'Channel response from POS',
       example: 'paycard',
     }),
   })
-  .strict()
   .openapi({
     description: 'Generate Card Token Request Body',
   });
