@@ -95,7 +95,7 @@ export class GetPatientResultsRepository implements IGetPatientResultsRepository
       specialty: { name: result.NombreAgrupacion },
       appointmentType: { name: result.NombrePrestacion },
       type: result.TipoPrueba,
-      nhc: result.Nhc,
+      nhcId: result.Nhc,
       accessNumber: result.Accesnumber,
       gidenpac: result.Gidenpac,
     }));
