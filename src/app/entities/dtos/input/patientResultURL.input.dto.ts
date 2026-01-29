@@ -15,6 +15,10 @@ export const PatientResultURLParamsDTOSchema = PatientDMSchema.pick({
 
 export const PatientResultURLBodyDTOSchema = z
   .object({
+    nhcId: z.string().openapi({
+      description: 'Unique NHC ID of the patient',
+      example: '1',
+    }),
     accessNumber: z.string().openapi({
       description: 'Access number of the result',
       example: 'CLIRPC2437451050',

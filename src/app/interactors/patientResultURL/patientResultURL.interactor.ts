@@ -31,8 +31,7 @@ export class PatientResultURLInteractor implements IPatientResultURLInteractor {
     session: SignInSessionModel,
   ): Promise<PatientResultURLModel> {
     await this.validateRelatives(params.fmpId, session);
-    const patientModel = session.getPatient(params.fmpId);
-    const urlModel = await this.getPatientResultURL(patientModel.nhcId!, body);
+    const urlModel = await this.getPatientResultURL(body);
 
     return urlModel;
   }
@@ -42,11 +41,9 @@ export class PatientResultURLInteractor implements IPatientResultURLInteractor {
     session.inyectRelatives(relatives).validateFmpId(fmpId, ValidationRules.SELF_OR_DEPENDANTS);
   }
 
-  private async getPatientResultURL(
-    nhcId: PatientDM['nhcId'],
-    body: PatientResultURLBodyDTO,
-  ): Promise<PatientResultURLModel> {
-    const url = await this.getResultsURL.execute(nhcId, {
+  private async getPatientResultURL(body: PatientResultURLBodyDTO): Promise<PatientResultURLModel> {
+    const url = await this.getResultsURL.execute({
+      nhcId: body.nhcId,
       accessNumber: body.accessNumber,
       gidenpac: body.gidenpac,
       specialty: { name: body.specialtyName },

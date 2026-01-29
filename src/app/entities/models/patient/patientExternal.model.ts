@@ -11,7 +11,6 @@ import {
 } from 'src/app/entities/dtos/service/recoverSessionPayload.dto';
 import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
 import { BaseModel } from 'src/app/entities/models/base.model';
-import { CRPConstants } from 'src/general/contants/crp.constants';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { PatientDocumentType } from 'src/general/enums/patientInfo.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
@@ -39,7 +38,7 @@ export class PatientExternalModel extends BaseModel {
 
   #id?: number;
   #device?: DeviceModel;
-  #nhcId?: string;
+  #nhcId?: string | null;
   #searchResult: PatientExternalDTO;
 
   constructor(external: PatientExternalDTO, patient?: PatientDTO) {
@@ -70,14 +69,8 @@ export class PatientExternalModel extends BaseModel {
     return this.#device;
   }
 
-  get nhcId(): string | undefined {
+  get nhcId(): string | null | undefined {
     return this.#nhcId;
-  }
-
-  validateCenter(): void {
-    if (this.#searchResult.centerId !== CRPConstants.CENTER_ID || !this.nhcId) {
-      throw ErrorModel.notFound({ detail: ClientErrorMessages.PATIENT_NOT_FOUND });
-    }
   }
 
   validateExistance(): void {

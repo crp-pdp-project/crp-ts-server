@@ -13,7 +13,7 @@ export const PatientDMSchema = z.object({
     description: 'Unique FMP ID of the patient',
     example: '1',
   }),
-  nhcId: z.string().openapi({
+  nhcId: z.string().nullable().openapi({
     description: 'Unique NHC ID of the patient',
     example: '1',
   }),

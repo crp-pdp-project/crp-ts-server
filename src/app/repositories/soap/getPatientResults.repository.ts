@@ -95,6 +95,7 @@ export class GetPatientResultsRepository implements IGetPatientResultsRepository
       specialty: { name: result.NombreAgrupacion },
       appointmentType: { name: result.NombrePrestacion },
       type: result.TipoPrueba,
+      nhc: result.Nhc,
       accessNumber: result.Accesnumber,
       gidenpac: result.Gidenpac,
     }));
@@ -119,6 +120,7 @@ export class GetPatientResultsRepositoryMock implements IGetPatientResultsReposi
         type: 'L',
         accessNumber: 'CLIRPC2437762803',
         gidenpac: '733480',
+        nhcId: '00967382',
       },
     ]);
   }

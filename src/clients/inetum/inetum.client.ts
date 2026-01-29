@@ -10,7 +10,6 @@ export enum InetumCatalogServices {
 
 export enum InetumUserServices {
   CONFIRM_PATIENT = 'Alta',
-  CREATE_PATIENT_NHC = 'CrearPacienteEnCentros',
 }
 
 export enum InetumAppointmentServices {
