@@ -17,6 +17,7 @@ export class PatientResultModel extends BaseModel {
   readonly type?: PatientResultTypes;
   readonly accessNumber?: string;
   readonly gidenpac?: string;
+  readonly nhcId?: string;
 
   constructor(patientResult: PatientResultDTO) {
     super();
@@ -32,5 +33,6 @@ export class PatientResultModel extends BaseModel {
     this.type = patientResult.type ? PatientResultTypesMapper.getResultType(patientResult.type) : undefined;
     this.accessNumber = patientResult.accessNumber;
     this.gidenpac = patientResult.gidenpac;
+    this.nhcId = patientResult.nhcId;
   }
 }

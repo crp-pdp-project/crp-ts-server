@@ -12,6 +12,7 @@ export const PatientResultDTOSchema = z.object({
   doctor: DoctorDTOSchema.pick({ name: true }).optional(),
   specialty: SpecialtyDTOSchema.pick({ name: true }).optional(),
   appointmentType: AppointmentTypeDTOSchema.pick({ name: true }).optional(),
+  nhcId: z.string().optional(),
   type: z.string().optional(),
   accessNumber: z.string().optional(),
   gidenpac: z.string().optional(),

@@ -15,10 +15,6 @@ import {
   ConfirmPatientRepository,
   IConfirmPatientRepository,
 } from 'src/app/repositories/soap/confirmPatient.repository';
-import {
-  CreatePatientNHCRepository,
-  ICreatePatientNHCRepository,
-} from 'src/app/repositories/soap/createPatientNHC.repository';
 import { ISearchPatientRepository, SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
@@ -31,7 +27,6 @@ export class RelativeVerificationInteractor implements IRelativeVerificationInte
     private readonly getPatientAccountRepository: IGetPatientAccountRepository,
     private readonly searchPatientRepository: ISearchPatientRepository,
     private readonly confirmPatientRepository: IConfirmPatientRepository,
-    private readonly createPatientNHC: ICreatePatientNHCRepository,
     private readonly savePatientRepository: ISavePatientRepository,
     private readonly verifyRelativeRepository: IVerifyRelativeRepository,
   ) {}
@@ -41,7 +36,6 @@ export class RelativeVerificationInteractor implements IRelativeVerificationInte
     const externalPatientModel = await this.searchPatient(body);
     externalPatientModel.validateExistance();
     await this.confirmPatientCreation(externalPatientModel);
-    await this.validateNHCId(externalPatientModel);
     await this.persistPatient(externalPatientModel);
 
     return externalPatientModel;
@@ -61,14 +55,6 @@ export class RelativeVerificationInteractor implements IRelativeVerificationInte
 
     if (confirmationResult.fmpId !== patientExternalModel.fmpId) {
       throw ErrorModel.unprocessable({ detail: ClientErrorMessages.PATIENT_NOT_CREATED });
-    }
-  }
-
-  private async validateNHCId(patientExternalModel: PatientExternalModel): Promise<void> {
-    if (!patientExternalModel.nhcId) {
-      await this.createPatientNHC.execute(patientExternalModel.fmpId!);
-      const updatedSearchResult = await this.searchPatientRepository.execute({ fmpId: patientExternalModel.fmpId });
-      patientExternalModel.updateModel(updatedSearchResult).validateCenter();
     }
   }
 
@@ -98,7 +84,6 @@ export class RelativeVerificationInteractorBuilder {
       new GetPatientAccountRepository(),
       new SearchPatientRepository(),
       new ConfirmPatientRepository(),
-      new CreatePatientNHCRepository(),
       new SavePatientRepository(),
       new VerifyRelativeRepository(),
     );

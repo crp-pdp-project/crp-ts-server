@@ -1,4 +1,3 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { PatientResultDTO } from 'src/app/entities/dtos/service/patientResult.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { CRPClient, CRPServicePaths } from 'src/clients/crp/crp.client';
@@ -18,14 +17,14 @@ type GetResultsURLOutput = {
 };
 
 export interface IGetResultsURLRepository {
-  execute(nhcId: PatientDM['nhcId'], result: PatientResultDTO): Promise<string>;
+  execute(result: PatientResultDTO): Promise<string>;
 }
 
 export class GetResultsURLRepository implements IGetResultsURLRepository {
   private readonly crp = CRPClient.instance;
 
-  async execute(nhcId: PatientDM['nhcId'], result: PatientResultDTO): Promise<string> {
-    const input = this.parseInput(nhcId, result);
+  async execute(result: PatientResultDTO): Promise<string> {
+    const input = this.parseInput(result);
     const rawResult = await this.crp.call<GetResultsURLOutput>({
       method: HttpMethod.POST,
       path: CRPServicePaths.GET_X_RAY_IMAGE_URL,
@@ -34,9 +33,9 @@ export class GetResultsURLRepository implements IGetResultsURLRepository {
     return this.parseOutput(rawResult);
   }
 
-  private parseInput(nhcId: PatientDM['nhcId'], result: PatientResultDTO): GetResultsURLInput {
+  private parseInput(result: PatientResultDTO): GetResultsURLInput {
     return {
-      NhC: nhcId,
+      NhC: result.nhcId ?? '',
       PatientId: result.gidenpac ?? '',
       AccessionNumber: result.accessNumber ?? '',
       NombreAgrupacion: result.specialty?.name ?? '',

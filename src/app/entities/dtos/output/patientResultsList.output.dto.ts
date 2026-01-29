@@ -60,6 +60,10 @@ export const PatientResultsListOutputDTOSchema = z
             description: 'Access number of the result',
             example: 'CLIRPC2437451050',
           }),
+          nhcId: z.string().openapi({
+            description: 'Unique NHC ID of the patient',
+            example: '1',
+          }),
           gidenpac: z.string().openapi({
             description: 'Gidenpac code of the patient',
             example: '733480',

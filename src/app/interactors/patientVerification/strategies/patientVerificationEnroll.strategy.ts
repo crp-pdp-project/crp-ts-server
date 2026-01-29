@@ -11,11 +11,6 @@ import {
   ConfirmPatientRepository,
   IConfirmPatientRepository,
 } from 'src/app/repositories/soap/confirmPatient.repository';
-import {
-  CreatePatientNHCRepository,
-  ICreatePatientNHCRepository,
-} from 'src/app/repositories/soap/createPatientNHC.repository';
-import { ISearchPatientRepository, SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 import { IPatientVerificationStrategy } from '../patientVerification.interactor';
@@ -23,8 +18,6 @@ import { IPatientVerificationStrategy } from '../patientVerification.interactor'
 export class PatientVerificationEnrollStrategy implements IPatientVerificationStrategy {
   constructor(
     private readonly confirmPatientRepository: IConfirmPatientRepository,
-    private readonly createPatientNHC: ICreatePatientNHCRepository,
-    private readonly searchPatientRepository: ISearchPatientRepository,
     private readonly savePatientRepository: ISavePatientRepository,
     private readonly upsertDevice: IUpsertDeviceRepository,
   ) {}
@@ -38,7 +31,6 @@ export class PatientVerificationEnrollStrategy implements IPatientVerificationSt
     }
 
     await this.confirmPatientCreation(patientExternalModel);
-    await this.validateNHCId(patientExternalModel);
     await this.persistPatient(patientExternalModel);
     await this.registerDevice(patientExternalModel, device);
 
@@ -50,14 +42,6 @@ export class PatientVerificationEnrollStrategy implements IPatientVerificationSt
 
     if (confirmationResult.fmpId !== patientExternalModel.fmpId) {
       throw ErrorModel.unprocessable({ detail: ClientErrorMessages.UNPROCESSABLE_PATIENT });
-    }
-  }
-
-  private async validateNHCId(patientExternalModel: PatientExternalModel): Promise<void> {
-    if (!patientExternalModel.nhcId) {
-      await this.createPatientNHC.execute(patientExternalModel.fmpId!);
-      const updatedSearchResult = await this.searchPatientRepository.execute({ fmpId: patientExternalModel.fmpId });
-      patientExternalModel.updateModel(updatedSearchResult).validateCenter();
     }
   }
 
@@ -85,8 +69,6 @@ export class PatientVerificationEnrollStrategyBuilder {
   static build(): PatientVerificationEnrollStrategy {
     return new PatientVerificationEnrollStrategy(
       new ConfirmPatientRepository(),
-      new CreatePatientNHCRepository(),
-      new SearchPatientRepository(),
       new SavePatientRepository(),
       new UpsertDeviceRepository(),
     );
