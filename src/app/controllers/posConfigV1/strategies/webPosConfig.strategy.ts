@@ -10,13 +10,14 @@ import { Audiences } from 'src/general/enums/audience.enum';
 import { IPOSConfigControllerStrategy } from '../posConfig.controller';
 
 export class WebPosConfigControllerStrategy implements IPOSConfigControllerStrategy {
-  constructor(private readonly interactor: IPOSConfigInteractor) {}
+  constructor(private readonly interactor: IPOSConfigInteractor) { }
   async execute(input: FastifyRequest<POSConfigWebInputDTO>): Promise<POSConfigModel> {
+    const clientIp = input.ip;
     const body = POSConfigWebBodyDTOSchema.parse(input.body);
     const session = SessionModel.validateSessionInstance(Audiences.SIGN_IN, input.session);
     const device = DeviceModel.extractDevice(input.device);
     device.validateWebDevice();
-    return this.interactor.config(session, device, body);
+    return this.interactor.config(session, device, body, clientIp);
   }
 }
 

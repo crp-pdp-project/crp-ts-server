@@ -7,17 +7,32 @@ import { MobilePOSConfigStrategyBuilder } from './strategies/mobilePosConfig.str
 import { WebPOSConfigStrategyBuilder } from './strategies/webPosConfig.strategy';
 
 export interface IPOSConfigStrategy {
-  getModel(session: SignInSessionModel, device: DeviceModel, body?: POSConfigWebBodyDTO): Promise<POSConfigModel>;
+  getModel(
+    session: SignInSessionModel,
+    device: DeviceModel,
+    body?: POSConfigWebBodyDTO,
+    clientIp?: string,
+  ): Promise<POSConfigModel>;
 }
 export interface IPOSConfigInteractor {
-  config(session: SignInSessionModel, device: DeviceModel, body?: POSConfigWebBodyDTO): Promise<POSConfigModel>;
+  config(
+    session: SignInSessionModel,
+    device: DeviceModel,
+    body?: POSConfigWebBodyDTO,
+    clientIp?: string,
+  ): Promise<POSConfigModel>;
 }
 
 export class POSConfigInteractor implements IPOSConfigInteractor {
   constructor(private readonly POSConfigStrategy: IPOSConfigStrategy) {}
 
-  async config(session: SignInSessionModel, device: DeviceModel, body?: POSConfigWebBodyDTO): Promise<POSConfigModel> {
-    const model = await this.POSConfigStrategy.getModel(session, device, body);
+  async config(
+    session: SignInSessionModel,
+    device: DeviceModel,
+    body?: POSConfigWebBodyDTO,
+    clientIp?: string,
+  ): Promise<POSConfigModel> {
+    const model = await this.POSConfigStrategy.getModel(session, device, body, clientIp);
 
     return model;
   }
