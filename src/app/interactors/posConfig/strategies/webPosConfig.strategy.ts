@@ -15,11 +15,23 @@ export class WebPOSConfigStrategy implements IPOSConfigStrategy {
     private readonly getPOSSession: IGetPOSSessionRepository,
   ) {}
 
-  async getModel(session: SignInSessionModel, device: DeviceModel, body: POSConfigWebBodyDTO): Promise<POSConfigModel> {
+  async getModel(
+    session: SignInSessionModel,
+    device: DeviceModel,
+    body: POSConfigWebBodyDTO,
+    clientIp?: string,
+  ): Promise<POSConfigModel> {
     const searchResult = await this.searchPatientRepository.execute({ fmpId: session.patient.fmpId });
     const posConfig = await this.getPOSConfig.execute(device.os!);
     const model = new POSConfigModel(posConfig, session, searchResult);
-    const sessionToken = await this.getPOSSession.execute(device.os!, model.rawConfig!, body.amount, model.MDD!);
+    const sessionToken = await this.getPOSSession.execute(
+      device.os!,
+      model.rawConfig!,
+      body.amount,
+      model.MDD!,
+      searchResult.phone,
+      clientIp,
+    );
     model.inyectSessionToken(sessionToken);
 
     return model;

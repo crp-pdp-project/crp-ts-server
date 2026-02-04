@@ -116,7 +116,7 @@ import swaggerMeta from 'src/general/static/swaggerMeta.static';
 import swaggerTemplate from 'src/general/templates/swagger.template';
 
 export class Server {
-  private static readonly app: FastifyInstance = Fastify({ logger: false });
+  private static readonly app: FastifyInstance = Fastify({ logger: false, trustProxy: true });
   private static readonly registry: OpenAPIRegistry = new OpenAPIRegistry();
   private static readonly manager: OpenApiManager = new OpenApiManager(this.registry);
   private static readonly logger: LoggerClient = LoggerClient.instance;

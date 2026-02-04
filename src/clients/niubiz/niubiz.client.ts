@@ -1,8 +1,10 @@
 import { DeviceDM } from 'src/app/entities/dms/devices.dm';
 import { CardDTO } from 'src/app/entities/dtos/service/card.dto';
+import { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExternal.dto';
 import { POSConfigDTO, POSConfigDTOSchema } from 'src/app/entities/dtos/service/posConfig.dto';
 import { Devices } from 'src/app/entities/models/device/device.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
+import { PosConstants } from 'src/general/contants/pos.constants';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 import { ResponseType, RestHelper } from 'src/general/helpers/rest.helper';
 import { TextHelper } from 'src/general/helpers/text.helper';
@@ -71,7 +73,13 @@ export class NiubizClient {
     return baseConfig;
   }
 
-  async getSession(amount: number, MDD: Record<string, unknown>, token: string): Promise<GetSessionOutput> {
+  async getSession(
+    amount: number,
+    MDD: Record<string, unknown>,
+    token: string,
+    phone: PatientExternalDTO['phone'],
+    clientIp?: string,
+  ): Promise<GetSessionOutput> {
     const result = await this.rest.send<GetSessionOutput>({
       path: `${NiubizServicePaths.GENERATE_SESSION}/${this.config.commerceCode}`,
       method: HttpMethod.POST,
@@ -80,10 +88,20 @@ export class NiubizClient {
       },
       responseType: ResponseType.JSON,
       body: {
-        purchasenumber: this.config.correlative,
         channel: this.config.channel,
         amount: Number(amount.toFixed(2)),
-        merchantDefineData: MDD,
+        'anti-fraud': {
+          clientIp: clientIp ?? PosConstants.DEFAULT_IP,
+          merchantDefineData: MDD,
+        },
+        dataMap: {
+          cardholderCity: PosConstants.DEFAULT_CITY_NAME,
+          cardholderCountry: PosConstants.DEFAULT_COUNTRY,
+          cardholderAddress: PosConstants.DEFAULT_ADDRESS,
+          cardholderPostalCode: PosConstants.DEFAULT_ZIP_CODE,
+          cardholderState: PosConstants.DEFAULT_CITY,
+          cardholderPhoneNumber: phone ?? PosConstants.DEFAULT_PHONE_NUMBER,
+        },
       },
     });
 
