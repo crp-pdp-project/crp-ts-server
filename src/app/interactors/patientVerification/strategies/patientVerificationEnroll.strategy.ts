@@ -2,11 +2,14 @@ import { EnrollSessionPayloadDTO } from 'src/app/entities/dtos/service/enrollSes
 import { DeviceModel } from 'src/app/entities/models/device/device.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
-import { ISavePatientRepository, SavePatientRepository } from 'src/app/repositories/database/savePatient.repository';
 import {
   IUpsertDeviceRepository,
   UpsertDeviceRepository,
 } from 'src/app/repositories/database/upsertDevice.respository';
+import {
+  IUpsertPatientRepository,
+  UpsertPatientRepository,
+} from 'src/app/repositories/database/upsertPatient.repository';
 import {
   ConfirmPatientRepository,
   IConfirmPatientRepository,
@@ -18,7 +21,7 @@ import { IPatientVerificationStrategy } from '../patientVerification.interactor'
 export class PatientVerificationEnrollStrategy implements IPatientVerificationStrategy {
   constructor(
     private readonly confirmPatientRepository: IConfirmPatientRepository,
-    private readonly savePatientRepository: ISavePatientRepository,
+    private readonly upsertPatientRepository: IUpsertPatientRepository,
     private readonly upsertDevice: IUpsertDeviceRepository,
   ) {}
 
@@ -46,10 +49,8 @@ export class PatientVerificationEnrollStrategy implements IPatientVerificationSt
   }
 
   private async persistPatient(patientExternalModel: PatientExternalModel): Promise<void> {
-    if (!patientExternalModel.hasPersistedPatient()) {
-      const { insertId } = await this.savePatientRepository.execute(patientExternalModel.toPersistPatientPayload());
-      patientExternalModel.inyectPatientId(Number(insertId));
-    }
+    const { insertId } = await this.upsertPatientRepository.execute(patientExternalModel.toPersistPatientPayload());
+    patientExternalModel.inyectPatientId(Number(insertId));
   }
 
   private async registerDevice(patientExternalModel: PatientExternalModel, device: DeviceModel): Promise<void> {
@@ -69,7 +70,7 @@ export class PatientVerificationEnrollStrategyBuilder {
   static build(): PatientVerificationEnrollStrategy {
     return new PatientVerificationEnrollStrategy(
       new ConfirmPatientRepository(),
-      new SavePatientRepository(),
+      new UpsertPatientRepository(),
       new UpsertDeviceRepository(),
     );
   }

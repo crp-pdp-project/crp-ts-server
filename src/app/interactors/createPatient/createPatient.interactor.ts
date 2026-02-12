@@ -14,11 +14,14 @@ import {
   GetPatientAccountRepository,
   IGetPatientAccountRepository,
 } from 'src/app/repositories/database/getPatientAccount.repository';
-import { ISavePatientRepository, SavePatientRepository } from 'src/app/repositories/database/savePatient.repository';
 import {
   IUpsertDeviceRepository,
   UpsertDeviceRepository,
 } from 'src/app/repositories/database/upsertDevice.respository';
+import {
+  IUpsertPatientRepository,
+  UpsertPatientRepository,
+} from 'src/app/repositories/database/upsertPatient.repository';
 import {
   IUpsertSessionRepository,
   UpsertSessionRepository,
@@ -39,7 +42,7 @@ export class CreatePatientInteractor implements ICreatePatientInteractor {
     private readonly confirmPatientRepository: IConfirmPatientRepository,
     private readonly getPatientAccountRepository: IGetPatientAccountRepository,
     private readonly searchPatientRepository: ISearchPatientRepository,
-    private readonly savePatientRepository: ISavePatientRepository,
+    private readonly upsertPatientRepository: IUpsertPatientRepository,
     private readonly getAuthAttempt: IGetAuthAttemptsRepository,
     private readonly saveSessionRepository: IUpsertSessionRepository,
     private readonly upsertDevice: IUpsertDeviceRepository,
@@ -50,7 +53,7 @@ export class CreatePatientInteractor implements ICreatePatientInteractor {
     const attemptModel = await this.fetchAttempt(body.documentNumber);
     attemptModel.validateAttempt();
     const newFmpId = await this.patientCreation(body);
-    const patientExternalModel = await this.searchPatient(newFmpId, body.documentType, body.documentNumber);
+    const patientExternalModel = await this.searchPatient(newFmpId, body.documentNumber);
     patientExternalModel.validatePatient();
     await this.persistPatient(patientExternalModel);
     await this.registerDevice(patientExternalModel, device);
@@ -84,21 +87,18 @@ export class CreatePatientInteractor implements ICreatePatientInteractor {
 
   private async searchPatient(
     fmpId: PatientDM['fmpId'],
-    documentType: PatientDM['documentType'],
     documentNumber: PatientDM['documentNumber'],
   ): Promise<PatientExternalModel> {
     const searchResult = await this.searchPatientRepository.execute({ fmpId });
-    const existingAccount = await this.getPatientAccountRepository.execute(documentType, documentNumber);
+    const existingAccount = await this.getPatientAccountRepository.execute(documentNumber);
     const externalPatientModel = new PatientExternalModel(searchResult, existingAccount);
 
     return externalPatientModel;
   }
 
   private async persistPatient(patientExternalModel: PatientExternalModel): Promise<void> {
-    if (!patientExternalModel.hasPersistedPatient()) {
-      const { insertId } = await this.savePatientRepository.execute(patientExternalModel.toPersistPatientPayload());
-      patientExternalModel.inyectPatientId(Number(insertId));
-    }
+    const { insertId } = await this.upsertPatientRepository.execute(patientExternalModel.toPersistPatientPayload());
+    patientExternalModel.inyectPatientId(Number(insertId));
   }
 
   private async generateJwtToken(patientExternalModel: PatientExternalModel): Promise<PatientExternalTokenModel> {
@@ -131,7 +131,7 @@ export class CreatePatientInteractorBuilder {
       new ConfirmPatientRepository(),
       new GetPatientAccountRepository(),
       new SearchPatientRepository(),
-      new SavePatientRepository(),
+      new UpsertPatientRepository(),
       new GetAuthAttemptsRepository(),
       new UpsertSessionRepository(),
       new UpsertDeviceRepository(),

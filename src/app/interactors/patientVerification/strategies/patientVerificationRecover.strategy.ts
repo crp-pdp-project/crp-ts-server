@@ -6,21 +6,34 @@ import {
   IUpsertDeviceRepository,
   UpsertDeviceRepository,
 } from 'src/app/repositories/database/upsertDevice.respository';
+import {
+  IUpsertPatientRepository,
+  UpsertPatientRepository,
+} from 'src/app/repositories/database/upsertPatient.repository';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 import { IPatientVerificationStrategy } from '../patientVerification.interactor';
 
 export class PatientVerificationRecoverStrategy implements IPatientVerificationStrategy {
-  constructor(private readonly upsertDevice: IUpsertDeviceRepository) {}
+  constructor(
+    private readonly upsertDevice: IUpsertDeviceRepository,
+    private readonly upsertPatientRepository: IUpsertPatientRepository,
+  ) {}
 
   async generateSession(patientExternalModel: PatientExternalModel, device: DeviceModel): Promise<SessionPayloadDTO> {
     if (!patientExternalModel.hasValidAccount()) {
       throw ErrorModel.badRequest({ detail: ClientErrorMessages.PATIENT_NOT_REGISTERED });
     }
 
+    await this.updatePatient(patientExternalModel);
     await this.registerDevice(patientExternalModel, device);
 
     return patientExternalModel.toRecoverSession();
+  }
+
+  private async updatePatient(patientExternalModel: PatientExternalModel): Promise<void> {
+    const { insertId } = await this.upsertPatientRepository.execute(patientExternalModel.toPersistPatientPayload());
+    patientExternalModel.inyectPatientId(Number(insertId));
   }
 
   private async registerDevice(patientExternalModel: PatientExternalModel, device: DeviceModel): Promise<void> {
@@ -38,6 +51,6 @@ export class PatientVerificationRecoverStrategy implements IPatientVerificationS
 
 export class PatientVerificationRecoverStrategyBuilder {
   static build(): PatientVerificationRecoverStrategy {
-    return new PatientVerificationRecoverStrategy(new UpsertDeviceRepository());
+    return new PatientVerificationRecoverStrategy(new UpsertDeviceRepository(), new UpsertPatientRepository());
   }
 }

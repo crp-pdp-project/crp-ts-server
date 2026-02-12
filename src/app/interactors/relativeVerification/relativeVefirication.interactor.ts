@@ -6,7 +6,10 @@ import {
   GetPatientAccountRepository,
   IGetPatientAccountRepository,
 } from 'src/app/repositories/database/getPatientAccount.repository';
-import { ISavePatientRepository, SavePatientRepository } from 'src/app/repositories/database/savePatient.repository';
+import {
+  IUpsertPatientRepository,
+  UpsertPatientRepository,
+} from 'src/app/repositories/database/upsertPatient.repository';
 import {
   IVerifyRelativeRepository,
   VerifyRelativeRepository,
@@ -27,7 +30,7 @@ export class RelativeVerificationInteractor implements IRelativeVerificationInte
     private readonly getPatientAccountRepository: IGetPatientAccountRepository,
     private readonly searchPatientRepository: ISearchPatientRepository,
     private readonly confirmPatientRepository: IConfirmPatientRepository,
-    private readonly savePatientRepository: ISavePatientRepository,
+    private readonly upsertPatientRepository: IUpsertPatientRepository,
     private readonly verifyRelativeRepository: IVerifyRelativeRepository,
   ) {}
 
@@ -43,7 +46,7 @@ export class RelativeVerificationInteractor implements IRelativeVerificationInte
 
   private async searchPatient(body: PatientVerificationBodyDTO): Promise<PatientExternalModel> {
     const searchResult = await this.searchPatientRepository.execute(body);
-    const existingAccount = await this.getPatientAccountRepository.execute(body.documentType, body.documentNumber);
+    const existingAccount = await this.getPatientAccountRepository.execute(body.documentNumber);
 
     const externalPatientModel = new PatientExternalModel(searchResult, existingAccount);
 
@@ -59,10 +62,8 @@ export class RelativeVerificationInteractor implements IRelativeVerificationInte
   }
 
   private async persistPatient(patientExternalModel: PatientExternalModel): Promise<void> {
-    if (!patientExternalModel.hasPersistedPatient()) {
-      const { insertId } = await this.savePatientRepository.execute(patientExternalModel.toPersistPatientPayload());
-      patientExternalModel.inyectPatientId(Number(insertId));
-    }
+    const { insertId } = await this.upsertPatientRepository.execute(patientExternalModel.toPersistPatientPayload());
+    patientExternalModel.inyectPatientId(Number(insertId));
   }
 
   private async verifyRelationship(body: PatientVerificationBodyDTO, session: SignInSessionModel): Promise<void> {
@@ -84,7 +85,7 @@ export class RelativeVerificationInteractorBuilder {
       new GetPatientAccountRepository(),
       new SearchPatientRepository(),
       new ConfirmPatientRepository(),
-      new SavePatientRepository(),
+      new UpsertPatientRepository(),
       new VerifyRelativeRepository(),
     );
   }

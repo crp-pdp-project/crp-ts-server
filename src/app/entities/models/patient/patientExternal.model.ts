@@ -86,10 +86,6 @@ export class PatientExternalModel extends BaseModel {
     }
   }
 
-  hasPersistedPatient(): boolean {
-    return !!this.#id;
-  }
-
   hasValidAccount(): boolean {
     return !!this.#id && !!this.account;
   }

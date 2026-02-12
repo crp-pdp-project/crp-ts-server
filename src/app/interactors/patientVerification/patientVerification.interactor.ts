@@ -62,7 +62,7 @@ export class PatientVerificationInteractor implements IPatientVerificationIntera
 
   private async searchPatient(body: PatientVerificationBodyDTO): Promise<PatientExternalModel> {
     const searchResult = await this.searchPatientRepository.execute(body);
-    const existingAccount = await this.getPatientAccountRepository.execute(body.documentType, body.documentNumber);
+    const existingAccount = await this.getPatientAccountRepository.execute(body.documentNumber);
 
     const externalPatientModel = new PatientExternalModel(searchResult, existingAccount);
 
