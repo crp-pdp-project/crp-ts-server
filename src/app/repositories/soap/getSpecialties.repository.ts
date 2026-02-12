@@ -18,6 +18,7 @@ type GetSpecialtiesOutput = {
       Especialidad: {
         IdEspecialidad: string;
         Nombre: string;
+        Agrupacion: string;
       }[];
     };
   };
@@ -58,7 +59,7 @@ export class GetSpecialtiesRepository implements IGetSpecialtiesRepository {
 
     const specialties: SpecialtyDTO[] = result.map((specialty) => ({
       id: String(specialty.IdEspecialidad),
-      groupId: String(specialty.IdEspecialidad).slice(0, -2) || '0',
+      groupId: String(specialty.Agrupacion),
       name: specialty.Nombre,
     }));
 

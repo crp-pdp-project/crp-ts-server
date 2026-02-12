@@ -10,7 +10,7 @@ import { Audiences } from 'src/general/enums/audience.enum';
 import { IPOSConfigControllerStrategy } from '../posConfig.controller';
 
 export class WebPosConfigControllerStrategy implements IPOSConfigControllerStrategy {
-  constructor(private readonly interactor: IPOSConfigInteractor) { }
+  constructor(private readonly interactor: IPOSConfigInteractor) {}
   async execute(input: FastifyRequest<POSConfigWebInputDTO>): Promise<POSConfigModel> {
     const clientIp = input.ip;
     const body = POSConfigWebBodyDTOSchema.parse(input.body);
