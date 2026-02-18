@@ -38,10 +38,10 @@ export class PatientModel extends BaseModel {
 
     this.id = patient.id;
     this.fmpId = patient.fmpId;
-    this.nhcId = patient.nhcId;
+    this.nhcId = patient.nhcId ?? null;
     this.firstName = patient.firstName;
     this.lastName = patient.lastName;
-    this.secondLastName = patient.secondLastName;
+    this.secondLastName = patient.secondLastName ?? null;
     this.documentNumber = patient.documentNumber;
     this.documentType = patient.documentType;
     this.birthDate = patient.birthDate ? DateHelper.toFormatDate(patient.birthDate, 'spanishDate') : undefined;
