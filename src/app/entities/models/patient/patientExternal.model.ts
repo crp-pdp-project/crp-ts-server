@@ -22,40 +22,40 @@ import { DeviceModel } from '../device/device.model';
 import { ErrorModel } from '../error/error.model';
 
 export class PatientExternalModel extends BaseModel {
-  readonly firstName?: string;
-  readonly lastName?: string;
-  readonly email?: string | null;
-  readonly maskedEmail?: string | null;
-  readonly phone?: string | null;
-  readonly maskedPhone?: string | null;
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly email: string | null;
+  readonly maskedEmail: string | null;
+  readonly phone: string | null;
+  readonly maskedPhone: string | null;
   readonly fmpId?: string;
   readonly documentNumber?: string;
   readonly documentType?: PatientDocumentType;
   readonly birthDate?: string;
   readonly account?: AccountModel;
 
-  readonly #secondLastName?: string | null;
+  readonly #secondLastName: string | null;
 
   #id?: number;
   #device?: DeviceModel;
-  #nhcId?: string | null;
+  #nhcId: string | null;
   #searchResult: PatientExternalDTO;
 
   constructor(external: PatientExternalDTO, patient?: PatientDTO) {
     super();
 
     this.#id = patient?.id;
-    this.email = external.email;
-    this.maskedEmail = TextHelper.maskEmail(external.email);
-    this.phone = TextHelper.normalizePhoneNumber(external.phone);
-    this.maskedPhone = TextHelper.maskPhone(external.phone);
+    this.email = external.email ?? null;
+    this.maskedEmail = TextHelper.maskEmail(external.email) ?? null;
+    this.phone = TextHelper.normalizePhoneNumber(external.phone) ?? null;
+    this.maskedPhone = TextHelper.maskPhone(external.phone) ?? null;
     this.firstName = TextHelper.titleCase(external.firstName) ?? '';
     this.lastName = TextHelper.titleCase(external.lastName) ?? '';
     this.#secondLastName = external.secondLastName ? TextHelper.titleCase(external.secondLastName)! : null;
     this.birthDate = external.birthDate ? DateHelper.toFormatDate(external.birthDate, 'dbDate') : undefined;
     this.fmpId = external.fmpId;
     this.documentNumber = external.documentNumber;
-    this.#nhcId = external.nhcId;
+    this.#nhcId = external.nhcId ?? null;
     this.documentType = external.documentType ? this.ensureDocumentType(external.documentType) : undefined;
     this.account = patient?.account ? new AccountModel(patient.account) : undefined;
     this.#searchResult = external;
@@ -69,7 +69,7 @@ export class PatientExternalModel extends BaseModel {
     return this.#device;
   }
 
-  get nhcId(): string | null | undefined {
+  get nhcId(): string | null {
     return this.#nhcId;
   }
 
@@ -92,7 +92,7 @@ export class PatientExternalModel extends BaseModel {
 
   updateModel(external: PatientExternalDTO): this {
     this.#searchResult = external;
-    this.#nhcId = external.nhcId;
+    this.#nhcId = external.nhcId ?? null;
     return this;
   }
 
@@ -160,8 +160,8 @@ export class PatientExternalModel extends BaseModel {
         device: this.#device ? { id: this.#device.id } : undefined,
       },
       external: {
-        email: this.email ?? null,
-        phone: this.phone ?? null,
+        email: this.email,
+        phone: this.phone,
       },
     };
   }
