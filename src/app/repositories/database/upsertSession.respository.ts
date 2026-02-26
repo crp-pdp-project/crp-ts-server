@@ -15,6 +15,7 @@ export class UpsertSessionRepository implements IUpsertSessionRepository {
       .insertInto('Sessions')
       .values(session as Insertable<SessionDM>)
       .onDuplicateKeyUpdate((eb) => ({
+        id: eb.fn('LAST_INSERT_ID', [eb.ref('id')]),
         jti: eb.val(session.jti),
         expiresAt: eb.val(session.expiresAt),
         deviceId: eb.val(session.deviceId),

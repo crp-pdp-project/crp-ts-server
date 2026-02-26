@@ -15,6 +15,7 @@ export class UpsertDeviceRepository implements IUpsertDeviceRepository {
       .insertInto('Devices')
       .values(device as Insertable<DeviceDM>)
       .onDuplicateKeyUpdate((eb) => ({
+        id: eb.fn('LAST_INSERT_ID', [eb.ref('id')]),
         expiresAt: eb.val(device.expiresAt),
         pushToken:
           device.pushToken != null
