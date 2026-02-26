@@ -15,6 +15,7 @@ export class UpsertEmployeeSessionRepository implements IUpsertEmployeeSessionRe
       .insertInto('EmployeeSessions')
       .values(session as Insertable<EmployeeSessionDM>)
       .onDuplicateKeyUpdate((eb) => ({
+        id: eb.fn('LAST_INSERT_ID', [eb.ref('id')]),
         jti: eb.val(session.jti),
         username: eb.val(session.username),
         expiresAt: eb.val(session.expiresAt),

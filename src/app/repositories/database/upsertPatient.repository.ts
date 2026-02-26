@@ -15,6 +15,7 @@ export class UpsertPatientRepository implements IUpsertPatientRepository {
       .insertInto('Patients')
       .values(patient as Insertable<PatientDM>)
       .onDuplicateKeyUpdate((eb) => ({
+        id: eb.fn('LAST_INSERT_ID', [eb.ref('id')]),
         nhcId: eb.val(patient.nhcId),
         firstName: eb.val(patient.firstName),
         lastName: eb.val(patient.lastName),

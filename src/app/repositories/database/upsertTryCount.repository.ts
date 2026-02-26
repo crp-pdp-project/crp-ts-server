@@ -15,6 +15,7 @@ export class UpsertTryCountRepository implements IUpsertTryCountRepository {
       .insertInto('AuthAttempts')
       .values(attempt as Insertable<AuthAttemptDM>)
       .onDuplicateKeyUpdate((eb) => ({
+        id: eb.fn('LAST_INSERT_ID', [eb.ref('id')]),
         tryCount: eb.val(attempt.tryCount),
         tryCountExpiresAt: eb.val(attempt.tryCountExpiresAt),
       }))
