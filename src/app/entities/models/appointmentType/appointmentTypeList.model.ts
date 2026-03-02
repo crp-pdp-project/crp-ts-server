@@ -1,4 +1,4 @@
-import { AppointmentTypeDTO } from 'src/app/entities/dtos/service/appointmentType.dto';
+import type { AppointmentTypeDTO } from 'src/app/entities/dtos/service/appointmentType.dto';
 
 import { BaseModel } from '../base.model';
 

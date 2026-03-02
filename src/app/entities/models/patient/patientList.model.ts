@@ -1,4 +1,4 @@
-import { PatientDTO } from '../../dtos/service/patient.dto';
+import type { PatientDTO } from '../../dtos/service/patient.dto';
 import { BaseModel } from '../base.model';
 
 import { PatientModel } from './patient.model';

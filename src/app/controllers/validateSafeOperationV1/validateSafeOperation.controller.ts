@@ -1,12 +1,11 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import {
-  IValidateSafeOperationInteractor,
-  ValidateSafeOperationInteractor,
-} from 'src/app/interactors/validateSafeOperation/validateSafeOperation.interactor';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { IValidateSafeOperationInteractor } from 'src/app/interactors/validateSafeOperation/validateSafeOperation.interactor';
+import { ValidateSafeOperationInteractor } from 'src/app/interactors/validateSafeOperation/validateSafeOperation.interactor';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IValidateSafeOperationController {
   validate(input: FastifyRequest, reply: FastifyReply): Promise<void>;

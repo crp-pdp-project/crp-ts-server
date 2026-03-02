@@ -1,5 +1,5 @@
-import { AvailabilityRequestDTO } from 'src/app/entities/dtos/service/availabilityRequest.dto';
-import { DoctorAvailabilityDTO } from 'src/app/entities/dtos/service/doctorAvailability.dto';
+import type { AvailabilityRequestDTO } from 'src/app/entities/dtos/service/availabilityRequest.dto';
+import type { DoctorAvailabilityDTO } from 'src/app/entities/dtos/service/doctorAvailability.dto';
 import { InetumAppointmentServices, InetumClient } from 'src/clients/inetum/inetum.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { DateHelper } from 'src/general/helpers/date.helper';
@@ -61,8 +61,8 @@ export class GetDoctorAvailabilityRepository implements IGetDoctorAvailabilityRe
   }
 
   private generateInput(payload: AvailabilityRequestDTO): GetDoctorAvailabilityInput {
-    const initDate = DateHelper.subtractDays(1, 'inetumDate');
-    const baseEndDate = DateHelper.addMonths(6, 'inetumDate');
+    const { start, end } = DateHelper.toRange('none', 'month', payload.filterDate);
+    const rangeEndDate = !payload.filterDate ? end.add(3, 'month') : end;
 
     return {
       usuario: this.user,
@@ -73,11 +73,11 @@ export class GetDoctorAvailabilityRepository implements IGetDoctorAvailabilityRe
         IdProfesional: payload.doctorId,
         IdPrestacion: payload.appointmentTypeId,
         IdSociedad: payload.insuranceId,
-        FechaDesde: initDate,
+        FechaDesde: DateHelper.toDate('inetumDate', start),
         CodInspeccion: payload.inspectionId,
-        FechaFin: DateHelper.addDays(1, 'inetumDate', baseEndDate),
-        HoraDesde: DateHelper.startOfTime('inetumTime'),
-        HoraFin: DateHelper.endOfTime('inetumTime'),
+        FechaFin: DateHelper.toDate('inetumDate', rangeEndDate),
+        HoraDesde: DateHelper.startOf('inetumTime', 'day'),
+        HoraFin: DateHelper.endOf('inetumTime', 'day'),
         IdPaciente: payload.fmpId,
         CanalEntrada: CRPConstants.ORIGIN,
         PrimerHueco: String(payload.firstAvailable),

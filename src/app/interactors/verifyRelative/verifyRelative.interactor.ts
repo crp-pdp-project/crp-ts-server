@@ -1,8 +1,6 @@
-import { OperateRelativeParamsDTO } from 'src/app/entities/dtos/input/verifyRelative.input.dto';
-import {
-  IUpdateRelativeVerificationRepository,
-  UpdateRelativeVerificationRepository,
-} from 'src/app/repositories/database/updateRelativeVerification.repository';
+import type { OperateRelativeParamsDTO } from 'src/app/entities/dtos/input/verifyRelative.input.dto';
+import type { IUpdateRelativeVerificationRepository } from 'src/app/repositories/database/updateRelativeVerification.repository';
+import { UpdateRelativeVerificationRepository } from 'src/app/repositories/database/updateRelativeVerification.repository';
 
 export interface IVerifyRelativeInteractor {
   verify(params: OperateRelativeParamsDTO): Promise<void>;

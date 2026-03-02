@@ -1,18 +1,15 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { AvailabilityListQueryDTO } from 'src/app/entities/dtos/input/availabilityList.input.dto';
-import { AvailabilityRequestDTO } from 'src/app/entities/dtos/service/availabilityRequest.dto';
-import { DoctorAvailabilityDTO } from 'src/app/entities/dtos/service/doctorAvailability.dto';
-import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { AvailabilityListQueryDTO } from 'src/app/entities/dtos/input/availabilityList.input.dto';
+import type { AvailabilityRequestDTO } from 'src/app/entities/dtos/service/availabilityRequest.dto';
+import type { DoctorAvailabilityDTO } from 'src/app/entities/dtos/service/doctorAvailability.dto';
+import type { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import { AvailabilityListModel } from 'src/app/entities/models/availability/availabilityList.model';
-import { SignInSessionModel, ValidationRules } from 'src/app/entities/models/session/signInSession.model';
-import {
-  IPatientRelativesValidationRepository,
-  PatientRelativesValidationRepository,
-} from 'src/app/repositories/database/patientRelativesValidation.repository';
-import {
-  GetDoctorAvailabilityRepository,
-  IGetDoctorAvailabilityRepository,
-} from 'src/app/repositories/soap/getDoctorAvailability.repository';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import { ValidationRules } from 'src/app/entities/models/session/signInSession.model';
+import type { IPatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
+import { PatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
+import type { IGetDoctorAvailabilityRepository } from 'src/app/repositories/soap/getDoctorAvailability.repository';
+import { GetDoctorAvailabilityRepository } from 'src/app/repositories/soap/getDoctorAvailability.repository';
 
 export interface IAvailabilityListInteractor {
   list(query: AvailabilityListQueryDTO, session: SignInSessionModel): Promise<AvailabilityListModel>;
@@ -27,7 +24,11 @@ export class AvailabilityListInteractor implements IAvailabilityListInteractor {
   async list(query: AvailabilityListQueryDTO, session: SignInSessionModel): Promise<AvailabilityListModel> {
     const relatives = await this.getPatientRelatives(session.patient.id);
     session.inyectRelatives(relatives).validateFmpId(query.fmpId, ValidationRules.SELF_OR_RELATIVES);
-    const availabilityList = await this.getAvailabilityList({ ...query, firstAvailable: false });
+    const availabilityList = await this.getAvailabilityList({
+      ...query,
+      filterDate: query.date,
+      firstAvailable: false,
+    });
 
     return new AvailabilityListModel(availabilityList);
   }

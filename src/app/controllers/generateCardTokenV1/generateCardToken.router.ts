@@ -1,8 +1,9 @@
-import { FastifyInstance } from 'fastify';
+import type { FastifyInstance } from 'fastify';
 
 import { HttpMethod } from 'src/general/enums/methods.enum';
 
-import { GenerateCardTokenControllerBuilder, IGenerateCardTokenController } from './generateCardToken.controller';
+import type { IGenerateCardTokenController } from './generateCardToken.controller';
+import { GenerateCardTokenControllerBuilder } from './generateCardToken.controller';
 
 export class GenerateCardTokenV1Router {
   private readonly version: string = '/v1';

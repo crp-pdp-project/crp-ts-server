@@ -1,8 +1,6 @@
-import { UpdateHealthInsuranceBodyDTO } from 'src/app/entities/dtos/input/updateHealthInsuranceView.input.dto';
-import {
-  IUpdateHealthInsuranceRepository,
-  UpdateHealthInsuranceRepository,
-} from 'src/app/repositories/database/updateHealthInsuranceView.repository';
+import type { UpdateHealthInsuranceBodyDTO } from 'src/app/entities/dtos/input/updateHealthInsuranceView.input.dto';
+import type { IUpdateHealthInsuranceRepository } from 'src/app/repositories/database/updateHealthInsuranceView.repository';
+import { UpdateHealthInsuranceRepository } from 'src/app/repositories/database/updateHealthInsuranceView.repository';
 
 export interface IUpdateHealthInsuranceInteractor {
   verify(body: UpdateHealthInsuranceBodyDTO): Promise<void>;

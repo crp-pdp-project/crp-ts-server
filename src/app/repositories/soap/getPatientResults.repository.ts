@@ -1,10 +1,11 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { PatientResultDTO } from 'src/app/entities/dtos/service/patientResult.dto';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { PatientResultDTO } from 'src/app/entities/dtos/service/patientResult.dto';
 import { InetumClient, InetumHistoryServices } from 'src/clients/inetum/inetum.client';
 import { AppointmentConstants } from 'src/general/contants/appointment.constants';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { ResultConstants } from 'src/general/contants/result.constants';
-import { DateHelper, Months } from 'src/general/helpers/date.helper';
+import type { Months } from 'src/general/helpers/date.helper';
+import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 
 type GetPatientResultsInput = {
@@ -66,7 +67,8 @@ export class GetPatientResultsRepository implements IGetPatientResultsRepository
   }
 
   private parseInput(fmpId: PatientDM['fmpId'], year: number, month?: Months): GetPatientResultsInput {
-    const { startDate, endDate } = DateHelper.dateRange(year, 'inetumDate', month);
+    const parsedDate = DateHelper.parseSplitDate('none', year, month);
+    const { start, end } = DateHelper.toRange('inetumDate', 'month', parsedDate);
     return {
       usuario: this.user,
       contrasena: this.password,
@@ -74,8 +76,8 @@ export class GetPatientResultsRepository implements IGetPatientResultsRepository
         IdPaciente: fmpId,
         IdCentro: CRPConstants.CENTER_ID,
         TipoPrueba: ResultConstants.DEFAULT_RESULT_TYPE,
-        FechaInicio: startDate,
-        FechaFin: endDate,
+        FechaInicio: start,
+        FechaFin: end,
         NumRegistros: AppointmentConstants.DEFAULT_DOCUMENT_COUNT,
         CanalEntrada: CRPConstants.ORIGIN,
       },
@@ -89,7 +91,7 @@ export class GetPatientResultsRepository implements IGetPatientResultsRepository
     const results: PatientResultDTO[] = result.map((result) => ({
       resultId: result.IdEpisodio,
       episodeId: result.IdActo,
-      date: `${DateHelper.toFormatDate(result.Fecha, 'inetumDate')}${DateHelper.toFormatTime(result.Hora, 'inetumTime')}`,
+      date: `${DateHelper.toDate('inetumDate', result.Fecha)}${DateHelper.toDate('inetumTime', result.Hora)}`,
       centerId: result.IdCentro,
       doctor: { name: result.NombreProfesional },
       specialty: { name: result.NombreAgrupacion },

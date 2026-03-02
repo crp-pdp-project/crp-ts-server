@@ -1,5 +1,5 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { FamilyDTO } from 'src/app/entities/dtos/service/family.dto';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { FamilyDTO } from 'src/app/entities/dtos/service/family.dto';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IVerifyRelativeRepository {

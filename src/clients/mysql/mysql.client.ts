@@ -1,16 +1,17 @@
-import { Kysely, MysqlDialect, ErrorLogEvent, QueryLogEvent, MysqlPool } from 'kysely';
+import type { ErrorLogEvent, QueryLogEvent, MysqlPool } from 'kysely';
+import { Kysely, MysqlDialect } from 'kysely';
 import { createPool } from 'mysql2';
 
-import { AccountDM } from 'src/app/entities/dms/accounts.dm';
-import { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
-import { DeviceDM } from 'src/app/entities/dms/devices.dm';
-import { EmployeeSessionDM } from 'src/app/entities/dms/employeeSessions.dm';
-import { FamilyDM } from 'src/app/entities/dms/families.dm';
-import { HealthInsurancesDM } from 'src/app/entities/dms/healthInsurances.dm';
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { PushConfigDM } from 'src/app/entities/dms/pushConfigs.dm';
-import { RelationshipDM } from 'src/app/entities/dms/relationships.dm';
-import { SessionDM } from 'src/app/entities/dms/sessions.dm';
+import type { AccountDM } from 'src/app/entities/dms/accounts.dm';
+import type { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
+import type { DeviceDM } from 'src/app/entities/dms/devices.dm';
+import type { EmployeeSessionDM } from 'src/app/entities/dms/employeeSessions.dm';
+import type { FamilyDM } from 'src/app/entities/dms/families.dm';
+import type { HealthInsurancesDM } from 'src/app/entities/dms/healthInsurances.dm';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { PushConfigDM } from 'src/app/entities/dms/pushConfigs.dm';
+import type { RelationshipDM } from 'src/app/entities/dms/relationships.dm';
+import type { SessionDM } from 'src/app/entities/dms/sessions.dm';
 import { LoggerClient } from 'src/clients/logger/logger.client';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 

@@ -1,8 +1,8 @@
-import { ConCod271DetailDTO } from 'src/app/entities/dtos/service/conCod271Detail.dto';
+import type { ConCod271DetailDTO } from 'src/app/entities/dtos/service/conCod271Detail.dto';
 
 import { coverageTypeMap } from '../maps/coverageType.map';
 import { currencyTypeMap } from '../maps/currencyType.map';
-import { FieldMap, X12ManagerConfig } from '../x12.manager';
+import type { FieldMap, X12ManagerConfig } from '../x12.manager';
 
 export class ConCod271DetailConfig implements X12ManagerConfig<ConCod271DetailDTO> {
   readonly segmentDelimiter: string = '~';

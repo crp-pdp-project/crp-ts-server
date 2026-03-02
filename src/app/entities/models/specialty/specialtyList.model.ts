@@ -1,4 +1,4 @@
-import { SpecialtyDTO } from 'src/app/entities/dtos/service/specialty.dto';
+import type { SpecialtyDTO } from 'src/app/entities/dtos/service/specialty.dto';
 
 import { BaseModel } from '../base.model';
 

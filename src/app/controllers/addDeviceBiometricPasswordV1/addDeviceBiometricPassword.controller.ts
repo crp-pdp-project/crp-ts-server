@@ -1,18 +1,15 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import {
-  AddDeviceBiometricPasswordBodyDTOSchema,
-  AddDeviceBiometricPasswordInputDTO,
-} from 'src/app/entities/dtos/input/addDeviceBiometricPassword.input.dto';
+import type { AddDeviceBiometricPasswordInputDTO } from 'src/app/entities/dtos/input/addDeviceBiometricPassword.input.dto';
+import { AddDeviceBiometricPasswordBodyDTOSchema } from 'src/app/entities/dtos/input/addDeviceBiometricPassword.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
+import type { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import {
-  AddDeviceBiometricPasswordInteractorBuilder,
-  IAddDeviceBiometricPasswordInteractor,
-} from 'src/app/interactors/addDeviceBiometricPassword/addDeviceBiometricPassword.interactor';
+import type { IAddDeviceBiometricPasswordInteractor } from 'src/app/interactors/addDeviceBiometricPassword/addDeviceBiometricPassword.interactor';
+import { AddDeviceBiometricPasswordInteractorBuilder } from 'src/app/interactors/addDeviceBiometricPassword/addDeviceBiometricPassword.interactor';
 import { Audiences } from 'src/general/enums/audience.enum';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IAddDeviceBiometricPasswordController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;

@@ -1,27 +1,20 @@
-import { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
-import { SignInPatientBodyDTO } from 'src/app/entities/dtos/input/signInPatient.input.dto';
-import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
+import type { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
+import type { SignInPatientBodyDTO } from 'src/app/entities/dtos/input/signInPatient.input.dto';
+import type { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
 import { AuthAttemptModel, AuthFlowIdentifier } from 'src/app/entities/models/authAttempt/authAttempt.model';
-import { DeviceModel } from 'src/app/entities/models/device/device.model';
-import { PatientModel } from 'src/app/entities/models/patient/patient.model';
+import type { DeviceModel } from 'src/app/entities/models/device/device.model';
+import type { PatientModel } from 'src/app/entities/models/patient/patient.model';
 import { PatientTokenModel } from 'src/app/entities/models/patient/patientToken.model';
-import {
-  CleanUnusedDevicesRepository,
-  ICleanUnusedDevicesRepository,
-} from 'src/app/repositories/database/cleanUnusedDevices.repository';
-import {
-  GetAuthAttemptsRepository,
-  IGetAuthAttemptsRepository,
-} from 'src/app/repositories/database/getAuthAttempts.repository';
-import {
-  IUpsertDeviceRepository,
-  UpsertDeviceRepository,
-} from 'src/app/repositories/database/upsertDevice.respository';
-import {
-  IUpsertSessionRepository,
-  UpsertSessionRepository,
-} from 'src/app/repositories/database/upsertSession.respository';
-import { IJWTManager, JWTManagerBuilder } from 'src/general/managers/jwt/jwt.manager';
+import type { ICleanUnusedDevicesRepository } from 'src/app/repositories/database/cleanUnusedDevices.repository';
+import { CleanUnusedDevicesRepository } from 'src/app/repositories/database/cleanUnusedDevices.repository';
+import type { IGetAuthAttemptsRepository } from 'src/app/repositories/database/getAuthAttempts.repository';
+import { GetAuthAttemptsRepository } from 'src/app/repositories/database/getAuthAttempts.repository';
+import type { IUpsertDeviceRepository } from 'src/app/repositories/database/upsertDevice.respository';
+import { UpsertDeviceRepository } from 'src/app/repositories/database/upsertDevice.respository';
+import type { IUpsertSessionRepository } from 'src/app/repositories/database/upsertSession.respository';
+import { UpsertSessionRepository } from 'src/app/repositories/database/upsertSession.respository';
+import type { IJWTManager } from 'src/general/managers/jwt/jwt.manager';
+import { JWTManagerBuilder } from 'src/general/managers/jwt/jwt.manager';
 
 import { SignInBiometricStrategyBuilder } from './strategies/signInBiometric.strategy';
 import { SignInRegularStrategyBuilder } from './strategies/signInRegular.strategy';

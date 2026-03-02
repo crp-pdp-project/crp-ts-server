@@ -2,11 +2,11 @@ import { PosConstants } from 'src/general/contants/pos.constants';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 import { TextHelper } from 'src/general/helpers/text.helper';
 
-import { PatientExternalDTO } from '../../dtos/service/patientExternal.dto';
-import { POSConfigDTO } from '../../dtos/service/posConfig.dto';
+import type { PatientExternalDTO } from '../../dtos/service/patientExternal.dto';
+import type { POSConfigDTO } from '../../dtos/service/posConfig.dto';
 import { BaseModel } from '../base.model';
 import { ErrorModel } from '../error/error.model';
-import { SignInSessionModel } from '../session/signInSession.model';
+import type { SignInSessionModel } from '../session/signInSession.model';
 
 import { MDD21Strategy } from './strategies/mdd21.strategy';
 import { MDD32Strategy } from './strategies/mdd32.strategy';

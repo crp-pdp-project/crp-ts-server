@@ -1,8 +1,9 @@
-import nodemailer, { Transporter } from 'nodemailer';
+import type { Transporter } from 'nodemailer';
+import nodemailer from 'nodemailer';
 
 import { LoggerClient } from 'src/clients/logger/logger.client';
 import { EmailConstants } from 'src/general/contants/email.constants';
-import { EmailSubjects } from 'src/general/enums/emailSubject.enum';
+import type { EmailSubjects } from 'src/general/enums/emailSubject.enum';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 
 export type EmailOptions = {

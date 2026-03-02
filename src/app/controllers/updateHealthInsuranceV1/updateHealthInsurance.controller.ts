@@ -1,16 +1,13 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import {
-  UpdateHealthInsuranceBodyDTOSchema,
-  UpdateHealthInsuranceInputDTO,
-} from 'src/app/entities/dtos/input/updateHealthInsuranceView.input.dto';
+import type { UpdateHealthInsuranceInputDTO } from 'src/app/entities/dtos/input/updateHealthInsuranceView.input.dto';
+import { UpdateHealthInsuranceBodyDTOSchema } from 'src/app/entities/dtos/input/updateHealthInsuranceView.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import {
-  IUpdateHealthInsuranceInteractor,
-  UpdateHealthInsuranceInteractorBuilder,
-} from 'src/app/interactors/updateHealthInsurance/updateHealthInsurance.interactor';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { ResponseModel } from 'src/app/entities/models/response/response.model';
+import type { IUpdateHealthInsuranceInteractor } from 'src/app/interactors/updateHealthInsurance/updateHealthInsurance.interactor';
+import { UpdateHealthInsuranceInteractorBuilder } from 'src/app/interactors/updateHealthInsurance/updateHealthInsurance.interactor';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IUpdateHealthInsuranceController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;

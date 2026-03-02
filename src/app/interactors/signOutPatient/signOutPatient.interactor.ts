@@ -1,5 +1,6 @@
-import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
-import { CleanSessionRepository, ICleanSessionRepository } from 'src/app/repositories/database/cleanSession.repository';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import type { ICleanSessionRepository } from 'src/app/repositories/database/cleanSession.repository';
+import { CleanSessionRepository } from 'src/app/repositories/database/cleanSession.repository';
 
 export interface ISignOutPatientInteractor {
   signOut(session: SignInSessionModel): Promise<void>;

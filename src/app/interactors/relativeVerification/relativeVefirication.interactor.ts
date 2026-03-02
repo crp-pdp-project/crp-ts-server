@@ -1,24 +1,17 @@
-import { PatientVerificationBodyDTO } from 'src/app/entities/dtos/input/patientVerification.input.dto';
+import type { PatientVerificationBodyDTO } from 'src/app/entities/dtos/input/patientVerification.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
-import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
-import {
-  GetPatientAccountRepository,
-  IGetPatientAccountRepository,
-} from 'src/app/repositories/database/getPatientAccount.repository';
-import {
-  IUpsertPatientRepository,
-  UpsertPatientRepository,
-} from 'src/app/repositories/database/upsertPatient.repository';
-import {
-  IVerifyRelativeRepository,
-  VerifyRelativeRepository,
-} from 'src/app/repositories/database/verifyRelative.repository';
-import {
-  ConfirmPatientRepository,
-  IConfirmPatientRepository,
-} from 'src/app/repositories/soap/confirmPatient.repository';
-import { ISearchPatientRepository, SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import type { IGetPatientAccountRepository } from 'src/app/repositories/database/getPatientAccount.repository';
+import { GetPatientAccountRepository } from 'src/app/repositories/database/getPatientAccount.repository';
+import type { IUpsertPatientRepository } from 'src/app/repositories/database/upsertPatient.repository';
+import { UpsertPatientRepository } from 'src/app/repositories/database/upsertPatient.repository';
+import type { IVerifyRelativeRepository } from 'src/app/repositories/database/verifyRelative.repository';
+import { VerifyRelativeRepository } from 'src/app/repositories/database/verifyRelative.repository';
+import type { IConfirmPatientRepository } from 'src/app/repositories/soap/confirmPatient.repository';
+import { ConfirmPatientRepository } from 'src/app/repositories/soap/confirmPatient.repository';
+import type { ISearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
+import { SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 export interface IRelativeVerificationInteractor {

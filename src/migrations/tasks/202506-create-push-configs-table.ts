@@ -1,6 +1,7 @@
-import { Kysely, sql } from 'kysely';
+import type { Kysely } from 'kysely';
+import { sql } from 'kysely';
 
-import { Database } from 'src/clients/mysql/mysql.client';
+import type { Database } from 'src/clients/mysql/mysql.client';
 
 const tableName = 'PushConfigs';
 

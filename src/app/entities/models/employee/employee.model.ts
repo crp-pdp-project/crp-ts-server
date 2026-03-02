@@ -1,7 +1,7 @@
 import { BaseModel } from 'src/app/entities/models/base.model';
 
-import { EmployeeDTO } from '../../dtos/service/employee.dto';
-import { EmployeeSessionPayloadDTO } from '../../dtos/service/employeeSessionPayload.dto';
+import type { EmployeeDTO } from '../../dtos/service/employee.dto';
+import type { EmployeeSessionPayloadDTO } from '../../dtos/service/employeeSessionPayload.dto';
 
 export class EmployeeModel extends BaseModel {
   readonly username: string;

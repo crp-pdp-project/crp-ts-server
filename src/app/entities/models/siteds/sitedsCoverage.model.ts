@@ -1,6 +1,6 @@
 import { SitedsConstants } from 'src/general/contants/siteds.constants';
 
-import { ConCod271DetailDTO } from '../../dtos/service/conCod271Detail.dto';
+import type { ConCod271DetailDTO } from '../../dtos/service/conCod271Detail.dto';
 import { BaseModel } from '../base.model';
 
 export class SitedsCoverageModel extends BaseModel {

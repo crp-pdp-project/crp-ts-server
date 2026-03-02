@@ -1,6 +1,6 @@
-import { ZodDiscriminatedUnion, ZodObject, ZodRawShape } from 'zod';
+import type { ZodDiscriminatedUnion, ZodObject, ZodRawShape } from 'zod';
 
-import { BaseModel } from 'src/app/entities/models/base.model';
+import type { BaseModel } from 'src/app/entities/models/base.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
 

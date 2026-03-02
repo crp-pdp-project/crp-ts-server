@@ -1,22 +1,16 @@
-import { EnrollSessionPayloadDTO } from 'src/app/entities/dtos/service/enrollSessionPayload.dto';
-import { DeviceModel } from 'src/app/entities/models/device/device.model';
+import type { EnrollSessionPayloadDTO } from 'src/app/entities/dtos/service/enrollSessionPayload.dto';
+import type { DeviceModel } from 'src/app/entities/models/device/device.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
-import {
-  IUpsertDeviceRepository,
-  UpsertDeviceRepository,
-} from 'src/app/repositories/database/upsertDevice.respository';
-import {
-  IUpsertPatientRepository,
-  UpsertPatientRepository,
-} from 'src/app/repositories/database/upsertPatient.repository';
-import {
-  ConfirmPatientRepository,
-  IConfirmPatientRepository,
-} from 'src/app/repositories/soap/confirmPatient.repository';
+import type { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
+import type { IUpsertDeviceRepository } from 'src/app/repositories/database/upsertDevice.respository';
+import { UpsertDeviceRepository } from 'src/app/repositories/database/upsertDevice.respository';
+import type { IUpsertPatientRepository } from 'src/app/repositories/database/upsertPatient.repository';
+import { UpsertPatientRepository } from 'src/app/repositories/database/upsertPatient.repository';
+import type { IConfirmPatientRepository } from 'src/app/repositories/soap/confirmPatient.repository';
+import { ConfirmPatientRepository } from 'src/app/repositories/soap/confirmPatient.repository';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
-import { IPatientVerificationStrategy } from '../patientVerification.interactor';
+import type { IPatientVerificationStrategy } from '../patientVerification.interactor';
 
 export class PatientVerificationEnrollStrategy implements IPatientVerificationStrategy {
   constructor(

@@ -1,13 +1,11 @@
-import { CreateEnrolledAccountBodyDTO } from 'src/app/entities/dtos/input/createEnrolledAccount.input.dto';
-import { UpdatePatientPasswordBodyDTO } from 'src/app/entities/dtos/input/updatePatientPassword.input.dto';
-import { EnrollSessionModel } from 'src/app/entities/models/session/enrollSession.model';
-import { RecoverSessionModel } from 'src/app/entities/models/session/recoverSession.model';
-import { CleanSessionRepository, ICleanSessionRepository } from 'src/app/repositories/database/cleanSession.repository';
-import {
-  EncryptionManagerBuilder,
-  IEncryptionManager,
-  PasswordHashResult,
-} from 'src/general/managers/encryption/encryption.manager';
+import type { CreateEnrolledAccountBodyDTO } from 'src/app/entities/dtos/input/createEnrolledAccount.input.dto';
+import type { UpdatePatientPasswordBodyDTO } from 'src/app/entities/dtos/input/updatePatientPassword.input.dto';
+import type { EnrollSessionModel } from 'src/app/entities/models/session/enrollSession.model';
+import type { RecoverSessionModel } from 'src/app/entities/models/session/recoverSession.model';
+import type { ICleanSessionRepository } from 'src/app/repositories/database/cleanSession.repository';
+import { CleanSessionRepository } from 'src/app/repositories/database/cleanSession.repository';
+import type { IEncryptionManager, PasswordHashResult } from 'src/general/managers/encryption/encryption.manager';
+import { EncryptionManagerBuilder } from 'src/general/managers/encryption/encryption.manager';
 
 import { CreatePasswordStrategyBuilder } from './strategies/createPassword.strategy';
 import { UpdatePasswordStrategyBuilder } from './strategies/updatePassword.strategy';

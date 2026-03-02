@@ -1,4 +1,5 @@
-import { Client, createClientAsync, WSSecurity } from 'soap';
+import type { Client } from 'soap';
+import { createClientAsync, WSSecurity } from 'soap';
 
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { LoggerClient } from 'src/clients/logger/logger.client';

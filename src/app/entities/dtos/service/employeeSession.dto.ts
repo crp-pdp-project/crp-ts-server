@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import type { z } from 'zod';
 
 import { EmployeeSessionDMSchema } from '../../dms/employeeSessions.dm';
 

@@ -1,4 +1,4 @@
-import { ValidateFmpIdStrategy, ValidateFmpIdStrategyInput } from '../signInSession.model';
+import type { ValidateFmpIdStrategy, ValidateFmpIdStrategyInput } from '../signInSession.model';
 
 export class SessionSelfOrRelativesStrategy implements ValidateFmpIdStrategy {
   isValidFmpId({ selfId, targetId, relatives }: ValidateFmpIdStrategyInput): boolean {

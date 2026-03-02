@@ -1,6 +1,6 @@
-import { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
-import { AxionalPayloadDTO } from 'src/app/entities/dtos/service/axionalPayload.dto';
-import { POSAuthorizationDTO } from 'src/app/entities/dtos/service/posAuthorization.dto';
+import type { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
+import type { AxionalPayloadDTO } from 'src/app/entities/dtos/service/axionalPayload.dto';
+import type { POSAuthorizationDTO } from 'src/app/entities/dtos/service/posAuthorization.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { CRPClient, CRPServicePaths } from 'src/clients/crp/crp.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';
@@ -116,11 +116,11 @@ export class PayAppointmentRepository implements IPayAppointmentRepository {
           episodio: appointment.episodeId ?? '',
           cod_iafa: appointment.insurance?.iafaId ?? '',
           cod_finan: appointment.insurance?.fasId ?? '',
-          fechacita: appointment.date ? DateHelper.toFormatDate(appointment.date, 'crpDate') : '',
-          horacita: appointment.date ? DateHelper.toFormatTime(appointment.date, 'spanishTimeShort') : '',
+          fechacita: appointment.date ? DateHelper.toDate('crpDate', appointment.date) : '',
+          horacita: appointment.date ? DateHelper.toDate('spanishTimeShort', appointment.date) : '',
         },
-        feTransaccion: DateHelper.toFormatDate(axional.date, 'crpDate'),
-        hoTransaccion: DateHelper.toFormatTime(axional.time, 'spanishTimeShort'),
+        feTransaccion: DateHelper.toDate('crpDate', axional.date),
+        hoTransaccion: DateHelper.toDate('spanishTimeShort', axional.time),
         dvPagoBase: CRPConstants.DEFAULT_CURRENCY,
         imPagoBase: axional.preTaxAmount,
         imPagoIGV: axional.taxAmount,

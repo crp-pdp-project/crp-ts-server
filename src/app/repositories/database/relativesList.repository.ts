@@ -1,8 +1,10 @@
-import { ExpressionBuilder, ExpressionWrapper, RawBuilder, sql, SqlBool } from 'kysely';
+import type { ExpressionBuilder, ExpressionWrapper, RawBuilder, SqlBool } from 'kysely';
+import { sql } from 'kysely';
 
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
-import { Database, MysqlClient } from 'src/clients/mysql/mysql.client';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
+import type { Database } from 'src/clients/mysql/mysql.client';
+import { MysqlClient } from 'src/clients/mysql/mysql.client';
 import { TextHelper } from 'src/general/helpers/text.helper';
 
 type Tables = 'Families' | 'Patients' | 'Relationships';

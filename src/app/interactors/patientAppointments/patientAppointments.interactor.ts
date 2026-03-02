@@ -1,11 +1,9 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { PatientAppointmentsParamsDTO } from 'src/app/entities/dtos/input/patientAppointment.input.dto';
-import { BaseModel } from 'src/app/entities/models/base.model';
-import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
-import {
-  IPatientRelativesValidationRepository,
-  PatientRelativesValidationRepository,
-} from 'src/app/repositories/database/patientRelativesValidation.repository';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { PatientAppointmentsParamsDTO } from 'src/app/entities/dtos/input/patientAppointment.input.dto';
+import type { BaseModel } from 'src/app/entities/models/base.model';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import type { IPatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
+import { PatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
 
 import { CurrentAppointmentsStrategyBuilder } from './strategies/currentAppointments.strategy';
 import { HistoryAppointmentsStrategyBuilder } from './strategies/historicAppointments.strategy';

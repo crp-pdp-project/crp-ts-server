@@ -1,4 +1,4 @@
-import { BulletsDataDTO } from '../../dtos/service/viewElement.dto';
+import type { BulletsDataDTO } from '../../dtos/service/viewElement.dto';
 
 import { ViewElementModel, ViewElementType } from './view.model';
 

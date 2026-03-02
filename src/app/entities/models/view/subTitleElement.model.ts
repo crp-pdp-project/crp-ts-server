@@ -1,4 +1,4 @@
-import { SubTitleDataDTO } from '../../dtos/service/viewElement.dto';
+import type { SubTitleDataDTO } from '../../dtos/service/viewElement.dto';
 
 import { ViewElementModel, ViewElementType } from './view.model';
 

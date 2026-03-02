@@ -1,19 +1,16 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import {
-  GuaranteeLetterListInputDTO,
-  GuaranteeLetterListParamsDTOSchema,
-} from 'src/app/entities/dtos/input/guaranteeLetterList.input.dto';
+import type { GuaranteeLetterListInputDTO } from 'src/app/entities/dtos/input/guaranteeLetterList.input.dto';
+import { GuaranteeLetterListParamsDTOSchema } from 'src/app/entities/dtos/input/guaranteeLetterList.input.dto';
 import { GuaranteeLetterListOutputDTOSchema } from 'src/app/entities/dtos/output/guaranteeLetterList.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
+import type { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import {
-  GuaranteeLetterListInteractorBuilder,
-  IGuaranteeLetterListInteractor,
-} from 'src/app/interactors/guaranteeLetterList/guaranteeLetterList.interactor';
+import type { IGuaranteeLetterListInteractor } from 'src/app/interactors/guaranteeLetterList/guaranteeLetterList.interactor';
+import { GuaranteeLetterListInteractorBuilder } from 'src/app/interactors/guaranteeLetterList/guaranteeLetterList.interactor';
 import { Audiences } from 'src/general/enums/audience.enum';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IGuaranteeLetterListController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;

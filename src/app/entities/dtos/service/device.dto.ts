@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import type { z } from 'zod';
 
 import { DeviceDMSchema } from 'src/app/entities/dms/devices.dm';
 

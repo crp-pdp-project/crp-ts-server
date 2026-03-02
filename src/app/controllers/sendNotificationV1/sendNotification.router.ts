@@ -1,14 +1,13 @@
-import { FastifyInstance } from 'fastify';
+import type { FastifyInstance } from 'fastify';
 
 import { HttpMethod } from 'src/general/enums/methods.enum';
 import { RouterHelper } from 'src/general/helpers/router.helper';
 
-import {
-  IValidateEmployeeSessionController,
-  ValidateEmployeeSessionControllerBuilder,
-} from '../validateEmployeeSessionV1/validateEmployeeSession.controller';
+import type { IValidateEmployeeSessionController } from '../validateEmployeeSessionV1/validateEmployeeSession.controller';
+import { ValidateEmployeeSessionControllerBuilder } from '../validateEmployeeSessionV1/validateEmployeeSession.controller';
 
-import { SendNotificationControllerBuilder, ISendNotificationController } from './sendNotification.controller';
+import type { ISendNotificationController } from './sendNotification.controller';
+import { SendNotificationControllerBuilder } from './sendNotification.controller';
 
 export class SendNotificationV1Router {
   private readonly version: string = '/v1';

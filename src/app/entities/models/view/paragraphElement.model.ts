@@ -1,4 +1,4 @@
-import { ParagraphDataDTO } from '../../dtos/service/viewElement.dto';
+import type { ParagraphDataDTO } from '../../dtos/service/viewElement.dto';
 
 import { ViewElementModel, ViewElementType } from './view.model';
 

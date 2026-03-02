@@ -8,7 +8,7 @@ import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 import { RestHelper } from 'src/general/helpers/rest.helper';
 
-import { PushPayload, PushStrategy, Tokens } from '../push.client';
+import type { PushPayload, PushStrategy, Tokens } from '../push.client';
 
 type ServiceAccountJson = {
   type: 'service_account';
@@ -131,13 +131,13 @@ export class FcmPushStrategy implements PushStrategy {
 
     this.token = access_token;
     this.tokenExpiresAt = expiry_date
-      ? DateHelper.toFormatDateTime(expiry_date, 'dbDateTime')
-      : DateHelper.addMinutes(FirebaseConstants.TOKEN_TIMEOUT, 'dbDateTime');
+      ? DateHelper.toDate('dbDateTime', expiry_date)
+      : DateHelper.mutate('dbDateTime', 'minute', FirebaseConstants.TOKEN_TIMEOUT);
 
     return access_token;
   }
 
   private isTokenValid(): boolean {
-    return !!this.token && !DateHelper.isBeforeNow(this.tokenExpiresAt);
+    return !!this.token && !DateHelper.isBefore(this.tokenExpiresAt);
   }
 }

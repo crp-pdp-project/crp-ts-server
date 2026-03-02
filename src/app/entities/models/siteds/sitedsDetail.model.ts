@@ -1,10 +1,10 @@
 import { LoggerClient } from 'src/clients/logger/logger.client';
 import { SitedsConstants } from 'src/general/contants/siteds.constants';
 
-import { ConAse270DTO } from '../../dtos/service/conAse270.dto';
-import { ConCod271DTO } from '../../dtos/service/conCod271.dto';
-import { ConCod271DetailDTO } from '../../dtos/service/conCod271Detail.dto';
-import { ConNom271DetailDTO } from '../../dtos/service/conNom271Detail.dto';
+import type { ConAse270DTO } from '../../dtos/service/conAse270.dto';
+import type { ConCod271DTO } from '../../dtos/service/conCod271.dto';
+import type { ConCod271DetailDTO } from '../../dtos/service/conCod271Detail.dto';
+import type { ConNom271DetailDTO } from '../../dtos/service/conNom271Detail.dto';
 import { BaseModel } from '../base.model';
 
 import { SitedsCoverageModel } from './sitedsCoverage.model';

@@ -1,37 +1,27 @@
-import { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { CreatePatientBodyDTO } from 'src/app/entities/dtos/input/createPatient.input.dto';
-import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
+import type { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { CreatePatientBodyDTO } from 'src/app/entities/dtos/input/createPatient.input.dto';
+import type { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
 import { AuthAttemptModel, AuthFlowIdentifier } from 'src/app/entities/models/authAttempt/authAttempt.model';
-import { DeviceModel } from 'src/app/entities/models/device/device.model';
+import type { DeviceModel } from 'src/app/entities/models/device/device.model';
 import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
 import { PatientExternalTokenModel } from 'src/app/entities/models/patient/patientExternalToken.model';
-import {
-  GetAuthAttemptsRepository,
-  IGetAuthAttemptsRepository,
-} from 'src/app/repositories/database/getAuthAttempts.repository';
-import {
-  GetPatientAccountRepository,
-  IGetPatientAccountRepository,
-} from 'src/app/repositories/database/getPatientAccount.repository';
-import {
-  IUpsertDeviceRepository,
-  UpsertDeviceRepository,
-} from 'src/app/repositories/database/upsertDevice.respository';
-import {
-  IUpsertPatientRepository,
-  UpsertPatientRepository,
-} from 'src/app/repositories/database/upsertPatient.repository';
-import {
-  IUpsertSessionRepository,
-  UpsertSessionRepository,
-} from 'src/app/repositories/database/upsertSession.respository';
-import {
-  ConfirmPatientRepository,
-  IConfirmPatientRepository,
-} from 'src/app/repositories/soap/confirmPatient.repository';
-import { ISearchPatientRepository, SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
-import { IJWTManager, JWTManagerBuilder } from 'src/general/managers/jwt/jwt.manager';
+import type { IGetAuthAttemptsRepository } from 'src/app/repositories/database/getAuthAttempts.repository';
+import { GetAuthAttemptsRepository } from 'src/app/repositories/database/getAuthAttempts.repository';
+import type { IGetPatientAccountRepository } from 'src/app/repositories/database/getPatientAccount.repository';
+import { GetPatientAccountRepository } from 'src/app/repositories/database/getPatientAccount.repository';
+import type { IUpsertDeviceRepository } from 'src/app/repositories/database/upsertDevice.respository';
+import { UpsertDeviceRepository } from 'src/app/repositories/database/upsertDevice.respository';
+import type { IUpsertPatientRepository } from 'src/app/repositories/database/upsertPatient.repository';
+import { UpsertPatientRepository } from 'src/app/repositories/database/upsertPatient.repository';
+import type { IUpsertSessionRepository } from 'src/app/repositories/database/upsertSession.respository';
+import { UpsertSessionRepository } from 'src/app/repositories/database/upsertSession.respository';
+import type { IConfirmPatientRepository } from 'src/app/repositories/soap/confirmPatient.repository';
+import { ConfirmPatientRepository } from 'src/app/repositories/soap/confirmPatient.repository';
+import type { ISearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
+import { SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
+import type { IJWTManager } from 'src/general/managers/jwt/jwt.manager';
+import { JWTManagerBuilder } from 'src/general/managers/jwt/jwt.manager';
 
 export interface ICreatePatientInteractor {
   create(body: CreatePatientBodyDTO, device: DeviceModel): Promise<PatientExternalTokenModel>;

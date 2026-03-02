@@ -1,5 +1,6 @@
-import { InsuranceDTO } from 'src/app/entities/dtos/service/insurance.dto';
-import { InsuranceTypes, InsuranceTypesMapper } from 'src/general/enums/insuranceType.enum';
+import type { InsuranceDTO } from 'src/app/entities/dtos/service/insurance.dto';
+import type { InsuranceTypes } from 'src/general/enums/insuranceType.enum';
+import { InsuranceTypesMapper } from 'src/general/enums/insuranceType.enum';
 import { TextHelper } from 'src/general/helpers/text.helper';
 
 import { BaseModel } from '../base.model';

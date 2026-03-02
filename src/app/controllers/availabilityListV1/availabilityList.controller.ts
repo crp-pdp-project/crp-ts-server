@@ -1,19 +1,16 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import {
-  AvailabilityListInputDTO,
-  AvailabilityListQueryDTOSchema,
-} from 'src/app/entities/dtos/input/availabilityList.input.dto';
+import type { AvailabilityListInputDTO } from 'src/app/entities/dtos/input/availabilityList.input.dto';
+import { AvailabilityListQueryDTOSchema } from 'src/app/entities/dtos/input/availabilityList.input.dto';
 import { AvailabilityListOutputDTOSchema } from 'src/app/entities/dtos/output/availabilityList.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
+import type { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import {
-  AvailabilityListInteractorBuilder,
-  IAvailabilityListInteractor,
-} from 'src/app/interactors/availabilityList/availabilityList.interactor';
+import type { IAvailabilityListInteractor } from 'src/app/interactors/availabilityList/availabilityList.interactor';
+import { AvailabilityListInteractorBuilder } from 'src/app/interactors/availabilityList/availabilityList.interactor';
 import { Audiences } from 'src/general/enums/audience.enum';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IAvailabilityListController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;

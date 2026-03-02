@@ -1,4 +1,4 @@
-import { DoctorDTO } from 'src/app/entities/dtos/service/doctor.dto';
+import type { DoctorDTO } from 'src/app/entities/dtos/service/doctor.dto';
 import { InetumCatalogServices, InetumClient } from 'src/clients/inetum/inetum.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { EnvHelper } from 'src/general/helpers/env.helper';
@@ -21,6 +21,7 @@ type GetDoctorsOutput = {
         Nombre: string;
         IdEspecialidad: string;
         DescEspecialidad: string;
+        Agrupacion: string;
       }[];
     };
   };
@@ -62,7 +63,9 @@ export class GetDoctorsRepository implements IGetDoctorsRepository {
       name: professional.Nombre ?? '',
       specialty: {
         id: String(professional.IdEspecialidad),
-        groupId: String(professional.IdEspecialidad).slice(0, -2) || '0',
+        groupId: professional.Agrupacion
+          ? String(professional.Agrupacion)
+          : String(professional.IdEspecialidad).slice(0, -2),
         name: professional.DescEspecialidad ?? '',
       },
     }));
@@ -79,6 +82,7 @@ export class GetDoctorsRepositoryMock implements IGetDoctorsRepository {
         name: 'MARÍA DEL CARMEN PA JA',
         specialty: {
           id: '3706',
+          groupId: '37',
           name: 'Medicina Física y Rehabilitación',
         },
       },

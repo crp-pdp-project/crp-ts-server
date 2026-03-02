@@ -1,12 +1,13 @@
-export const dateConstants = {
+const dateConstants = {
   crpDate: 'DDMMYYYY',
   crpDateShort: 'DDMMYY',
   inetumDate: 'YYYYMMDD',
   spanishDate: 'DD-MM-YYYY',
+  spanishDateShort: 'MM-YYYY',
   dbDate: 'YYYY-MM-DD',
 } as const;
 
-export const timeConstants = {
+const timeConstants = {
   crpTime: 'HHmmss',
   crpTimeShort: 'HHmm',
   inetumTime: 'HHmmss',
@@ -15,7 +16,7 @@ export const timeConstants = {
   dbTime: 'HH:mm:ss',
 } as const;
 
-export const dateTimeConstants = {
+const dateTimeConstants = {
   crpDateTime: 'DDMMYYYYHHmmss',
   crpDateTimeShort: 'DDMMYYHHmm',
   inetumDateTime: 'YYYYMMDDHHmmss',

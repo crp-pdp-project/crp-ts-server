@@ -1,9 +1,9 @@
-import { AuthAttemptDTO } from 'src/app/entities/dtos/service/authAttempt.dto';
+import type { AuthAttemptDTO } from 'src/app/entities/dtos/service/authAttempt.dto';
+import type { IAuthAttemptConfig } from 'src/app/entities/models/authAttempt/config/authAttempt.config';
 import {
   AuthAttemptEnroll,
   AuthAttemptRecover,
   AuthAttemptSignIn,
-  IAuthAttemptConfig,
 } from 'src/app/entities/models/authAttempt/config/authAttempt.config';
 import { BaseModel } from 'src/app/entities/models/base.model';
 import { DateHelper } from 'src/general/helpers/date.helper';
@@ -84,19 +84,19 @@ export class AuthAttemptModel extends BaseModel {
   }
 
   private isBlocked(): boolean {
-    return !!this.#blockExpiresAt && !DateHelper.isBeforeNow(this.#blockExpiresAt);
+    return !!this.#blockExpiresAt && !DateHelper.isBefore(this.#blockExpiresAt);
   }
 
   private refreshState(): void {
-    if (!this.#tryCountExpiresAt || DateHelper.isBeforeNow(this.#tryCountExpiresAt)) {
+    if (!this.#tryCountExpiresAt || DateHelper.isBefore(this.#tryCountExpiresAt)) {
       this.#tryCount = 0;
     }
 
     this.#tryCount += 1;
-    this.#tryCountExpiresAt = DateHelper.addMinutes(this.authAttemptConfig.tryCountExpMinutes, 'dbDateTime');
+    this.#tryCountExpiresAt = DateHelper.mutate('dbDateTime', 'minute', this.authAttemptConfig.tryCountExpMinutes);
 
     if (this.#tryCount >= this.authAttemptConfig.maxTries) {
-      this.#blockExpiresAt = DateHelper.addMinutes(this.authAttemptConfig.blockExpMinutes, 'dbDateTime');
+      this.#blockExpiresAt = DateHelper.mutate('dbDateTime', 'minute', this.authAttemptConfig.blockExpMinutes);
     }
   }
 }

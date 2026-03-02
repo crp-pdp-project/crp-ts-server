@@ -1,23 +1,19 @@
-import { SignInPatientBodyDTO } from 'src/app/entities/dtos/input/signInPatient.input.dto';
-import { AuthAttemptModel } from 'src/app/entities/models/authAttempt/authAttempt.model';
+import type { SignInPatientBodyDTO } from 'src/app/entities/dtos/input/signInPatient.input.dto';
+import type { AuthAttemptModel } from 'src/app/entities/models/authAttempt/authAttempt.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { PatientModel } from 'src/app/entities/models/patient/patient.model';
-import { CleanBlockedRepository, ICleanBlockedRepository } from 'src/app/repositories/database/cleanBlocked.repository';
-import {
-  ISignInPatientRepository,
-  SignInPatientRepository,
-} from 'src/app/repositories/database/signInPatient.repository';
-import {
-  IUpdateBlockedRepository,
-  UpdateBlockedRepository,
-} from 'src/app/repositories/database/updateBlocked.repository';
-import {
-  IUpsertTryCountRepository,
-  UpsertTryCountRepository,
-} from 'src/app/repositories/database/upsertTryCount.repository';
-import { EncryptionManagerBuilder, IEncryptionManager } from 'src/general/managers/encryption/encryption.manager';
+import type { ICleanBlockedRepository } from 'src/app/repositories/database/cleanBlocked.repository';
+import { CleanBlockedRepository } from 'src/app/repositories/database/cleanBlocked.repository';
+import type { ISignInPatientRepository } from 'src/app/repositories/database/signInPatient.repository';
+import { SignInPatientRepository } from 'src/app/repositories/database/signInPatient.repository';
+import type { IUpdateBlockedRepository } from 'src/app/repositories/database/updateBlocked.repository';
+import { UpdateBlockedRepository } from 'src/app/repositories/database/updateBlocked.repository';
+import type { IUpsertTryCountRepository } from 'src/app/repositories/database/upsertTryCount.repository';
+import { UpsertTryCountRepository } from 'src/app/repositories/database/upsertTryCount.repository';
+import type { IEncryptionManager } from 'src/general/managers/encryption/encryption.manager';
+import { EncryptionManagerBuilder } from 'src/general/managers/encryption/encryption.manager';
 
-import { ISignInStrategy } from '../signInPatient.interactor';
+import type { ISignInStrategy } from '../signInPatient.interactor';
 
 export class SignInRegularStrategy implements ISignInStrategy {
   constructor(

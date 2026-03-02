@@ -1,9 +1,9 @@
-import { ConNom271DetailDTO } from 'src/app/entities/dtos/service/conNom271Detail.dto';
+import type { ConNom271DetailDTO } from 'src/app/entities/dtos/service/conNom271Detail.dto';
 
 import { documentTypeMap } from '../maps/documentType.map';
 import { entityTypeMap } from '../maps/entityType.map';
 import { statusTypeMap } from '../maps/statusType.map';
-import { FieldMap, X12ManagerConfig } from '../x12.manager';
+import type { FieldMap, X12ManagerConfig } from '../x12.manager';
 
 export class ConNom271DetailConfig implements X12ManagerConfig<ConNom271DetailDTO> {
   readonly segmentDelimiter: string = '~';

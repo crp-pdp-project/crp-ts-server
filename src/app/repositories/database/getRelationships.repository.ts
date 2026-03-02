@@ -1,4 +1,4 @@
-import { RelationshipDTO } from 'src/app/entities/dtos/service/relationship.dto';
+import type { RelationshipDTO } from 'src/app/entities/dtos/service/relationship.dto';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IGetRelationshipsRepository {

@@ -3,7 +3,7 @@ import {
   GenerateCardTokenQueryDTOSchema,
 } from 'src/app/entities/dtos/input/generateCardToken.input.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
-import { IOpenApiManager } from 'src/general/managers/openapi/openapi.manager';
+import type { IOpenApiManager } from 'src/general/managers/openapi/openapi.manager';
 
 export class GenerateCardTokenV1Docs {
   private readonly version: string = '/v1';

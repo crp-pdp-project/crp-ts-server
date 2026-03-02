@@ -1,14 +1,13 @@
-import { FastifyInstance } from 'fastify';
+import type { FastifyInstance } from 'fastify';
 
 import { HttpMethod } from 'src/general/enums/methods.enum';
 import { RouterHelper } from 'src/general/helpers/router.helper';
 
-import {
-  IValidateEmployeeSessionController,
-  ValidateEmployeeSessionControllerBuilder,
-} from '../validateEmployeeSessionV1/validateEmployeeSession.controller';
+import type { IValidateEmployeeSessionController } from '../validateEmployeeSessionV1/validateEmployeeSession.controller';
+import { ValidateEmployeeSessionControllerBuilder } from '../validateEmployeeSessionV1/validateEmployeeSession.controller';
 
-import { VerifyRelativeControllerBuilder, IVerifyRelativeController } from './verifyRelative.controller';
+import type { IVerifyRelativeController } from './verifyRelative.controller';
+import { VerifyRelativeControllerBuilder } from './verifyRelative.controller';
 
 export class VerifyRelativeV1Router {
   private readonly version: string = '/v1';

@@ -1,7 +1,7 @@
-import { ConNom271DTO } from 'src/app/entities/dtos/service/conNom271.dto';
+import type { ConNom271DTO } from 'src/app/entities/dtos/service/conNom271.dto';
 
 import { entityTypeMap } from '../maps/entityType.map';
-import { FieldMap, X12ManagerConfig } from '../x12.manager';
+import type { FieldMap, X12ManagerConfig } from '../x12.manager';
 
 import { ConNom271DetailConfig } from './271ConNomDetail.config';
 

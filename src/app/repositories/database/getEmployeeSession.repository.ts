@@ -1,5 +1,5 @@
-import { EmployeeSessionDM } from 'src/app/entities/dms/employeeSessions.dm';
-import { EmployeeSessionDTO } from 'src/app/entities/dtos/service/employeeSession.dto';
+import type { EmployeeSessionDM } from 'src/app/entities/dms/employeeSessions.dm';
+import type { EmployeeSessionDTO } from 'src/app/entities/dtos/service/employeeSession.dto';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IGetEmployeeSessionRepository {

@@ -1,17 +1,16 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
+import type { GenerateCardTokenInputDTO } from 'src/app/entities/dtos/input/generateCardToken.input.dto';
 import {
   GenerateCardTokenBodyDTOSchema,
-  GenerateCardTokenInputDTO,
   GenerateCardTokenQueryDTOSchema,
 } from 'src/app/entities/dtos/input/generateCardToken.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import {
-  GenerateCardTokenInteractorBuilder,
-  IGenerateCardTokenInteractor,
-} from 'src/app/interactors/generateCardToken/generateCardToken.interactor';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { ResponseModel } from 'src/app/entities/models/response/response.model';
+import type { IGenerateCardTokenInteractor } from 'src/app/interactors/generateCardToken/generateCardToken.interactor';
+import { GenerateCardTokenInteractorBuilder } from 'src/app/interactors/generateCardToken/generateCardToken.interactor';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IGenerateCardTokenController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;

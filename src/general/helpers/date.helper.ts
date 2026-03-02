@@ -1,9 +1,10 @@
-import dayjs, { Dayjs, isDayjs, ManipulateType } from 'dayjs';
+import dayjs, { isDayjs, extend } from 'dayjs';
+import type { Dayjs, ManipulateType, UnitType } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
-import { allConstants, dateConstants, dateTimeConstants, timeConstants } from '../contants/date.constants';
+import { allConstants } from '../contants/date.constants';
 
-dayjs.extend(customParseFormat);
+extend(customParseFormat);
 
 export enum Months {
   Jan = 1,
@@ -20,95 +21,81 @@ export enum Months {
   Dec,
 }
 
-export type TimeFormatKey = keyof typeof timeConstants;
-export type DateFormatKey = keyof typeof dateConstants;
-export type DateTimeFormatKey = keyof typeof dateTimeConstants;
+export type NullKey = 'none';
 export type FormatKey = keyof typeof allConstants;
+export type AnyFormatKey = FormatKey | NullKey;
 export type ValidDate = Dayjs | Date | string | number;
+export type FormatResult<T extends AnyFormatKey> = T extends NullKey ? Dayjs : string;
 
 export class DateHelper {
   private static readonly allInputFormats: string[] = Object.values(allConstants);
 
-  static toFormatDate(date: ValidDate, formatKey: DateFormatKey): string {
-    return this.parse(date).format(dateConstants[formatKey]);
-  }
-
-  static toFormatTime(date: ValidDate, formatKey: TimeFormatKey): string {
-    return this.parse(date).format(timeConstants[formatKey]);
-  }
-
-  static toFormatDateTime(date: ValidDate, formatKey: DateTimeFormatKey): string {
-    return this.parse(date).format(dateTimeConstants[formatKey]);
-  }
-
-  static isBeforeNow(date: ValidDate): boolean {
+  static toDate<T extends AnyFormatKey>(formatKey: T, date?: ValidDate): FormatResult<T> {
     const parsedDate = this.parse(date);
-    return parsedDate.isBefore(dayjs());
+    return this.format(formatKey, parsedDate);
   }
 
-  static startOfTime(timeFormatKey: TimeFormatKey): string {
-    return dayjs().startOf('day').format(allConstants[timeFormatKey]);
+  static startOf<T extends AnyFormatKey>(formatKey: T, granularity: UnitType, date?: ValidDate): FormatResult<T> {
+    const parsedDate = this.parse(date).startOf(granularity);
+    return this.format(formatKey, parsedDate);
   }
 
-  static endOfTime(timeFormatKey: TimeFormatKey): string {
-    return dayjs().endOf('day').format(allConstants[timeFormatKey]);
+  static endOf<T extends AnyFormatKey>(formatKey: T, granularity: UnitType, date?: ValidDate): FormatResult<T> {
+    const parsedDate = this.parse(date).endOf(granularity);
+    return this.format(formatKey, parsedDate);
   }
 
-  static toDate(date: ValidDate): Dayjs {
-    return this.parse(date);
+  static toRange<T extends AnyFormatKey>(
+    formatKey: T,
+    granularity: UnitType,
+    date?: ValidDate,
+  ): { start: FormatResult<T>; end: FormatResult<T> } {
+    return {
+      start: this.startOf(formatKey, granularity, date),
+      end: this.endOf(formatKey, granularity, date),
+    };
   }
 
-  static dateNow(formatKey: FormatKey): string {
-    return dayjs().format(allConstants[formatKey]);
+  static mutate<T extends AnyFormatKey>(
+    formatKey: T,
+    granularity: ManipulateType,
+    amount: number,
+    date?: ValidDate,
+  ): FormatResult<T> {
+    const parsedDate = this.parse(date).add(amount, granularity);
+    return this.format(formatKey, parsedDate);
   }
 
-  static addMonths(numOfMonths: number, formatKey: FormatKey, baseDate?: ValidDate): string {
-    const date = baseDate ? this.parse(baseDate) : dayjs();
-    return date.add(numOfMonths, 'months').format(allConstants[formatKey]);
+  static parseSplitDate<T extends AnyFormatKey>(
+    formatKey: T,
+    year: number,
+    month?: Months,
+    day?: number,
+  ): FormatResult<T> {
+    const parsedDate = dayjs()
+      .set('year', year)
+      .set('month', month ? month - 1 : 0)
+      .set('date', day ?? 1);
+    return this.format(formatKey, parsedDate);
   }
 
-  static subtractMonths(numOfMonths: number, formatKey: FormatKey, baseDate?: ValidDate): string {
-    const date = baseDate ? this.parse(baseDate) : dayjs();
-    return date.subtract(numOfMonths, 'months').format(allConstants[formatKey]);
+  static countFrom(granularity: ManipulateType, date?: ValidDate, fromDate?: ValidDate): number {
+    return this.parse(fromDate).diff(this.parse(date), granularity) + 1;
   }
 
-  static addDays(numOfDays: number, formatKey: FormatKey, baseDate?: ValidDate): string {
-    const date = baseDate ? this.parse(baseDate) : dayjs();
-    return date.add(numOfDays, 'days').format(allConstants[formatKey]);
+  static isBefore(date?: ValidDate, compareTo?: ValidDate): boolean {
+    return this.parse(date).isBefore(this.parse(compareTo));
   }
 
-  static dateRange(year: number, formatKey: FormatKey, month?: Months): { startDate: string; endDate: string } {
-    const baseYear = dayjs(`${year}-01-01`);
-    const baseDate = month ? baseYear.set('month', month - 1) : baseYear;
-    const granularity: dayjs.UnitType = month ? 'month' : 'year';
-
-    const startDate = baseDate.startOf(granularity).subtract(1, 'day').format(allConstants[formatKey]);
-    const endDate = baseDate.endOf(granularity).add(1, 'day').format(allConstants[formatKey]);
-
-    return { startDate, endDate };
+  static isAfter(date?: ValidDate, compareTo?: ValidDate): boolean {
+    return this.parse(date).isAfter(this.parse(compareTo));
   }
 
-  static subtractDays(numOfDays: number, formatKey: FormatKey, baseDate?: ValidDate): string {
-    const date = baseDate ? this.parse(baseDate) : dayjs();
-    return date.subtract(numOfDays, 'days').format(allConstants[formatKey]);
-  }
+  private static parse(input?: ValidDate): Dayjs {
+    if (!input) {
+      return dayjs();
+    }
 
-  static addMinutes(numOfMinutes: number, formatKey: FormatKey, baseDate?: ValidDate): string {
-    const date = baseDate ? this.parse(baseDate) : dayjs();
-    return date.add(numOfMinutes, 'minutes').format(allConstants[formatKey]);
-  }
-
-  static subtractMinutes(numOfMinutes: number, formatKey: FormatKey, baseDate?: ValidDate): string {
-    const date = baseDate ? this.parse(baseDate) : dayjs();
-    return date.subtract(numOfMinutes, 'minutes').format(allConstants[formatKey]);
-  }
-
-  static countFromNow(baseDate: ValidDate, granularity: ManipulateType): number {
-    const date = baseDate ? this.parse(baseDate) : dayjs();
-    return dayjs().diff(date, granularity) + 1;
-  }
-
-  private static parse(input: ValidDate): Dayjs {
     if (input instanceof Date || typeof input === 'number') {
       return dayjs(input);
     }
@@ -118,6 +105,15 @@ export class DateHelper {
     }
 
     const parsed = dayjs(input, this.allInputFormats, true);
+
     return parsed.isValid() ? parsed : dayjs(input);
+  }
+
+  private static isFormatKey(formatKey: AnyFormatKey): formatKey is FormatKey {
+    return formatKey !== 'none';
+  }
+
+  private static format<T extends AnyFormatKey>(formatKey: T, date: Dayjs): FormatResult<T> {
+    return (this.isFormatKey(formatKey) ? date.format(allConstants[formatKey]) : date) as FormatResult<T>;
   }
 }

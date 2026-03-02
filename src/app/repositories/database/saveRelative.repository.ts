@@ -1,8 +1,8 @@
-import { Insertable, InsertResult } from 'kysely';
+import type { Insertable, InsertResult } from 'kysely';
 
-import { FamilyDM } from 'src/app/entities/dms/families.dm';
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { RelationshipDM } from 'src/app/entities/dms/relationships.dm';
+import type { FamilyDM } from 'src/app/entities/dms/families.dm';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { RelationshipDM } from 'src/app/entities/dms/relationships.dm';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface ISaveRelativeRepository {

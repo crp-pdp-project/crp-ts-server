@@ -1,7 +1,8 @@
 import { DocumentTypeMapper } from 'src/general/enums/patientInfo.enum';
 
-import { SignInSessionModel } from '../../session/signInSession.model';
-import { GenerateMDDStrategy, MDDVariants } from '../posConfig.model';
+import type { SignInSessionModel } from '../../session/signInSession.model';
+import type { GenerateMDDStrategy } from '../posConfig.model';
+import { MDDVariants } from '../posConfig.model';
 
 export class MDD32Strategy implements GenerateMDDStrategy {
   genMDD(session: SignInSessionModel): Record<string, string> {

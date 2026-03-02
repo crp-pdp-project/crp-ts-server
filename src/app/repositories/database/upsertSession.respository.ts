@@ -1,7 +1,7 @@
-import { Insertable, InsertResult } from 'kysely';
+import type { Insertable, InsertResult } from 'kysely';
 
-import { SessionDM } from 'src/app/entities/dms/sessions.dm';
-import { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
+import type { SessionDM } from 'src/app/entities/dms/sessions.dm';
+import type { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IUpsertSessionRepository {

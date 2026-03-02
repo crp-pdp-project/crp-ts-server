@@ -1,7 +1,7 @@
-import { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
+import type { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
 import { BaseModel } from 'src/app/entities/models/base.model';
-import { PatientModel } from 'src/app/entities/models/patient/patient.model';
-import { GenerationResponse } from 'src/general/managers/jwt/jwt.manager';
+import type { PatientModel } from 'src/app/entities/models/patient/patient.model';
+import type { GenerationResponse } from 'src/general/managers/jwt/jwt.manager';
 
 export class PatientTokenModel extends BaseModel {
   readonly patient: PatientModel;

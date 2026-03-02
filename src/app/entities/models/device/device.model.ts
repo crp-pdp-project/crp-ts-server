@@ -1,4 +1,4 @@
-import { DeviceDTO } from 'src/app/entities/dtos/service/device.dto';
+import type { DeviceDTO } from 'src/app/entities/dtos/service/device.dto';
 import { BaseModel } from 'src/app/entities/models/base.model';
 import { DeviceConstants } from 'src/general/contants/device.constants';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
@@ -58,7 +58,7 @@ export class DeviceModel extends BaseModel {
     this.pushToken = device.pushToken ?? undefined;
     this.biometricHash = device.biometricHash ?? undefined;
     this.biometricSalt = device.biometricSalt ?? undefined;
-    this.expiresAt = DateHelper.addDays(DeviceConstants.EXPIRATION_DAYS, 'dbDateTime');
+    this.expiresAt = DateHelper.mutate('dbDateTime', 'day', DeviceConstants.EXPIRATION_DAYS);
   }
 
   validateOS(): void {

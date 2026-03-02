@@ -1,16 +1,14 @@
-import { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
+import type { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
 import { AuthAttemptModel, AuthFlowIdentifier } from 'src/app/entities/models/authAttempt/authAttempt.model';
 import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
-import { EnrollSessionModel } from 'src/app/entities/models/session/enrollSession.model';
+import type { EnrollSessionModel } from 'src/app/entities/models/session/enrollSession.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import {
-  GetAuthAttemptsRepository,
-  IGetAuthAttemptsRepository,
-} from 'src/app/repositories/database/getAuthAttempts.repository';
+import type { IGetAuthAttemptsRepository } from 'src/app/repositories/database/getAuthAttempts.repository';
+import { GetAuthAttemptsRepository } from 'src/app/repositories/database/getAuthAttempts.repository';
 import { Audiences } from 'src/general/enums/audience.enum';
 import { EmailSubjects } from 'src/general/enums/emailSubject.enum';
 
-import { ISendVerificationOTPStrategy } from '../sendVerificationOtp.interactor';
+import type { ISendVerificationOTPStrategy } from '../sendVerificationOtp.interactor';
 
 export class SendEnrollOTPStrategy implements ISendVerificationOTPStrategy {
   private readonly flow: AuthFlowIdentifier = AuthFlowIdentifier.ENROLL;

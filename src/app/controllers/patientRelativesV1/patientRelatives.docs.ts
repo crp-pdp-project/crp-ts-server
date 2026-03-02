@@ -3,7 +3,7 @@ import { PatientRelativesOutputDTOSchema } from 'src/app/entities/dtos/output/pa
 import { OkResponseDTOSchema } from 'src/app/entities/dtos/response/ok.response.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { StatusCode } from 'src/general/enums/status.enum';
-import { IOpenApiManager } from 'src/general/managers/openapi/openapi.manager';
+import type { IOpenApiManager } from 'src/general/managers/openapi/openapi.manager';
 
 export class PatientRelativesV1Docs {
   private readonly version: string = '/v1';

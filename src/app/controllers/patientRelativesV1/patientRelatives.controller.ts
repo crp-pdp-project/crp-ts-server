@@ -1,15 +1,14 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
 import { PatientRelativesOutputDTOSchema } from 'src/app/entities/dtos/output/patientRelatives.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
+import type { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import {
-  IPatientRelativesInteractor,
-  PatientRelativesInteractorBuilder,
-} from 'src/app/interactors/patientRelatives/patientRelatives.interactor';
+import type { IPatientRelativesInteractor } from 'src/app/interactors/patientRelatives/patientRelatives.interactor';
+import { PatientRelativesInteractorBuilder } from 'src/app/interactors/patientRelatives/patientRelatives.interactor';
 import { Audiences } from 'src/general/enums/audience.enum';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IPatientRelativesController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;

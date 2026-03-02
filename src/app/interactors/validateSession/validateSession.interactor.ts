@@ -1,21 +1,15 @@
-import { IncomingHttpHeaders } from 'http2';
+import type { IncomingHttpHeaders } from 'http2';
 
-import { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
-import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
-import { DeviceModel } from 'src/app/entities/models/device/device.model';
+import type { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
+import type { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
+import type { DeviceModel } from 'src/app/entities/models/device/device.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { SessionModel } from 'src/app/entities/models/session/session.model';
-import {
-  GetPatientSessionRepository,
-  IGetPatientSessionRepository,
-} from 'src/app/repositories/database/getPatientSession.repository';
+import type { SessionModel } from 'src/app/entities/models/session/session.model';
+import type { IGetPatientSessionRepository } from 'src/app/repositories/database/getPatientSession.repository';
+import { GetPatientSessionRepository } from 'src/app/repositories/database/getPatientSession.repository';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
-import {
-  EnrichedPayload,
-  IJWTManager,
-  JWTManagerBuilder,
-  ValidationResponse,
-} from 'src/general/managers/jwt/jwt.manager';
+import type { EnrichedPayload, IJWTManager, ValidationResponse } from 'src/general/managers/jwt/jwt.manager';
+import { JWTManagerBuilder } from 'src/general/managers/jwt/jwt.manager';
 
 import { ValidateEnrollSessionStrategy } from './strategies/validateEnrollSession.strategy';
 import { ValidatePatientSessionStrategyBuilder } from './strategies/validatePatientSession.strategy';

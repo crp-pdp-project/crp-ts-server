@@ -1,18 +1,14 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import {
-  OperateX12BodyDTOSchema,
-  OperateX12InputDTO,
-  OperateX12ParamsDTOSchema,
-} from 'src/app/entities/dtos/input/operateX12.input.dto';
+import type { OperateX12InputDTO } from 'src/app/entities/dtos/input/operateX12.input.dto';
+import { OperateX12BodyDTOSchema, OperateX12ParamsDTOSchema } from 'src/app/entities/dtos/input/operateX12.input.dto';
 import { OperateX12OutputDTOSchema } from 'src/app/entities/dtos/output/operateX12.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import {
-  IOperateX12Interactor,
-  OperateX12InteractorBuilder,
-} from 'src/app/interactors/operateX12/operateX12.interactor';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { ResponseModel } from 'src/app/entities/models/response/response.model';
+import type { IOperateX12Interactor } from 'src/app/interactors/operateX12/operateX12.interactor';
+import { OperateX12InteractorBuilder } from 'src/app/interactors/operateX12/operateX12.interactor';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IOperateX12Controller {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;

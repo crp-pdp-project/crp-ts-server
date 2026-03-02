@@ -1,6 +1,6 @@
-import { DeleteResult } from 'kysely';
+import type { DeleteResult } from 'kysely';
 
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IDeleteRelativeRepository {

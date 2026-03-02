@@ -1,5 +1,5 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';

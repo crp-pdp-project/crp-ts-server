@@ -1,4 +1,4 @@
-import { TipDTO } from 'src/app/entities/dtos/service/tip.dto';
+import type { TipDTO } from 'src/app/entities/dtos/service/tip.dto';
 
 export default [
   {

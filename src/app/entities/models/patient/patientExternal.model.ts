@@ -1,22 +1,18 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import {
-  EnrollSessionPayloadDTO,
-  EnrollSessionPayloadDTOSchema,
-} from 'src/app/entities/dtos/service/enrollSessionPayload.dto';
-import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
-import { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExternal.dto';
-import {
-  RecoverSessionPayloadDTO,
-  RecoverSessionPayloadDTOSchema,
-} from 'src/app/entities/dtos/service/recoverSessionPayload.dto';
-import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { EnrollSessionPayloadDTO } from 'src/app/entities/dtos/service/enrollSessionPayload.dto';
+import { EnrollSessionPayloadDTOSchema } from 'src/app/entities/dtos/service/enrollSessionPayload.dto';
+import type { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
+import type { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExternal.dto';
+import type { RecoverSessionPayloadDTO } from 'src/app/entities/dtos/service/recoverSessionPayload.dto';
+import { RecoverSessionPayloadDTOSchema } from 'src/app/entities/dtos/service/recoverSessionPayload.dto';
+import type { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
 import { BaseModel } from 'src/app/entities/models/base.model';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { PatientDocumentType } from 'src/general/enums/patientInfo.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { TextHelper } from 'src/general/helpers/text.helper';
 
-import { DeviceDM } from '../../dms/devices.dm';
+import type { DeviceDM } from '../../dms/devices.dm';
 import { AccountModel } from '../account/account.model';
 import { DeviceModel } from '../device/device.model';
 import { ErrorModel } from '../error/error.model';
@@ -52,7 +48,7 @@ export class PatientExternalModel extends BaseModel {
     this.firstName = TextHelper.titleCase(external.firstName) ?? '';
     this.lastName = TextHelper.titleCase(external.lastName) ?? '';
     this.#secondLastName = external.secondLastName ? TextHelper.titleCase(external.secondLastName)! : null;
-    this.birthDate = external.birthDate ? DateHelper.toFormatDate(external.birthDate, 'dbDate') : undefined;
+    this.birthDate = external.birthDate ? DateHelper.toDate('dbDate', external.birthDate) : undefined;
     this.fmpId = external.fmpId;
     this.documentNumber = external.documentNumber;
     this.#nhcId = external.nhcId ?? null;

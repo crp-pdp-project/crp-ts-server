@@ -2,7 +2,7 @@ import { BaseHeadersDTOSchema } from 'src/app/entities/dtos/input/baseHeaders.in
 import { NoContentResponseDTOSchema } from 'src/app/entities/dtos/response/noContent.response.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { StatusCode } from 'src/general/enums/status.enum';
-import { IOpenApiManager } from 'src/general/managers/openapi/openapi.manager';
+import type { IOpenApiManager } from 'src/general/managers/openapi/openapi.manager';
 
 export class InformInsuranceInterestV1Docs {
   private readonly version: string = '/v1';

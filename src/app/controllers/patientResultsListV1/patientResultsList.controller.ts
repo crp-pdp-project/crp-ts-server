@@ -1,20 +1,19 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
+import type { PatientResultsListInputDTO } from 'src/app/entities/dtos/input/patientResultsList.input.dto';
 import {
-  PatientResultsListInputDTO,
   PatientResultsListParamsDTOSchema,
   PatientResultsListQueryDTOSchema,
 } from 'src/app/entities/dtos/input/patientResultsList.input.dto';
 import { PatientResultsListOutputDTOSchema } from 'src/app/entities/dtos/output/patientResultsList.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
+import type { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import {
-  IPatientResultsListInteractor,
-  PatientResultsListInteractorBuilder,
-} from 'src/app/interactors/patientResultsList/patientResultsList.interactor';
+import type { IPatientResultsListInteractor } from 'src/app/interactors/patientResultsList/patientResultsList.interactor';
+import { PatientResultsListInteractorBuilder } from 'src/app/interactors/patientResultsList/patientResultsList.interactor';
 import { Audiences } from 'src/general/enums/audience.enum';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IPatientResultsListController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;

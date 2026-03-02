@@ -1,5 +1,5 @@
-import { RecoverSessionPayloadDTO } from 'src/app/entities/dtos/service/recoverSessionPayload.dto';
-import { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
+import type { RecoverSessionPayloadDTO } from 'src/app/entities/dtos/service/recoverSessionPayload.dto';
+import type { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
 import { Audiences } from 'src/general/enums/audience.enum';
 
 import { SessionModel } from './session.model';

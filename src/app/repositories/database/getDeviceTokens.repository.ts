@@ -1,5 +1,5 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { DeviceDTO } from 'src/app/entities/dtos/service/device.dto';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { DeviceDTO } from 'src/app/entities/dtos/service/device.dto';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IGetDeviceTokensRepository {

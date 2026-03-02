@@ -1,23 +1,15 @@
-import { IncomingHttpHeaders } from 'http2';
+import type { IncomingHttpHeaders } from 'http2';
 
-import { EmployeeSessionPayloadDTO } from 'src/app/entities/dtos/service/employeeSessionPayload.dto';
+import type { EmployeeSessionPayloadDTO } from 'src/app/entities/dtos/service/employeeSessionPayload.dto';
 import { EmployeeSessionModel } from 'src/app/entities/models/employeeSession/employeeSession.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import {
-  GetEmployeeSessionRepository,
-  IGetEmployeeSessionRepository,
-} from 'src/app/repositories/database/getEmployeeSession.repository';
-import {
-  IUpdateEmployeeSessionExpireRepository,
-  UpdateEmployeeSessionExpireRepository,
-} from 'src/app/repositories/database/updateEmployeeSessionExpire.repository';
+import type { IGetEmployeeSessionRepository } from 'src/app/repositories/database/getEmployeeSession.repository';
+import { GetEmployeeSessionRepository } from 'src/app/repositories/database/getEmployeeSession.repository';
+import type { IUpdateEmployeeSessionExpireRepository } from 'src/app/repositories/database/updateEmployeeSessionExpire.repository';
+import { UpdateEmployeeSessionExpireRepository } from 'src/app/repositories/database/updateEmployeeSessionExpire.repository';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
-import {
-  EnrichedPayload,
-  IJWTManager,
-  JWTManagerBuilder,
-  ValidationResponse,
-} from 'src/general/managers/jwt/jwt.manager';
+import type { EnrichedPayload, IJWTManager, ValidationResponse } from 'src/general/managers/jwt/jwt.manager';
+import { JWTManagerBuilder } from 'src/general/managers/jwt/jwt.manager';
 
 export interface IValidateEmployeeSessionInteractor {
   execute(headers: IncomingHttpHeaders): Promise<EmployeeSessionModel>;

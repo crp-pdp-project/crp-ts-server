@@ -1,7 +1,7 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
+import type { PatientsListInputDTO } from 'src/app/entities/dtos/input/patientsList.input.dto';
 import {
-  PatientsListInputDTO,
   PatientsListParamsDTOSchema,
   PatientsListQueryDTOSchema,
 } from 'src/app/entities/dtos/input/patientsList.input.dto';
@@ -9,12 +9,11 @@ import { PatientsListOutputDTOSchema } from 'src/app/entities/dtos/output/patien
 import { RelativesListOutputDTOSchema } from 'src/app/entities/dtos/output/relativesList.output.dto';
 import { VerificationRequestListOutputDTOSchema } from 'src/app/entities/dtos/output/verificationRequestList.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import {
-  IPatientsListInteractor,
-  PatientsListInteractorBuilder,
-} from 'src/app/interactors/patientsList/patientsListinteractor';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { ResponseModel } from 'src/app/entities/models/response/response.model';
+import type { IPatientsListInteractor } from 'src/app/interactors/patientsList/patientsListinteractor';
+import { PatientsListInteractorBuilder } from 'src/app/interactors/patientsList/patientsListinteractor';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IPatientsListController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;

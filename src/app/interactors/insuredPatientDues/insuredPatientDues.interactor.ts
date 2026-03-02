@@ -1,13 +1,9 @@
-import { InsuredPatientDuesParamsDTO } from 'src/app/entities/dtos/input/insuredPatientDues.input.dto';
+import type { InsuredPatientDuesParamsDTO } from 'src/app/entities/dtos/input/insuredPatientDues.input.dto';
 import { InsuredPatientDuesModel } from 'src/app/entities/models/insuranceDue/insuredPatientDues.model';
-import {
-  GetInsuredPatientRepository,
-  IGetInsuredPatientRepository,
-} from 'src/app/repositories/rest/getInsuredPatient.respository';
-import {
-  GetInsuredPatientDuesRepository,
-  IGetInsuredPatientDuesRepository,
-} from 'src/app/repositories/rest/getInsuredPatientDues.respository';
+import type { IGetInsuredPatientRepository } from 'src/app/repositories/rest/getInsuredPatient.respository';
+import { GetInsuredPatientRepository } from 'src/app/repositories/rest/getInsuredPatient.respository';
+import type { IGetInsuredPatientDuesRepository } from 'src/app/repositories/rest/getInsuredPatientDues.respository';
+import { GetInsuredPatientDuesRepository } from 'src/app/repositories/rest/getInsuredPatientDues.respository';
 
 export interface IInsuredPatientDuesInteractor {
   list(params: InsuredPatientDuesParamsDTO): Promise<InsuredPatientDuesModel>;

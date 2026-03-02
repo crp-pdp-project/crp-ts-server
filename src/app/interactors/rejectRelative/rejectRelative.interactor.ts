@@ -1,8 +1,6 @@
-import { OperateRelativeParamsDTO } from 'src/app/entities/dtos/input/verifyRelative.input.dto';
-import {
-  DeleteRelativeRepository,
-  IDeleteRelativeRepository,
-} from 'src/app/repositories/database/deleteRelative.repository';
+import type { OperateRelativeParamsDTO } from 'src/app/entities/dtos/input/verifyRelative.input.dto';
+import type { IDeleteRelativeRepository } from 'src/app/repositories/database/deleteRelative.repository';
+import { DeleteRelativeRepository } from 'src/app/repositories/database/deleteRelative.repository';
 
 export interface IRejectRelativeInteractor {
   reject(params: OperateRelativeParamsDTO): Promise<void>;

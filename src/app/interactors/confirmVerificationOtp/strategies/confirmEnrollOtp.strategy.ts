@@ -1,25 +1,20 @@
-import { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
+import type { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
 import { AuthAttemptModel, AuthFlowIdentifier } from 'src/app/entities/models/authAttempt/authAttempt.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { PatientModel } from 'src/app/entities/models/patient/patient.model';
-import { EnrollSessionModel } from 'src/app/entities/models/session/enrollSession.model';
+import type { EnrollSessionModel } from 'src/app/entities/models/session/enrollSession.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import { CleanBlockedRepository, ICleanBlockedRepository } from 'src/app/repositories/database/cleanBlocked.repository';
-import {
-  GetAuthAttemptsRepository,
-  IGetAuthAttemptsRepository,
-} from 'src/app/repositories/database/getAuthAttempts.repository';
-import {
-  IUpdateBlockedRepository,
-  UpdateBlockedRepository,
-} from 'src/app/repositories/database/updateBlocked.repository';
-import {
-  IUpsertTryCountRepository,
-  UpsertTryCountRepository,
-} from 'src/app/repositories/database/upsertTryCount.repository';
+import type { ICleanBlockedRepository } from 'src/app/repositories/database/cleanBlocked.repository';
+import { CleanBlockedRepository } from 'src/app/repositories/database/cleanBlocked.repository';
+import type { IGetAuthAttemptsRepository } from 'src/app/repositories/database/getAuthAttempts.repository';
+import { GetAuthAttemptsRepository } from 'src/app/repositories/database/getAuthAttempts.repository';
+import type { IUpdateBlockedRepository } from 'src/app/repositories/database/updateBlocked.repository';
+import { UpdateBlockedRepository } from 'src/app/repositories/database/updateBlocked.repository';
+import type { IUpsertTryCountRepository } from 'src/app/repositories/database/upsertTryCount.repository';
+import { UpsertTryCountRepository } from 'src/app/repositories/database/upsertTryCount.repository';
 import { Audiences } from 'src/general/enums/audience.enum';
 
-import { IConfirmVerificationOTPStrategy } from '../confirmVerificationOtp.interactor';
+import type { IConfirmVerificationOTPStrategy } from '../confirmVerificationOtp.interactor';
 
 export class ConfirmEnrollOTPStrategy implements IConfirmVerificationOTPStrategy {
   private readonly flow: AuthFlowIdentifier = AuthFlowIdentifier.ENROLL;

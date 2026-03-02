@@ -1,9 +1,8 @@
-import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
-import { CleanSessionRepository, ICleanSessionRepository } from 'src/app/repositories/database/cleanSession.repository';
-import {
-  DeletePatientAccountRepository,
-  IDeletePatientAccountRepository,
-} from 'src/app/repositories/database/deletePatientAccount.repository';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import type { ICleanSessionRepository } from 'src/app/repositories/database/cleanSession.repository';
+import { CleanSessionRepository } from 'src/app/repositories/database/cleanSession.repository';
+import type { IDeletePatientAccountRepository } from 'src/app/repositories/database/deletePatientAccount.repository';
+import { DeletePatientAccountRepository } from 'src/app/repositories/database/deletePatientAccount.repository';
 
 export interface IDeletePatientAccountInteractor {
   delete(session: SignInSessionModel): Promise<void>;

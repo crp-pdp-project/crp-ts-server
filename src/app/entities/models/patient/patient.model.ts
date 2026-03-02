@@ -1,13 +1,13 @@
-import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
-import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
+import type { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
+import type { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
 import { BaseModel } from 'src/app/entities/models/base.model';
 import { RelationshipModel } from 'src/app/entities/models/relationship/relationship.model';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
-import { PatientDocumentType } from 'src/general/enums/patientInfo.enum';
+import type { PatientDocumentType } from 'src/general/enums/patientInfo.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import defaultRelationshipStatic from 'src/general/static/defaultRelationship.static';
 
-import { DeviceDM } from '../../dms/devices.dm';
+import type { DeviceDM } from '../../dms/devices.dm';
 import { AccountModel } from '../account/account.model';
 import { DeviceModel } from '../device/device.model';
 import { ErrorModel } from '../error/error.model';
@@ -44,9 +44,9 @@ export class PatientModel extends BaseModel {
     this.secondLastName = patient.secondLastName ?? null;
     this.documentNumber = patient.documentNumber;
     this.documentType = patient.documentType;
-    this.birthDate = patient.birthDate ? DateHelper.toFormatDate(patient.birthDate, 'spanishDate') : undefined;
-    this.createdAt = patient.createdAt ? DateHelper.toFormatDateTime(patient.createdAt, 'spanishDateTime') : undefined;
-    this.updatedAt = patient.updatedAt ? DateHelper.toFormatDateTime(patient.updatedAt, 'spanishDateTime') : undefined;
+    this.birthDate = patient.birthDate ? DateHelper.toDate('spanishDate', patient.birthDate) : undefined;
+    this.createdAt = patient.createdAt ? DateHelper.toDate('spanishDateTime', patient.createdAt) : undefined;
+    this.updatedAt = patient.updatedAt ? DateHelper.toDate('spanishDateTime', patient.updatedAt) : undefined;
     this.isVerified = patient.isVerified != null ? !!patient.isVerified : undefined;
     this.isDependant = patient.isDependant != null ? !!patient.isDependant : undefined;
     this.account = patient.account ? new AccountModel(patient.account) : undefined;

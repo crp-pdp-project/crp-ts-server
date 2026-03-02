@@ -1,4 +1,5 @@
-import pino, { Logger, Level } from 'pino';
+import type { Logger, Level } from 'pino';
+import pino from 'pino';
 
 import { EnvHelper } from 'src/general/helpers/env.helper';
 

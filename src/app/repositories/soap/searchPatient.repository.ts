@@ -1,5 +1,5 @@
-import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
-import { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExternal.dto';
+import type { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
+import type { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExternal.dto';
 import { InetumClient, InetumFmpServices } from 'src/clients/inetum/inetum.client';
 import { DateHelper } from 'src/general/helpers/date.helper';
 
@@ -68,7 +68,7 @@ export class SearchPatientRepository implements ISearchPatientRepository {
         DocIdentidad: patient.documentNumber,
         IdTipoDocIdentidad: patient.documentType ? String(patient.documentType) : undefined,
         Identificador: patient.fmpId ? String(patient.fmpId) : undefined,
-        FechaNacimiento: patient.birthDate ? DateHelper.toFormatDate(patient.birthDate, 'inetumDate') : undefined,
+        FechaNacimiento: patient.birthDate ? DateHelper.toDate('inetumDate', patient.birthDate) : undefined,
       },
     };
   }

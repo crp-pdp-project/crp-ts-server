@@ -1,17 +1,14 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import {
-  PatientResultPDFInputDTO,
-  PatientResultPDFParamsDTOSchema,
-} from 'src/app/entities/dtos/input/patientResultPDF.input.dto';
+import type { PatientResultPDFInputDTO } from 'src/app/entities/dtos/input/patientResultPDF.input.dto';
+import { PatientResultPDFParamsDTOSchema } from 'src/app/entities/dtos/input/patientResultPDF.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import {
-  IPatientResultPDFInteractor,
-  PatientResultPDFInteractorBuilder,
-} from 'src/app/interactors/patientResultPDF/patientResultPDF.interactor';
+import type { IPatientResultPDFInteractor } from 'src/app/interactors/patientResultPDF/patientResultPDF.interactor';
+import { PatientResultPDFInteractorBuilder } from 'src/app/interactors/patientResultPDF/patientResultPDF.interactor';
 import { Audiences } from 'src/general/enums/audience.enum';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IPatientResultPDFController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;

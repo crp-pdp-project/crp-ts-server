@@ -1,4 +1,4 @@
-import { SessionModel } from 'src/app/entities/models/session/session.model';
+import type { SessionModel } from 'src/app/entities/models/session/session.model';
 
 export interface IValidateSafeOperationInteractor {
   validate(session: SessionModel): void;

@@ -1,6 +1,6 @@
-import { DeviceDM } from 'src/app/entities/dms/devices.dm';
-import { SessionDM } from 'src/app/entities/dms/sessions.dm';
-import { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
+import type { DeviceDM } from 'src/app/entities/dms/devices.dm';
+import type { SessionDM } from 'src/app/entities/dms/sessions.dm';
+import type { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IGetPatientSessionRepository {

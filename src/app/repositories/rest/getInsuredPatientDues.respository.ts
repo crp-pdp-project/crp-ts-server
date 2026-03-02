@@ -1,4 +1,4 @@
-import { InsuredPatientDuesDTO } from 'src/app/entities/dtos/service/insuredPatientDues.dto';
+import type { InsuredPatientDuesDTO } from 'src/app/entities/dtos/service/insuredPatientDues.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { CRPClient, CRPServicePaths } from 'src/clients/crp/crp.client';
 import { HttpMethod } from 'src/general/enums/methods.enum';

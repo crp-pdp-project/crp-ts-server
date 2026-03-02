@@ -1,4 +1,4 @@
-import { AccountDTO } from 'src/app/entities/dtos/service/account.dto';
+import type { AccountDTO } from 'src/app/entities/dtos/service/account.dto';
 import { BaseModel } from 'src/app/entities/models/base.model';
 
 export class AccountModel extends BaseModel {

@@ -1,7 +1,7 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
-import { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
-import { SignInSessionPayloadDTO } from 'src/app/entities/dtos/service/signInSessionPayload.dto';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
+import type { SessionDTO } from 'src/app/entities/dtos/service/session.dto';
+import type { SignInSessionPayloadDTO } from 'src/app/entities/dtos/service/signInSessionPayload.dto';
 import { Audiences } from 'src/general/enums/audience.enum';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 

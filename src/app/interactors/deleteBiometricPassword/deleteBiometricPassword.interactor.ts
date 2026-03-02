@@ -1,8 +1,6 @@
-import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
-import {
-  CleanBiometricPasswordRepository,
-  ICleanBiometricPasswordRepository,
-} from 'src/app/repositories/database/cleanBiometricPassword.repository';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import type { ICleanBiometricPasswordRepository } from 'src/app/repositories/database/cleanBiometricPassword.repository';
+import { CleanBiometricPasswordRepository } from 'src/app/repositories/database/cleanBiometricPassword.repository';
 
 export interface IDeleteBiometricPasswordInteractor {
   delete(session: SignInSessionModel): Promise<void>;

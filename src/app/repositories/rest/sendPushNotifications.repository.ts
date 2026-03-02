@@ -1,5 +1,5 @@
-import { DeviceDM } from 'src/app/entities/dms/devices.dm';
-import { PushNotificationDTO } from 'src/app/entities/dtos/service/pushNotification.dto';
+import type { DeviceDM } from 'src/app/entities/dms/devices.dm';
+import type { PushNotificationDTO } from 'src/app/entities/dtos/service/pushNotification.dto';
 import { PushClient } from 'src/clients/push/push.client';
 
 export interface ISendPushNotificationRepository {

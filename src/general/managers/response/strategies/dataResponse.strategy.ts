@@ -1,4 +1,5 @@
-import { z, ZodObject, ZodRawShape, ZodDiscriminatedUnion } from 'zod';
+import type { ZodObject, ZodRawShape, ZodDiscriminatedUnion } from 'zod';
+import { z } from 'zod';
 
 import { BadRequestResponseDTOSchema } from 'src/app/entities/dtos/response/badRequest.response.dto';
 import { ConflictResponseDTOSchema } from 'src/app/entities/dtos/response/conflict.response.dto';
@@ -12,7 +13,7 @@ import { PreconditionRequiredResponseDTOSchema } from 'src/app/entities/dtos/res
 import { UnauthorizedResponseDTOSchema } from 'src/app/entities/dtos/response/unauthorized.response.dto';
 import { UnprocessableEntityResponseDTOSchema } from 'src/app/entities/dtos/response/unprocessableEntity.response.dto';
 
-import { IResponseStrategy } from '../response.manager';
+import type { IResponseStrategy } from '../response.manager';
 
 export class DataResponseStrategy implements IResponseStrategy {
   constructor(private readonly dataSchema: ZodObject<ZodRawShape>) {}

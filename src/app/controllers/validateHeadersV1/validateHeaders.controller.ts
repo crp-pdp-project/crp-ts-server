@@ -1,12 +1,12 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import { BaseHeadersDTOSchema, BaseHeadersInputDTO } from 'src/app/entities/dtos/input/baseHeaders.input.dto';
+import type { BaseHeadersInputDTO } from 'src/app/entities/dtos/input/baseHeaders.input.dto';
+import { BaseHeadersDTOSchema } from 'src/app/entities/dtos/input/baseHeaders.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import {
-  IValidateHeadersInteractor,
-  ValidateHeadersInteractor,
-} from 'src/app/interactors/validateHeaders/validateHeaders.interactor';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { IValidateHeadersInteractor } from 'src/app/interactors/validateHeaders/validateHeaders.interactor';
+import { ValidateHeadersInteractor } from 'src/app/interactors/validateHeaders/validateHeaders.interactor';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IValidateHeadersController {
   validate(input: FastifyRequest, reply: FastifyReply): Promise<void>;

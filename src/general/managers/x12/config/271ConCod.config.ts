@@ -1,11 +1,11 @@
-import { ConCod271DTO } from 'src/app/entities/dtos/service/conCod271.dto';
+import type { ConCod271DTO } from 'src/app/entities/dtos/service/conCod271.dto';
 
 import { affiliationTypeMap } from '../maps/affiliationType.map';
 import { currencyTypeMap } from '../maps/currencyType.map';
 import { documentTypeMap } from '../maps/documentType.map';
 import { planTypeMap } from '../maps/planType.map';
 import { statusTypeMap } from '../maps/statusType.map';
-import { FieldMap, X12ManagerConfig } from '../x12.manager';
+import type { FieldMap, X12ManagerConfig } from '../x12.manager';
 
 import { ConCod271DetailConfig } from './271ConCodDetail.config';
 

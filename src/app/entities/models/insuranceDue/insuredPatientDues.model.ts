@@ -2,9 +2,9 @@ import { BaseModel } from 'src/app/entities/models/base.model';
 import { HealthInsuranceConstants } from 'src/general/contants/healthInsurance.constants';
 import { TextHelper } from 'src/general/helpers/text.helper';
 
-import { InsuranceDueDTO } from '../../dtos/service/insuranceDue.dto';
-import { InsuredPatientDTO } from '../../dtos/service/insuredPatient.dto';
-import { InsuredPatientDuesDTO } from '../../dtos/service/insuredPatientDues.dto';
+import type { InsuranceDueDTO } from '../../dtos/service/insuranceDue.dto';
+import type { InsuredPatientDTO } from '../../dtos/service/insuredPatient.dto';
+import type { InsuredPatientDuesDTO } from '../../dtos/service/insuredPatientDues.dto';
 
 import { InsuranceDueSectionModel } from './insuranceDueSection.model';
 

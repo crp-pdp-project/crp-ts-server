@@ -1,16 +1,11 @@
-import { DeviceDM } from 'src/app/entities/dms/devices.dm';
-import { AddDeviceBiometricPasswordBodyDTO } from 'src/app/entities/dtos/input/addDeviceBiometricPassword.input.dto';
-import { DeviceDTO } from 'src/app/entities/dtos/service/device.dto';
-import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
-import {
-  ISaveBiometricPasswordRepository,
-  SaveBiometricPasswordRepository,
-} from 'src/app/repositories/database/saveBiometricPassword.repository';
-import {
-  EncryptionManagerBuilder,
-  IEncryptionManager,
-  PasswordHashResult,
-} from 'src/general/managers/encryption/encryption.manager';
+import type { DeviceDM } from 'src/app/entities/dms/devices.dm';
+import type { AddDeviceBiometricPasswordBodyDTO } from 'src/app/entities/dtos/input/addDeviceBiometricPassword.input.dto';
+import type { DeviceDTO } from 'src/app/entities/dtos/service/device.dto';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import type { ISaveBiometricPasswordRepository } from 'src/app/repositories/database/saveBiometricPassword.repository';
+import { SaveBiometricPasswordRepository } from 'src/app/repositories/database/saveBiometricPassword.repository';
+import type { IEncryptionManager, PasswordHashResult } from 'src/general/managers/encryption/encryption.manager';
+import { EncryptionManagerBuilder } from 'src/general/managers/encryption/encryption.manager';
 
 export interface IAddDeviceBiometricPasswordInteractor {
   add(body: AddDeviceBiometricPasswordBodyDTO, session: SignInSessionModel): Promise<void>;

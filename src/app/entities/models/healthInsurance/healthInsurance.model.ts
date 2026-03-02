@@ -1,4 +1,4 @@
-import { HealthInsuranceDTO } from '../../dtos/service/healthInsurance.dto';
+import type { HealthInsuranceDTO } from '../../dtos/service/healthInsurance.dto';
 import { BaseModel } from '../base.model';
 import { ErrorModel } from '../error/error.model';
 

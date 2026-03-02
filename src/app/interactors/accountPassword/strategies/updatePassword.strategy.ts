@@ -1,11 +1,9 @@
-import { RecoverSessionModel } from 'src/app/entities/models/session/recoverSession.model';
-import {
-  IUpdatePatientPasswordRepository,
-  UpdatePatientPasswordRepository,
-} from 'src/app/repositories/database/updatePatientPassword.repository';
-import { PasswordHashResult } from 'src/general/managers/encryption/encryption.manager';
+import type { RecoverSessionModel } from 'src/app/entities/models/session/recoverSession.model';
+import type { IUpdatePatientPasswordRepository } from 'src/app/repositories/database/updatePatientPassword.repository';
+import { UpdatePatientPasswordRepository } from 'src/app/repositories/database/updatePatientPassword.repository';
+import type { PasswordHashResult } from 'src/general/managers/encryption/encryption.manager';
 
-import { IAccountPasswordStrategy } from '../accountPassword.interactor';
+import type { IAccountPasswordStrategy } from '../accountPassword.interactor';
 
 export class UpdatePasswordStrategy implements IAccountPasswordStrategy {
   constructor(private readonly updatePatientPassword: IUpdatePatientPasswordRepository) {}

@@ -1,10 +1,11 @@
 import { URL } from 'url';
 
-import { Dispatcher, request } from 'undici';
+import type { Dispatcher } from 'undici';
+import { request } from 'undici';
 
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { LoggerClient } from 'src/clients/logger/logger.client';
-import { HttpMethod } from 'src/general/enums/methods.enum';
+import type { HttpMethod } from 'src/general/enums/methods.enum';
 
 import { CRPConstants } from '../contants/crp.constants';
 

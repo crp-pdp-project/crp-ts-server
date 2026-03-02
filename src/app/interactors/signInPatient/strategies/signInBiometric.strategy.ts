@@ -1,17 +1,17 @@
-import { SignInPatientBodyDTO } from 'src/app/entities/dtos/input/signInPatient.input.dto';
-import { AuthAttemptModel } from 'src/app/entities/models/authAttempt/authAttempt.model';
-import { DeviceModel } from 'src/app/entities/models/device/device.model';
+import type { SignInPatientBodyDTO } from 'src/app/entities/dtos/input/signInPatient.input.dto';
+import type { AuthAttemptModel } from 'src/app/entities/models/authAttempt/authAttempt.model';
+import type { DeviceModel } from 'src/app/entities/models/device/device.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { PatientModel } from 'src/app/entities/models/patient/patient.model';
-import { CleanBlockedRepository, ICleanBlockedRepository } from 'src/app/repositories/database/cleanBlocked.repository';
-import {
-  ISignInBiometricRepository,
-  SignInBiometricRepository,
-} from 'src/app/repositories/database/signInBiometric.repository';
+import type { ICleanBlockedRepository } from 'src/app/repositories/database/cleanBlocked.repository';
+import { CleanBlockedRepository } from 'src/app/repositories/database/cleanBlocked.repository';
+import type { ISignInBiometricRepository } from 'src/app/repositories/database/signInBiometric.repository';
+import { SignInBiometricRepository } from 'src/app/repositories/database/signInBiometric.repository';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
-import { EncryptionManagerBuilder, IEncryptionManager } from 'src/general/managers/encryption/encryption.manager';
+import type { IEncryptionManager } from 'src/general/managers/encryption/encryption.manager';
+import { EncryptionManagerBuilder } from 'src/general/managers/encryption/encryption.manager';
 
-import { ISignInStrategy } from '../signInPatient.interactor';
+import type { ISignInStrategy } from '../signInPatient.interactor';
 
 export class SignInBiometricStrategy implements ISignInStrategy {
   constructor(

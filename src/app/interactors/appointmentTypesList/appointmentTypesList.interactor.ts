@@ -1,9 +1,7 @@
-import { AppointmentTypesListQueryDTO } from 'src/app/entities/dtos/input/appointmentTypesList.input.dto';
+import type { AppointmentTypesListQueryDTO } from 'src/app/entities/dtos/input/appointmentTypesList.input.dto';
 import { AppointmentTypeListModel } from 'src/app/entities/models/appointmentType/appointmentTypeList.model';
-import {
-  GetAppointmentTypesRepository,
-  IGetAppointmentTypesRepository,
-} from 'src/app/repositories/soap/getAppointmentTypes.repository';
+import type { IGetAppointmentTypesRepository } from 'src/app/repositories/soap/getAppointmentTypes.repository';
+import { GetAppointmentTypesRepository } from 'src/app/repositories/soap/getAppointmentTypes.repository';
 
 export interface IAppointmentTypesListInteractor {
   list(query: AppointmentTypesListQueryDTO): Promise<AppointmentTypeListModel>;

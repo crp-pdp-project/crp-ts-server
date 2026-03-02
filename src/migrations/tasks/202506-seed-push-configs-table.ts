@@ -1,6 +1,6 @@
-import { Insertable, Kysely } from 'kysely';
+import type { Insertable, Kysely } from 'kysely';
 
-import { Database } from 'src/clients/mysql/mysql.client';
+import type { Database } from 'src/clients/mysql/mysql.client';
 import { PushDataTypes } from 'src/general/enums/pushDataTypes.enum';
 
 const PUSH_CONFIGS_SEED = [

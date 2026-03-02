@@ -1,21 +1,15 @@
-import { FastifyInstance } from 'fastify';
+import type { FastifyInstance } from 'fastify';
 
 import { HttpMethod } from 'src/general/enums/methods.enum';
 import { RouterHelper } from 'src/general/helpers/router.helper';
 
-import {
-  IValidateHeadersController,
-  ValidateHeadersControllerBuilder,
-} from '../validateHeadersV1/validateHeaders.controller';
-import {
-  IValidateSessionController,
-  ValidateSessionControllerBuilder,
-} from '../validateSessionV1/validateSession.controller';
+import type { IValidateHeadersController } from '../validateHeadersV1/validateHeaders.controller';
+import { ValidateHeadersControllerBuilder } from '../validateHeadersV1/validateHeaders.controller';
+import type { IValidateSessionController } from '../validateSessionV1/validateSession.controller';
+import { ValidateSessionControllerBuilder } from '../validateSessionV1/validateSession.controller';
 
-import {
-  CreateRelativeInformationControllerBuilder,
-  ICreateRelativeInformationController,
-} from './createRelativeInformation.controller';
+import type { ICreateRelativeInformationController } from './createRelativeInformation.controller';
+import { CreateRelativeInformationControllerBuilder } from './createRelativeInformation.controller';
 
 export class CreateRelativeInformationV1Router {
   private readonly version: string = '/v1';

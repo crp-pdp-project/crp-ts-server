@@ -1,15 +1,12 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { GuaranteeLetterListParamsDTO } from 'src/app/entities/dtos/input/guaranteeLetterList.input.dto';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { GuaranteeLetterListParamsDTO } from 'src/app/entities/dtos/input/guaranteeLetterList.input.dto';
 import { GuaranteeLetterListModel } from 'src/app/entities/models/guaranteeLetter/guaranteeLetterList.model';
-import { SignInSessionModel, ValidationRules } from 'src/app/entities/models/session/signInSession.model';
-import {
-  IPatientRelativesValidationRepository,
-  PatientRelativesValidationRepository,
-} from 'src/app/repositories/database/patientRelativesValidation.repository';
-import {
-  GetGuaranteeLetterRepository,
-  IGetGuaranteeLetterRepository,
-} from 'src/app/repositories/rest/getGuaranteeLetter.repository';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import { ValidationRules } from 'src/app/entities/models/session/signInSession.model';
+import type { IPatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
+import { PatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
+import type { IGetGuaranteeLetterRepository } from 'src/app/repositories/rest/getGuaranteeLetter.repository';
+import { GetGuaranteeLetterRepository } from 'src/app/repositories/rest/getGuaranteeLetter.repository';
 
 export interface IGuaranteeLetterListInteractor {
   list(params: GuaranteeLetterListParamsDTO, session: SignInSessionModel): Promise<GuaranteeLetterListModel>;

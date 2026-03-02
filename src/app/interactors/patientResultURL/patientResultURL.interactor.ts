@@ -1,15 +1,15 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import {
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type {
   PatientResultURLBodyDTO,
   PatientResultURLParamsDTO,
 } from 'src/app/entities/dtos/input/patientResultURL.input.dto';
 import { PatientResultURLModel } from 'src/app/entities/models/patientResult/patientResultURL.model';
-import { SignInSessionModel, ValidationRules } from 'src/app/entities/models/session/signInSession.model';
-import {
-  IPatientRelativesValidationRepository,
-  PatientRelativesValidationRepository,
-} from 'src/app/repositories/database/patientRelativesValidation.repository';
-import { GetResultsURLRepository, IGetResultsURLRepository } from 'src/app/repositories/rest/getResultsURL.respository';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import { ValidationRules } from 'src/app/entities/models/session/signInSession.model';
+import type { IPatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
+import { PatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
+import type { IGetResultsURLRepository } from 'src/app/repositories/rest/getResultsURL.respository';
+import { GetResultsURLRepository } from 'src/app/repositories/rest/getResultsURL.respository';
 
 export interface IPatientResultURLInteractor {
   obtain(

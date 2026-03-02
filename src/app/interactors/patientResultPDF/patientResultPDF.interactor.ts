@@ -1,12 +1,12 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { PatientResultPDFParamsDTO } from 'src/app/entities/dtos/input/patientResultPDF.input.dto';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { PatientResultPDFParamsDTO } from 'src/app/entities/dtos/input/patientResultPDF.input.dto';
 import { PdfFileModel } from 'src/app/entities/models/File/pdfFile.model';
-import { SignInSessionModel, ValidationRules } from 'src/app/entities/models/session/signInSession.model';
-import {
-  IPatientRelativesValidationRepository,
-  PatientRelativesValidationRepository,
-} from 'src/app/repositories/database/patientRelativesValidation.repository';
-import { GetResultPDFRepository, IGetResultPDFRepository } from 'src/app/repositories/rest/getResultsPDF.repository';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import { ValidationRules } from 'src/app/entities/models/session/signInSession.model';
+import type { IPatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
+import { PatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
+import type { IGetResultPDFRepository } from 'src/app/repositories/rest/getResultsPDF.repository';
+import { GetResultPDFRepository } from 'src/app/repositories/rest/getResultsPDF.repository';
 
 export interface IPatientResultPDFInteractor {
   obtain(params: PatientResultPDFParamsDTO, session: SignInSessionModel): Promise<PdfFileModel>;

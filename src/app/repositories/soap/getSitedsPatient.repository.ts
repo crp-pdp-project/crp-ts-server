@@ -1,6 +1,6 @@
-import { ConAse270DTO } from 'src/app/entities/dtos/service/conAse270.dto';
-import { ConNom271DTO } from 'src/app/entities/dtos/service/conNom271.dto';
-import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
+import type { ConAse270DTO } from 'src/app/entities/dtos/service/conAse270.dto';
+import type { ConNom271DTO } from 'src/app/entities/dtos/service/conNom271.dto';
+import type { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import { LoggerClient } from 'src/clients/logger/logger.client';
 import { SitedsClient, SitedsServices } from 'src/clients/siteds/siteds.client';
 import { SitedsConstants } from 'src/general/contants/siteds.constants';
@@ -49,10 +49,10 @@ export class GetSitedsPatientRepository implements IGetSitedsPatientRepository {
       iafaId,
       correlative: correlative ?? TextHelper.generateUniqueCode(9),
       ipressId: SitedsConstants.IPRESS_ID,
-      date: DateHelper.dateNow('crpDate'),
-      time: DateHelper.dateNow('crpTime'),
-      shortDate: DateHelper.dateNow('crpDateShort'),
-      shortTime: DateHelper.dateNow('crpTimeShort'),
+      date: DateHelper.toDate('crpDate'),
+      time: DateHelper.toDate('crpTime'),
+      shortDate: DateHelper.toDate('crpDateShort'),
+      shortTime: DateHelper.toDate('crpTimeShort'),
       senderEntityType: SitedsConstants.DEFAULT_ENTITY_TYPE,
       receiverEntityType: SitedsConstants.DEFAULT_ENTITY_TYPE,
       senderTaxId: SitedsConstants.RUC_NUMBER,

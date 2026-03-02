@@ -1,6 +1,6 @@
-import { Insertable, Kysely } from 'kysely';
+import type { Insertable, Kysely } from 'kysely';
 
-import { Database } from 'src/clients/mysql/mysql.client';
+import type { Database } from 'src/clients/mysql/mysql.client';
 
 const RELATIONSHIP_SEED = [
   { name: 'Hijo/a menor de edad', isDependant: true },

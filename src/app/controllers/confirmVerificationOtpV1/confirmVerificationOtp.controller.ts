@@ -1,17 +1,14 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import {
-  ConfirmVerificationOTPBodyDTOSchema,
-  ConfirmVerificationOTPInputDTO,
-} from 'src/app/entities/dtos/input/validateVerificationOtp.input.dto';
+import type { ConfirmVerificationOTPInputDTO } from 'src/app/entities/dtos/input/validateVerificationOtp.input.dto';
+import { ConfirmVerificationOTPBodyDTOSchema } from 'src/app/entities/dtos/input/validateVerificationOtp.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
+import type { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import {
-  ConfirmVerificationOTPInteractorBuilder,
-  IConfirmVerificationOTPInteractor,
-} from 'src/app/interactors/confirmVerificationOtp/confirmVerificationOtp.interactor';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { IConfirmVerificationOTPInteractor } from 'src/app/interactors/confirmVerificationOtp/confirmVerificationOtp.interactor';
+import { ConfirmVerificationOTPInteractorBuilder } from 'src/app/interactors/confirmVerificationOtp/confirmVerificationOtp.interactor';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IConfirmVerificationOTPController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;

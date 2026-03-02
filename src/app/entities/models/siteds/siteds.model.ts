@@ -1,17 +1,19 @@
 import { LoggerClient } from 'src/clients/logger/logger.client';
 import { SitedsConstants } from 'src/general/contants/siteds.constants';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
-import { DocumentTypeMapper, SitedsDocumentType } from 'src/general/enums/patientInfo.enum';
+import type { SitedsDocumentType } from 'src/general/enums/patientInfo.enum';
+import { DocumentTypeMapper } from 'src/general/enums/patientInfo.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 
-import { PatientDM } from '../../dms/patients.dm';
-import { AxionalPayloadDTO, AxionalPayloadDTOSchema } from '../../dtos/service/axionalPayload.dto';
-import { ConAse270DTO } from '../../dtos/service/conAse270.dto';
-import { ConNom271DTO } from '../../dtos/service/conNom271.dto';
-import { ConNom271DetailDTO } from '../../dtos/service/conNom271Detail.dto';
+import type { PatientDM } from '../../dms/patients.dm';
+import type { AxionalPayloadDTO } from '../../dtos/service/axionalPayload.dto';
+import { AxionalPayloadDTOSchema } from '../../dtos/service/axionalPayload.dto';
+import type { ConAse270DTO } from '../../dtos/service/conAse270.dto';
+import type { ConNom271DTO } from '../../dtos/service/conNom271.dto';
+import type { ConNom271DetailDTO } from '../../dtos/service/conNom271Detail.dto';
 import { BaseModel } from '../base.model';
 import { ErrorModel } from '../error/error.model';
-import { SignInSessionModel } from '../session/signInSession.model';
+import type { SignInSessionModel } from '../session/signInSession.model';
 
 import { SitedsDetailModel } from './sitedsDetail.model';
 
@@ -43,8 +45,8 @@ export class SitedsModel extends BaseModel {
 
     this.ipressId = sitedsResult.ipressId;
     this.iafaId = sitedsResult.iafaId;
-    this.date = sitedsResult.date ? DateHelper.toFormatDate(sitedsResult.date, 'spanishDate') : undefined;
-    this.time = sitedsResult.time ? DateHelper.toFormatTime(sitedsResult.time, 'spanishTime') : undefined;
+    this.date = sitedsResult.date ? DateHelper.toDate('spanishDate', sitedsResult.date) : undefined;
+    this.time = sitedsResult.time ? DateHelper.toDate('spanishTime', sitedsResult.time) : undefined;
     this.#details = this.resolveValidDetails(sitedsResult.details ?? [], sitedsResult.iafaId);
 
     this.#logger.info('Siteds Detail Data', this.#rawData);

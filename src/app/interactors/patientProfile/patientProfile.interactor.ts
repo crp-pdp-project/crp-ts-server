@@ -1,6 +1,7 @@
 import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
-import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
-import { ISearchPatientRepository, SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import type { ISearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
+import { SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
 
 export interface IPatientProfileInteractor {
   profile(session: SignInSessionModel): Promise<PatientExternalModel>;

@@ -1,9 +1,10 @@
-import { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExternal.dto';
+import type { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExternal.dto';
 import { PosConstants } from 'src/general/contants/pos.constants';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 
-import { SignInSessionModel } from '../../session/signInSession.model';
-import { GenerateMDDStrategy, MDDVariants } from '../posConfig.model';
+import type { SignInSessionModel } from '../../session/signInSession.model';
+import type { GenerateMDDStrategy } from '../posConfig.model';
+import { MDDVariants } from '../posConfig.model';
 
 export class MDD4Strategy implements GenerateMDDStrategy {
   private readonly overrideEmail?: string = EnvHelper.getOptional('NIUBIZ_EMAIL');

@@ -1,10 +1,12 @@
-import { DeviceModel } from 'src/app/entities/models/device/device.model';
+import type { DeviceModel } from 'src/app/entities/models/device/device.model';
 import { POSConfigModel } from 'src/app/entities/models/posConfig/posConfig.model';
-import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
-import { GetPOSConfigRepository, IGetPOSConfigRepository } from 'src/app/repositories/rest/getPosConfig.repository';
-import { ISearchPatientRepository, SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import type { IGetPOSConfigRepository } from 'src/app/repositories/rest/getPosConfig.repository';
+import { GetPOSConfigRepository } from 'src/app/repositories/rest/getPosConfig.repository';
+import type { ISearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
+import { SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
 
-import { IPOSConfigStrategy } from '../posConfig.interactor';
+import type { IPOSConfigStrategy } from '../posConfig.interactor';
 
 export class MobilePOSConfigStrategy implements IPOSConfigStrategy {
   constructor(

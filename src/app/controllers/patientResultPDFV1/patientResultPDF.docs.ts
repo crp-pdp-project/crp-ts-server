@@ -1,7 +1,7 @@
 import { BaseHeadersDTOSchema } from 'src/app/entities/dtos/input/baseHeaders.input.dto';
 import { PatientResultPDFParamsDTOSchema } from 'src/app/entities/dtos/input/patientResultPDF.input.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
-import { IOpenApiManager } from 'src/general/managers/openapi/openapi.manager';
+import type { IOpenApiManager } from 'src/general/managers/openapi/openapi.manager';
 
 export class PatientResultPDFV1Docs {
   private readonly version: string = '/v1';

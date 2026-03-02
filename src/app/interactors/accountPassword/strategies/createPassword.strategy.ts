@@ -1,12 +1,10 @@
-import { CreateEnrolledAccountBodyDTO } from 'src/app/entities/dtos/input/createEnrolledAccount.input.dto';
-import { EnrollSessionModel } from 'src/app/entities/models/session/enrollSession.model';
-import {
-  ISavePatientAccountRepository,
-  SavePatientAccountRepository,
-} from 'src/app/repositories/database/savePatientAccount.repository';
-import { PasswordHashResult } from 'src/general/managers/encryption/encryption.manager';
+import type { CreateEnrolledAccountBodyDTO } from 'src/app/entities/dtos/input/createEnrolledAccount.input.dto';
+import type { EnrollSessionModel } from 'src/app/entities/models/session/enrollSession.model';
+import type { ISavePatientAccountRepository } from 'src/app/repositories/database/savePatientAccount.repository';
+import { SavePatientAccountRepository } from 'src/app/repositories/database/savePatientAccount.repository';
+import type { PasswordHashResult } from 'src/general/managers/encryption/encryption.manager';
 
-import { IAccountPasswordStrategy } from '../accountPassword.interactor';
+import type { IAccountPasswordStrategy } from '../accountPassword.interactor';
 
 export class CreatePasswordStrategy implements IAccountPasswordStrategy {
   constructor(private readonly savePatientAccount: ISavePatientAccountRepository) {}
