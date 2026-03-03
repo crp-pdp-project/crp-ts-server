@@ -1,30 +1,21 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { PatientAppointmentDetailParamsDTO } from 'src/app/entities/dtos/input/patientAppointmentDetail.input.dto';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { PatientAppointmentDetailParamsDTO } from 'src/app/entities/dtos/input/patientAppointmentDetail.input.dto';
 import { AppointmentModel } from 'src/app/entities/models/appointment/appointment.model';
 import { AppointmentDocumentListModel } from 'src/app/entities/models/appointmentDocument/appointmentDocumentList.model';
-import { PatientModel } from 'src/app/entities/models/patient/patient.model';
-import { SignInSessionModel, ValidationRules } from 'src/app/entities/models/session/signInSession.model';
+import type { PatientModel } from 'src/app/entities/models/patient/patient.model';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import { ValidationRules } from 'src/app/entities/models/session/signInSession.model';
 import { SitedsModel } from 'src/app/entities/models/siteds/siteds.model';
-import {
-  IPatientRelativesValidationRepository,
-  PatientRelativesValidationRepository,
-} from 'src/app/repositories/database/patientRelativesValidation.repository';
-import {
-  GetAppointmentDetailRepository,
-  IGetAppointmentDetailRepository,
-} from 'src/app/repositories/rest/getAppointmentDetail.repository';
-import {
-  GetAppointmentDocumentsRepository,
-  IGetAppointmentDocumentsRepository,
-} from 'src/app/repositories/soap/getAppointmentDocuments.repository';
-import {
-  GetSitedsInsuranceRepository,
-  IGetSitedsInsuranceRepository,
-} from 'src/app/repositories/soap/getSitedsInsurance.repository';
-import {
-  GetSitedsPatientRepository,
-  IGetSitedsPatientRepository,
-} from 'src/app/repositories/soap/getSitedsPatient.repository';
+import type { IPatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
+import { PatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
+import type { IGetAppointmentDetailRepository } from 'src/app/repositories/rest/getAppointmentDetail.repository';
+import { GetAppointmentDetailRepository } from 'src/app/repositories/rest/getAppointmentDetail.repository';
+import type { IGetAppointmentDocumentsRepository } from 'src/app/repositories/soap/getAppointmentDocuments.repository';
+import { GetAppointmentDocumentsRepository } from 'src/app/repositories/soap/getAppointmentDocuments.repository';
+import type { IGetSitedsInsuranceRepository } from 'src/app/repositories/soap/getSitedsInsurance.repository';
+import { GetSitedsInsuranceRepository } from 'src/app/repositories/soap/getSitedsInsurance.repository';
+import type { IGetSitedsPatientRepository } from 'src/app/repositories/soap/getSitedsPatient.repository';
+import { GetSitedsPatientRepository } from 'src/app/repositories/soap/getSitedsPatient.repository';
 
 export interface IPatientAppointmentDetailInteractor {
   obtain(params: PatientAppointmentDetailParamsDTO, session: SignInSessionModel): Promise<AppointmentModel>;

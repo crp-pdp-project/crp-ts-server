@@ -1,19 +1,16 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import {
-  InsuredPatientDuesInputDTO,
-  InsuredPatientDuesParamsDTOSchema,
-} from 'src/app/entities/dtos/input/insuredPatientDues.input.dto';
+import type { InsuredPatientDuesInputDTO } from 'src/app/entities/dtos/input/insuredPatientDues.input.dto';
+import { InsuredPatientDuesParamsDTOSchema } from 'src/app/entities/dtos/input/insuredPatientDues.input.dto';
 import { InsuredPatientDuesOutputDTOSchema } from 'src/app/entities/dtos/output/insuredPatientDues.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
+import type { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import {
-  IInsuredPatientDuesInteractor,
-  InsuredPatientDuesInteractorBuilder,
-} from 'src/app/interactors/insuredPatientDues/insuredPatientDues.interactor';
+import type { IInsuredPatientDuesInteractor } from 'src/app/interactors/insuredPatientDues/insuredPatientDues.interactor';
+import { InsuredPatientDuesInteractorBuilder } from 'src/app/interactors/insuredPatientDues/insuredPatientDues.interactor';
 import { Audiences } from 'src/general/enums/audience.enum';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IInsuredPatientDuesController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;

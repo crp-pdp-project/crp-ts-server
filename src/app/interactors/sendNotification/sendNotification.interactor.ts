@@ -1,13 +1,9 @@
-import { SendNotificationBodyDTO } from 'src/app/entities/dtos/input/sendNotification.input.dto';
+import type { SendNotificationBodyDTO } from 'src/app/entities/dtos/input/sendNotification.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import {
-  GetDeviceTokensRepository,
-  IGetDeviceTokensRepository,
-} from 'src/app/repositories/database/getDeviceTokens.repository';
-import {
-  ISendPushNotificationRepository,
-  SendPushNotificationRepository,
-} from 'src/app/repositories/rest/sendPushNotifications.repository';
+import type { IGetDeviceTokensRepository } from 'src/app/repositories/database/getDeviceTokens.repository';
+import { GetDeviceTokensRepository } from 'src/app/repositories/database/getDeviceTokens.repository';
+import type { ISendPushNotificationRepository } from 'src/app/repositories/rest/sendPushNotifications.repository';
+import { SendPushNotificationRepository } from 'src/app/repositories/rest/sendPushNotifications.repository';
 
 export interface ISendNotificationInteractor {
   send(body: SendNotificationBodyDTO): Promise<void>;

@@ -1,17 +1,13 @@
-import { FastifyRequest } from 'fastify';
+import type { FastifyRequest } from 'fastify';
 
-import {
-  CreateEnrolledAccountBodyDTOSchema,
-  CreateEnrolledAccountInputDTO,
-} from 'src/app/entities/dtos/input/createEnrolledAccount.input.dto';
+import type { CreateEnrolledAccountInputDTO } from 'src/app/entities/dtos/input/createEnrolledAccount.input.dto';
+import { CreateEnrolledAccountBodyDTOSchema } from 'src/app/entities/dtos/input/createEnrolledAccount.input.dto';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import {
-  AccountPasswordInteractorBuilder,
-  IAccountPasswordInteractor,
-} from 'src/app/interactors/accountPassword/accountPassword.interactor';
+import type { IAccountPasswordInteractor } from 'src/app/interactors/accountPassword/accountPassword.interactor';
+import { AccountPasswordInteractorBuilder } from 'src/app/interactors/accountPassword/accountPassword.interactor';
 import { Audiences } from 'src/general/enums/audience.enum';
 
-import { IAccountPasswordControllerStrategy } from '../accountPassword.controller';
+import type { IAccountPasswordControllerStrategy } from '../accountPassword.controller';
 
 export class CreatePasswordControllerStrategy implements IAccountPasswordControllerStrategy {
   constructor(private readonly interactor: IAccountPasswordInteractor) {}

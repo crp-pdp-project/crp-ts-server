@@ -1,4 +1,4 @@
-import { TipDTO } from 'src/app/entities/dtos/service/tip.dto';
+import type { TipDTO } from 'src/app/entities/dtos/service/tip.dto';
 import cancelTipsStatic from 'src/general/static/cancelTips.static';
 import defaultTipsStatic from 'src/general/static/defaultTips.static';
 import payBlockedTipsStatic from 'src/general/static/payBlockedTips.static';

@@ -1,11 +1,12 @@
 import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
-import { ISearchPatientRepository, SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import type { ISearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
+import { SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
 import { Audiences } from 'src/general/enums/audience.enum';
 import { EmailSubjects } from 'src/general/enums/emailSubject.enum';
 
-import { ISendVerificationOTPStrategy } from '../sendVerificationOtp.interactor';
+import type { ISendVerificationOTPStrategy } from '../sendVerificationOtp.interactor';
 
 export class SendAuthOTPStrategy implements ISendVerificationOTPStrategy {
   private readonly subject: EmailSubjects = EmailSubjects.AUTH_SUBJECT;

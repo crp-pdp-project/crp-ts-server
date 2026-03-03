@@ -1,19 +1,16 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import {
-  CancelAppointmentInputDTO,
-  CancelAppointmentParamsDTOSchema,
-} from 'src/app/entities/dtos/input/cancelAppointment.input.dto';
+import type { CancelAppointmentInputDTO } from 'src/app/entities/dtos/input/cancelAppointment.input.dto';
+import { CancelAppointmentParamsDTOSchema } from 'src/app/entities/dtos/input/cancelAppointment.input.dto';
 import { PatientAppointmentOutputDTOSchema } from 'src/app/entities/dtos/output/patientAppointment.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
+import type { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import {
-  CancelAppointmentInteractorBuilder,
-  ICancelAppointmentInteractor,
-} from 'src/app/interactors/cancelAppointment/cancelAppointment.interactor';
+import type { ICancelAppointmentInteractor } from 'src/app/interactors/cancelAppointment/cancelAppointment.interactor';
+import { CancelAppointmentInteractorBuilder } from 'src/app/interactors/cancelAppointment/cancelAppointment.interactor';
 import { Audiences } from 'src/general/enums/audience.enum';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface ICancelAppointmentController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;

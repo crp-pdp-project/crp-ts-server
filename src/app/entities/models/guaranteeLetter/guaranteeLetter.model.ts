@@ -1,7 +1,8 @@
-import { GuaranteeLetterStates, GuaranteeLetterStatesMapper } from 'src/general/enums/guaranteeLetterState.enum';
+import type { GuaranteeLetterStates } from 'src/general/enums/guaranteeLetterState.enum';
+import { GuaranteeLetterStatesMapper } from 'src/general/enums/guaranteeLetterState.enum';
 import { TextHelper } from 'src/general/helpers/text.helper';
 
-import { GuaranteeLetterDTO } from '../../dtos/service/guaranteeLetter.dto';
+import type { GuaranteeLetterDTO } from '../../dtos/service/guaranteeLetter.dto';
 import { BaseModel } from '../base.model';
 
 export class GuaranteeLetterModel extends BaseModel {

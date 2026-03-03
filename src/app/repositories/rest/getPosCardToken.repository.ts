@@ -1,4 +1,4 @@
-import { CardDTO } from 'src/app/entities/dtos/service/card.dto';
+import type { CardDTO } from 'src/app/entities/dtos/service/card.dto';
 import { Devices } from 'src/app/entities/models/device/device.model';
 import { NiubizClient } from 'src/clients/niubiz/niubiz.client';
 

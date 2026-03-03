@@ -1,10 +1,11 @@
 import { randomUUID } from 'node:crypto';
 
-import { jwtDecrypt, JWTPayload, EncryptJWT } from 'jose';
+import type { JWTPayload } from 'jose';
+import { jwtDecrypt, EncryptJWT } from 'jose';
 
 import { DateHelper } from 'src/general/helpers/date.helper';
+import type { IJWTConfig } from 'src/general/managers/jwt/config/jwt.config';
 import {
-  IJWTConfig,
   JWTConfigEmployee,
   JWTConfigEnroll,
   JWTConfigRecover,
@@ -44,7 +45,7 @@ export class JWTManager<T extends JWTPayload> implements IJWTManager<T> {
 
   async generateToken(payload?: T): Promise<GenerationResponse> {
     const jti = randomUUID();
-    const expiresAt = DateHelper.addMinutes(this.sessionExpTime, 'dbDateTime');
+    const expiresAt = DateHelper.mutate('dbDateTime', 'minute', this.sessionExpTime);
 
     const jwt = await new EncryptJWT(payload ?? {})
       .setProtectedHeader({ alg: 'dir', enc: 'A256GCM', typ: 'JWT' })
@@ -64,7 +65,7 @@ export class JWTManager<T extends JWTPayload> implements IJWTManager<T> {
       audience: this.audience,
     });
 
-    const newExpireAt = DateHelper.addMinutes(this.sessionExpTime, 'dbDateTime');
+    const newExpireAt = DateHelper.mutate('dbDateTime', 'minute', this.sessionExpTime);
 
     return {
       newExpireAt,

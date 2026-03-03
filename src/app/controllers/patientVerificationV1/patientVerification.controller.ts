@@ -1,18 +1,15 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import {
-  PatientVerificationBodyDTOSchema,
-  PatientVerificationInputDTO,
-} from 'src/app/entities/dtos/input/patientVerification.input.dto';
+import type { PatientVerificationInputDTO } from 'src/app/entities/dtos/input/patientVerification.input.dto';
+import { PatientVerificationBodyDTOSchema } from 'src/app/entities/dtos/input/patientVerification.input.dto';
 import { PatientVerificationOutputDTOSchema } from 'src/app/entities/dtos/output/patientVerification.output.dto';
 import { DeviceModel } from 'src/app/entities/models/device/device.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import {
-  IPatientVerificationInteractor,
-  PatientVerificationInteractorBuilder,
-} from 'src/app/interactors/patientVerification/patientVerification.interactor';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { ResponseModel } from 'src/app/entities/models/response/response.model';
+import type { IPatientVerificationInteractor } from 'src/app/interactors/patientVerification/patientVerification.interactor';
+import { PatientVerificationInteractorBuilder } from 'src/app/interactors/patientVerification/patientVerification.interactor';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IPatientVerificationController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;

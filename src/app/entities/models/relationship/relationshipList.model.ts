@@ -1,4 +1,4 @@
-import { RelationshipDTO } from '../../dtos/service/relationship.dto';
+import type { RelationshipDTO } from '../../dtos/service/relationship.dto';
 import { BaseModel } from '../base.model';
 
 import { RelationshipModel } from './relationship.model';

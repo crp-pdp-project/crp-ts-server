@@ -1,15 +1,14 @@
-import {
-  sql,
+import type {
   ExpressionWrapper,
   RawBuilder,
   ReferenceNode,
   ColumnNode,
   AliasedRawBuilder,
-  isAliasedExpression,
   IdentifierNode,
 } from 'kysely';
+import { sql, isAliasedExpression } from 'kysely';
 
-import { Database } from 'src/clients/mysql/mysql.client';
+import type { Database } from 'src/clients/mysql/mysql.client';
 
 type AnyExpression = ExpressionWrapper<Database, never, unknown> | AliasedRawBuilder<unknown, string>;
 

@@ -1,9 +1,7 @@
-import { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
+import type { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
+import type { PayStates, CancelActionStates, RescheduleActionStates } from 'src/general/enums/appointmentState.enum';
 import {
   AppointmentStates,
-  PayStates,
-  CancelActionStates,
-  RescheduleActionStates,
   PaymentActionStates,
   AppointmentStatesMapper,
   CancelActionStatesMapper,
@@ -15,13 +13,13 @@ import { InsuranceTypes } from 'src/general/enums/insuranceType.enum';
 import { TipsType, TipsTypeUtils } from 'src/general/enums/tipsTypes.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 
-import { AppointmentDocumentModel } from '../appointmentDocument/appointmentDocument.model';
-import { AppointmentDocumentListModel } from '../appointmentDocument/appointmentDocumentList.model';
+import type { AppointmentDocumentModel } from '../appointmentDocument/appointmentDocument.model';
+import type { AppointmentDocumentListModel } from '../appointmentDocument/appointmentDocumentList.model';
 import { AppointmentTypeModel } from '../appointmentType/appointmentType.model';
 import { BaseModel } from '../base.model';
 import { DoctorModel } from '../doctor/doctor.model';
 import { InsuranceModel } from '../insurance/insurance.model';
-import { SitedsModel } from '../siteds/siteds.model';
+import type { SitedsModel } from '../siteds/siteds.model';
 import { SpecialtyModel } from '../specialty/specialty.model';
 import { TipModel } from '../tip/tip.model';
 
@@ -49,7 +47,7 @@ export class AppointmentModel extends BaseModel {
 
     this.id = appointment.id;
     this.episodeId = appointment.episodeId;
-    this.date = appointment.date ? DateHelper.toFormatDateTime(appointment.date, 'spanishDateTime') : undefined;
+    this.date = appointment.date ? DateHelper.toDate('spanishDateTime', appointment.date) : undefined;
     this.mode = appointment.mode ?? undefined;
     this.doctor = appointment.doctor ? new DoctorModel(appointment.doctor) : undefined;
     this.specialty = appointment.specialty ? new SpecialtyModel(appointment.specialty) : undefined;
@@ -110,7 +108,7 @@ export class AppointmentModel extends BaseModel {
   }
 
   shouldFetchDocuments(): boolean {
-    return DateHelper.isBeforeNow(this.date ?? '') && this.status === AppointmentStates.FINISHED;
+    return DateHelper.isBefore(this.date) && this.status === AppointmentStates.FINISHED;
   }
 
   shouldFetchSiteds(): boolean {

@@ -1,22 +1,17 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import {
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type {
   RescheduleAppointmentBodyDTO,
   RescheduleAppointmentParamsDTO,
 } from 'src/app/entities/dtos/input/rescheduleAppointment.input.dto';
 import { AppointmentModel } from 'src/app/entities/models/appointment/appointment.model';
-import { SignInSessionModel, ValidationRules } from 'src/app/entities/models/session/signInSession.model';
-import {
-  IPatientRelativesValidationRepository,
-  PatientRelativesValidationRepository,
-} from 'src/app/repositories/database/patientRelativesValidation.repository';
-import {
-  GetAppointmentDetailRepository,
-  IGetAppointmentDetailRepository,
-} from 'src/app/repositories/rest/getAppointmentDetail.repository';
-import {
-  IRescheduleAppointmentRepository,
-  RescheduleAppointmentRepository,
-} from 'src/app/repositories/soap/rescheduleAppointment.repository';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import { ValidationRules } from 'src/app/entities/models/session/signInSession.model';
+import type { IPatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
+import { PatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
+import type { IGetAppointmentDetailRepository } from 'src/app/repositories/rest/getAppointmentDetail.repository';
+import { GetAppointmentDetailRepository } from 'src/app/repositories/rest/getAppointmentDetail.repository';
+import type { IRescheduleAppointmentRepository } from 'src/app/repositories/soap/rescheduleAppointment.repository';
+import { RescheduleAppointmentRepository } from 'src/app/repositories/soap/rescheduleAppointment.repository';
 
 export interface IRescheduleAppointmentInteractor {
   reschedule(

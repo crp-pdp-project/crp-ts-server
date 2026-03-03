@@ -1,8 +1,8 @@
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 
-import { EmployeeSessionDTO } from '../../dtos/service/employeeSession.dto';
-import { EmployeeSessionPayloadDTO } from '../../dtos/service/employeeSessionPayload.dto';
+import type { EmployeeSessionDTO } from '../../dtos/service/employeeSession.dto';
+import type { EmployeeSessionPayloadDTO } from '../../dtos/service/employeeSessionPayload.dto';
 import { BaseModel } from '../base.model';
 import { ErrorModel } from '../error/error.model';
 
@@ -33,7 +33,7 @@ export class EmployeeSessionModel extends BaseModel {
   }
 
   validateExpiration(): this {
-    if (DateHelper.isBeforeNow(this.#expiresAt)) {
+    if (DateHelper.isBefore(this.#expiresAt)) {
       throw ErrorModel.forbidden({ detail: ClientErrorMessages.JWE_TOKEN_INVALID });
     }
     return this;

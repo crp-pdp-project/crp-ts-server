@@ -1,5 +1,5 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { AppointmentDocumentDTO } from 'src/app/entities/dtos/service/appointmentDocument.dto';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { AppointmentDocumentDTO } from 'src/app/entities/dtos/service/appointmentDocument.dto';
 import { InetumClient, InetumHistoryServices } from 'src/clients/inetum/inetum.client';
 import { AppointmentConstants } from 'src/general/contants/appointment.constants';
 import { CRPConstants } from 'src/general/contants/crp.constants';
@@ -84,10 +84,10 @@ export class GetAppointmentDocumentsRepository implements IGetAppointmentDocumen
       peticionListadoInformesPaciente: {
         IdPaciente: fmpId,
         IdCentro: CRPConstants.CENTER_ID,
-        FechaDesde: startDate ? DateHelper.toFormatDate(startDate, 'inetumDate') : undefined,
-        FechaHasta: endDate ? DateHelper.toFormatDate(endDate, 'inetumDate') : undefined,
-        HoraDesde: startDate ? DateHelper.startOfTime('inetumTime') : undefined,
-        HoraHasta: endDate ? DateHelper.endOfTime('inetumTime') : undefined,
+        FechaDesde: startDate ? DateHelper.toDate('inetumDate', startDate) : undefined,
+        FechaHasta: endDate ? DateHelper.toDate('inetumDate', endDate) : undefined,
+        HoraDesde: startDate ? DateHelper.startOf('inetumTime', 'day') : undefined,
+        HoraHasta: endDate ? DateHelper.endOf('inetumTime', 'day') : undefined,
         NumRegistros: AppointmentConstants.DEFAULT_DOCUMENT_COUNT,
         CanalEntrada: CRPConstants.ORIGIN,
         IdCita: appointmentId,

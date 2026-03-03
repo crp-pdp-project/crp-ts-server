@@ -1,8 +1,6 @@
 import { SpecialtyListModel } from 'src/app/entities/models/specialty/specialtyList.model';
-import {
-  GetSpecialtiesRepository,
-  IGetSpecialtiesRepository,
-} from 'src/app/repositories/soap/getSpecialties.repository';
+import type { IGetSpecialtiesRepository } from 'src/app/repositories/soap/getSpecialties.repository';
+import { GetSpecialtiesRepository } from 'src/app/repositories/soap/getSpecialties.repository';
 
 export interface ISpecialtiesListInteractor {
   list(): Promise<SpecialtyListModel>;

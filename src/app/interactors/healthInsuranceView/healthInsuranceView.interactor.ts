@@ -1,9 +1,7 @@
 import { HealthInsuranceModel } from 'src/app/entities/models/healthInsurance/healthInsurance.model';
 import { HealthInsuranceViewModel } from 'src/app/entities/models/healthInsurance/healthInsuranceView.model';
-import {
-  GetHealthInsuranceViewRepository,
-  IGetHealthInsuranceViewRepository,
-} from 'src/app/repositories/database/getHealthInsuranceView.repository';
+import type { IGetHealthInsuranceViewRepository } from 'src/app/repositories/database/getHealthInsuranceView.repository';
+import { GetHealthInsuranceViewRepository } from 'src/app/repositories/database/getHealthInsuranceView.repository';
 
 export interface IHealthInsuranceViewInteractor {
   getView(): Promise<HealthInsuranceViewModel>;

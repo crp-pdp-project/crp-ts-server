@@ -1,4 +1,4 @@
-import { InsuranceDTO } from 'src/app/entities/dtos/service/insurance.dto';
+import type { InsuranceDTO } from 'src/app/entities/dtos/service/insurance.dto';
 
 import { BaseModel } from '../base.model';
 

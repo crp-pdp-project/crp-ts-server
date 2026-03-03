@@ -1,16 +1,13 @@
-import { SignInEmployeeBodyDTO } from 'src/app/entities/dtos/input/signInEmployee.input.dto';
-import { EmployeeSessionPayloadDTO } from 'src/app/entities/dtos/service/employeeSessionPayload.dto';
+import type { SignInEmployeeBodyDTO } from 'src/app/entities/dtos/input/signInEmployee.input.dto';
+import type { EmployeeSessionPayloadDTO } from 'src/app/entities/dtos/service/employeeSessionPayload.dto';
 import { EmployeeModel } from 'src/app/entities/models/employee/employee.model';
 import { EmployeeTokenModel } from 'src/app/entities/models/employee/employeeToken.model';
-import {
-  IUpsertEmployeeSessionRepository,
-  UpsertEmployeeSessionRepository,
-} from 'src/app/repositories/database/upsertEmployeeSession.respository';
-import {
-  ISignInEmployeeRepository,
-  SignInEmployeeRepository,
-} from 'src/app/repositories/rest/signInEmployee.repository';
-import { IJWTManager, JWTManagerBuilder } from 'src/general/managers/jwt/jwt.manager';
+import type { IUpsertEmployeeSessionRepository } from 'src/app/repositories/database/upsertEmployeeSession.respository';
+import { UpsertEmployeeSessionRepository } from 'src/app/repositories/database/upsertEmployeeSession.respository';
+import type { ISignInEmployeeRepository } from 'src/app/repositories/rest/signInEmployee.repository';
+import { SignInEmployeeRepository } from 'src/app/repositories/rest/signInEmployee.repository';
+import type { IJWTManager } from 'src/general/managers/jwt/jwt.manager';
+import { JWTManagerBuilder } from 'src/general/managers/jwt/jwt.manager';
 
 export interface ISignInEmployeeInteractor {
   signIn(body: SignInEmployeeBodyDTO): Promise<EmployeeTokenModel>;

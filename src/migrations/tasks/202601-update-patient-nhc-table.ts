@@ -1,6 +1,6 @@
-import { Kysely } from 'kysely';
+import type { Kysely } from 'kysely';
 
-import { Database } from 'src/clients/mysql/mysql.client';
+import type { Database } from 'src/clients/mysql/mysql.client';
 
 const tableName = 'Patients';
 

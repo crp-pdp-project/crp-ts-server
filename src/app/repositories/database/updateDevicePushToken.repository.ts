@@ -1,6 +1,6 @@
-import { UpdateResult } from 'kysely';
+import type { UpdateResult } from 'kysely';
 
-import { DeviceDM } from 'src/app/entities/dms/devices.dm';
+import type { DeviceDM } from 'src/app/entities/dms/devices.dm';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IUpdateDevicePushTokenRepository {

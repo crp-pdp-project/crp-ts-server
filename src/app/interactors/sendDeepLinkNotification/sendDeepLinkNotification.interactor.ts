@@ -1,21 +1,15 @@
-import {
+import type {
   SendDeepLinkNotificationBodyDTO,
   SendDeepLinkNotificationParamsDTO,
 } from 'src/app/entities/dtos/input/sendDeepLinkNotification.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { PushConfigModel } from 'src/app/entities/models/pushConfig/pushConfig.model';
-import {
-  GetDeviceTokensRepository,
-  IGetDeviceTokensRepository,
-} from 'src/app/repositories/database/getDeviceTokens.repository';
-import {
-  GetPushConfigRepository,
-  IGetPushConfigRepository,
-} from 'src/app/repositories/database/getPushConfig.repository';
-import {
-  ISendPushNotificationRepository,
-  SendPushNotificationRepository,
-} from 'src/app/repositories/rest/sendPushNotifications.repository';
+import type { IGetDeviceTokensRepository } from 'src/app/repositories/database/getDeviceTokens.repository';
+import { GetDeviceTokensRepository } from 'src/app/repositories/database/getDeviceTokens.repository';
+import type { IGetPushConfigRepository } from 'src/app/repositories/database/getPushConfig.repository';
+import { GetPushConfigRepository } from 'src/app/repositories/database/getPushConfig.repository';
+import type { ISendPushNotificationRepository } from 'src/app/repositories/rest/sendPushNotifications.repository';
+import { SendPushNotificationRepository } from 'src/app/repositories/rest/sendPushNotifications.repository';
 
 export interface ISendDeepLinkNotificationInteractor {
   send(params: SendDeepLinkNotificationParamsDTO, body: SendDeepLinkNotificationBodyDTO): Promise<void>;

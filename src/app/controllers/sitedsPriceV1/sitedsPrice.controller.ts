@@ -1,20 +1,19 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
+import type { SitedsPriceInputDTO } from 'src/app/entities/dtos/input/sitedsPrice.input.dto';
 import {
   SitedsPriceBodyDTOSchema,
-  SitedsPriceInputDTO,
   SitedsPriceParamsDTOSchema,
 } from 'src/app/entities/dtos/input/sitedsPrice.input.dto';
 import { SitedsPriceOutputDTOSchema } from 'src/app/entities/dtos/output/sitedsPrice.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
+import type { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import {
-  ISitedsPriceInteractor,
-  SitedsPriceInteractorBuilder,
-} from 'src/app/interactors/sitedsPrice/sitedsPrice.interactor';
+import type { ISitedsPriceInteractor } from 'src/app/interactors/sitedsPrice/sitedsPrice.interactor';
+import { SitedsPriceInteractorBuilder } from 'src/app/interactors/sitedsPrice/sitedsPrice.interactor';
 import { Audiences } from 'src/general/enums/audience.enum';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface ISitedsPriceController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;

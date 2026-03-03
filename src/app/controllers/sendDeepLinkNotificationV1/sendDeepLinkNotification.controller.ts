@@ -1,17 +1,16 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
+import type { SendDeepLinkNotificationInputDTO } from 'src/app/entities/dtos/input/sendDeepLinkNotification.input.dto';
 import {
   SendDeepLinkNotificationBodyDTOSchema,
-  SendDeepLinkNotificationInputDTO,
   SendDeepLinkNotificationParamsDTOSchema,
 } from 'src/app/entities/dtos/input/sendDeepLinkNotification.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import {
-  ISendDeepLinkNotificationInteractor,
-  SendDeepLinkNotificationInteractorBuilder,
-} from 'src/app/interactors/sendDeepLinkNotification/sendDeepLinkNotification.interactor';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { ResponseModel } from 'src/app/entities/models/response/response.model';
+import type { ISendDeepLinkNotificationInteractor } from 'src/app/interactors/sendDeepLinkNotification/sendDeepLinkNotification.interactor';
+import { SendDeepLinkNotificationInteractorBuilder } from 'src/app/interactors/sendDeepLinkNotification/sendDeepLinkNotification.interactor';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface ISendDeepLinkNotificationController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;

@@ -1,5 +1,5 @@
-import { OpenAPIRegistry, RouteConfig } from '@asteasolutions/zod-to-openapi';
-import { ZodObject, ZodTransform, ZodPipe } from 'zod';
+import type { OpenAPIRegistry, RouteConfig } from '@asteasolutions/zod-to-openapi';
+import type { ZodObject, ZodTransform, ZodPipe } from 'zod';
 
 import { BadRequestResponseDTOSchema } from 'src/app/entities/dtos/response/badRequest.response.dto';
 import { ConflictResponseDTOSchema } from 'src/app/entities/dtos/response/conflict.response.dto';
@@ -11,7 +11,7 @@ import { NotFoundResponseDTOSchema } from 'src/app/entities/dtos/response/notFou
 import { PreconditionRequiredResponseDTOSchema } from 'src/app/entities/dtos/response/preconditionRequired.response.dto';
 import { UnauthorizedResponseDTOSchema } from 'src/app/entities/dtos/response/unauthorized.response.dto';
 import { UnprocessableEntityResponseDTOSchema } from 'src/app/entities/dtos/response/unprocessableEntity.response.dto';
-import { HttpSpecMethod } from 'src/general/enums/methods.enum';
+import type { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { StatusCode } from 'src/general/enums/status.enum';
 
 type LooseZodObject = ZodObject | ZodPipe<ZodTransform>;

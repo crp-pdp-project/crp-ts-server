@@ -1,20 +1,15 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { SitedsPriceBodyDTO, SitedsPriceParamsDTO } from 'src/app/entities/dtos/input/sitedsPrice.input.dto';
-import { PatientModel } from 'src/app/entities/models/patient/patient.model';
-import { SignInSessionModel, ValidationRules } from 'src/app/entities/models/session/signInSession.model';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { SitedsPriceBodyDTO, SitedsPriceParamsDTO } from 'src/app/entities/dtos/input/sitedsPrice.input.dto';
+import type { PatientModel } from 'src/app/entities/models/patient/patient.model';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import { ValidationRules } from 'src/app/entities/models/session/signInSession.model';
 import { SitedsModel } from 'src/app/entities/models/siteds/siteds.model';
-import {
-  IPatientRelativesValidationRepository,
-  PatientRelativesValidationRepository,
-} from 'src/app/repositories/database/patientRelativesValidation.repository';
-import {
-  GetSitedsInsuranceRepository,
-  IGetSitedsInsuranceRepository,
-} from 'src/app/repositories/soap/getSitedsInsurance.repository';
-import {
-  GetSitedsPatientRepository,
-  IGetSitedsPatientRepository,
-} from 'src/app/repositories/soap/getSitedsPatient.repository';
+import type { IPatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
+import { PatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
+import type { IGetSitedsInsuranceRepository } from 'src/app/repositories/soap/getSitedsInsurance.repository';
+import { GetSitedsInsuranceRepository } from 'src/app/repositories/soap/getSitedsInsurance.repository';
+import type { IGetSitedsPatientRepository } from 'src/app/repositories/soap/getSitedsPatient.repository';
+import { GetSitedsPatientRepository } from 'src/app/repositories/soap/getSitedsPatient.repository';
 
 export interface ISitedsPriceInteractor {
   obtain(body: SitedsPriceBodyDTO, params: SitedsPriceParamsDTO, session: SignInSessionModel): Promise<SitedsModel>;

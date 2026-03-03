@@ -1,5 +1,5 @@
-import { PushConfigDM } from 'src/app/entities/dms/pushConfigs.dm';
-import { PushConfigDTO } from 'src/app/entities/dtos/service/pushConfig.dto';
+import type { PushConfigDM } from 'src/app/entities/dms/pushConfigs.dm';
+import type { PushConfigDTO } from 'src/app/entities/dtos/service/pushConfig.dto';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 import { PushDataTypes } from 'src/general/enums/pushDataTypes.enum';
 

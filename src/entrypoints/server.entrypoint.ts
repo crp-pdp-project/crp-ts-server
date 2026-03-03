@@ -5,7 +5,8 @@ import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-open
 import cors from '@fastify/cors';
 import formbody from '@fastify/formbody';
 import ejs from 'ejs';
-import Fastify, { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
+import Fastify from 'fastify';
 
 import { AccountPasswordV1Docs } from 'src/app/controllers/accountPasswordV1/accountPassword.docs';
 import { AccountPasswordV1Router } from 'src/app/controllers/accountPasswordV1/accountPassword.router';

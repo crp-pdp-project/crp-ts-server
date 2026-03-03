@@ -1,4 +1,4 @@
-import { GuaranteeLetterDTO } from '../../dtos/service/guaranteeLetter.dto';
+import type { GuaranteeLetterDTO } from '../../dtos/service/guaranteeLetter.dto';
 import { BaseModel } from '../base.model';
 
 import { GuaranteeLetterModel } from './guaranteeLetter.model';

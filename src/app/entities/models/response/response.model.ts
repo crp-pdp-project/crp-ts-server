@@ -1,6 +1,6 @@
-import { ZodDiscriminatedUnion } from 'zod';
+import type { ZodDiscriminatedUnion } from 'zod';
 
-import { BaseModel } from 'src/app/entities/models/base.model';
+import type { BaseModel } from 'src/app/entities/models/base.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { StatusCode, StatusCodesMapper, StatusMessage } from 'src/general/enums/status.enum';
 

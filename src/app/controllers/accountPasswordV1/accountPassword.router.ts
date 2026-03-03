@@ -1,18 +1,15 @@
-import { FastifyInstance } from 'fastify';
+import type { FastifyInstance } from 'fastify';
 
 import { HttpMethod } from 'src/general/enums/methods.enum';
 import { RouterHelper } from 'src/general/helpers/router.helper';
 
-import {
-  IValidateHeadersController,
-  ValidateHeadersControllerBuilder,
-} from '../validateHeadersV1/validateHeaders.controller';
-import {
-  IValidateSessionController,
-  ValidateSessionControllerBuilder,
-} from '../validateSessionV1/validateSession.controller';
+import type { IValidateHeadersController } from '../validateHeadersV1/validateHeaders.controller';
+import { ValidateHeadersControllerBuilder } from '../validateHeadersV1/validateHeaders.controller';
+import type { IValidateSessionController } from '../validateSessionV1/validateSession.controller';
+import { ValidateSessionControllerBuilder } from '../validateSessionV1/validateSession.controller';
 
-import { AccountPasswordControllerBuilder, IAccountPasswordController } from './accountPassword.controller';
+import type { IAccountPasswordController } from './accountPassword.controller';
+import { AccountPasswordControllerBuilder } from './accountPassword.controller';
 
 export class AccountPasswordV1Router {
   private readonly version: string = '/v1';

@@ -1,9 +1,7 @@
 import { PatientModel } from 'src/app/entities/models/patient/patient.model';
-import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
-import {
-  IPatientRelativesRepository,
-  PatientRelativesRepository,
-} from 'src/app/repositories/database/patientRelatives.repository';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import type { IPatientRelativesRepository } from 'src/app/repositories/database/patientRelatives.repository';
+import { PatientRelativesRepository } from 'src/app/repositories/database/patientRelatives.repository';
 
 export interface IPatientRelativesInteractor {
   relatives(session: SignInSessionModel): Promise<PatientModel>;

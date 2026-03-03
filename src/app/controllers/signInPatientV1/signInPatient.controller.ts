@@ -1,15 +1,15 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import { SignInPatientBodyDTOSchema, SignInPatientInputDTO } from 'src/app/entities/dtos/input/signInPatient.input.dto';
+import type { SignInPatientInputDTO } from 'src/app/entities/dtos/input/signInPatient.input.dto';
+import { SignInPatientBodyDTOSchema } from 'src/app/entities/dtos/input/signInPatient.input.dto';
 import { SignInPatientOutputDTOSchema } from 'src/app/entities/dtos/output/signInPatient.output.dto';
 import { DeviceModel } from 'src/app/entities/models/device/device.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import {
-  ISignInPatientInteractor,
-  SignInPatientInteractorBuilder,
-} from 'src/app/interactors/signInPatient/signInPatient.interactor';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { ResponseModel } from 'src/app/entities/models/response/response.model';
+import type { ISignInPatientInteractor } from 'src/app/interactors/signInPatient/signInPatient.interactor';
+import { SignInPatientInteractorBuilder } from 'src/app/interactors/signInPatient/signInPatient.interactor';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface ISignInPatientController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;

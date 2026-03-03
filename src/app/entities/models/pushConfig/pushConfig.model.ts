@@ -1,7 +1,7 @@
 import { DynamicPushHelper } from 'src/general/helpers/dynamicPush.helper';
 
-import { PushConfigDM } from '../../dms/pushConfigs.dm';
-import { PushConfigDTO } from '../../dtos/service/pushConfig.dto';
+import type { PushConfigDM } from '../../dms/pushConfigs.dm';
+import type { PushConfigDTO } from '../../dtos/service/pushConfig.dto';
 import { BaseModel } from '../base.model';
 import { ErrorModel } from '../error/error.model';
 

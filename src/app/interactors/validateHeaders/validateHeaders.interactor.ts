@@ -1,4 +1,4 @@
-import { BaseHeadersDTO } from 'src/app/entities/dtos/input/baseHeaders.input.dto';
+import type { BaseHeadersDTO } from 'src/app/entities/dtos/input/baseHeaders.input.dto';
 import { DeviceModel } from 'src/app/entities/models/device/device.model';
 
 export interface IValidateHeadersInteractor {

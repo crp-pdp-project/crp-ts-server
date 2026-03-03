@@ -1,16 +1,13 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import {
-  OperateRelativeInputDTO,
-  OperateRelativeParamsDTOSchema,
-} from 'src/app/entities/dtos/input/verifyRelative.input.dto';
+import type { OperateRelativeInputDTO } from 'src/app/entities/dtos/input/verifyRelative.input.dto';
+import { OperateRelativeParamsDTOSchema } from 'src/app/entities/dtos/input/verifyRelative.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import {
-  IRejectRelativeInteractor,
-  RejectRelativeInteractorBuilder,
-} from 'src/app/interactors/rejectRelative/rejectRelative.interactor';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { ResponseModel } from 'src/app/entities/models/response/response.model';
+import type { IRejectRelativeInteractor } from 'src/app/interactors/rejectRelative/rejectRelative.interactor';
+import { RejectRelativeInteractorBuilder } from 'src/app/interactors/rejectRelative/rejectRelative.interactor';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IRejectRelativeController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;

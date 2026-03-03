@@ -1,18 +1,16 @@
 import ejs from 'ejs';
 
-import { SessionDM } from 'src/app/entities/dms/sessions.dm';
+import type { SessionDM } from 'src/app/entities/dms/sessions.dm';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
-import { SessionModel } from 'src/app/entities/models/session/session.model';
-import {
-  IUpdateSessionOTPRepository,
-  UpdateSessionOTPRepository,
-} from 'src/app/repositories/database/updateSessionOTP.repository';
+import type { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
+import type { SessionModel } from 'src/app/entities/models/session/session.model';
+import type { IUpdateSessionOTPRepository } from 'src/app/repositories/database/updateSessionOTP.repository';
+import { UpdateSessionOTPRepository } from 'src/app/repositories/database/updateSessionOTP.repository';
 import { EmailClient } from 'src/clients/email/email.client';
 import { InfobipClient } from 'src/clients/infobip/infobip.client';
 import { LoggerClient } from 'src/clients/logger/logger.client';
 import { InfobipConstants } from 'src/general/contants/infobip.constants';
-import { EmailSubjects } from 'src/general/enums/emailSubject.enum';
+import type { EmailSubjects } from 'src/general/enums/emailSubject.enum';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 import { TextHelper } from 'src/general/helpers/text.helper';
 import otpEmailTemplate from 'src/general/templates/otpEmail.template';

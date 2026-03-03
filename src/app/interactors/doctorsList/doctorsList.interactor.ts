@@ -1,12 +1,11 @@
-import { DoctorsListQueryDTO } from 'src/app/entities/dtos/input/doctorsList.input.dto';
-import { DoctorDTO } from 'src/app/entities/dtos/service/doctor.dto';
-import { SpecialtyDTO } from 'src/app/entities/dtos/service/specialty.dto';
+import type { DoctorsListQueryDTO } from 'src/app/entities/dtos/input/doctorsList.input.dto';
+import type { DoctorDTO } from 'src/app/entities/dtos/service/doctor.dto';
+import type { SpecialtyDTO } from 'src/app/entities/dtos/service/specialty.dto';
 import { DoctorListModel } from 'src/app/entities/models/doctor/doctorList.model';
-import {
-  GetDoctorImagesRepository,
-  IGetDoctorImagesRepository,
-} from 'src/app/repositories/rest/getDoctorImages.repository';
-import { GetDoctorsRepository, IGetDoctorsRepository } from 'src/app/repositories/soap/getDoctors.repository';
+import type { IGetDoctorImagesRepository } from 'src/app/repositories/rest/getDoctorImages.repository';
+import { GetDoctorImagesRepository } from 'src/app/repositories/rest/getDoctorImages.repository';
+import type { IGetDoctorsRepository } from 'src/app/repositories/soap/getDoctors.repository';
+import { GetDoctorsRepository } from 'src/app/repositories/soap/getDoctors.repository';
 
 export interface IDoctorsListInteractor {
   list(query: DoctorsListQueryDTO): Promise<DoctorListModel>;

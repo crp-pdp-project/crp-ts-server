@@ -1,4 +1,4 @@
-import { OperateX12BodyDTO, OperateX12ParamsDTO } from 'src/app/entities/dtos/input/operateX12.input.dto';
+import type { OperateX12BodyDTO, OperateX12ParamsDTO } from 'src/app/entities/dtos/input/operateX12.input.dto';
 import { X12OperationModel } from 'src/app/entities/models/x12Operation/x12Operation.model';
 import { X12Formats, X12Operations } from 'src/general/enums/x12.enum';
 import { ConAse270Config } from 'src/general/managers/x12/config/270ConAse.config';

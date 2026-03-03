@@ -1,6 +1,6 @@
-import { UpdateResult } from 'kysely';
+import type { UpdateResult } from 'kysely';
 
-import { EmployeeSessionDM } from 'src/app/entities/dms/employeeSessions.dm';
+import type { EmployeeSessionDM } from 'src/app/entities/dms/employeeSessions.dm';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IUpdateEmployeeSessionExpireRepository {

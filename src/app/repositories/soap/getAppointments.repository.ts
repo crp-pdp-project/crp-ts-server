@@ -1,5 +1,5 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
 import { InetumAppointmentServices, InetumClient } from 'src/clients/inetum/inetum.client';
 import { AppointmentConstants } from 'src/general/contants/appointment.constants';
 import { CRPConstants } from 'src/general/contants/crp.constants';
@@ -77,12 +77,12 @@ export class GetAppointmentsRepository implements IGetAppointmentsRepository {
         CanalEntrada: CRPConstants.ORIGIN,
         FechaInicio:
           filter === AppointmentFilters.CLOSED_ONY
-            ? DateHelper.subtractMonths(AppointmentConstants.HISTORIC_MONTHS_LIST, 'inetumDate')
-            : DateHelper.dateNow('inetumDate'),
+            ? DateHelper.mutate('inetumDate', 'month', AppointmentConstants.HISTORIC_MONTHS_LIST)
+            : DateHelper.toDate('inetumDate'),
         FechaFinal:
           filter === AppointmentFilters.CLOSED_ONY
-            ? DateHelper.dateNow('inetumDate')
-            : DateHelper.addMonths(AppointmentConstants.CURRENT_MONTHS_LIST, 'inetumDate'),
+            ? DateHelper.toDate('inetumDate')
+            : DateHelper.mutate('inetumDate', 'month', AppointmentConstants.CURRENT_MONTHS_LIST),
         EstadoHIS: filter,
       },
     };

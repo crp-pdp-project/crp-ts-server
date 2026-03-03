@@ -1,10 +1,10 @@
-import {
-  AppointmentDocumentCategoriesMapper,
+import type {
   AppointmentDocumentIcon,
   AppointmentDocumentTitle,
 } from 'src/general/enums/appointmentDocumentCategories.enum';
+import { AppointmentDocumentCategoriesMapper } from 'src/general/enums/appointmentDocumentCategories.enum';
 
-import { AppointmentDocumentDTO } from '../../dtos/service/appointmentDocument.dto';
+import type { AppointmentDocumentDTO } from '../../dtos/service/appointmentDocument.dto';
 import { BaseModel } from '../base.model';
 
 export class AppointmentDocumentModel extends BaseModel {

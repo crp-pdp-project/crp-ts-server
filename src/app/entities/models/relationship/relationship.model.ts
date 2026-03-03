@@ -1,4 +1,4 @@
-import { RelationshipDTO } from 'src/app/entities/dtos/service/relationship.dto';
+import type { RelationshipDTO } from 'src/app/entities/dtos/service/relationship.dto';
 import { BaseModel } from 'src/app/entities/models/base.model';
 
 export class RelationshipModel extends BaseModel {

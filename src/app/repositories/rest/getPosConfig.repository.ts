@@ -1,5 +1,5 @@
-import { DeviceDM } from 'src/app/entities/dms/devices.dm';
-import { POSConfigDTO } from 'src/app/entities/dtos/service/posConfig.dto';
+import type { DeviceDM } from 'src/app/entities/dms/devices.dm';
+import type { POSConfigDTO } from 'src/app/entities/dtos/service/posConfig.dto';
 import { NiubizClient } from 'src/clients/niubiz/niubiz.client';
 
 export interface IGetPOSConfigRepository {

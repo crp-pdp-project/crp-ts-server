@@ -1,11 +1,10 @@
-import { PayHealthInsuranceBodyDTO } from 'src/app/entities/dtos/input/payHealthInsurance.input.dto';
+import type { PayHealthInsuranceBodyDTO } from 'src/app/entities/dtos/input/payHealthInsurance.input.dto';
 import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
-import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
-import {
-  IPayHealthInsuranceRepository,
-  PayHealthInsuranceRepository,
-} from 'src/app/repositories/rest/payHealthInsurance.repository';
-import { ISearchPatientRepository, SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import type { IPayHealthInsuranceRepository } from 'src/app/repositories/rest/payHealthInsurance.repository';
+import { PayHealthInsuranceRepository } from 'src/app/repositories/rest/payHealthInsurance.repository';
+import type { ISearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
+import { SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
 
 export interface IPayHealthInsuranceInteractor {
   pay(body: PayHealthInsuranceBodyDTO, session: SignInSessionModel): Promise<void>;

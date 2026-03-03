@@ -1,5 +1,6 @@
 import { InsuranceListModel } from 'src/app/entities/models/insurance/insuranceList.model';
-import { GetInsurancesRepository, IGetInsurancesRepository } from 'src/app/repositories/rest/getInsurances.repository';
+import type { IGetInsurancesRepository } from 'src/app/repositories/rest/getInsurances.repository';
+import { GetInsurancesRepository } from 'src/app/repositories/rest/getInsurances.repository';
 
 export interface IInsurancesListInteractor {
   list(): Promise<InsuranceListModel>;

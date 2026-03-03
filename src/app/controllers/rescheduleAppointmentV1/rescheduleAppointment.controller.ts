@@ -1,20 +1,19 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
+import type { RescheduleAppointmentInputDTO } from 'src/app/entities/dtos/input/rescheduleAppointment.input.dto';
 import {
   RescheduleAppointmentBodyDTOSchema,
-  RescheduleAppointmentInputDTO,
   RescheduleAppointmentParamsDTOSchema,
 } from 'src/app/entities/dtos/input/rescheduleAppointment.input.dto';
 import { PatientAppointmentOutputDTOSchema } from 'src/app/entities/dtos/output/patientAppointment.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
+import type { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import {
-  IRescheduleAppointmentInteractor,
-  RescheduleAppointmentInteractorBuilder,
-} from 'src/app/interactors/rescheduleAppointment/rescheduleAppointment.interactor';
+import type { IRescheduleAppointmentInteractor } from 'src/app/interactors/rescheduleAppointment/rescheduleAppointment.interactor';
+import { RescheduleAppointmentInteractorBuilder } from 'src/app/interactors/rescheduleAppointment/rescheduleAppointment.interactor';
 import { Audiences } from 'src/general/enums/audience.enum';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IRescheduleAppointmentController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;

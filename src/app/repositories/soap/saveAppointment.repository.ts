@@ -1,5 +1,5 @@
-import { AppointmentRequestDTO } from 'src/app/entities/dtos/service/appointmentRequest.dto';
-import { AppointmentTransactionResultDTO } from 'src/app/entities/dtos/service/appointmentTransactionResult.dto';
+import type { AppointmentRequestDTO } from 'src/app/entities/dtos/service/appointmentRequest.dto';
+import type { AppointmentTransactionResultDTO } from 'src/app/entities/dtos/service/appointmentTransactionResult.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { InetumAppointmentServices, InetumClient } from 'src/clients/inetum/inetum.client';
 import { AppointmentConstants } from 'src/general/contants/appointment.constants';
@@ -71,8 +71,8 @@ export class SaveAppointmentRepository implements ISaveAppointmentRepository {
         IdEspecialidad: payload.specialtyId,
         IdProfesional: payload.doctorId,
         Motivo: AppointmentConstants.CREATE_REASON,
-        FechaCita: DateHelper.toFormatDate(payload.date, 'inetumDate'),
-        HoraCita: DateHelper.toFormatTime(payload.date, 'inetumTime'),
+        FechaCita: DateHelper.toDate('inetumDate', payload.date),
+        HoraCita: DateHelper.toDate('inetumTime', payload.date),
         CodInspeccion: payload.inspectionId ?? '',
         CanalEntrada: CRPConstants.ORIGIN,
       },

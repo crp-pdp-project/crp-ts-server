@@ -41,6 +41,10 @@ export default [
     rules: {
       '@typescript-eslint/require-await': 'off',
       '@typescript-eslint/consistent-type-definitions': 'off',
+      '@typescript-eslint/consistent-type-imports': ['error', {
+        prefer: 'type-imports',
+        fixStyle: 'separate-type-imports',
+      }],
       'no-console': 'warn',
       '@typescript-eslint/prefer-readonly': ['warn', {
         onlyInlineLambdas: true,

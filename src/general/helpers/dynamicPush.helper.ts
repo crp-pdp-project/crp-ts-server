@@ -1,4 +1,5 @@
-import { z, ZodObject, ZodRawShape, ZodType } from 'zod';
+import type { ZodObject, ZodRawShape, ZodType } from 'zod';
+import { z } from 'zod';
 
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 

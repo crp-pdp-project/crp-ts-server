@@ -1,7 +1,7 @@
-import { Insertable, InsertResult } from 'kysely';
+import type { Insertable, InsertResult } from 'kysely';
 
-import { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
-import { AuthAttemptDTO } from 'src/app/entities/dtos/service/authAttempt.dto';
+import type { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
+import type { AuthAttemptDTO } from 'src/app/entities/dtos/service/authAttempt.dto';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IUpsertTryCountRepository {

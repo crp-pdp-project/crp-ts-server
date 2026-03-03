@@ -1,6 +1,6 @@
 import { DateHelper } from 'src/general/helpers/date.helper';
 
-import { PatientResultDTO } from '../../dtos/service/patientResult.dto';
+import type { PatientResultDTO } from '../../dtos/service/patientResult.dto';
 import { BaseModel } from '../base.model';
 
 import { PatientResultModel } from './patientResult.model';
@@ -21,8 +21,8 @@ export class PatientResultListModel extends BaseModel {
 
   private sortPatientResults(list: PatientResultDTO[]): PatientResultDTO[] {
     return list.sort((a, b) => {
-      const dateA = DateHelper.toDate(a.date ?? '');
-      const dateB = DateHelper.toDate(b.date ?? '');
+      const dateA = DateHelper.toDate('none', a.date);
+      const dateB = DateHelper.toDate('none', b.date);
 
       return dateB.diff(dateA);
     });

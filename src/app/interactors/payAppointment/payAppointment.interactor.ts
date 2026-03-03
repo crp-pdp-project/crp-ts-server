@@ -1,24 +1,23 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { PayAppointmentBodyDTO, PayAppointmentParamsDTO } from 'src/app/entities/dtos/input/payAppointment.input.dto';
-import { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
-import { POSAuthorizationDTO } from 'src/app/entities/dtos/service/posAuthorization.dto';
-import { PatientModel } from 'src/app/entities/models/patient/patient.model';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type {
+  PayAppointmentBodyDTO,
+  PayAppointmentParamsDTO,
+} from 'src/app/entities/dtos/input/payAppointment.input.dto';
+import type { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
+import type { POSAuthorizationDTO } from 'src/app/entities/dtos/service/posAuthorization.dto';
+import type { PatientModel } from 'src/app/entities/models/patient/patient.model';
 import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
-import { SignInSessionModel, ValidationRules } from 'src/app/entities/models/session/signInSession.model';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import { ValidationRules } from 'src/app/entities/models/session/signInSession.model';
 import { SitedsModel } from 'src/app/entities/models/siteds/siteds.model';
-import {
-  IPatientRelativesValidationRepository,
-  PatientRelativesValidationRepository,
-} from 'src/app/repositories/database/patientRelativesValidation.repository';
-import {
-  GetAppointmentDetailRepository,
-  IGetAppointmentDetailRepository,
-} from 'src/app/repositories/rest/getAppointmentDetail.repository';
-import {
-  IPayAppointmentRepository,
-  PayAppointmentRepository,
-} from 'src/app/repositories/rest/payAppointment.repository';
-import { ISearchPatientRepository, SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
+import type { IPatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
+import { PatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
+import type { IGetAppointmentDetailRepository } from 'src/app/repositories/rest/getAppointmentDetail.repository';
+import { GetAppointmentDetailRepository } from 'src/app/repositories/rest/getAppointmentDetail.repository';
+import type { IPayAppointmentRepository } from 'src/app/repositories/rest/payAppointment.repository';
+import { PayAppointmentRepository } from 'src/app/repositories/rest/payAppointment.repository';
+import type { ISearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
+import { SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
 
 export interface IPayAppointmentInteractor {
   pay(body: PayAppointmentBodyDTO, params: PayAppointmentParamsDTO, session: SignInSessionModel): Promise<void>;

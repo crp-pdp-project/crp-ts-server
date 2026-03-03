@@ -1,4 +1,4 @@
-import { ImageDataDTO } from '../../dtos/service/viewElement.dto';
+import type { ImageDataDTO } from '../../dtos/service/viewElement.dto';
 
 import { ViewElementModel, ViewElementType } from './view.model';
 

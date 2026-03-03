@@ -5,7 +5,7 @@ import { SubTitleElementModel } from '../view/subTitleElement.model';
 import { TitleElementModel } from '../view/titleElement.model';
 import { ViewModel } from '../view/view.model';
 
-import { HealthInsuranceModel } from './healthInsurance.model';
+import type { HealthInsuranceModel } from './healthInsurance.model';
 
 export class HealthInsuranceViewModel extends ViewModel {
   readonly pdfUrl?: string;

@@ -1,9 +1,10 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { GuaranteeLetterDTO } from 'src/app/entities/dtos/service/guaranteeLetter.dto';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { GuaranteeLetterDTO } from 'src/app/entities/dtos/service/guaranteeLetter.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { CRPClient, CRPServicePaths } from 'src/clients/crp/crp.client';
 import { HttpMethod } from 'src/general/enums/methods.enum';
-import { CRPDocumentType, DocumentTypeMapper, PatientDocumentType } from 'src/general/enums/patientInfo.enum';
+import type { CRPDocumentType, PatientDocumentType } from 'src/general/enums/patientInfo.enum';
+import { DocumentTypeMapper } from 'src/general/enums/patientInfo.enum';
 
 type GetGuaranteeLetterInput = {
   TipoDocumento: CRPDocumentType;

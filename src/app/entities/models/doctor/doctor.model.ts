@@ -1,4 +1,4 @@
-import { DoctorDTO } from 'src/app/entities/dtos/service/doctor.dto';
+import type { DoctorDTO } from 'src/app/entities/dtos/service/doctor.dto';
 import { TextHelper } from 'src/general/helpers/text.helper';
 
 import { BaseModel } from '../base.model';

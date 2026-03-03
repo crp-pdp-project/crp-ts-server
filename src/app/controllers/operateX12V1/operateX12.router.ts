@@ -1,8 +1,9 @@
-import { FastifyInstance } from 'fastify';
+import type { FastifyInstance } from 'fastify';
 
 import { HttpMethod } from 'src/general/enums/methods.enum';
 
-import { OperateX12ControllerBuilder, IOperateX12Controller } from './operateX12.controller';
+import type { IOperateX12Controller } from './operateX12.controller';
+import { OperateX12ControllerBuilder } from './operateX12.controller';
 
 export class OperateX12V1Router {
   private readonly version: string = '/v1';

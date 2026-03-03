@@ -1,9 +1,7 @@
-import { DeleteRelativeParamsDTO } from 'src/app/entities/dtos/input/deleteRelative.input.dto';
-import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
-import {
-  DeleteRelativeRepository,
-  IDeleteRelativeRepository,
-} from 'src/app/repositories/database/deleteRelative.repository';
+import type { DeleteRelativeParamsDTO } from 'src/app/entities/dtos/input/deleteRelative.input.dto';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import type { IDeleteRelativeRepository } from 'src/app/repositories/database/deleteRelative.repository';
+import { DeleteRelativeRepository } from 'src/app/repositories/database/deleteRelative.repository';
 
 export interface IDeleteRelativeInteractor {
   delete(params: DeleteRelativeParamsDTO, session: SignInSessionModel): Promise<void>;

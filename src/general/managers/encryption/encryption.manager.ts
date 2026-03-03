@@ -1,7 +1,8 @@
 import { randomBytes, pbkdf2 } from 'node:crypto';
 import { promisify } from 'node:util';
 
-import { EncryptionConfigSha512, IEncryptionConfig } from 'src/general/managers/encryption/config/encryption.config';
+import type { IEncryptionConfig } from 'src/general/managers/encryption/config/encryption.config';
+import { EncryptionConfigSha512 } from 'src/general/managers/encryption/config/encryption.config';
 
 export type PasswordHashResult = {
   hash: string;

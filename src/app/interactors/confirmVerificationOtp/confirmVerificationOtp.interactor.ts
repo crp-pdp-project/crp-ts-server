@@ -1,10 +1,8 @@
-import { ConfirmVerificationOTPBodyDTO } from 'src/app/entities/dtos/input/validateVerificationOtp.input.dto';
-import { PatientModel } from 'src/app/entities/models/patient/patient.model';
-import { SessionModel } from 'src/app/entities/models/session/session.model';
-import {
-  IValidateSessionOTPRepository,
-  ValidateSessionOTPRepository,
-} from 'src/app/repositories/database/validateSessionOTP.repository';
+import type { ConfirmVerificationOTPBodyDTO } from 'src/app/entities/dtos/input/validateVerificationOtp.input.dto';
+import type { PatientModel } from 'src/app/entities/models/patient/patient.model';
+import type { SessionModel } from 'src/app/entities/models/session/session.model';
+import type { IValidateSessionOTPRepository } from 'src/app/repositories/database/validateSessionOTP.repository';
+import { ValidateSessionOTPRepository } from 'src/app/repositories/database/validateSessionOTP.repository';
 
 import { ConfirmAuthOTPStrategy } from './strategies/confirmAuthOtp.strategy';
 import { ConfirmEnrollOTPStrategyBuilder } from './strategies/confirmEnrollOtp.strategy';

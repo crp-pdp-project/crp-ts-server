@@ -1,15 +1,14 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
 import { SpecialtiesListOutputDTOSchema } from 'src/app/entities/dtos/output/specialtiesList.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
+import type { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import {
-  ISpecialtiesListInteractor,
-  SpecialtiesListInteractorBuilder,
-} from 'src/app/interactors/specialtiesList/specialtiesList.interactor';
+import type { ISpecialtiesListInteractor } from 'src/app/interactors/specialtiesList/specialtiesList.interactor';
+import { SpecialtiesListInteractorBuilder } from 'src/app/interactors/specialtiesList/specialtiesList.interactor';
 import { Audiences } from 'src/general/enums/audience.enum';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface ISpecialtiesListController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;

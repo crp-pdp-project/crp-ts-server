@@ -1,15 +1,12 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { AppointmentDocumentPDFParamsDTO } from 'src/app/entities/dtos/input/appointmentDocumentPDF.input.dto';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { AppointmentDocumentPDFParamsDTO } from 'src/app/entities/dtos/input/appointmentDocumentPDF.input.dto';
 import { PdfFileModel } from 'src/app/entities/models/File/pdfFile.model';
-import { SignInSessionModel, ValidationRules } from 'src/app/entities/models/session/signInSession.model';
-import {
-  IPatientRelativesValidationRepository,
-  PatientRelativesValidationRepository,
-} from 'src/app/repositories/database/patientRelativesValidation.repository';
-import {
-  IObtainPDFDocumentRepository,
-  ObtainPDFDocumentRepository,
-} from 'src/app/repositories/soap/obtainPDFDocument.repository';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import { ValidationRules } from 'src/app/entities/models/session/signInSession.model';
+import type { IPatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
+import { PatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
+import type { IObtainPDFDocumentRepository } from 'src/app/repositories/soap/obtainPDFDocument.repository';
+import { ObtainPDFDocumentRepository } from 'src/app/repositories/soap/obtainPDFDocument.repository';
 
 export interface IAppointmentDocumentPDFInteractor {
   obtain(params: AppointmentDocumentPDFParamsDTO, session: SignInSessionModel): Promise<PdfFileModel>;

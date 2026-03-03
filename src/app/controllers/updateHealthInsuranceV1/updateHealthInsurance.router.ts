@@ -1,17 +1,13 @@
-import { FastifyInstance } from 'fastify';
+import type { FastifyInstance } from 'fastify';
 
 import { HttpMethod } from 'src/general/enums/methods.enum';
 import { RouterHelper } from 'src/general/helpers/router.helper';
 
-import {
-  IValidateEmployeeSessionController,
-  ValidateEmployeeSessionControllerBuilder,
-} from '../validateEmployeeSessionV1/validateEmployeeSession.controller';
+import type { IValidateEmployeeSessionController } from '../validateEmployeeSessionV1/validateEmployeeSession.controller';
+import { ValidateEmployeeSessionControllerBuilder } from '../validateEmployeeSessionV1/validateEmployeeSession.controller';
 
-import {
-  UpdateHealthInsuranceControllerBuilder,
-  IUpdateHealthInsuranceController,
-} from './updateHealthInsurance.controller';
+import type { IUpdateHealthInsuranceController } from './updateHealthInsurance.controller';
+import { UpdateHealthInsuranceControllerBuilder } from './updateHealthInsurance.controller';
 
 export class UpdateHealthInsuranceV1Router {
   private readonly version: string = '/v1';

@@ -1,20 +1,17 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import {
-  PatientAppointmentsInputDTO,
-  PatientAppointmentsParamsDTOSchema,
-} from 'src/app/entities/dtos/input/patientAppointment.input.dto';
+import type { PatientAppointmentsInputDTO } from 'src/app/entities/dtos/input/patientAppointment.input.dto';
+import { PatientAppointmentsParamsDTOSchema } from 'src/app/entities/dtos/input/patientAppointment.input.dto';
 import { PatientAppointmentItemOutputDTOSchema } from 'src/app/entities/dtos/output/patientAppointmentItem.output.dto';
 import { PatientAppointmentListOutputDTOSchema } from 'src/app/entities/dtos/output/patientHistoricAppointment.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
+import type { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import {
-  IPatientAppointmentsInteractor,
-  PatientAppointmentsInteractorBuilder,
-} from 'src/app/interactors/patientAppointments/patientAppointments.interactor';
+import type { IPatientAppointmentsInteractor } from 'src/app/interactors/patientAppointments/patientAppointments.interactor';
+import { PatientAppointmentsInteractorBuilder } from 'src/app/interactors/patientAppointments/patientAppointments.interactor';
 import { Audiences } from 'src/general/enums/audience.enum';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IPatientApointmentsController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;

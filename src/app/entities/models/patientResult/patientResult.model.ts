@@ -1,7 +1,8 @@
-import { PatientResultTypes, PatientResultTypesMapper } from 'src/general/enums/patientResultType.enum';
+import type { PatientResultTypes } from 'src/general/enums/patientResultType.enum';
+import { PatientResultTypesMapper } from 'src/general/enums/patientResultType.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 
-import { PatientResultDTO } from '../../dtos/service/patientResult.dto';
+import type { PatientResultDTO } from '../../dtos/service/patientResult.dto';
 import { AppointmentTypeModel } from '../appointmentType/appointmentType.model';
 import { BaseModel } from '../base.model';
 import { DoctorModel } from '../doctor/doctor.model';
@@ -24,7 +25,7 @@ export class PatientResultModel extends BaseModel {
 
     this.resultId = patientResult.resultId;
     this.episodeId = patientResult.episodeId;
-    this.date = patientResult.date ? DateHelper.toFormatDateTime(patientResult.date, 'spanishDateTime') : undefined;
+    this.date = patientResult.date ? DateHelper.toDate('spanishDateTime', patientResult.date) : undefined;
     this.doctor = patientResult.doctor ? new DoctorModel(patientResult.doctor) : undefined;
     this.specialty = patientResult.specialty ? new SpecialtyModel(patientResult.specialty) : undefined;
     this.appointmentType = patientResult.appointmentType

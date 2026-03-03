@@ -1,4 +1,4 @@
-import { PushNotificationDTO } from 'src/app/entities/dtos/service/pushNotification.dto';
+import type { PushNotificationDTO } from 'src/app/entities/dtos/service/pushNotification.dto';
 import { Devices } from 'src/app/entities/models/device/device.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 

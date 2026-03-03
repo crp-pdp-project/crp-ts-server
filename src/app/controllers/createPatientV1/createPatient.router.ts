@@ -1,14 +1,13 @@
-import { FastifyInstance } from 'fastify';
+import type { FastifyInstance } from 'fastify';
 
 import { HttpMethod } from 'src/general/enums/methods.enum';
 import { RouterHelper } from 'src/general/helpers/router.helper';
 
-import {
-  IValidateHeadersController,
-  ValidateHeadersControllerBuilder,
-} from '../validateHeadersV1/validateHeaders.controller';
+import type { IValidateHeadersController } from '../validateHeadersV1/validateHeaders.controller';
+import { ValidateHeadersControllerBuilder } from '../validateHeadersV1/validateHeaders.controller';
 
-import { CreatePatientControllerBuilder, ICreatePatientController } from './createPatient.controller';
+import type { ICreatePatientController } from './createPatient.controller';
+import { CreatePatientControllerBuilder } from './createPatient.controller';
 
 export class CreatePatientV1Router {
   private readonly version: string = '/v1';

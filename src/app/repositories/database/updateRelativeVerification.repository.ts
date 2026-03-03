@@ -1,7 +1,7 @@
-import { UpdateResult } from 'kysely';
+import type { UpdateResult } from 'kysely';
 
-import { FamilyDM } from 'src/app/entities/dms/families.dm';
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { FamilyDM } from 'src/app/entities/dms/families.dm';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IUpdateRelativeVerificationRepository {

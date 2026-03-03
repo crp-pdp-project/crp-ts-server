@@ -1,8 +1,9 @@
-import { FastifyInstance } from 'fastify';
+import type { FastifyInstance } from 'fastify';
 
 import { HttpMethod } from 'src/general/enums/methods.enum';
 
-import { ISignInEmployeeController, SignInEmployeeControllerBuilder } from './signInEmployee.controller';
+import type { ISignInEmployeeController } from './signInEmployee.controller';
+import { SignInEmployeeControllerBuilder } from './signInEmployee.controller';
 
 export class SignInEmployeeV1Router {
   private readonly version: string = '/v1';

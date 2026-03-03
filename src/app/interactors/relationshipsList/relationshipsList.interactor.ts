@@ -1,8 +1,6 @@
 import { RelationshipListModel } from 'src/app/entities/models/relationship/relationshipList.model';
-import {
-  GetRelationshipsRepository,
-  IGetRelationshipsRepository,
-} from 'src/app/repositories/database/getRelationships.repository';
+import type { IGetRelationshipsRepository } from 'src/app/repositories/database/getRelationships.repository';
+import { GetRelationshipsRepository } from 'src/app/repositories/database/getRelationships.repository';
 
 export interface IRelationshipsListInteractor {
   list(): Promise<RelationshipListModel>;

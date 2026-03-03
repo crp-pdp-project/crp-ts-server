@@ -1,5 +1,5 @@
-import { PatientConfirmationDTO } from 'src/app/entities/dtos/service/patientConfirmation.dto';
-import { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExternal.dto';
+import type { PatientConfirmationDTO } from 'src/app/entities/dtos/service/patientConfirmation.dto';
+import type { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExternal.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { InetumClient, InetumUserServices } from 'src/clients/inetum/inetum.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';
@@ -63,7 +63,7 @@ export class ConfirmPatientRepository implements IConfirmPatientRepository {
         Nombre: patient.firstName ?? '',
         Apellido1: patient.lastName ?? '',
         Apellido2: patient.secondLastName ?? undefined,
-        FechaNacimiento: patient.birthDate ? DateHelper.toFormatDate(patient.birthDate, 'inetumDate') : '',
+        FechaNacimiento: patient.birthDate ? DateHelper.toDate('inetumDate', patient.birthDate) : '',
         IdTipoDocIdentidad: patient.documentType ? String(patient.documentType) : '',
         DocIdentidad: patient.documentNumber ?? '',
         Sexo: patient.gender ?? '',

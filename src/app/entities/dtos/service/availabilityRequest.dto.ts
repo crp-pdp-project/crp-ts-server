@@ -8,6 +8,7 @@ export const AvailabilityRequestDTOSchema = z.object({
   inspectionId: z.string(),
   fmpId: z.string(),
   firstAvailable: z.boolean().default(false),
+  filterDate: z.string().optional(),
 });
 
 export type AvailabilityRequestDTO = z.infer<typeof AvailabilityRequestDTOSchema>;

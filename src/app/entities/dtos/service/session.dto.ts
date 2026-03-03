@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import type { z } from 'zod';
 
 import { SessionDMSchema } from 'src/app/entities/dms/sessions.dm';
 

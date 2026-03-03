@@ -1,4 +1,4 @@
-import { HealthInsuranceDTO } from 'src/app/entities/dtos/service/healthInsurance.dto';
+import type { HealthInsuranceDTO } from 'src/app/entities/dtos/service/healthInsurance.dto';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IGetHealthInsuranceViewRepository {

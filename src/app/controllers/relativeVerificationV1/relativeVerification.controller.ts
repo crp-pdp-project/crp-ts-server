@@ -1,19 +1,16 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
-import {
-  PatientVerificationBodyDTOSchema,
-  PatientVerificationInputDTO,
-} from 'src/app/entities/dtos/input/patientVerification.input.dto';
+import type { PatientVerificationInputDTO } from 'src/app/entities/dtos/input/patientVerification.input.dto';
+import { PatientVerificationBodyDTOSchema } from 'src/app/entities/dtos/input/patientVerification.input.dto';
 import { PatientProfileOutputDTOSchema } from 'src/app/entities/dtos/output/patientProfile.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
+import type { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import {
-  IRelativeVerificationInteractor,
-  RelativeVerificationInteractorBuilder,
-} from 'src/app/interactors/relativeVerification/relativeVefirication.interactor';
+import type { IRelativeVerificationInteractor } from 'src/app/interactors/relativeVerification/relativeVefirication.interactor';
+import { RelativeVerificationInteractorBuilder } from 'src/app/interactors/relativeVerification/relativeVefirication.interactor';
 import { Audiences } from 'src/general/enums/audience.enum';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IRelativeVerificationController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;

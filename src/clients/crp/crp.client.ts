@@ -2,7 +2,8 @@ import { CRPConstants } from 'src/general/contants/crp.constants';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';
-import { RestHelper, RestRequestOptions } from 'src/general/helpers/rest.helper';
+import type { RestRequestOptions } from 'src/general/helpers/rest.helper';
+import { RestHelper } from 'src/general/helpers/rest.helper';
 
 type AuthTokenInput = {
   Usuario: string;
@@ -79,12 +80,12 @@ export class CRPClient {
     });
 
     this.token = tokenResponse.data;
-    this.tokenExpiresAt = DateHelper.addMinutes(CRPConstants.TOKEN_TIMEOUT, 'dbDateTime');
+    this.tokenExpiresAt = DateHelper.mutate('dbDateTime', 'minute', CRPConstants.TOKEN_TIMEOUT);
     return this.token;
   }
 
   private isTokenValid(): boolean {
-    return !!this.token && !DateHelper.isBeforeNow(this.tokenExpiresAt);
+    return !!this.token && !DateHelper.isBefore(this.tokenExpiresAt);
   }
 
   private parseTokenInput(): AuthTokenInput {

@@ -1,11 +1,10 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import {
-  IValidateEmployeeSessionInteractor,
-  ValidateEmployeeSessionInteractorBuilder,
-} from 'src/app/interactors/validateEmployeeSession/validateEmployeeSession.interactor';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { IValidateEmployeeSessionInteractor } from 'src/app/interactors/validateEmployeeSession/validateEmployeeSession.interactor';
+import { ValidateEmployeeSessionInteractorBuilder } from 'src/app/interactors/validateEmployeeSession/validateEmployeeSession.interactor';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IValidateEmployeeSessionController {
   validate(input: FastifyRequest, reply: FastifyReply): Promise<void>;

@@ -1,4 +1,4 @@
-import { FastifyReply, FastifyRequest, HookHandlerDoneFunction, preHandlerHookHandler } from 'fastify';
+import type { FastifyReply, FastifyRequest, HookHandlerDoneFunction, preHandlerHookHandler } from 'fastify';
 
 type GenericHandler = (input: FastifyRequest, reply: FastifyReply) => Promise<void>;
 

@@ -1,7 +1,7 @@
-import { POSConfigWebBodyDTO } from 'src/app/entities/dtos/input/posConfigWeb.input.dto';
-import { DeviceModel } from 'src/app/entities/models/device/device.model';
-import { POSConfigModel } from 'src/app/entities/models/posConfig/posConfig.model';
-import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import type { POSConfigWebBodyDTO } from 'src/app/entities/dtos/input/posConfigWeb.input.dto';
+import type { DeviceModel } from 'src/app/entities/models/device/device.model';
+import type { POSConfigModel } from 'src/app/entities/models/posConfig/posConfig.model';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
 
 import { MobilePOSConfigStrategyBuilder } from './strategies/mobilePosConfig.strategy';
 import { WebPOSConfigStrategyBuilder } from './strategies/webPosConfig.strategy';

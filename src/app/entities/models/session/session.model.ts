@@ -1,14 +1,14 @@
 import { BaseModel } from 'src/app/entities/models/base.model';
 import { OTPConstants } from 'src/general/contants/otp.constants';
-import { Audiences } from 'src/general/enums/audience.enum';
+import type { Audiences } from 'src/general/enums/audience.enum';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
-import { SessionDTO } from '../../dtos/service/session.dto';
+import type { SessionDTO } from '../../dtos/service/session.dto';
 import { ErrorModel } from '../error/error.model';
 
-import { EnrollSessionModel } from './enrollSession.model';
-import { RecoverSessionModel } from './recoverSession.model';
-import { SignInSessionModel } from './signInSession.model';
+import type { EnrollSessionModel } from './enrollSession.model';
+import type { RecoverSessionModel } from './recoverSession.model';
+import type { SignInSessionModel } from './signInSession.model';
 
 type SessionTypeMap = {
   [Audiences.ENROLL]: EnrollSessionModel;

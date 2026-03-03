@@ -1,11 +1,12 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
 import { POSConfigOutputDTOSchema } from 'src/app/entities/dtos/output/posConfig.output.dto';
 import { POSConfigWebOutputDTOSchema } from 'src/app/entities/dtos/output/posConfigWeb.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { POSConfigModel } from 'src/app/entities/models/posConfig/posConfig.model';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { POSConfigModel } from 'src/app/entities/models/posConfig/posConfig.model';
+import type { ResponseModel } from 'src/app/entities/models/response/response.model';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 import { MobilePosConfigControllerStrategyBuilder } from './strategies/mobilePosConfig.strategy';
 import { WebPosConfigControllerStrategyBuilder } from './strategies/webPosConfig.strategy';

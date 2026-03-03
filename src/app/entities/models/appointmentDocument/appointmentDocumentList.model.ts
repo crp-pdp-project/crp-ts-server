@@ -1,4 +1,4 @@
-import { AppointmentDocumentDTO } from '../../dtos/service/appointmentDocument.dto';
+import type { AppointmentDocumentDTO } from '../../dtos/service/appointmentDocument.dto';
 import { BaseModel } from '../base.model';
 
 import { AppointmentDocumentModel } from './appointmentDocument.model';

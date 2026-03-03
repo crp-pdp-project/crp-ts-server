@@ -1,5 +1,5 @@
-import { InsuranceDueDTO } from '../../dtos/service/insuranceDue.dto';
-import { InsuranceDueSectionDTO } from '../../dtos/service/insuranceDueSection.dto';
+import type { InsuranceDueDTO } from '../../dtos/service/insuranceDue.dto';
+import type { InsuranceDueSectionDTO } from '../../dtos/service/insuranceDueSection.dto';
 import { BaseModel } from '../base.model';
 
 import { InsuranceDueModel } from './insuranceDue.model';

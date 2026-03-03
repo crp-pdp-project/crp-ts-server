@@ -1,5 +1,5 @@
-import { PatientsListParamsDTO, PatientsListQueryDTO } from 'src/app/entities/dtos/input/patientsList.input.dto';
-import { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
+import type { PatientsListParamsDTO, PatientsListQueryDTO } from 'src/app/entities/dtos/input/patientsList.input.dto';
+import type { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import { PatientListModel } from 'src/app/entities/models/patient/patientList.model';
 
 import { PrincipalsListStrategyBuilder } from './strategies/principalsList.strategy';

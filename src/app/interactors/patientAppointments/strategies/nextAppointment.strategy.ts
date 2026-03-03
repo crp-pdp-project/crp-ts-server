@@ -1,15 +1,14 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { AppointmentModel } from 'src/app/entities/models/appointment/appointment.model';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { AppointmentModel } from 'src/app/entities/models/appointment/appointment.model';
 import { AppointmentListModel } from 'src/app/entities/models/appointment/appointmentsList.model';
-import { SignInSessionModel, ValidationRules } from 'src/app/entities/models/session/signInSession.model';
-import {
-  GetAppointmentsRepository,
-  IGetAppointmentsRepository,
-} from 'src/app/repositories/soap/getAppointments.repository';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import { ValidationRules } from 'src/app/entities/models/session/signInSession.model';
+import type { IGetAppointmentsRepository } from 'src/app/repositories/soap/getAppointments.repository';
+import { GetAppointmentsRepository } from 'src/app/repositories/soap/getAppointments.repository';
 import { AppointmentFilters } from 'src/general/enums/appointmentFilters.enum';
 import { SortOrder } from 'src/general/enums/sort.enum';
 
-import { IPatientAppointmentsStrategy } from '../patientAppointments.interactor';
+import type { IPatientAppointmentsStrategy } from '../patientAppointments.interactor';
 
 export class NextAppointmentStrategy implements IPatientAppointmentsStrategy {
   constructor(private readonly getAppointments: IGetAppointmentsRepository) {}

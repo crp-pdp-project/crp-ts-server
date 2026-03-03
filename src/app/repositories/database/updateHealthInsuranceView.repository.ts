@@ -1,6 +1,6 @@
-import { UpdateResult } from 'kysely';
+import type { UpdateResult } from 'kysely';
 
-import { HealthInsuranceDTO } from 'src/app/entities/dtos/service/healthInsurance.dto';
+import type { HealthInsuranceDTO } from 'src/app/entities/dtos/service/healthInsurance.dto';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IUpdateHealthInsuranceRepository {

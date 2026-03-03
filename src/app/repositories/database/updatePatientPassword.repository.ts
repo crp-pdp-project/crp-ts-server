@@ -1,7 +1,7 @@
-import { UpdateResult } from 'kysely';
+import type { UpdateResult } from 'kysely';
 
-import { AccountDM } from 'src/app/entities/dms/accounts.dm';
-import { AccountDTO } from 'src/app/entities/dtos/service/account.dto';
+import type { AccountDM } from 'src/app/entities/dms/accounts.dm';
+import type { AccountDTO } from 'src/app/entities/dtos/service/account.dto';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface IUpdatePatientPasswordRepository {

@@ -1,6 +1,6 @@
-import { DeleteResult } from 'kysely';
+import type { DeleteResult } from 'kysely';
 
-import { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
+import type { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
 import { MysqlClient } from 'src/clients/mysql/mysql.client';
 
 export interface ICleanBlockedRepository {

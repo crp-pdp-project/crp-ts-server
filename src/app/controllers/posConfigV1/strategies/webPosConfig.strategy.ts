@@ -1,13 +1,15 @@
-import { FastifyRequest } from 'fastify';
+import type { FastifyRequest } from 'fastify';
 
-import { POSConfigWebBodyDTOSchema, POSConfigWebInputDTO } from 'src/app/entities/dtos/input/posConfigWeb.input.dto';
+import type { POSConfigWebInputDTO } from 'src/app/entities/dtos/input/posConfigWeb.input.dto';
+import { POSConfigWebBodyDTOSchema } from 'src/app/entities/dtos/input/posConfigWeb.input.dto';
 import { DeviceModel } from 'src/app/entities/models/device/device.model';
-import { POSConfigModel } from 'src/app/entities/models/posConfig/posConfig.model';
+import type { POSConfigModel } from 'src/app/entities/models/posConfig/posConfig.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import { IPOSConfigInteractor, POSConfigInteractorBuilder } from 'src/app/interactors/posConfig/posConfig.interactor';
+import type { IPOSConfigInteractor } from 'src/app/interactors/posConfig/posConfig.interactor';
+import { POSConfigInteractorBuilder } from 'src/app/interactors/posConfig/posConfig.interactor';
 import { Audiences } from 'src/general/enums/audience.enum';
 
-import { IPOSConfigControllerStrategy } from '../posConfig.controller';
+import type { IPOSConfigControllerStrategy } from '../posConfig.controller';
 
 export class WebPosConfigControllerStrategy implements IPOSConfigControllerStrategy {
   constructor(private readonly interactor: IPOSConfigInteractor) {}

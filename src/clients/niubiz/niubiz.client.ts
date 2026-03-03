@@ -1,7 +1,8 @@
-import { DeviceDM } from 'src/app/entities/dms/devices.dm';
-import { CardDTO } from 'src/app/entities/dtos/service/card.dto';
-import { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExternal.dto';
-import { POSConfigDTO, POSConfigDTOSchema } from 'src/app/entities/dtos/service/posConfig.dto';
+import type { DeviceDM } from 'src/app/entities/dms/devices.dm';
+import type { CardDTO } from 'src/app/entities/dtos/service/card.dto';
+import type { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExternal.dto';
+import type { POSConfigDTO } from 'src/app/entities/dtos/service/posConfig.dto';
+import { POSConfigDTOSchema } from 'src/app/entities/dtos/service/posConfig.dto';
 import { Devices } from 'src/app/entities/models/device/device.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { PosConstants } from 'src/general/contants/pos.constants';

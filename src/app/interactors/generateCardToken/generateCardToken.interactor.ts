@@ -1,15 +1,13 @@
-import { ZodSafeParseResult } from 'zod';
+import type { ZodSafeParseResult } from 'zod';
 
-import {
+import type {
   GenerateCardTokenBodyDTO,
   GenerateCardTokenQueryDTO,
 } from 'src/app/entities/dtos/input/generateCardToken.input.dto';
 import { CardModel } from 'src/app/entities/models/card/card.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import {
-  GetPOSCardTokenRepository,
-  IGetPOSCardTokenRepository,
-} from 'src/app/repositories/rest/getPosCardToken.repository';
+import type { IGetPOSCardTokenRepository } from 'src/app/repositories/rest/getPosCardToken.repository';
+import { GetPOSCardTokenRepository } from 'src/app/repositories/rest/getPosCardToken.repository';
 import { LoggerClient } from 'src/clients/logger/logger.client';
 
 export interface IGenerateCardTokenInteractor {

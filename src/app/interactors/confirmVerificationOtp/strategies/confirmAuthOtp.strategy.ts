@@ -1,11 +1,11 @@
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { PatientModel } from 'src/app/entities/models/patient/patient.model';
 import { SessionModel } from 'src/app/entities/models/session/session.model';
-import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
 import { Audiences } from 'src/general/enums/audience.enum';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
-import { IConfirmVerificationOTPStrategy } from '../confirmVerificationOtp.interactor';
+import type { IConfirmVerificationOTPStrategy } from '../confirmVerificationOtp.interactor';
 
 export class ConfirmAuthOTPStrategy implements IConfirmVerificationOTPStrategy {
   async validate(session: SessionModel, otp: string): Promise<PatientModel> {

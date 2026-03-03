@@ -1,19 +1,14 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { CancelAppointmentParamsDTO } from 'src/app/entities/dtos/input/cancelAppointment.input.dto';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { CancelAppointmentParamsDTO } from 'src/app/entities/dtos/input/cancelAppointment.input.dto';
 import { AppointmentModel } from 'src/app/entities/models/appointment/appointment.model';
-import { SignInSessionModel, ValidationRules } from 'src/app/entities/models/session/signInSession.model';
-import {
-  IPatientRelativesValidationRepository,
-  PatientRelativesValidationRepository,
-} from 'src/app/repositories/database/patientRelativesValidation.repository';
-import {
-  GetAppointmentDetailRepository,
-  IGetAppointmentDetailRepository,
-} from 'src/app/repositories/rest/getAppointmentDetail.repository';
-import {
-  CancelAppointmentRepository,
-  ICancelAppointmentRepository,
-} from 'src/app/repositories/soap/cancelAppointment.repository';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import { ValidationRules } from 'src/app/entities/models/session/signInSession.model';
+import type { IPatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
+import { PatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
+import type { IGetAppointmentDetailRepository } from 'src/app/repositories/rest/getAppointmentDetail.repository';
+import { GetAppointmentDetailRepository } from 'src/app/repositories/rest/getAppointmentDetail.repository';
+import type { ICancelAppointmentRepository } from 'src/app/repositories/soap/cancelAppointment.repository';
+import { CancelAppointmentRepository } from 'src/app/repositories/soap/cancelAppointment.repository';
 import { TipsType } from 'src/general/enums/tipsTypes.enum';
 
 export interface ICancelAppointmentInteractor {

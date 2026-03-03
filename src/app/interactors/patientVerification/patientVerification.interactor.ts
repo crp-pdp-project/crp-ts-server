@@ -1,24 +1,20 @@
-import { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
-import { PatientVerificationBodyDTO } from 'src/app/entities/dtos/input/patientVerification.input.dto';
-import { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
+import type { AuthAttemptDM } from 'src/app/entities/dms/authAttempts.dm';
+import type { PatientVerificationBodyDTO } from 'src/app/entities/dtos/input/patientVerification.input.dto';
+import type { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
 import { AuthAttemptModel, AuthFlowIdentifier } from 'src/app/entities/models/authAttempt/authAttempt.model';
-import { DeviceModel } from 'src/app/entities/models/device/device.model';
+import type { DeviceModel } from 'src/app/entities/models/device/device.model';
 import { PatientExternalModel } from 'src/app/entities/models/patient/patientExternal.model';
 import { PatientExternalTokenModel } from 'src/app/entities/models/patient/patientExternalToken.model';
-import {
-  GetAuthAttemptsRepository,
-  IGetAuthAttemptsRepository,
-} from 'src/app/repositories/database/getAuthAttempts.repository';
-import {
-  GetPatientAccountRepository,
-  IGetPatientAccountRepository,
-} from 'src/app/repositories/database/getPatientAccount.repository';
-import {
-  IUpsertSessionRepository,
-  UpsertSessionRepository,
-} from 'src/app/repositories/database/upsertSession.respository';
-import { ISearchPatientRepository, SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
-import { IJWTManager, JWTManagerBuilder } from 'src/general/managers/jwt/jwt.manager';
+import type { IGetAuthAttemptsRepository } from 'src/app/repositories/database/getAuthAttempts.repository';
+import { GetAuthAttemptsRepository } from 'src/app/repositories/database/getAuthAttempts.repository';
+import type { IGetPatientAccountRepository } from 'src/app/repositories/database/getPatientAccount.repository';
+import { GetPatientAccountRepository } from 'src/app/repositories/database/getPatientAccount.repository';
+import type { IUpsertSessionRepository } from 'src/app/repositories/database/upsertSession.respository';
+import { UpsertSessionRepository } from 'src/app/repositories/database/upsertSession.respository';
+import type { ISearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
+import { SearchPatientRepository } from 'src/app/repositories/soap/searchPatient.repository';
+import type { IJWTManager } from 'src/general/managers/jwt/jwt.manager';
+import { JWTManagerBuilder } from 'src/general/managers/jwt/jwt.manager';
 
 import { PatientVerificationEnrollStrategyBuilder } from './strategies/patientVerificationEnroll.strategy';
 import { PatientVerificationRecoverStrategyBuilder } from './strategies/patientVerificationRecover.strategy';

@@ -1,5 +1,5 @@
-import { AppointmentRequestDTO } from 'src/app/entities/dtos/service/appointmentRequest.dto';
-import { AppointmentTransactionResultDTO } from 'src/app/entities/dtos/service/appointmentTransactionResult.dto';
+import type { AppointmentRequestDTO } from 'src/app/entities/dtos/service/appointmentRequest.dto';
+import type { AppointmentTransactionResultDTO } from 'src/app/entities/dtos/service/appointmentTransactionResult.dto';
 import { InetumAppointmentServices, InetumClient } from 'src/clients/inetum/inetum.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { DateHelper } from 'src/general/helpers/date.helper';
@@ -62,8 +62,8 @@ export class RescheduleAppointmentRepository implements IRescheduleAppointmentRe
         IdPrestacion: payload.appointmentTypeId,
         IdEspecialidad: payload.specialtyId,
         IdProfesional: payload.doctorId,
-        FechaNuevaCita: DateHelper.toFormatDate(payload.date, 'inetumDate'),
-        HoraNuevaCita: DateHelper.toFormatTime(payload.date, 'inetumTime'),
+        FechaNuevaCita: DateHelper.toDate('inetumDate', payload.date),
+        HoraNuevaCita: DateHelper.toDate('inetumTime', payload.date),
         IdPaciente: payload.fmpId,
         CanalEntrada: CRPConstants.ORIGIN,
       },

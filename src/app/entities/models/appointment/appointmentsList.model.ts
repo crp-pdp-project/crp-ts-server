@@ -1,4 +1,4 @@
-import { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
+import type { AppointmentDTO } from 'src/app/entities/dtos/service/appointment.dto';
 import { SortOrder } from 'src/general/enums/sort.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 
@@ -22,8 +22,8 @@ export class AppointmentListModel extends BaseModel {
 
   private sortAppointments(list: AppointmentDTO[], sort: SortOrder): AppointmentDTO[] {
     return list.sort((a, b) => {
-      const dateA = DateHelper.toDate(a.date ?? '');
-      const dateB = DateHelper.toDate(b.date ?? '');
+      const dateA = DateHelper.toDate('none', a.date);
+      const dateB = DateHelper.toDate('none', b.date);
 
       return sort === SortOrder.ASC ? dateA.diff(dateB) : dateB.diff(dateA);
     });

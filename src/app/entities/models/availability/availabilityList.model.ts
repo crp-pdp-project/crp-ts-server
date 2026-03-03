@@ -1,4 +1,4 @@
-import { DoctorAvailabilityDTO } from 'src/app/entities/dtos/service/doctorAvailability.dto';
+import type { DoctorAvailabilityDTO } from 'src/app/entities/dtos/service/doctorAvailability.dto';
 import { DateHelper } from 'src/general/helpers/date.helper';
 
 import { BaseModel } from '../base.model';
@@ -29,7 +29,7 @@ export class AvailabilityListModel extends BaseModel {
     availability.forEach((slot) => {
       const { date, time, scheduleId, blockId } = slot;
 
-      const formattedTime = DateHelper.toFormatDateTime(`${date}${time}`, 'spanishDateTime');
+      const formattedTime = DateHelper.toDate('spanishDateTime', `${date}${time}`);
 
       const entry = map.get(date) ?? [];
       entry.push({ time: formattedTime, scheduleId, blockId });
@@ -39,12 +39,14 @@ export class AvailabilityListModel extends BaseModel {
     return Array.from(map.entries())
       .sort(([a], [b]) => this.sortAscByDate(a, b))
       .map(([date, slots]) => ({
-        date: DateHelper.toFormatDate(date, 'spanishDate'),
+        date: DateHelper.toDate('spanishDate', date),
         slots: [...slots].sort((a, b) => this.sortAscByDate(a.time, b.time)),
       }));
   }
 
   private sortAscByDate(aDate: string, bDate: string): number {
-    return DateHelper.toDate(aDate).diff(DateHelper.toDate(bDate), 'minutes');
+    const a = DateHelper.toDate('none', aDate);
+    const b = DateHelper.toDate('none', bDate);
+    return a.diff(b);
   }
 }

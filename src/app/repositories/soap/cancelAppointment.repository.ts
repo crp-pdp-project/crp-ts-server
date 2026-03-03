@@ -1,5 +1,5 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { AppointmentTransactionResultDTO } from 'src/app/entities/dtos/service/appointmentTransactionResult.dto';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { AppointmentTransactionResultDTO } from 'src/app/entities/dtos/service/appointmentTransactionResult.dto';
 import { InetumAppointmentServices, InetumClient } from 'src/clients/inetum/inetum.client';
 import { AppointmentConstants } from 'src/general/contants/appointment.constants';
 import { CRPConstants } from 'src/general/contants/crp.constants';
@@ -57,7 +57,7 @@ export class CancelAppointmentRepository implements ICancelAppointmentRepository
         IdCentro: CRPConstants.CENTER_ID,
         IdCita: appointmentId,
         IdMotivo: AppointmentConstants.REASON_ID,
-        FechaCita: DateHelper.toFormatDate(date, 'inetumDate'),
+        FechaCita: DateHelper.toDate('inetumDate', date),
         CanalEntrada: CRPConstants.ORIGIN,
       },
     };

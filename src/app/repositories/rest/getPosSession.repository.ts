@@ -1,6 +1,6 @@
-import { DeviceDM } from 'src/app/entities/dms/devices.dm';
-import { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExternal.dto';
-import { POSConfigDTO } from 'src/app/entities/dtos/service/posConfig.dto';
+import type { DeviceDM } from 'src/app/entities/dms/devices.dm';
+import type { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExternal.dto';
+import type { POSConfigDTO } from 'src/app/entities/dtos/service/posConfig.dto';
 import { NiubizClient } from 'src/clients/niubiz/niubiz.client';
 
 export interface IGetPOSSessionRepository {

@@ -29,6 +29,10 @@ export const AvailabilityListQueryDTOSchema = PatientDMSchema.pick({
       description: 'Id of the insurance inspection to filter',
       example: '99',
     }),
+    date: z.coerce.string().optional().openapi({
+      description: 'Month and year to filter calendar availability in MM-YYYY',
+      example: '01-2026',
+    }),
   })
   .strict()
   .openapi({

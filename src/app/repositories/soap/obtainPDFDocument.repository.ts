@@ -1,4 +1,4 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { InetumClient, InetumHistoryServices } from 'src/clients/inetum/inetum.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';

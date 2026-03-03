@@ -1,13 +1,12 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 
 import { HealthInsuranceDataOutputDTOSchema } from 'src/app/entities/dtos/output/healthInsuranceData.output.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { ResponseModel } from 'src/app/entities/models/response/response.model';
-import {
-  HealthInsuranceDataInteractorBuilder,
-  IHealthInsuranceDataInteractor,
-} from 'src/app/interactors/healthInsurance/healthInsurance';
-import { IResponseManager, ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
+import type { ResponseModel } from 'src/app/entities/models/response/response.model';
+import type { IHealthInsuranceDataInteractor } from 'src/app/interactors/healthInsurance/healthInsurance';
+import { HealthInsuranceDataInteractorBuilder } from 'src/app/interactors/healthInsurance/healthInsurance';
+import type { IResponseManager } from 'src/general/managers/response/response.manager';
+import { ResponseManagerBuilder } from 'src/general/managers/response/response.manager';
 
 export interface IHealthInsuranceDataController {
   handle(input: FastifyRequest, reply: FastifyReply): Promise<void>;

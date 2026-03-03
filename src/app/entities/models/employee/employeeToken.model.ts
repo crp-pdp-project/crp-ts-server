@@ -1,9 +1,9 @@
 import { BaseModel } from 'src/app/entities/models/base.model';
-import { GenerationResponse } from 'src/general/managers/jwt/jwt.manager';
+import type { GenerationResponse } from 'src/general/managers/jwt/jwt.manager';
 
-import { EmployeeSessionDTO } from '../../dtos/service/employeeSession.dto';
+import type { EmployeeSessionDTO } from '../../dtos/service/employeeSession.dto';
 
-import { EmployeeModel } from './employee.model';
+import type { EmployeeModel } from './employee.model';
 
 export class EmployeeTokenModel extends BaseModel {
   readonly employee: EmployeeModel;

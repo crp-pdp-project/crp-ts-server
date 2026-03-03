@@ -1,15 +1,15 @@
-import { PatientDM } from 'src/app/entities/dms/patients.dm';
-import { RelationshipDM } from 'src/app/entities/dms/relationships.dm';
-import { CreateRelativeBodyDTO } from 'src/app/entities/dtos/input/createRelative.input.dto';
+import type { PatientDM } from 'src/app/entities/dms/patients.dm';
+import type { RelationshipDM } from 'src/app/entities/dms/relationships.dm';
+import type { CreateRelativeBodyDTO } from 'src/app/entities/dtos/input/createRelative.input.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { PatientModel } from 'src/app/entities/models/patient/patient.model';
-import { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
-import { GetPatientRepository, IGetPatientRepository } from 'src/app/repositories/database/getPatient.repository';
-import { ISaveRelativeRepository, SaveRelativeRepository } from 'src/app/repositories/database/saveRelative.repository';
-import {
-  IVerifyRelativeRepository,
-  VerifyRelativeRepository,
-} from 'src/app/repositories/database/verifyRelative.repository';
+import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
+import type { IGetPatientRepository } from 'src/app/repositories/database/getPatient.repository';
+import { GetPatientRepository } from 'src/app/repositories/database/getPatient.repository';
+import type { ISaveRelativeRepository } from 'src/app/repositories/database/saveRelative.repository';
+import { SaveRelativeRepository } from 'src/app/repositories/database/saveRelative.repository';
+import type { IVerifyRelativeRepository } from 'src/app/repositories/database/verifyRelative.repository';
+import { VerifyRelativeRepository } from 'src/app/repositories/database/verifyRelative.repository';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 
 export interface ICreateRelativeInteractor {
