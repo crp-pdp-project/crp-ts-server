@@ -13,6 +13,7 @@ import { InsuranceTypes } from 'src/general/enums/insuranceType.enum';
 import { TipsType, TipsTypeUtils } from 'src/general/enums/tipsTypes.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 
+import type { DoctorDTO } from '../../dtos/service/doctor.dto';
 import type { AppointmentDocumentModel } from '../appointmentDocument/appointmentDocument.model';
 import type { AppointmentDocumentListModel } from '../appointmentDocument/appointmentDocumentList.model';
 import { AppointmentTypeModel } from '../appointmentType/appointmentType.model';
@@ -29,7 +30,6 @@ export class AppointmentModel extends BaseModel {
   readonly date?: string;
   readonly status?: AppointmentStates;
   readonly mode?: string;
-  readonly doctor?: DoctorModel;
   readonly specialty?: SpecialtyModel;
   readonly insurance?: InsuranceModel;
   readonly appointmentType?: AppointmentTypeModel;
@@ -41,6 +41,7 @@ export class AppointmentModel extends BaseModel {
   #documents?: AppointmentDocumentModel[];
   #siteds?: SitedsModel;
   #payAction?: PaymentActionStates;
+  #doctor?: DoctorModel;
 
   constructor(appointment: AppointmentDTO) {
     super();
@@ -49,7 +50,7 @@ export class AppointmentModel extends BaseModel {
     this.episodeId = appointment.episodeId;
     this.date = appointment.date ? DateHelper.toDate('spanishDateTime', appointment.date) : undefined;
     this.mode = appointment.mode ?? undefined;
-    this.doctor = appointment.doctor ? new DoctorModel(appointment.doctor) : undefined;
+    this.#doctor = appointment.doctor ? new DoctorModel(appointment.doctor) : undefined;
     this.specialty = appointment.specialty ? new SpecialtyModel(appointment.specialty) : undefined;
     this.insurance = appointment.insurance ? new InsuranceModel(appointment.insurance) : undefined;
     this.appointmentType = appointment.appointmentType
@@ -83,9 +84,25 @@ export class AppointmentModel extends BaseModel {
     return this.#payAction;
   }
 
+  get doctor(): DoctorModel | undefined {
+    return this.#doctor;
+  }
+
   overrideTips(type: TipsType): this {
     const tips = TipsTypeUtils.getTipsByType(type);
     this.#tips = tips.map((tip) => new TipModel(tip));
+
+    return this;
+  }
+
+  inyectDoctorImage(imagesList: DoctorDTO[]): this {
+    const foundImage = imagesList.find((image) => image.id === this.#doctor?.id);
+    const newDoctor = new DoctorModel({
+      id: this.#doctor?.id,
+      name: this.#doctor?.name,
+      profileImage: foundImage?.profileImage,
+    });
+    this.#doctor = newDoctor;
 
     return this;
   }

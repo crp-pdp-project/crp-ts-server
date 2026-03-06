@@ -44,6 +44,10 @@ export const PatientAppointmentOutputDTOSchema = z
           description: 'Name of the doctor',
           example: 'MARÍA DEL CARMEN PA JA',
         }),
+        profileImage: z.string().nullable().optional().openapi({
+          description: 'Profile image of the doctor',
+          example: 'https://...',
+        }),
       })
       .optional()
       .openapi({
