@@ -10,6 +10,8 @@ import type { IPatientRelativesValidationRepository } from 'src/app/repositories
 import { PatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
 import type { IGetAppointmentDetailRepository } from 'src/app/repositories/rest/getAppointmentDetail.repository';
 import { GetAppointmentDetailRepository } from 'src/app/repositories/rest/getAppointmentDetail.repository';
+import type { IGetDoctorImagesRepository } from 'src/app/repositories/rest/getDoctorImages.repository';
+import { GetDoctorImagesRepository } from 'src/app/repositories/rest/getDoctorImages.repository';
 import type { IGetAppointmentDocumentsRepository } from 'src/app/repositories/soap/getAppointmentDocuments.repository';
 import { GetAppointmentDocumentsRepository } from 'src/app/repositories/soap/getAppointmentDocuments.repository';
 import type { IGetSitedsInsuranceRepository } from 'src/app/repositories/soap/getSitedsInsurance.repository';
@@ -26,6 +28,7 @@ export class PatientAppointmentDetailInteractor implements IPatientAppointmentDe
     private readonly patientRelativesValidation: IPatientRelativesValidationRepository,
     private readonly appointmentDetail: IGetAppointmentDetailRepository,
     private readonly appointmentDocuments: IGetAppointmentDocumentsRepository,
+    private readonly getImages: IGetDoctorImagesRepository,
     private readonly getSitedsPatient: IGetSitedsPatientRepository,
     private readonly getSitedsInsurance: IGetSitedsInsuranceRepository,
   ) {}
@@ -34,6 +37,7 @@ export class PatientAppointmentDetailInteractor implements IPatientAppointmentDe
     await this.validateRelatives(params.fmpId, session);
     const patient = session.getPatient(params.fmpId);
     const appointmentModel = await this.fetchAppointment(params.appointmentId);
+    await this.inyectDoctorImage(appointmentModel);
     await this.addDocuments(params.fmpId, session, appointmentModel);
     await this.addSiteds(patient, appointmentModel);
 
@@ -82,6 +86,11 @@ export class PatientAppointmentDetailInteractor implements IPatientAppointmentDe
       detail.inyectCoverages(coverageData);
     }
   }
+
+  private async inyectDoctorImage(appointmentModel: AppointmentModel): Promise<void> {
+    const imagesList = await this.getImages.execute(undefined, appointmentModel.doctor?.id).catch(() => []);
+    appointmentModel.inyectDoctorImage(imagesList);
+  }
 }
 
 export class PatientAppointmentDetailInteractorBuilder {
@@ -90,6 +99,7 @@ export class PatientAppointmentDetailInteractorBuilder {
       new PatientRelativesValidationRepository(),
       new GetAppointmentDetailRepository(),
       new GetAppointmentDocumentsRepository(),
+      new GetDoctorImagesRepository(),
       new GetSitedsPatientRepository(),
       new GetSitedsInsuranceRepository(),
     );
