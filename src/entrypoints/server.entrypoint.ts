@@ -85,7 +85,7 @@ export class Server {
         body: request.body ?? {},
         query: request.query ?? {},
         path: request.params ?? {},
-        userAgent: request.headers['user-agent'],
+        headers: request.headers ?? {},
       });
     });
 

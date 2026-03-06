@@ -62,7 +62,7 @@ export class GetDoctorAvailabilityRepository implements IGetDoctorAvailabilityRe
 
   private generateInput(payload: AvailabilityRequestDTO): GetDoctorAvailabilityInput {
     const { start, end } = DateHelper.toRange('none', 'month', payload.filterDate);
-    const rangeEndDate = !payload.filterDate ? end.add(3, 'month') : end;
+    const rangeEndDate = !payload.filterDate ? end.add(1, 'year') : end;
 
     return {
       usuario: this.user,
