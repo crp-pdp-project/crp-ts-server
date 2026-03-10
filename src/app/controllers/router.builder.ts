@@ -1,5 +1,5 @@
+import type { FastifyInstance } from 'fastify';
 
-import { FastifyInstance } from 'fastify';
 import { AccountPasswordV1Router } from 'src/app/controllers/accountPasswordV1/accountPassword.router';
 import { AddDeviceBiometricPasswordV1Router } from 'src/app/controllers/addDeviceBiometricPasswordV1/addDeviceBiometricPassword.router';
 import { AppointmentDocumentPDFV1Router } from 'src/app/controllers/appointmentDocumentPDFV1/appointmentDocumentPDF.router';

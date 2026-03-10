@@ -8,6 +8,8 @@ import ejs from 'ejs';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import Fastify from 'fastify';
 
+import { DocsBuilder } from 'src/app/controllers/docs.builder';
+import { RouterBuilder } from 'src/app/controllers/router.builder';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { LoggerClient } from 'src/clients/logger/logger.client';
@@ -17,8 +19,6 @@ import { EnvHelper } from 'src/general/helpers/env.helper';
 import { OpenApiManager } from 'src/general/managers/openapi/openapi.manager';
 import swaggerMeta from 'src/general/static/swaggerMeta.static';
 import swaggerTemplate from 'src/general/templates/swagger.template';
-import { RouterBuilder } from 'src/app/controllers/router.builder';
-import { DocsBuilder } from 'src/app/controllers/docs.builder';
 
 export class Server {
   private static readonly app: FastifyInstance = Fastify({ logger: false, trustProxy: true });

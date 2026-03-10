@@ -1,4 +1,3 @@
-
 import { AccountPasswordV1Docs } from 'src/app/controllers/accountPasswordV1/accountPassword.docs';
 import { AddDeviceBiometricPasswordV1Docs } from 'src/app/controllers/addDeviceBiometricPasswordV1/addDeviceBiometricPassword.docs';
 import { AppointmentDocumentPDFV1Docs } from 'src/app/controllers/appointmentDocumentPDFV1/appointmentDocumentPDF.docs';
@@ -48,7 +47,7 @@ import { SitedsPriceV1Docs } from 'src/app/controllers/sitedsPriceV1/sitedsPrice
 import { SpecialtiesListV1Docs } from 'src/app/controllers/specialtiesListV1/specialtiesList.docs';
 import { UpdateHealthInsuranceV1Docs } from 'src/app/controllers/updateHealthInsuranceV1/updateHealthInsurance.docs';
 import { VerifyRelativeV1Docs } from 'src/app/controllers/verifyRelativeV1/verifyRelative.docs';
-import { OpenApiManager } from 'src/general/managers/openapi/openapi.manager';
+import type { OpenApiManager } from 'src/general/managers/openapi/openapi.manager';
 
 export class DocsBuilder {
   static build(manager: OpenApiManager): void {
