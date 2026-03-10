@@ -68,7 +68,8 @@ export class GetPatientResultsRepository implements IGetPatientResultsRepository
 
   private parseInput(fmpId: PatientDM['fmpId'], year: number, month?: Months): GetPatientResultsInput {
     const parsedDate = DateHelper.parseSplitDate('none', year, month);
-    const { start, end } = DateHelper.toRange('inetumDate', 'month', parsedDate);
+    const granularity = month ? 'month' : 'year';
+    const { start, end } = DateHelper.toRange('inetumDate', granularity, parsedDate);
     return {
       usuario: this.user,
       contrasena: this.password,
