@@ -1,6 +1,8 @@
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 import { z } from 'zod';
 
+import { AvailabilityFilters } from 'src/general/enums/availabilityFilters.enum';
+
 import { PatientDMSchema } from '../../dms/patients.dm';
 
 extendZodWithOpenApi(z);
@@ -32,6 +34,10 @@ export const AvailabilityListQueryDTOSchema = PatientDMSchema.pick({
     date: z.coerce.string().optional().openapi({
       description: 'Month and year to filter calendar availability in MM-YYYY',
       example: '01-2026',
+    }),
+    filter: z.enum(AvailabilityFilters).optional().default(AvailabilityFilters.ALL).openapi({
+      description: 'Type of filtering applied to the list, just one month or all records',
+      example: AvailabilityFilters.ALL,
     }),
   })
   .strict()

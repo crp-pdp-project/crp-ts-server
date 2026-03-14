@@ -1,5 +1,5 @@
 export enum AppointmentFilters {
-  All = 'Cerrado|Citado|Anulado',
+  ALL = 'Cerrado|Citado|Anulado',
   VALID_ONLY = 'Citado',
   CLOSED_ONY = 'Cerrado',
 }

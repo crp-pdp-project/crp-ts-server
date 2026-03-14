@@ -30,7 +30,7 @@ export class AvailabilityListInteractor implements IAvailabilityListInteractor {
       firstAvailable: false,
     });
 
-    return new AvailabilityListModel(availabilityList);
+    return new AvailabilityListModel(availabilityList, query.filter);
   }
 
   private async getPatientRelatives(id: PatientDM['id']): Promise<PatientDTO[]> {
