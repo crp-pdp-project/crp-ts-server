@@ -14,7 +14,7 @@ export class CurrentAppointmentsStrategy implements IPatientAppointmentsStrategy
 
   async fetchData(fmpId: PatientDM['fmpId'], session: SignInSessionModel): Promise<AppointmentListModel> {
     session.validateFmpId(fmpId, ValidationRules.SELF_OR_VERIFIED);
-    const currentAppointments = await this.getAppointments.execute(fmpId, AppointmentFilters.All);
+    const currentAppointments = await this.getAppointments.execute(fmpId, AppointmentFilters.ALL);
 
     return new AppointmentListModel(currentAppointments, SortOrder.ASC);
   }
