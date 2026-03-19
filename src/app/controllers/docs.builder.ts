@@ -37,7 +37,7 @@ import { RejectRelativeV1Docs } from 'src/app/controllers/rejectRelativeV1/rejec
 import { RelationshipsListV1Docs } from 'src/app/controllers/relationshipsListV1/relationshipsList.docs';
 import { RelativeVerificationV1Docs } from 'src/app/controllers/relativeVerificationV1/relativeVerification.docs';
 import { RescheduleAppointmentV1Docs } from 'src/app/controllers/rescheduleAppointmentV1/rescheduleAppointment.docs';
-import { SendDeepLinkNotificationV1Docs } from 'src/app/controllers/sendDeepLinkNotificationV1/sendDeepLinkNotification.docs';
+// import { SendDeepLinkNotificationV1Docs } from 'src/app/controllers/sendDeepLinkNotificationV1/sendDeepLinkNotification.docs';
 import { SendNotificationV1Docs } from 'src/app/controllers/sendNotificationV1/sendNotification.docs';
 import { SendVerificationOTPV1Docs } from 'src/app/controllers/sendVerificationOtpV1/sendVerificationOtp.docs';
 import { SignInEmployeeV1Docs } from 'src/app/controllers/signInEmployeeV1/signInEmployee.docs';
@@ -97,7 +97,7 @@ export class DocsBuilder {
     new VerifyRelativeV1Docs(manager).registerDocs();
     new RejectRelativeV1Docs(manager).registerDocs();
     new SendNotificationV1Docs(manager).registerDocs();
-    new SendDeepLinkNotificationV1Docs(manager).registerDocs();
+    // new SendDeepLinkNotificationV1Docs(manager).registerDocs();
     new OperateX12V1Docs(manager).registerDocs();
     new GenerateCardTokenV1Docs(manager).registerDocs();
   }
