@@ -80,6 +80,24 @@ export class FcmPushStrategy implements PushStrategy {
               token: deviceToken,
               notification: { title: payload.title, body: payload.body },
               data: payload.url ? { url: payload.url } : undefined,
+              android: {
+                priority: 'high',
+                notification: {
+                  channel_id: 'default',
+                  sound: 'default',
+                },
+              },
+              apns: {
+                headers: {
+                  'apns-priority': '10',
+                  'apns-push-type': 'alert',
+                },
+                payload: {
+                  aps: {
+                    sound: 'default',
+                  },
+                },
+              },
             },
           },
         });
