@@ -87,8 +87,8 @@ export class SaveAppointmentRepository implements ISaveAppointmentRepository {
       errorDescription: AltaCitaResult?.DescripcionError ?? null,
     };
 
-    if (parsedBody.errorCode === -1) {
-      throw ErrorModel.badRequest({ detail: ClientErrorMessages.APPOINTMENT_REPEATED });
+    if (parsedBody.errorCode !== 0) {
+      throw ErrorModel.badRequest({ detail: parsedBody.errorDescription ?? ClientErrorMessages.DEFAULT });
     }
 
     if (!parsedBody.id) {

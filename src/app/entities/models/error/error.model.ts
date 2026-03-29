@@ -5,15 +5,19 @@ import { LoggerClient } from 'src/clients/logger/logger.client';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { StatusCode } from 'src/general/enums/status.enum';
 
+export type ErrorOptions = {
+  detail?: ClientErrorMessages | string;
+  message?: string;
+};
 export class ErrorModel extends Error {
   private static readonly logger = LoggerClient.instance;
   readonly statusCode: StatusCode;
-  readonly detail: ClientErrorMessages;
+  readonly detail: ClientErrorMessages | string;
 
   constructor(
     statusCode: StatusCode,
     message = 'Custom handled error',
-    detail: ClientErrorMessages = ClientErrorMessages.DEFAULT,
+    detail: ClientErrorMessages | string = ClientErrorMessages.DEFAULT,
   ) {
     super(message);
 
@@ -47,34 +51,34 @@ export class ErrorModel extends Error {
     }
   }
 
-  static badRequest(options?: { detail?: ClientErrorMessages; message?: string }): ErrorModel {
+  static badRequest(options?: ErrorOptions): ErrorModel {
     return this.generateInstanceAndLog(StatusCode.BAD_REQUEST, options?.message, options?.detail);
   }
-  static unauthorized(options?: { detail?: ClientErrorMessages; message?: string }): ErrorModel {
+  static unauthorized(options?: ErrorOptions): ErrorModel {
     return this.generateInstanceAndLog(StatusCode.UNAUTHORIZED, options?.message, options?.detail);
   }
-  static forbidden(options?: { detail?: ClientErrorMessages; message?: string }): ErrorModel {
+  static forbidden(options?: ErrorOptions): ErrorModel {
     return this.generateInstanceAndLog(StatusCode.FORBIDDEN, options?.message, options?.detail);
   }
-  static notFound(options?: { detail?: ClientErrorMessages; message?: string }): ErrorModel {
+  static notFound(options?: ErrorOptions): ErrorModel {
     return this.generateInstanceAndLog(StatusCode.NOT_FOUND, options?.message, options?.detail);
   }
-  static conflict(options?: { detail?: ClientErrorMessages; message?: string }): ErrorModel {
+  static conflict(options?: ErrorOptions): ErrorModel {
     return this.generateInstanceAndLog(StatusCode.CONFLICT, options?.message, options?.detail);
   }
-  static unprocessable(options?: { detail?: ClientErrorMessages; message?: string }): ErrorModel {
+  static unprocessable(options?: ErrorOptions): ErrorModel {
     return this.generateInstanceAndLog(StatusCode.UNPROCESSABLE_ENTITY, options?.message, options?.detail);
   }
-  static locked(options?: { detail?: ClientErrorMessages; message?: string }): ErrorModel {
+  static locked(options?: ErrorOptions): ErrorModel {
     return this.generateInstanceAndLog(StatusCode.LOCKED, options?.message, options?.detail);
   }
-  static precondition(options?: { detail?: ClientErrorMessages; message?: string }): ErrorModel {
+  static precondition(options?: ErrorOptions): ErrorModel {
     return this.generateInstanceAndLog(StatusCode.PRECONDITION_REQUIRED, options?.message, options?.detail);
   }
-  static server(options?: { detail?: ClientErrorMessages; message?: string }): ErrorModel {
+  static server(options?: ErrorOptions): ErrorModel {
     return this.generateInstanceAndLog(StatusCode.INTERNAL_SERVER_ERROR, options?.message, options?.detail);
   }
-  static timeout(options?: { detail?: ClientErrorMessages; message?: string }): ErrorModel {
+  static timeout(options?: ErrorOptions): ErrorModel {
     return this.generateInstanceAndLog(StatusCode.GATEWAY_TIMEOUT, options?.message, options?.detail);
   }
 
@@ -88,7 +92,7 @@ export class ErrorModel extends Error {
   private static generateInstanceAndLog(
     statusCode: StatusCode,
     message?: string,
-    detail?: ClientErrorMessages,
+    detail?: ClientErrorMessages | string,
   ): ErrorModel {
     const errorInstance = new ErrorModel(statusCode, message, detail);
     const callerLine = this.extractCallerFromStack(errorInstance.stack);

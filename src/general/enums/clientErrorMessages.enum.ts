@@ -14,7 +14,6 @@ export enum ClientErrorMessages {
   DOCUMENT_BLOCKED = 'Su numero de documento se encuentra bloqueado. Intenta nuevamente más tarde',
   BIOMETRIC_INVALID = 'El dispositivo ya no se encuentra afiliado a tu cuenta. Inicia sesión con tu contraseña',
   BIOMETRIC_NOT_ENROLLED = 'Tu cuenta no esta afiliada a ningun dispositivo. Inicia sesión con tu contraseña',
-  APPOINTMENT_REPEATED = 'Ya existe una cita programada en la hora seleccionada',
   ID_NOT_VALID = 'No tienes acceso a los datos del paciente seleccionado. Intenta seleccionando otro',
   OTP_SEND_LIMIT = 'Recuerda que solo puedes enviar un número limitado de códigos de verificación. Intenta nuevamente más tarde',
   RELATIVE_EXISTS = 'El familiar ya se encuentra registrado',
