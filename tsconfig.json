@@ -8,15 +8,14 @@
     "allowImportingTsExtensions": true,
     "noEmit":true,
     "noImplicitReturns": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "Bundler",
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "incremental": true,
     "outDir": "./dist",
     "rootDir": "./",
-    "baseUrl": "./",
     "paths": {
-      "src/*": ["src/*"]
+      "src/*": ["./src/*"]
     },
     "strict": true,
     "lib": [ "esnext" ],
