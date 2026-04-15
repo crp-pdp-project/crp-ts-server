@@ -86,7 +86,9 @@ export class ConfirmPatientRepository implements IConfirmPatientRepository {
 
   private parseOutput(rawResult: ConfirmPatientOutput): PatientConfirmationDTO {
     if (!rawResult.AltaResult?.IdPaciente) {
-      throw ErrorModel.unprocessable({ detail: rawResult.AltaResult.DescripcionError ?? ClientErrorMessages.PATIENT_NOT_CREATED });
+      throw ErrorModel.unprocessable({
+        detail: rawResult.AltaResult.DescripcionError ?? ClientErrorMessages.PATIENT_NOT_CREATED,
+      });
     }
 
     return {

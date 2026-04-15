@@ -15,13 +15,15 @@ export const CreatePatientBodyDTOSchema = PatientDMSchema.pick({
   documentType: true,
 })
   .extend({
-    secondLastName: z.preprocess(
-      (value) => typeof value === 'string' && value.trim() === '' ? null : value,
-      z.string().nullable().optional(),
-    ).openapi({
-      description: 'Last Name of the patient',
-      example: 'Vignolo',
-    }),
+    secondLastName: z
+      .preprocess(
+        (value) => (typeof value === 'string' && value.trim() === '' ? null : value),
+        z.string().nullable().optional(),
+      )
+      .openapi({
+        description: 'Last Name of the patient',
+        example: 'Vignolo',
+      }),
     gender: z.enum(PatientGender).openapi({
       description: 'Type of document of the patient',
       example: PatientGender.MALE,
