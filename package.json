@@ -6,7 +6,7 @@
   "license": "MIT",
   "engineStrict": true,
   "engines": {
-    "node": "22.14.0"
+    "node": "22.22.2"
   },
   "scripts": {
     "local": "docker compose up --build",
@@ -33,11 +33,11 @@
     "google-auth-library": "^10.6.2",
     "jose": "^6.2.2",
     "kysely": "^0.28.16",
-    "mysql2": "^3.22.0",
+    "mysql2": "^3.22.1",
     "nodemailer": "^8.0.5",
     "pino": "^10.3.1",
-    "soap": "^1.8.0",
-    "undici": "^7.25.0",
+    "soap": "^1.9.1",
+    "undici": "^8.1.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
@@ -53,7 +53,7 @@
     "nodemon": "^3.1.14",
     "prettier": "^3.8.2",
     "tsx": "^4.21.0",
-    "typescript": "^6.0.2",
+    "typescript": "^6.0.3",
     "typescript-eslint": "^8.58.1"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
