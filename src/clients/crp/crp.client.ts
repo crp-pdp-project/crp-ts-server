@@ -52,7 +52,7 @@ export class CRPClient {
       },
     });
 
-    return result as T;
+    return result;
   }
 
   private async getToken(): Promise<AuthTokenOutput['data']> {

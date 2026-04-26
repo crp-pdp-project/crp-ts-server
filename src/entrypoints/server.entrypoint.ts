@@ -89,12 +89,15 @@ export class Server {
       });
     });
 
-    this.app.addHook('onResponse', async (request: FastifyRequest, reply: FastifyReply) => {
+    this.app.addHook('onSend', async (request: FastifyRequest, reply: FastifyReply, payload) => {
       this.logger.info('Response Sent', {
         method: request.method,
         url: request.url,
         statusCode: reply.statusCode,
+        response: this.parseResponsePayload(payload),
       });
+
+      return payload;
     });
 
     this.app.addHook('onRequest', async (_, reply) => {
@@ -135,6 +138,18 @@ export class Server {
       keepAlive: true,
       checkServerIdentity: () => undefined,
     };
+  }
+
+  private static parseResponsePayload(payload: unknown): unknown {
+    if (typeof payload === 'string') {
+      try {
+        return JSON.parse(payload) as unknown;
+      } catch {
+        return payload;
+      }
+    }
+
+    return null;
   }
 }
 

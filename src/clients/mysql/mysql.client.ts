@@ -1,4 +1,4 @@
-import type { ErrorLogEvent, QueryLogEvent, MysqlPool } from 'kysely';
+import type { ErrorLogEvent, QueryLogEvent } from 'kysely';
 import { Kysely, MysqlDialect } from 'kysely';
 import { createPool } from 'mysql2';
 
@@ -60,7 +60,7 @@ export class MysqlClient {
         database: EnvHelper.get('DB_NAME'),
         port: Number(EnvHelper.get('DB_PORT')),
         connectionLimit: 10,
-      }) as MysqlPool,
+      }),
     });
 
     this.db = new Kysely<Database>({

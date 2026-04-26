@@ -10,6 +10,8 @@ export enum InetumCatalogServices {
 
 export enum InetumUserServices {
   CONFIRM_PATIENT = 'Alta',
+  LIST_LEGAL_GUARDIANS = 'ObtenerTutoresDePaciente',
+  DELETE_LEGAL_GUARDIAN = 'EliminarRelacionTutela',
 }
 
 export enum InetumAppointmentServices {

@@ -2,6 +2,7 @@ import type { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import type { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
 import { BaseModel } from 'src/app/entities/models/base.model';
 import { RelationshipModel } from 'src/app/entities/models/relationship/relationship.model';
+import { CRPConstants } from 'src/general/contants/crp.constants';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import type { PatientDocumentType } from 'src/general/enums/patientInfo.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
@@ -86,6 +87,17 @@ export class PatientModel extends BaseModel {
     if (!this.id) {
       throw ErrorModel.notFound({ detail: ClientErrorMessages.PATIENT_NOT_REGISTERED });
     }
+  }
+
+  isMinor(): boolean {
+    if (!this.birthDate) {
+      return false;
+    }
+
+    const birthDate = DateHelper.toDate('none', this.birthDate);
+    const legalAgeThreshold = DateHelper.mutate('none', 'years', CRPConstants.UNDER_AGE_LIMIT);
+
+    return DateHelper.isAfter(birthDate, legalAgeThreshold);
   }
 
   private resolvePrincipalRelationship(patient: PatientDTO): RelationshipModel | undefined {

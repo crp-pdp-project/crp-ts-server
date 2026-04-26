@@ -27,7 +27,7 @@ export class PatientsListRepository implements IPatientsListRepository {
 
     const result = await query.limit(limit + 1).execute();
 
-    return result as PatientDTO[];
+    return result;
   }
 
   private buildSearchPredicate(

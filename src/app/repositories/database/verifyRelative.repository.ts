@@ -26,7 +26,7 @@ export class VerifyRelativeRepository implements IVerifyRelativeRepository {
       .where('Relatives.documentType', '=', relativeDocumentType)
       .executeTakeFirst();
 
-    return result as FamilyDTO;
+    return result;
   }
 }
 

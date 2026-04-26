@@ -83,6 +83,10 @@ export class SignInSessionModel extends SessionModel {
     return selectedRelative;
   }
 
+  getCurrentPatient(): PatientModel {
+    return new PatientModel(this.patient);
+  }
+
   isValidFmpId(fmpId: PatientDM['fmpId'], rule: ValidationRules): boolean {
     const strategy = ValidateFmpIdStrategyFactory.getStrategy(rule);
     const isValid = strategy.isValidFmpId({

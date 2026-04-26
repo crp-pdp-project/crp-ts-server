@@ -45,7 +45,7 @@ export class SoapHelper<TInput> {
       }
 
       client.on('request', (xml: string) => {
-        LoggerClient.instance.debug('SOAP Request Sent', { xml });
+        LoggerClient.instance.debug('SOAP Raw Request Sent', { xml });
       });
 
       return new SoapHelper<TInput>(client, timeoutMs);
@@ -68,7 +68,8 @@ export class SoapHelper<TInput> {
 
     try {
       const [result, rawResponse] = await fn(payload, { timeout: this.timeoutMs });
-      this.logger.debug('SOAP Response Received', { result, rawResponse });
+      this.logger.info('SOAP Response Received', { result });
+      this.logger.debug('SOAP Raw Response Received', { rawResponse });
 
       return result;
     } catch (error) {
