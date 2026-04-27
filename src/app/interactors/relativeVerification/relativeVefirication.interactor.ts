@@ -31,7 +31,8 @@ export class RelativeVerificationInteractor implements IRelativeVerificationInte
     await this.verifyRelationship(body, session);
     const externalPatientModel = await this.searchPatient(body);
     externalPatientModel.validateExistance();
-    await this.confirmPatientCreation(externalPatientModel);
+    const legalGuardian = await this.searchLegalGuardian(externalPatientModel, session);
+    await this.confirmPatientCreation(externalPatientModel, legalGuardian);
     await this.persistPatient(externalPatientModel);
 
     return externalPatientModel;
@@ -46,8 +47,31 @@ export class RelativeVerificationInteractor implements IRelativeVerificationInte
     return externalPatientModel;
   }
 
-  private async confirmPatientCreation(patientExternalModel: PatientExternalModel): Promise<void> {
-    const confirmationResult = await this.confirmPatientRepository.execute(patientExternalModel.getRawSearchResult());
+  private async searchLegalGuardian(
+    patientExternalModel: PatientExternalModel,
+    session: SignInSessionModel,
+  ): Promise<PatientExternalModel | undefined> {
+    if (!patientExternalModel.isMinor()) {
+      return;
+    }
+
+    const legalGuardian = session.getCurrentPatient();
+    const searchResult = await this.searchPatientRepository.execute({ fmpId: legalGuardian.fmpId });
+
+    const externalPatientGuardianModel = new PatientExternalModel(searchResult);
+    externalPatientGuardianModel.validateExistance();
+
+    return externalPatientGuardianModel;
+  }
+
+  private async confirmPatientCreation(
+    patientExternalModel: PatientExternalModel,
+    legalGuardian?: PatientExternalModel,
+  ): Promise<void> {
+    const confirmationResult = await this.confirmPatientRepository.execute(
+      patientExternalModel.getRawSearchResult(),
+      legalGuardian?.getRawSearchResult(),
+    );
 
     if (confirmationResult.fmpId !== patientExternalModel.fmpId) {
       throw ErrorModel.unprocessable({ detail: ClientErrorMessages.PATIENT_NOT_CREATED });

@@ -1,5 +1,6 @@
 import type { PatientConfirmationDTO } from 'src/app/entities/dtos/service/patientConfirmation.dto';
 import type { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExternal.dto';
+import type { PatientLegalGuardianDTO } from 'src/app/entities/dtos/service/patientLegalGuardian.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { InetumClient, InetumUserServices } from 'src/clients/inetum/inetum.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';
@@ -30,6 +31,12 @@ type ConfirmPatientInput = {
     Movil?: string;
     IdCentro: string;
     CanalEntrada: string;
+    NombreTutor?: string;
+    Apellido1Tutor?: string;
+    Apellido2Tutor?: string;
+    DniTutelado?: string;
+    IdTipoDocIdentidad_Tutelado?: string;
+    esTutelado?: string;
   };
 };
 
@@ -37,26 +44,28 @@ type ConfirmPatientOutput = {
   AltaResult: {
     IdPaciente: string;
     AcudirCentro: string;
+    InformarUsuarioExiste: string;
+    IdTutorFmp?: string;
     DescripcionError?: string;
   };
 };
 
 export interface IConfirmPatientRepository {
-  execute(patient: PatientExternalDTO): Promise<PatientConfirmationDTO>;
+  execute(patient: PatientExternalDTO, legalGuardian?: PatientLegalGuardianDTO): Promise<PatientConfirmationDTO>;
 }
 
 export class ConfirmPatientRepository implements IConfirmPatientRepository {
   private readonly user: string = EnvHelper.get('INETUM_USER');
   private readonly password: string = EnvHelper.get('INETUM_PASSWORD');
 
-  async execute(patient: PatientExternalDTO): Promise<PatientConfirmationDTO> {
-    const methodPayload = this.parseInput(patient);
+  async execute(patient: PatientExternalDTO, legalGuardian?: PatientLegalGuardianDTO): Promise<PatientConfirmationDTO> {
+    const methodPayload = this.parseInput(patient, legalGuardian);
     const instance = await InetumClient.getInstance();
     const rawResult = await instance.user.call<ConfirmPatientOutput>(InetumUserServices.CONFIRM_PATIENT, methodPayload);
     return this.parseOutput(rawResult);
   }
 
-  private parseInput(patient: PatientExternalDTO): ConfirmPatientInput {
+  private parseInput(patient: PatientExternalDTO, legalGuardian?: PatientLegalGuardianDTO): ConfirmPatientInput {
     return {
       usuario: this.user,
       contrasena: this.password,
@@ -65,7 +74,7 @@ export class ConfirmPatientRepository implements IConfirmPatientRepository {
         Apellido1: patient.lastName ?? '',
         Apellido2: patient.secondLastName ?? undefined,
         FechaNacimiento: patient.birthDate ? DateHelper.toDate('inetumDate', patient.birthDate) : '',
-        IdTipoDocIdentidad: patient.documentType ? String(patient.documentType) : '',
+        IdTipoDocIdentidad: String(patient.documentType ?? ''),
         DocIdentidad: patient.documentNumber ?? '',
         Sexo: patient.gender ?? '',
         CorreoElectronico: patient.email ?? undefined,
@@ -79,7 +88,13 @@ export class ConfirmPatientRepository implements IConfirmPatientRepository {
         Otros: patient.addressAditional ?? undefined,
         Movil: patient.phone ?? undefined,
         IdCentro: patient.centerId ?? CRPConstants.CENTER_ID,
+        NombreTutor: legalGuardian?.firstName ?? undefined,
+        Apellido1Tutor: legalGuardian?.lastName ?? undefined,
+        Apellido2Tutor: legalGuardian?.secondLastName ?? undefined,
         CanalEntrada: CRPConstants.ORIGIN,
+        DniTutelado: legalGuardian?.documentNumber ?? undefined,
+        IdTipoDocIdentidad_Tutelado: legalGuardian?.documentType ? String(legalGuardian?.documentType) : undefined,
+        esTutelado: String(!!legalGuardian),
       },
     };
   }
@@ -94,6 +109,8 @@ export class ConfirmPatientRepository implements IConfirmPatientRepository {
     return {
       fmpId: String(rawResult.AltaResult.IdPaciente),
       confirmInCenter: rawResult.AltaResult.AcudirCentro !== 'N',
+      existedPreviously: rawResult.AltaResult.InformarUsuarioExiste === 'S',
+      legalGuardianId: rawResult.AltaResult.IdTutorFmp || undefined,
     };
   }
 }
@@ -103,6 +120,8 @@ export class ConfirmPatientRepositoryMock implements IConfirmPatientRepository {
     return Promise.resolve({
       fmpId: '239254',
       confirmInCenter: false,
+      existedPreviously: false,
+      legalGuardianId: '123456',
     });
   }
 }

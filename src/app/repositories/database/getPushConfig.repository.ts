@@ -15,7 +15,7 @@ export class GetPushConfigRepository implements IGetPushConfigRepository {
       .select(['config'])
       .where('screen', '=', screen)
       .executeTakeFirst();
-    return result as PushConfigDTO | undefined;
+    return result;
   }
 }
 

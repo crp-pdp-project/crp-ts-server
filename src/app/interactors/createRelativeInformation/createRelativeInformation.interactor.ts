@@ -30,38 +30,54 @@ export class CreateRelativeInformationInteractor implements ICreateRelativeInfor
 
   async create(body: CreatePatientBodyDTO, session: SignInSessionModel): Promise<PatientExternalModel> {
     await this.verifyRelationship(body, session);
-    const newFmpId = await this.patientCreation(body);
-    const patientExternalModel = await this.searchPatient(newFmpId, body.documentNumber);
+    const rawPatientExternalModel = new PatientExternalModel(body);
+    const legalGuardian = await this.searchLegalGuardian(rawPatientExternalModel, session);
+    const newFmpId = await this.patientCreation(rawPatientExternalModel, legalGuardian);
+    const patientExternalModel = await this.searchNewPatient(newFmpId, body.documentNumber);
     await this.persistPatient(patientExternalModel);
 
     return patientExternalModel;
   }
 
-  private async patientCreation(body: CreatePatientBodyDTO): Promise<PatientDM['fmpId']> {
-    const creationResult = await this.confirmPatientRepository.execute({
-      firstName: body.firstName,
-      lastName: body.lastName,
-      secondLastName: body.secondLastName ?? null,
-      birthDate: body.birthDate,
-      gender: body.gender,
-      documentNumber: body.documentNumber,
-      documentType: body.documentType,
-      email: body.email,
-      phone: body.phone,
-    });
+  private async patientCreation(
+    rawPatientExternalModel: PatientExternalModel,
+    legalGuardian?: PatientExternalModel,
+  ): Promise<PatientDM['fmpId']> {
+    const creationResult = await this.confirmPatientRepository.execute(
+      rawPatientExternalModel.getRawSearchResult(),
+      legalGuardian?.getRawSearchResult(),
+    );
 
     return creationResult.fmpId;
   }
 
-  private async searchPatient(
+  private async searchNewPatient(
     fmpId: PatientDM['fmpId'],
     documentNumber: PatientDM['documentNumber'],
   ): Promise<PatientExternalModel> {
     const searchResult = await this.searchPatientRepository.execute({ fmpId });
     const existingAccount = await this.getPatientAccountRepository.execute(documentNumber);
     const externalPatientModel = new PatientExternalModel(searchResult, existingAccount);
+    externalPatientModel.validateExistance();
 
     return externalPatientModel;
+  }
+
+  private async searchLegalGuardian(
+    patientExternalModel: PatientExternalModel,
+    session: SignInSessionModel,
+  ): Promise<PatientExternalModel | undefined> {
+    if (!patientExternalModel.isMinor()) {
+      return;
+    }
+
+    const legalGuardian = session.getCurrentPatient();
+    const searchResult = await this.searchPatientRepository.execute({ fmpId: legalGuardian.fmpId });
+
+    const externalPatientGuardianModel = new PatientExternalModel(searchResult);
+    externalPatientGuardianModel.validateExistance();
+
+    return externalPatientGuardianModel;
   }
 
   private async persistPatient(patientExternalModel: PatientExternalModel): Promise<void> {

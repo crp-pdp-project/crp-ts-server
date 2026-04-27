@@ -70,7 +70,7 @@ export class GetInsuredPatientDuesRepository implements IGetInsuredPatientDuesRe
         minAmount: groupItem.pagoMin,
         dueNumber: groupItem.cuota,
         dueYear: groupItem.anio,
-      })) as InsuredPatientDuesDTO['dueList'],
+      })),
     }));
 
     return dues;

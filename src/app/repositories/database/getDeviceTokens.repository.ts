@@ -19,7 +19,7 @@ export class GetDeviceTokensRepository implements IGetDeviceTokensRepository {
       .where('Patients.documentType', '=', documentType)
       .where('Patients.documentNumber', '=', documentNumber)
       .execute();
-    return result as DeviceDTO[];
+    return result;
   }
 }
 

@@ -6,6 +6,8 @@ export const PatientConfirmationDTOSchema = PatientDMSchema.pick({
   fmpId: true,
 }).extend({
   confirmInCenter: z.boolean(),
+  existedPreviously: z.boolean(),
+  legalGuardianId: z.coerce.string().optional(),
 });
 
 export type PatientConfirmationDTO = z.infer<typeof PatientConfirmationDTOSchema>;

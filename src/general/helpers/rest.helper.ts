@@ -134,7 +134,7 @@ export class RestHelper {
       }
     }
 
-    this.logger.debug('HTTP Response Received', {
+    this.logger.info('HTTP Response Received', {
       method,
       url,
       statusCode: response.statusCode,

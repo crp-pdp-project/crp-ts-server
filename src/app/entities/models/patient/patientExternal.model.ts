@@ -7,6 +7,7 @@ import type { RecoverSessionPayloadDTO } from 'src/app/entities/dtos/service/rec
 import { RecoverSessionPayloadDTOSchema } from 'src/app/entities/dtos/service/recoverSessionPayload.dto';
 import type { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
 import { BaseModel } from 'src/app/entities/models/base.model';
+import { CRPConstants } from 'src/general/contants/crp.constants';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { PatientDocumentType } from 'src/general/enums/patientInfo.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
@@ -84,6 +85,17 @@ export class PatientExternalModel extends BaseModel {
 
   hasValidAccount(): boolean {
     return !!this.#id && !!this.account;
+  }
+
+  isMinor(): boolean {
+    if (!this.birthDate) {
+      return false;
+    }
+
+    const birthDate = DateHelper.toDate('none', this.birthDate);
+    const legalAgeThreshold = DateHelper.mutate('none', 'years', CRPConstants.UNDER_AGE_LIMIT);
+
+    return DateHelper.isAfter(birthDate, legalAgeThreshold);
   }
 
   updateModel(external: PatientExternalDTO): this {
