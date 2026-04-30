@@ -27,6 +27,7 @@ import { PatientAppointmentDetailV1Router } from 'src/app/controllers/patientApp
 import { PatientAppointmentsV1Router } from 'src/app/controllers/patientAppointmentsV1/patientAppointments.router';
 import { PatientProfileV1Router } from 'src/app/controllers/patientProfileV1/patientProfile.router';
 import { PatientRelativesV1Router } from 'src/app/controllers/patientRelativesV1/patientRelatives.routes';
+import { PatientReportsListV1Router } from 'src/app/controllers/patientReportsListV1/patientReportsList.router';
 import { PatientResultPDFV1Router } from 'src/app/controllers/patientResultPDFV1/patientResultPDF.router';
 import { PatientResultsListV1Router } from 'src/app/controllers/patientResultsListV1/patientResultsList.router';
 import { PatientResultURLV1Router } from 'src/app/controllers/patientResultURLV1/patientResultURL.router';
@@ -87,6 +88,7 @@ export class RouterBuilder {
     new PayHealthInsuranceV1Router(fastify).registerRouter();
     new AppointmentDocumentPDFV1Router(fastify).registerRouter();
     new GuaranteeLetterListV1Router(fastify).registerRouter();
+    new PatientReportsListV1Router(fastify).registerRouter();
     new PatientResultsListV1Router(fastify).registerRouter();
     new PatientResultPDFV1Router(fastify).registerRouter();
     new PatientResultURLV1Router(fastify).registerRouter();

@@ -1,22 +1,30 @@
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 import { z } from 'zod';
 
-import { PatientReportTypes } from 'src/general/enums/patientReportType.enum';
+import { PatientReportGroup, PatientReportTypes } from 'src/general/enums/patientReportType.enum';
 
 extendZodWithOpenApi(z);
 
-export const PatientResultsListOutputDTOSchema = z
+export const PatientReportsListOutputDTOSchema = z
   .object({
     results: z
       .array(
         z.object({
-          resultId: z.string().openapi({
-            description: 'Unique ID of the result',
+          resultId: z.string().optional().openapi({
+            description: 'Unique ID of the result, mandatory for group results',
             example: 'C24CLIRP377628032025031308200010041633|40504165',
+          }),
+          documentId: z.string().optional().openapi({
+            description: 'Unique ID of the document, mandatory for group documents',
+            example: '#b731d7bf-edea-cdce-1da3-08dd0351629c',
           }),
           episodeId: z.string().openapi({
             description: 'Unique episode ID of the result',
             example: 'C23CLIRP35563796',
+          }),
+          nhcId: z.string().optional().openapi({
+            description: 'Unique NHC ID of the patient, mandatory for group results',
+            example: '1',
           }),
           date: z.string().openapi({
             description: 'Result date in DD-MM-YYYY HH:mm:ss',
@@ -52,20 +60,20 @@ export const PatientResultsListOutputDTOSchema = z
             .openapi({
               description: 'Appointment type model',
             }),
+          group: z.enum(PatientReportGroup).openapi({
+            description: 'Group of the report',
+            example: PatientReportGroup.RESULTS,
+          }),
           type: z.enum(PatientReportTypes).openapi({
             description: 'Unique ID of the appointment',
             example: PatientReportTypes.LABORATORY,
           }),
-          accessNumber: z.string().openapi({
-            description: 'Access number of the result',
+          accessNumber: z.string().optional().openapi({
+            description: 'Access number of the result, mandatory for group results',
             example: 'CLIRPC2437451050',
           }),
-          nhcId: z.string().openapi({
-            description: 'Unique NHC ID of the patient',
-            example: '1',
-          }),
-          gidenpac: z.string().openapi({
-            description: 'Gidenpac code of the patient',
+          gidenpac: z.string().optional().openapi({
+            description: 'Gidenpac code of the patient, mandatory for group results',
             example: '733480',
           }),
         }),
@@ -79,4 +87,4 @@ export const PatientResultsListOutputDTOSchema = z
     description: 'Patient Results Response Body',
   });
 
-export type PatientResultsListOutputDTO = z.infer<typeof PatientResultsListOutputDTOSchema>;
+export type PatientReportsListOutputDTO = z.infer<typeof PatientReportsListOutputDTOSchema>;

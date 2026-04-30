@@ -1,15 +1,15 @@
 import { BaseHeadersDTOSchema } from 'src/app/entities/dtos/input/baseHeaders.input.dto';
 import {
-  PatientResultsListParamsDTOSchema,
-  PatientResultsListQueryDTOSchema,
-} from 'src/app/entities/dtos/input/patientResultsList.input.dto';
-import { PatientResultsListOutputDTOSchema } from 'src/app/entities/dtos/output/patientResultsList.output.dto';
+  PatientReportsListParamsDTOSchema,
+  PatientReportsListQueryDTOSchema,
+} from 'src/app/entities/dtos/input/patientReportsList.input.dto';
+import { PatientReportsListOutputDTOSchema } from 'src/app/entities/dtos/output/patientReportsList.output.dto';
 import { OkResponseDTOSchema } from 'src/app/entities/dtos/response/ok.response.dto';
 import { HttpSpecMethod } from 'src/general/enums/methods.enum';
 import { StatusCode } from 'src/general/enums/status.enum';
 import type { IOpenApiManager } from 'src/general/managers/openapi/openapi.manager';
 
-export class PatientResultsListV1Docs {
+export class PatientReportsListV1Docs {
   private readonly version: string = '/v1';
 
   constructor(private readonly manager: IOpenApiManager) {}
@@ -17,15 +17,15 @@ export class PatientResultsListV1Docs {
   registerDocs(): void {
     this.manager.registerRoute({
       method: HttpSpecMethod.GET,
-      path: `${this.version}/patients/{fmpId}/results`,
-      description: 'List all results of a patient',
+      path: `${this.version}/patients/{fmpId}/reports`,
+      description: 'List all reports of a patient',
       tags: ['patients', 'reports'],
-      params: PatientResultsListParamsDTOSchema,
-      query: PatientResultsListQueryDTOSchema,
+      params: PatientReportsListParamsDTOSchema,
+      query: PatientReportsListQueryDTOSchema,
       headers: BaseHeadersDTOSchema,
       responses: {
         [StatusCode.OK]: OkResponseDTOSchema.extend({
-          data: PatientResultsListOutputDTOSchema,
+          data: PatientReportsListOutputDTOSchema,
         }),
       },
       secure: true,

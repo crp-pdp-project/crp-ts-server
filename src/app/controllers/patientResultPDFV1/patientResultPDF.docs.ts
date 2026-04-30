@@ -13,7 +13,7 @@ export class PatientResultPDFV1Docs {
       method: HttpSpecMethod.GET,
       path: `${this.version}/patients/{fmpId}/results/documents/{resultId}`,
       description: 'Obtain an patient result document',
-      tags: ['patients', 'results'],
+      tags: ['patients', 'reports'],
       params: PatientResultPDFParamsDTOSchema,
       headers: BaseHeadersDTOSchema,
       responses: {},

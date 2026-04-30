@@ -110,7 +110,7 @@ export class ConfirmPatientRepository implements IConfirmPatientRepository {
       fmpId: String(rawResult.AltaResult.IdPaciente),
       confirmInCenter: rawResult.AltaResult.AcudirCentro !== 'N',
       existedPreviously: rawResult.AltaResult.InformarUsuarioExiste === 'S',
-      legalGuardianId: rawResult.AltaResult.IdTutorFmp || undefined,
+      legalGuardianId: rawResult.AltaResult.IdTutorFmp ?? undefined,
     };
   }
 }

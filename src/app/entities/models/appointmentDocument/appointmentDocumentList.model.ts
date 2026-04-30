@@ -1,4 +1,4 @@
-import type { AppointmentDocumentDTO } from '../../dtos/service/appointmentDocument.dto';
+import type { PatientReportDTO } from '../../dtos/service/patientReport.dto';
 import { BaseModel } from '../base.model';
 
 import { AppointmentDocumentModel } from './appointmentDocument.model';
@@ -6,13 +6,13 @@ import { AppointmentDocumentModel } from './appointmentDocument.model';
 export class AppointmentDocumentListModel extends BaseModel {
   readonly documents: AppointmentDocumentModel[];
 
-  constructor(appointmentDocument: AppointmentDocumentDTO[]) {
+  constructor(appointmentDocument: PatientReportDTO[]) {
     super();
 
     this.documents = this.generateAppointmentDocuments(appointmentDocument);
   }
 
-  private generateAppointmentDocuments(appointmentDocument: AppointmentDocumentDTO[]): AppointmentDocumentModel[] {
+  private generateAppointmentDocuments(appointmentDocument: PatientReportDTO[]): AppointmentDocumentModel[] {
     const documents: AppointmentDocumentModel[] = [];
 
     appointmentDocument.forEach((document) => {

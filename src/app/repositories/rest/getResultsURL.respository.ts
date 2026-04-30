@@ -1,4 +1,4 @@
-import type { PatientResultDTO } from 'src/app/entities/dtos/service/patientResult.dto';
+import type { PatientReportDTO } from 'src/app/entities/dtos/service/patientReport.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { CRPClient, CRPServicePaths } from 'src/clients/crp/crp.client';
 import { HttpMethod } from 'src/general/enums/methods.enum';
@@ -17,13 +17,13 @@ type GetResultsURLOutput = {
 };
 
 export interface IGetResultsURLRepository {
-  execute(result: PatientResultDTO): Promise<string>;
+  execute(result: PatientReportDTO): Promise<string>;
 }
 
 export class GetResultsURLRepository implements IGetResultsURLRepository {
   private readonly crp = CRPClient.instance;
 
-  async execute(result: PatientResultDTO): Promise<string> {
+  async execute(result: PatientReportDTO): Promise<string> {
     const input = this.parseInput(result);
     const rawResult = await this.crp.call<GetResultsURLOutput>({
       method: HttpMethod.POST,
@@ -33,7 +33,7 @@ export class GetResultsURLRepository implements IGetResultsURLRepository {
     return this.parseOutput(rawResult);
   }
 
-  private parseInput(result: PatientResultDTO): GetResultsURLInput {
+  private parseInput(result: PatientReportDTO): GetResultsURLInput {
     return {
       NhC: result.nhcId ?? '',
       PatientId: result.gidenpac ?? '',
