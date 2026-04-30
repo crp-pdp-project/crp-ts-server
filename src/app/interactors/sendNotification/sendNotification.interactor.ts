@@ -20,7 +20,7 @@ export class SendNotificationInteractor implements ISendNotificationInteractor {
     await this.sendPushNotification.execute(body.device, {
       title: body.title,
       body: body.body,
-      // url: body.url,
+      url: body.url,
       tokens,
     });
   }

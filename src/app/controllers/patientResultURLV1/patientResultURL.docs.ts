@@ -19,7 +19,7 @@ export class PatientResultURLV1Docs {
       method: HttpSpecMethod.POST,
       path: `${this.version}/patients/{fmpId}/results/url`,
       description: 'Obtain an patient result url',
-      tags: ['patients', 'results'],
+      tags: ['patients', 'reports'],
       params: PatientResultURLParamsDTOSchema,
       body: PatientResultURLBodyDTOSchema,
       headers: BaseHeadersDTOSchema,

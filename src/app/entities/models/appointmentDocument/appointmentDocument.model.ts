@@ -4,7 +4,7 @@ import type {
 } from 'src/general/enums/appointmentDocumentCategories.enum';
 import { AppointmentDocumentCategoriesMapper } from 'src/general/enums/appointmentDocumentCategories.enum';
 
-import type { AppointmentDocumentDTO } from '../../dtos/service/appointmentDocument.dto';
+import type { PatientReportDTO } from '../../dtos/service/patientReport.dto';
 import { BaseModel } from '../base.model';
 
 export class AppointmentDocumentModel extends BaseModel {
@@ -12,12 +12,12 @@ export class AppointmentDocumentModel extends BaseModel {
   readonly title?: AppointmentDocumentTitle;
   readonly icon?: AppointmentDocumentIcon;
 
-  constructor(appointmentDocument: AppointmentDocumentDTO) {
+  constructor(patientReport: PatientReportDTO) {
     super();
 
-    this.documentId = appointmentDocument.documentId;
-    this.title = AppointmentDocumentCategoriesMapper.getAppointmentDocumentTitle(appointmentDocument.documentCategory);
-    this.icon = AppointmentDocumentCategoriesMapper.getAppointmentDocumentIcon(appointmentDocument.documentCategory);
+    this.documentId = patientReport.documentId;
+    this.title = AppointmentDocumentCategoriesMapper.getAppointmentDocumentTitle(patientReport.documentCategory);
+    this.icon = AppointmentDocumentCategoriesMapper.getAppointmentDocumentIcon(patientReport.documentCategory);
   }
 
   isMappable(): boolean {

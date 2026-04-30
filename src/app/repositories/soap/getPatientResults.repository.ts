@@ -1,5 +1,5 @@
 import type { PatientDM } from 'src/app/entities/dms/patients.dm';
-import type { PatientResultDTO } from 'src/app/entities/dtos/service/patientResult.dto';
+import type { PatientReportDTO } from 'src/app/entities/dtos/service/patientReport.dto';
 import { InetumClient, InetumHistoryServices } from 'src/clients/inetum/inetum.client';
 import { AppointmentConstants } from 'src/general/contants/appointment.constants';
 import { CRPConstants } from 'src/general/contants/crp.constants';
@@ -15,8 +15,8 @@ type GetPatientResultsInput = {
     IdPaciente: string;
     IdCentro: string;
     TipoPrueba: string;
-    FechaInicio: string;
-    FechaFin: string;
+    FechaInicio?: string;
+    FechaFin?: string;
     NumRegistros: string;
     CanalEntrada: string;
   };
@@ -48,16 +48,22 @@ type GetPatientResultsOutput = {
   };
 };
 
+export type GetAppointmentResultsPayload = {
+  fmpId: PatientDM['fmpId'];
+  year?: number;
+  month?: Months;
+};
+
 export interface IGetPatientResultsRepository {
-  execute(fmpId: PatientDM['fmpId'], year: number, month?: Months): Promise<PatientResultDTO[]>;
+  execute(payload: GetAppointmentResultsPayload): Promise<PatientReportDTO[]>;
 }
 
 export class GetPatientResultsRepository implements IGetPatientResultsRepository {
   private readonly user: string = EnvHelper.get('INETUM_USER');
   private readonly password: string = EnvHelper.get('INETUM_PASSWORD');
 
-  async execute(fmpId: PatientDM['fmpId'], year: number, month?: Months): Promise<PatientResultDTO[]> {
-    const methodPayload = this.parseInput(fmpId, year, month);
+  async execute(payload: GetAppointmentResultsPayload): Promise<PatientReportDTO[]> {
+    const methodPayload = this.parseInput(payload);
     const instance = await InetumClient.getInstance();
     const rawResult = await instance.history.call<GetPatientResultsOutput>(
       InetumHistoryServices.LIST_RESULTS,
@@ -66,8 +72,10 @@ export class GetPatientResultsRepository implements IGetPatientResultsRepository
     return this.parseOutput(rawResult);
   }
 
-  private parseInput(fmpId: PatientDM['fmpId'], year: number, month?: Months): GetPatientResultsInput {
-    const parsedDate = DateHelper.parseSplitDate('none', year, month);
+  private parseInput(payload: GetAppointmentResultsPayload): GetPatientResultsInput {
+    const { fmpId, year, month } = payload;
+    const defaultYear = DateHelper.toDate('none').year();
+    const parsedDate = DateHelper.parseSplitDate('none', year ?? defaultYear, month);
     const granularity = month ? 'month' : 'year';
     const { start, end } = DateHelper.toRange('inetumDate', granularity, parsedDate);
     return {
@@ -77,22 +85,23 @@ export class GetPatientResultsRepository implements IGetPatientResultsRepository
         IdPaciente: fmpId,
         IdCentro: CRPConstants.CENTER_ID,
         TipoPrueba: ResultConstants.DEFAULT_RESULT_TYPE,
-        FechaInicio: start,
-        FechaFin: end,
-        NumRegistros: AppointmentConstants.DEFAULT_DOCUMENT_COUNT,
+        FechaInicio: year ? start : undefined,
+        FechaFin: year ? end : undefined,
+        NumRegistros: AppointmentConstants.DEFAULT_REPORT_COUNT,
         CanalEntrada: CRPConstants.ORIGIN,
       },
     };
   }
 
-  private parseOutput(rawResult: GetPatientResultsOutput): PatientResultDTO[] {
+  private parseOutput(rawResult: GetPatientResultsOutput): PatientReportDTO[] {
     let result = rawResult.ListadoPruebasDiagnosticasResult?.Prueba?.PruebasDiagnosticaRespuesta ?? [];
     result = Array.isArray(result) ? result : [result];
 
-    const results: PatientResultDTO[] = result.map((result) => ({
+    const results: PatientReportDTO[] = result.map((result) => ({
       resultId: result.IdEpisodio,
       episodeId: result.IdActo,
-      date: `${DateHelper.toDate('inetumDate', result.Fecha)}${DateHelper.toDate('inetumTime', result.Hora)}`,
+      date: result.Fecha,
+      time: result.Hora,
       centerId: result.IdCentro,
       doctor: { name: result.NombreProfesional },
       specialty: { name: result.NombreAgrupacion },
@@ -108,7 +117,7 @@ export class GetPatientResultsRepository implements IGetPatientResultsRepository
 }
 
 export class GetPatientResultsRepositoryMock implements IGetPatientResultsRepository {
-  async execute(): Promise<PatientResultDTO[]> {
+  async execute(): Promise<PatientReportDTO[]> {
     return Promise.resolve([
       {
         resultId: 'C24CLIRP377628032025031308200010041633|40504165',

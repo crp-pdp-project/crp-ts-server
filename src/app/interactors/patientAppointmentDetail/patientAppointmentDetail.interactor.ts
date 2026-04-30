@@ -12,8 +12,8 @@ import type { IGetAppointmentDetailRepository } from 'src/app/repositories/rest/
 import { GetAppointmentDetailRepository } from 'src/app/repositories/rest/getAppointmentDetail.repository';
 import type { IGetDoctorImagesRepository } from 'src/app/repositories/rest/getDoctorImages.repository';
 import { GetDoctorImagesRepository } from 'src/app/repositories/rest/getDoctorImages.repository';
-import type { IGetAppointmentDocumentsRepository } from 'src/app/repositories/soap/getAppointmentDocuments.repository';
-import { GetAppointmentDocumentsRepository } from 'src/app/repositories/soap/getAppointmentDocuments.repository';
+import type { IGetPatientDocumentsRepository } from 'src/app/repositories/soap/getPatientDocuments.repository';
+import { GetPatientDocumentsRepository } from 'src/app/repositories/soap/getPatientDocuments.repository';
 import type { IGetSitedsInsuranceRepository } from 'src/app/repositories/soap/getSitedsInsurance.repository';
 import { GetSitedsInsuranceRepository } from 'src/app/repositories/soap/getSitedsInsurance.repository';
 import type { IGetSitedsPatientRepository } from 'src/app/repositories/soap/getSitedsPatient.repository';
@@ -27,7 +27,7 @@ export class PatientAppointmentDetailInteractor implements IPatientAppointmentDe
   constructor(
     private readonly patientRelativesValidation: IPatientRelativesValidationRepository,
     private readonly appointmentDetail: IGetAppointmentDetailRepository,
-    private readonly appointmentDocuments: IGetAppointmentDocumentsRepository,
+    private readonly patientDocuments: IGetPatientDocumentsRepository,
     private readonly getImages: IGetDoctorImagesRepository,
     private readonly getSitedsPatient: IGetSitedsPatientRepository,
     private readonly getSitedsInsurance: IGetSitedsInsuranceRepository,
@@ -61,7 +61,7 @@ export class PatientAppointmentDetailInteractor implements IPatientAppointmentDe
     appointment: AppointmentModel,
   ): Promise<void> {
     if (session.isValidFmpId(fmpId, ValidationRules.SELF_OR_DEPENDANTS) && appointment.shouldFetchDocuments()) {
-      const documents = await this.appointmentDocuments.execute(fmpId, appointment.id!);
+      const documents = await this.patientDocuments.execute({ fmpId, appointmentId: appointment.id });
       const documentsList = new AppointmentDocumentListModel(documents);
       appointment.inyectDocuments(documentsList);
     }
@@ -98,7 +98,7 @@ export class PatientAppointmentDetailInteractorBuilder {
     return new PatientAppointmentDetailInteractor(
       new PatientRelativesValidationRepository(),
       new GetAppointmentDetailRepository(),
-      new GetAppointmentDocumentsRepository(),
+      new GetPatientDocumentsRepository(),
       new GetDoctorImagesRepository(),
       new GetSitedsPatientRepository(),
       new GetSitedsInsuranceRepository(),

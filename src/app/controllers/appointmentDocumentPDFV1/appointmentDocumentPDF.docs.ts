@@ -13,7 +13,7 @@ export class AppointmentDocumentPDFV1Docs {
       method: HttpSpecMethod.GET,
       path: `${this.version}/patients/{fmpId}/appointments/documents/{documentId}`,
       description: 'Obtain an appointment document',
-      tags: ['patients', 'appointments'],
+      tags: ['patients', 'appointments', 'reports'],
       params: AppointmentDocumentPDFParamsDTOSchema,
       headers: BaseHeadersDTOSchema,
       responses: {},

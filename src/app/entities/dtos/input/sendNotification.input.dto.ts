@@ -21,10 +21,10 @@ export const SendNotificationBodyDTOSchema = PatientDMSchema.pick({
       description: 'Body of the push notification',
       example: 'Mensaje del push',
     }),
-    // url: z.url().optional().openapi({
-    //   description: 'External url to redirect on push click',
-    //   example: 'https://google.com/',
-    // }),
+    url: z.url().optional().openapi({
+      description: 'External url to redirect on push click',
+      example: 'https://google.com/',
+    }),
   })
   .strict()
   .openapi({

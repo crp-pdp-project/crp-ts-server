@@ -1,12 +1,13 @@
 import type { PatientDM } from 'src/app/entities/dms/patients.dm';
-import type { AppointmentDocumentDTO } from 'src/app/entities/dtos/service/appointmentDocument.dto';
+import type { PatientReportDTO } from 'src/app/entities/dtos/service/patientReport.dto';
 import { InetumClient, InetumHistoryServices } from 'src/clients/inetum/inetum.client';
 import { AppointmentConstants } from 'src/general/contants/appointment.constants';
 import { CRPConstants } from 'src/general/contants/crp.constants';
+import type { Months } from 'src/general/helpers/date.helper';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 
-type GetAppointmentDocumentsInput = {
+type GetPatientDocumentsInput = {
   usuario: string;
   contrasena: string;
   peticionListadoInformesPaciente: {
@@ -14,15 +15,13 @@ type GetAppointmentDocumentsInput = {
     IdCentro: string;
     FechaDesde?: string;
     FechaHasta?: string;
-    HoraDesde?: string;
-    HoraHasta?: string;
     NumRegistros: string;
     CanalEntrada: string;
-    IdCita: string;
+    IdCita?: string;
   };
 };
 
-type GetAppointmentDocumentsOutput = {
+type GetPatientDocumentsOutput = {
   ListadoInformesResult: {
     Informe: {
       InformeRespuesta: {
@@ -44,62 +43,57 @@ type GetAppointmentDocumentsOutput = {
   };
 };
 
-export interface IGetAppointmentDocumentsRepository {
-  execute(
-    fmpId: PatientDM['fmpId'],
-    appointmentId: string,
-    startDate?: string,
-    endDate?: string,
-  ): Promise<AppointmentDocumentDTO[]>;
+export type GetAppointmentDocumentsPayload = {
+  fmpId: PatientDM['fmpId'];
+  appointmentId?: string;
+  year?: number;
+  month?: Months;
+};
+
+export interface IGetPatientDocumentsRepository {
+  execute(payload: GetAppointmentDocumentsPayload): Promise<PatientReportDTO[]>;
 }
 
-export class GetAppointmentDocumentsRepository implements IGetAppointmentDocumentsRepository {
+export class GetPatientDocumentsRepository implements IGetPatientDocumentsRepository {
   private readonly user: string = EnvHelper.get('INETUM_USER');
   private readonly password: string = EnvHelper.get('INETUM_PASSWORD');
 
-  async execute(
-    fmpId: PatientDM['fmpId'],
-    appointmentId: string,
-    startDate?: string,
-    endDate?: string,
-  ): Promise<AppointmentDocumentDTO[]> {
-    const methodPayload = this.parseInput(fmpId, appointmentId, startDate, endDate);
+  async execute(payload: GetAppointmentDocumentsPayload): Promise<PatientReportDTO[]> {
+    const methodPayload = this.parseInput(payload);
     const instance = await InetumClient.getInstance();
-    const rawResult = await instance.history.call<GetAppointmentDocumentsOutput>(
+    const rawResult = await instance.history.call<GetPatientDocumentsOutput>(
       InetumHistoryServices.LIST_DOCUMENTS,
       methodPayload,
     );
     return this.parseOutput(rawResult);
   }
 
-  private parseInput(
-    fmpId: PatientDM['fmpId'],
-    appointmentId: string,
-    startDate?: string,
-    endDate?: string,
-  ): GetAppointmentDocumentsInput {
+  private parseInput(payload: GetAppointmentDocumentsPayload): GetPatientDocumentsInput {
+    const { fmpId, appointmentId, year, month } = payload;
+    const defaultYear = DateHelper.toDate('none').year();
+    const parsedDate = DateHelper.parseSplitDate('none', year ?? defaultYear, month);
+    const granularity = month ? 'month' : 'year';
+    const { start, end } = DateHelper.toRange('inetumDate', granularity, parsedDate);
     return {
       usuario: this.user,
       contrasena: this.password,
       peticionListadoInformesPaciente: {
         IdPaciente: fmpId,
         IdCentro: CRPConstants.CENTER_ID,
-        FechaDesde: startDate ? DateHelper.toDate('inetumDate', startDate) : undefined,
-        FechaHasta: endDate ? DateHelper.toDate('inetumDate', endDate) : undefined,
-        HoraDesde: startDate ? DateHelper.startOf('inetumTime', 'day') : undefined,
-        HoraHasta: endDate ? DateHelper.endOf('inetumTime', 'day') : undefined,
-        NumRegistros: AppointmentConstants.DEFAULT_DOCUMENT_COUNT,
+        FechaDesde: year ? start : undefined,
+        FechaHasta: year ? end : undefined,
+        NumRegistros: AppointmentConstants.DEFAULT_REPORT_COUNT,
         CanalEntrada: CRPConstants.ORIGIN,
         IdCita: appointmentId,
       },
     };
   }
 
-  private parseOutput(rawResult: GetAppointmentDocumentsOutput): AppointmentDocumentDTO[] {
+  private parseOutput(rawResult: GetPatientDocumentsOutput): PatientReportDTO[] {
     let result = rawResult.ListadoInformesResult?.Informe?.InformeRespuesta ?? [];
     result = Array.isArray(result) ? result : [result];
 
-    const documents: AppointmentDocumentDTO[] = result.map((document) => ({
+    const documents: PatientReportDTO[] = result.map((document) => ({
       documentId: document.IdEpisodio,
       episodeId: document.IdActo,
       date: document.Fecha,
@@ -116,8 +110,8 @@ export class GetAppointmentDocumentsRepository implements IGetAppointmentDocumen
   }
 }
 
-export class GetAppointmentDocumentsRepositoryMock implements IGetAppointmentDocumentsRepository {
-  async execute(): Promise<AppointmentDocumentDTO[]> {
+export class GetPatientDocumentsRepositoryMock implements IGetPatientDocumentsRepository {
+  async execute(): Promise<PatientReportDTO[]> {
     return Promise.resolve([
       {
         documentId: '#b731d7bf-edea-cdce-1da3-08dd0351629c',
