@@ -20,6 +20,7 @@ export enum InetumAppointmentServices {
   CREATE_APPOINTMENT = 'AltaCita',
   RESCHEDULE_APPOINTMENT = 'ModificarCita',
   CANCEL_APPOINTMENT = 'AnularCita',
+  GET_EARLIEST_AVAILABILITY = 'CitasMasProximasPorEspecialidad',
 }
 
 export enum InetumHistoryServices {
