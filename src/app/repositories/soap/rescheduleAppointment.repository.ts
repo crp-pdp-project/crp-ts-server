@@ -1,4 +1,3 @@
-import type { AppointmentRequestDTO } from 'src/app/entities/dtos/service/appointmentRequest.dto';
 import type { AppointmentTransactionResultDTO } from 'src/app/entities/dtos/service/appointmentTransactionResult.dto';
 import { InetumAppointmentServices, InetumClient } from 'src/clients/inetum/inetum.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';
@@ -32,15 +31,28 @@ type RescheduleAppointmentOutput = {
   };
 };
 
+export type AppointmentRequest = {
+  specialtyId: string;
+  doctorId: string;
+  appointmentTypeId: string;
+  scheduleId: string;
+  blockId: string;
+  fmpId: string;
+  date: string;
+  appointmentId?: string;
+  insuranceId?: string;
+  inspectionId?: string;
+};
+
 export interface IRescheduleAppointmentRepository {
-  execute(payload: AppointmentRequestDTO): Promise<AppointmentTransactionResultDTO>;
+  execute(payload: AppointmentRequest): Promise<AppointmentTransactionResultDTO>;
 }
 
 export class RescheduleAppointmentRepository implements IRescheduleAppointmentRepository {
   private readonly user: string = EnvHelper.get('INETUM_USER');
   private readonly password: string = EnvHelper.get('INETUM_PASSWORD');
 
-  async execute(payload: AppointmentRequestDTO): Promise<AppointmentTransactionResultDTO> {
+  async execute(payload: AppointmentRequest): Promise<AppointmentTransactionResultDTO> {
     const methodPayload = this.generateInput(payload);
     const instance = await InetumClient.getInstance();
     const rawResult = await instance.appointment.call<RescheduleAppointmentOutput>(
@@ -50,7 +62,7 @@ export class RescheduleAppointmentRepository implements IRescheduleAppointmentRe
     return this.parseOutput(rawResult);
   }
 
-  private generateInput(payload: AppointmentRequestDTO): RescheduleAppointmentInput {
+  private generateInput(payload: AppointmentRequest): RescheduleAppointmentInput {
     return {
       usuario: this.user,
       contrasena: this.password,

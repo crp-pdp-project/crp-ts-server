@@ -9,4 +9,5 @@ export const CRPConstants = {
   SITEDS_REQUEST_TIMEOUT: 15000,
   TOKEN_TIMEOUT: 55,
   UNDER_AGE_LIMIT: -18,
+  EARLIEST_SLOT_LIMIT: 3,
 } as const;

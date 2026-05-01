@@ -1,4 +1,3 @@
-import type { AppointmentRequestDTO } from 'src/app/entities/dtos/service/appointmentRequest.dto';
 import type { AppointmentTransactionResultDTO } from 'src/app/entities/dtos/service/appointmentTransactionResult.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { InetumAppointmentServices, InetumClient } from 'src/clients/inetum/inetum.client';
@@ -38,15 +37,28 @@ type SaveAppointmentOutput = {
   };
 };
 
+export type AppointmentRequest = {
+  specialtyId: string;
+  doctorId: string;
+  appointmentTypeId: string;
+  scheduleId: string;
+  blockId: string;
+  fmpId: string;
+  date: string;
+  appointmentId?: string;
+  insuranceId?: string;
+  inspectionId?: string;
+};
+
 export interface ISaveAppointmentRepository {
-  execute(payload: AppointmentRequestDTO): Promise<AppointmentTransactionResultDTO>;
+  execute(payload: AppointmentRequest): Promise<AppointmentTransactionResultDTO>;
 }
 
 export class SaveAppointmentRepository implements ISaveAppointmentRepository {
   private readonly user: string = EnvHelper.get('INETUM_USER');
   private readonly password: string = EnvHelper.get('INETUM_PASSWORD');
 
-  async execute(payload: AppointmentRequestDTO): Promise<AppointmentTransactionResultDTO> {
+  async execute(payload: AppointmentRequest): Promise<AppointmentTransactionResultDTO> {
     const methodPayload = this.generateInput(payload);
     const instance = await InetumClient.getInstance();
     const rawResult = await instance.appointment.call<SaveAppointmentOutput>(
@@ -56,7 +68,7 @@ export class SaveAppointmentRepository implements ISaveAppointmentRepository {
     return this.parseOutput(rawResult);
   }
 
-  private generateInput(payload: AppointmentRequestDTO): SaveAppointmentInput {
+  private generateInput(payload: AppointmentRequest): SaveAppointmentInput {
     return {
       usuario: this.user,
       contrasena: this.password,

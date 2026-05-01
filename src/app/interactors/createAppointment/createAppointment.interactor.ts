@@ -3,8 +3,6 @@ import type {
   CreateAppointmentBodyDTO,
   CreateAppointmentParamsDTO,
 } from 'src/app/entities/dtos/input/createAppointment.input.dto';
-import type { AppointmentRequestDTO } from 'src/app/entities/dtos/service/appointmentRequest.dto';
-import { AppointmentRequestDTOSchema } from 'src/app/entities/dtos/service/appointmentRequest.dto';
 import type { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import { AppointmentModel } from 'src/app/entities/models/appointment/appointment.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
@@ -50,8 +48,7 @@ export class CreateAppointmentInteractor implements ICreateAppointmentInteractor
     const relatives = await this.getPatientRelatives(session.patient.id);
     session.inyectRelatives(relatives).validateFmpId(params.fmpId, ValidationRules.SELF_OR_RELATIVES);
     const patient = session.getPatient(params.fmpId);
-    const payload = this.genPayload(params.fmpId, body);
-    const appointmentId = await this.createAppointment(payload);
+    const appointmentId = await this.createAppointment(params.fmpId, body);
     const appointmentModel = await this.getNewAppointment(appointmentId);
     await this.addSiteds(patient, appointmentModel).catch((error) => {
       LoggerClient.instance.error('Error adding siteds, bypassed', {
@@ -68,14 +65,8 @@ export class CreateAppointmentInteractor implements ICreateAppointmentInteractor
     return relatives;
   }
 
-  private genPayload(fmpId: PatientDM['fmpId'], body: CreateAppointmentBodyDTO): AppointmentRequestDTO {
-    const payload = AppointmentRequestDTOSchema.parse({ fmpId, ...body });
-
-    return payload;
-  }
-
-  private async createAppointment(payload: AppointmentRequestDTO): Promise<string> {
-    const newAppointment = await this.saveAppointment.execute(payload);
+  private async createAppointment(fmpId: PatientDM['fmpId'], body: CreateAppointmentBodyDTO): Promise<string> {
+    const newAppointment = await this.saveAppointment.execute({ fmpId, ...body });
 
     return newAppointment.id!;
   }

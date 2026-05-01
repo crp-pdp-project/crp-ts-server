@@ -1,4 +1,3 @@
-import type { AvailabilityRequestDTO } from 'src/app/entities/dtos/service/availabilityRequest.dto';
 import type { DoctorAvailabilityDTO } from 'src/app/entities/dtos/service/doctorAvailability.dto';
 import { InetumAppointmentServices, InetumClient } from 'src/clients/inetum/inetum.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';
@@ -42,15 +41,26 @@ type GetDoctorAvailabilityOutput = {
   };
 };
 
+export type AvailabilityRequest = {
+  groupId: string;
+  doctorId: string;
+  appointmentTypeId: string;
+  insuranceId: string;
+  inspectionId: string;
+  fmpId: string;
+  firstAvailable: boolean;
+  filterDate?: string;
+};
+
 export interface IGetDoctorAvailabilityRepository {
-  execute(payload: AvailabilityRequestDTO): Promise<DoctorAvailabilityDTO[]>;
+  execute(payload: AvailabilityRequest): Promise<DoctorAvailabilityDTO[]>;
 }
 
 export class GetDoctorAvailabilityRepository implements IGetDoctorAvailabilityRepository {
   private readonly user: string = EnvHelper.get('INETUM_USER');
   private readonly password: string = EnvHelper.get('INETUM_PASSWORD');
 
-  async execute(payload: AvailabilityRequestDTO): Promise<DoctorAvailabilityDTO[]> {
+  async execute(payload: AvailabilityRequest): Promise<DoctorAvailabilityDTO[]> {
     const methodPayload = this.generateInput(payload);
     const instance = await InetumClient.getInstance();
     const rawResult = await instance.appointment.call<GetDoctorAvailabilityOutput>(
@@ -60,7 +70,7 @@ export class GetDoctorAvailabilityRepository implements IGetDoctorAvailabilityRe
     return this.parseOutput(rawResult);
   }
 
-  private generateInput(payload: AvailabilityRequestDTO): GetDoctorAvailabilityInput {
+  private generateInput(payload: AvailabilityRequest): GetDoctorAvailabilityInput {
     const { start, end } = DateHelper.toRange('none', 'month', payload.filterDate);
     const rangeEndDate = !payload.filterDate ? end.add(1, 'year') : end;
 

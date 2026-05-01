@@ -1,6 +1,5 @@
 import type { PatientDM } from 'src/app/entities/dms/patients.dm';
 import type { AvailabilityListQueryDTO } from 'src/app/entities/dtos/input/availabilityList.input.dto';
-import type { AvailabilityRequestDTO } from 'src/app/entities/dtos/service/availabilityRequest.dto';
 import type { DoctorAvailabilityDTO } from 'src/app/entities/dtos/service/doctorAvailability.dto';
 import type { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import { AvailabilityListModel } from 'src/app/entities/models/availability/availabilityList.model';
@@ -24,11 +23,7 @@ export class AvailabilityListInteractor implements IAvailabilityListInteractor {
   async list(query: AvailabilityListQueryDTO, session: SignInSessionModel): Promise<AvailabilityListModel> {
     const relatives = await this.getPatientRelatives(session.patient.id);
     session.inyectRelatives(relatives).validateFmpId(query.fmpId, ValidationRules.SELF_OR_RELATIVES);
-    const availabilityList = await this.getAvailabilityList({
-      ...query,
-      filterDate: query.date,
-      firstAvailable: false,
-    });
+    const availabilityList = await this.getAvailabilityList(query);
 
     return new AvailabilityListModel(availabilityList, query.filter);
   }
@@ -39,8 +34,12 @@ export class AvailabilityListInteractor implements IAvailabilityListInteractor {
     return relatives;
   }
 
-  private async getAvailabilityList(payload: AvailabilityRequestDTO): Promise<DoctorAvailabilityDTO[]> {
-    const availabilityList = await this.getAvailability.execute(payload);
+  private async getAvailabilityList(query: AvailabilityListQueryDTO): Promise<DoctorAvailabilityDTO[]> {
+    const availabilityList = await this.getAvailability.execute({
+      ...query,
+      filterDate: query.date,
+      firstAvailable: false,
+    });
 
     return availabilityList;
   }

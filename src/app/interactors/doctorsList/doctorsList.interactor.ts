@@ -6,6 +6,8 @@ import type { IGetDoctorImagesRepository } from 'src/app/repositories/rest/getDo
 import { GetDoctorImagesRepository } from 'src/app/repositories/rest/getDoctorImages.repository';
 import type { IGetDoctorsRepository } from 'src/app/repositories/soap/getDoctors.repository';
 import { GetDoctorsRepository } from 'src/app/repositories/soap/getDoctors.repository';
+import type { IGetEarliestAvailabilityRepository } from 'src/app/repositories/soap/getEarliestAvailability.repository';
+import { GetEarliestAvailabilityRepository } from 'src/app/repositories/soap/getEarliestAvailability.repository';
 
 export interface IDoctorsListInteractor {
   list(query: DoctorsListQueryDTO): Promise<DoctorListModel>;
@@ -14,17 +16,29 @@ export interface IDoctorsListInteractor {
 export class DoctorsListInteractor implements IDoctorsListInteractor {
   constructor(
     private readonly getDoctors: IGetDoctorsRepository,
+    private readonly getEarliestAvailability: IGetEarliestAvailabilityRepository,
     private readonly getImages: IGetDoctorImagesRepository,
   ) {}
 
   async list(query: DoctorsListQueryDTO): Promise<DoctorListModel> {
-    const doctorsList = await this.getDoctorsList(query.specialtyId);
+    const doctorsList = await this.getDoctorsList(query);
     const imagesList = await this.getImagesList(query.specialtyId);
 
     return new DoctorListModel(doctorsList, imagesList);
   }
 
-  private async getDoctorsList(specialtyId?: SpecialtyDTO['id']): Promise<DoctorDTO[]> {
+  private async getDoctorsList(query: DoctorsListQueryDTO): Promise<DoctorDTO[]> {
+    const { groupId, appointmentTypeId, inspectionId, insuranceId, specialtyId } = query;
+    if (groupId && appointmentTypeId && inspectionId && insuranceId) {
+      const doctorsList = await this.getEarliestAvailability.execute({
+        groupId,
+        appointmentTypeId,
+        inspectionId,
+        insuranceId,
+      });
+
+      return doctorsList;
+    }
     const doctorsList = await this.getDoctors.execute(specialtyId);
 
     return doctorsList;
@@ -39,6 +53,10 @@ export class DoctorsListInteractor implements IDoctorsListInteractor {
 
 export class DoctorsListInteractorBuilder {
   static build(): DoctorsListInteractor {
-    return new DoctorsListInteractor(new GetDoctorsRepository(), new GetDoctorImagesRepository());
+    return new DoctorsListInteractor(
+      new GetDoctorsRepository(),
+      new GetEarliestAvailabilityRepository(),
+      new GetDoctorImagesRepository(),
+    );
   }
 }
