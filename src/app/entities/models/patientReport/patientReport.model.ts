@@ -6,6 +6,7 @@ import type { PatientReportDTO } from '../../dtos/service/patientReport.dto';
 import { AppointmentTypeModel } from '../appointmentType/appointmentType.model';
 import { BaseModel } from '../base.model';
 import { DoctorModel } from '../doctor/doctor.model';
+import { ReportTypeModel } from '../reportType/reportType.model';
 import { SpecialtyModel } from '../specialty/specialty.model';
 
 export class PatientReportModel extends BaseModel {
@@ -17,6 +18,7 @@ export class PatientReportModel extends BaseModel {
   readonly doctor?: DoctorModel;
   readonly specialty?: SpecialtyModel;
   readonly appointmentType?: AppointmentTypeModel;
+  readonly reportType?: ReportTypeModel;
   readonly type?: PatientReportTypes;
   readonly group?: PatientReportGroup;
   readonly accessNumber?: string;
@@ -34,6 +36,9 @@ export class PatientReportModel extends BaseModel {
     this.specialty = patientResult.specialty ? new SpecialtyModel(patientResult.specialty) : undefined;
     this.appointmentType = patientResult.appointmentType
       ? new AppointmentTypeModel(patientResult.appointmentType)
+      : undefined;
+    this.reportType = patientResult.type
+      ? new ReportTypeModel(PatientReportTypesMapper.getReportTypeDto(patientResult.type))
       : undefined;
     this.type = patientResult.type ? PatientReportTypesMapper.getReportType(patientResult.type) : undefined;
     this.group = patientResult.type ? PatientReportTypesMapper.getReportGroup(patientResult.type) : undefined;
