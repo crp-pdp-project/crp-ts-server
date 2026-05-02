@@ -1,7 +1,11 @@
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
 import { z } from 'zod';
 
-import { PatientReportGroup, PatientReportTypes } from 'src/general/enums/patientReportType.enum';
+import {
+  PatientReportGroup,
+  PatientReportTypeNames,
+  PatientReportTypes,
+} from 'src/general/enums/patientReportType.enum';
 
 extendZodWithOpenApi(z);
 
@@ -60,14 +64,24 @@ export const PatientReportsListOutputDTOSchema = z
             .openapi({
               description: 'Appointment type model',
             }),
-          group: z.enum(PatientReportGroup).openapi({
-            description: 'Group of the report',
-            example: PatientReportGroup.RESULTS,
-          }),
-          type: z.enum(PatientReportTypes).openapi({
-            description: 'Unique ID of the appointment',
-            example: PatientReportTypes.LABORATORY,
-          }),
+          reportType: z
+            .object({
+              id: z.enum(PatientReportTypes).openapi({
+                description: 'Unique ID of the report type',
+                example: PatientReportTypes.LABORATORY,
+              }),
+              name: z.enum(PatientReportTypeNames).openapi({
+                description: 'Name of the report type',
+                example: PatientReportTypeNames.LABORATORY,
+              }),
+              group: z.enum(PatientReportGroup).openapi({
+                description: 'Group of the report type',
+                example: PatientReportGroup.RESULTS,
+              }),
+            })
+            .openapi({
+              description: 'Report Type model',
+            }),
           accessNumber: z.string().optional().openapi({
             description: 'Access number of the result, mandatory for group results',
             example: 'CLIRPC2437451050',
