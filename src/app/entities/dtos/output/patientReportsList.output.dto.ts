@@ -4,6 +4,7 @@ import { z } from 'zod';
 import {
   PatientReportGroup,
   PatientReportTypeNames,
+  PatientReportTypeResources,
   PatientReportTypes,
 } from 'src/general/enums/patientReportType.enum';
 
@@ -11,7 +12,7 @@ extendZodWithOpenApi(z);
 
 export const PatientReportsListOutputDTOSchema = z
   .object({
-    results: z
+    reports: z
       .array(
         z.object({
           resultId: z.string().optional().openapi({
@@ -73,6 +74,10 @@ export const PatientReportsListOutputDTOSchema = z
               name: z.enum(PatientReportTypeNames).openapi({
                 description: 'Name of the report type',
                 example: PatientReportTypeNames.LABORATORY,
+              }),
+              resource: z.enum(PatientReportTypeResources).openapi({
+                description: 'Returned resource type of the report type',
+                example: PatientReportTypeResources.RESULTS,
               }),
               group: z.enum(PatientReportGroup).openapi({
                 description: 'Group of the report type',

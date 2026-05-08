@@ -3,7 +3,7 @@ import type {
   PatientResultsListParamsDTO,
   PatientResultsListQueryDTO,
 } from 'src/app/entities/dtos/input/patientResultsList.input.dto';
-import { PatientReportListModel } from 'src/app/entities/models/patientReport/patientReportList.model';
+import { PatientResultListModel } from 'src/app/entities/models/patientResult/patientResultList.model';
 import type { SignInSessionModel } from 'src/app/entities/models/session/signInSession.model';
 import { ValidationRules } from 'src/app/entities/models/session/signInSession.model';
 import type { IPatientRelativesValidationRepository } from 'src/app/repositories/database/patientRelativesValidation.repository';
@@ -16,7 +16,7 @@ export interface IPatientResultsListInteractor {
     params: PatientResultsListParamsDTO,
     query: PatientResultsListQueryDTO,
     session: SignInSessionModel,
-  ): Promise<PatientReportListModel>;
+  ): Promise<PatientResultListModel>;
 }
 
 export class PatientResultsListInteractor implements IPatientResultsListInteractor {
@@ -29,7 +29,7 @@ export class PatientResultsListInteractor implements IPatientResultsListInteract
     params: PatientResultsListParamsDTO,
     query: PatientResultsListQueryDTO,
     session: SignInSessionModel,
-  ): Promise<PatientReportListModel> {
+  ): Promise<PatientResultListModel> {
     await this.validateRelatives(params.fmpId, session);
     const resultsList = await this.getPatientResults.execute({
       fmpId: params.fmpId,
@@ -37,7 +37,7 @@ export class PatientResultsListInteractor implements IPatientResultsListInteract
       month: query.month,
     });
 
-    return new PatientReportListModel(resultsList);
+    return new PatientResultListModel(resultsList);
   }
 
   private async validateRelatives(fmpId: PatientDM['fmpId'], session: SignInSessionModel): Promise<void> {

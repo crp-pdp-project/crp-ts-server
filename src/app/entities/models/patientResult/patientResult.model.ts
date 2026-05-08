@@ -1,22 +1,22 @@
+import type { PatientReportTypes } from 'src/general/enums/patientReportType.enum';
+import { PatientReportTypesMapper } from 'src/general/enums/patientReportType.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 
 import type { PatientReportDTO } from '../../dtos/service/patientReport.dto';
 import { AppointmentTypeModel } from '../appointmentType/appointmentType.model';
 import { BaseModel } from '../base.model';
 import { DoctorModel } from '../doctor/doctor.model';
-import { ReportTypeModel } from '../reportType/reportType.model';
 import { SpecialtyModel } from '../specialty/specialty.model';
 
-export class PatientReportModel extends BaseModel {
+export class PatientResultModel extends BaseModel {
   readonly resultId?: string;
-  readonly documentId?: string;
   readonly episodeId?: string;
   readonly nhcId?: string;
   readonly date?: string;
   readonly doctor?: DoctorModel;
   readonly specialty?: SpecialtyModel;
   readonly appointmentType?: AppointmentTypeModel;
-  readonly reportType?: ReportTypeModel;
+  readonly type?: PatientReportTypes;
   readonly accessNumber?: string;
   readonly gidenpac?: string;
 
@@ -24,7 +24,6 @@ export class PatientReportModel extends BaseModel {
     super();
 
     this.resultId = patientResult.resultId;
-    this.documentId = patientResult.documentId;
     this.episodeId = patientResult.episodeId;
     this.nhcId = patientResult.nhcId;
     this.date = this.resolveDate(patientResult);
@@ -33,7 +32,7 @@ export class PatientReportModel extends BaseModel {
     this.appointmentType = patientResult.appointmentType
       ? new AppointmentTypeModel(patientResult.appointmentType)
       : undefined;
-    this.reportType = patientResult.type ? new ReportTypeModel(patientResult.type) : undefined;
+    this.type = patientResult.type ? PatientReportTypesMapper.getReportType(patientResult.type) : undefined;
     this.accessNumber = patientResult.accessNumber;
     this.gidenpac = patientResult.gidenpac;
   }

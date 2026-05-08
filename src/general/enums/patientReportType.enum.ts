@@ -31,13 +31,19 @@ export enum PatientReportTextTypes {
 
 export enum PatientReportTypeNames {
   LABORATORY = 'Laboratorio',
-  IMAGE = 'Rayos X',
+  IMAGE = 'Imagenes',
   EXTERNAL_CONSULT = 'Consultas Externas',
   URGENT_CARE = 'Urgencias',
   HOSPITALIZAION = 'Hospitalización',
   MORNING_HOSPIOTAL = 'Hospital de Día',
   SURGERY = 'Cirugía',
   NEWBORN = 'Neonatos',
+}
+
+export enum PatientReportTypeResources {
+  RESULTS = 'Resultados',
+  IMAGE = 'Imagenes',
+  INFORMS = 'Informes',
 }
 
 export class PatientReportTypesMapper {
@@ -71,6 +77,16 @@ export class PatientReportTypesMapper {
     [PatientReportTextTypes.SURGERY]: PatientReportGroup.DOCUMENTS,
     [PatientReportTextTypes.NEWBORN]: PatientReportGroup.DOCUMENTS,
   };
+  private static readonly reportTypeResourceMap: Record<PatientReportTextTypes, PatientReportTypeResources> = {
+    [PatientReportTextTypes.LABORATORY]: PatientReportTypeResources.RESULTS,
+    [PatientReportTextTypes.IMAGE]: PatientReportTypeResources.IMAGE,
+    [PatientReportTextTypes.EXTERNAL_CONSULT]: PatientReportTypeResources.INFORMS,
+    [PatientReportTextTypes.URGENT_CARE]: PatientReportTypeResources.INFORMS,
+    [PatientReportTextTypes.HOSPITALIZAION]: PatientReportTypeResources.INFORMS,
+    [PatientReportTextTypes.MORNING_HOSPIOTAL]: PatientReportTypeResources.INFORMS,
+    [PatientReportTextTypes.SURGERY]: PatientReportTypeResources.INFORMS,
+    [PatientReportTextTypes.NEWBORN]: PatientReportTypeResources.INFORMS,
+  };
   static getReportType(type: string): PatientReportTypes {
     if (!(type in this.reportTypeMap)) {
       throw ErrorModel.badRequest({ message: `Invalid patient report type: ${type}` });
@@ -82,6 +98,12 @@ export class PatientReportTypesMapper {
       throw ErrorModel.badRequest({ message: `Invalid patient report type: ${type}` });
     }
     return this.reportTypeNameMap[type as PatientReportTextTypes];
+  }
+  static getReportTypeResource(type: string): PatientReportTypeResources {
+    if (!(type in this.reportTypeResourceMap)) {
+      throw ErrorModel.badRequest({ message: `Invalid patient report type: ${type}` });
+    }
+    return this.reportTypeResourceMap[type as PatientReportTextTypes];
   }
   static getReportGroup(type: string): PatientReportGroup {
     if (!(type in this.reportGroupMap)) {
@@ -96,6 +118,7 @@ export class PatientReportTypesMapper {
     return {
       id: this.reportTypeMap[type as PatientReportTextTypes],
       name: this.reportTypeNameMap[type as PatientReportTextTypes],
+      resource: this.reportTypeResourceMap[type as PatientReportTextTypes],
       group: this.reportGroupMap[type as PatientReportTextTypes],
     };
   }
