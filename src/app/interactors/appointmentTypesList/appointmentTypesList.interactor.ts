@@ -12,8 +12,8 @@ export class AppointmentTypesListInteractor implements IAppointmentTypesListInte
 
   async list(query: AppointmentTypesListQueryDTO): Promise<AppointmentTypeListModel> {
     const appointmentTypesList = await this.getAppointmentTypes.execute(
-      query.doctorId,
       query.specialtyId,
+      query.doctorId,
       query.insuranceId,
     );
 

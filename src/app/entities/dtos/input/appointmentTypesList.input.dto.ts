@@ -5,11 +5,11 @@ extendZodWithOpenApi(z);
 
 export const AppointmentTypesListQueryDTOSchema = z
   .object({
-    doctorId: z.coerce.string().openapi({
+    doctorId: z.coerce.string().optional().openapi({
       description: 'Id of the doctor to filter',
       example: '44789755',
     }),
-    specialtyId: z.coerce.string().optional().openapi({
+    specialtyId: z.coerce.string().openapi({
       description: 'Id of the specialty to filter',
       example: '900',
     }),
