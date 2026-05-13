@@ -9,7 +9,7 @@ export const AppointmentTypesListQueryDTOSchema = z
       description: 'Id of the doctor to filter',
       example: '44789755',
     }),
-    specialtyId: z.coerce.string().openapi({
+    specialtyId: z.coerce.string().optional().openapi({
       description: 'Id of the specialty to filter',
       example: '900',
     }),

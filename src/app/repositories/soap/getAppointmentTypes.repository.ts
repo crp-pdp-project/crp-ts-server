@@ -10,7 +10,7 @@ type GetAppointmentTypesInput = {
     IdCentro: string;
     CanalEntrada: string;
     IdEspecialidad: string;
-    IdProfesional: string;
+    IdProfesional?: string;
     IdSociedad?: string;
   };
 };
@@ -27,15 +27,15 @@ type GetAppointmentTypesOutput = {
 };
 
 export interface IGetAppointmentTypesRepository {
-  execute(doctorId: string, specialtyId: string, insuranceId?: string): Promise<AppointmentTypeDTO[]>;
+  execute(specialtyId: string, doctorId?: string, insuranceId?: string): Promise<AppointmentTypeDTO[]>;
 }
 
 export class GetAppointmentTypesRepository implements IGetAppointmentTypesRepository {
   private readonly user: string = EnvHelper.get('INETUM_USER');
   private readonly password: string = EnvHelper.get('INETUM_PASSWORD');
 
-  async execute(doctorId: string, specialtyId: string, insuranceId?: string): Promise<AppointmentTypeDTO[]> {
-    const methodPayload = this.parseInput(doctorId, specialtyId, insuranceId);
+  async execute(specialtyId: string, doctorId?: string, insuranceId?: string): Promise<AppointmentTypeDTO[]> {
+    const methodPayload = this.parseInput(specialtyId, doctorId, insuranceId);
     const instance = await InetumClient.getInstance();
     const rawResult = await instance.catalog.call<GetAppointmentTypesOutput>(
       InetumCatalogServices.LIST_APPOINTMENT_TYPES,
@@ -44,7 +44,7 @@ export class GetAppointmentTypesRepository implements IGetAppointmentTypesReposi
     return this.parseOutput(rawResult);
   }
 
-  private parseInput(doctorId: string, specialtyId: string, insuranceId?: string): GetAppointmentTypesInput {
+  private parseInput(specialtyId: string, doctorId?: string, insuranceId?: string): GetAppointmentTypesInput {
     return {
       usuario: this.user,
       contrasena: this.password,
