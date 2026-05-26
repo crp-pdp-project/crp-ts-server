@@ -14,7 +14,7 @@ export class SignInEmployeeV1Docs {
     this.manager.registerRoute({
       method: HttpSpecMethod.POST,
       path: `${this.version}/employees/sign-in`,
-      description: 'Sign in a patient',
+      description: 'Sign in a employee',
       tags: ['back-office', 'employees'],
       body: SignInEmployeeBodyDTOSchema,
       responses: {

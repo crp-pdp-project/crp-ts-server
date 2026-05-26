@@ -1,4 +1,5 @@
 import type { SendNotificationBodyDTO } from 'src/app/entities/dtos/input/sendNotification.input.dto';
+import type { DeviceDTO } from 'src/app/entities/dtos/service/device.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import type { IGetDeviceTokensRepository } from 'src/app/repositories/database/getDeviceTokens.repository';
 import { GetDeviceTokensRepository } from 'src/app/repositories/database/getDeviceTokens.repository';
@@ -16,25 +17,26 @@ export class SendNotificationInteractor implements ISendNotificationInteractor {
   ) {}
 
   async send(body: SendNotificationBodyDTO): Promise<void> {
-    const tokens = await this.getTokenArray(body);
-    await this.sendPushNotification.execute(body.device, {
+    const devices = await this.getDeviceArray(body);
+    await this.sendPushNotification.execute({
       title: body.title,
       body: body.body,
-      url: body.url,
-      tokens,
+      // NOSONAR
+      // url: body.url,
+      devices,
     });
   }
 
-  private async getTokenArray(body: SendNotificationBodyDTO): Promise<string[]> {
+  private async getDeviceArray(body: SendNotificationBodyDTO): Promise<DeviceDTO[]> {
     const devices = await this.getDeviceTokens.execute(body.documentType, body.documentNumber);
 
-    const tokens = devices.flatMap(({ pushToken }) => pushToken ?? []);
+    const filteredDevices = body.device ? devices.filter((device) => device.os === body.device) : devices;
 
-    if (tokens.length === 0) {
+    if (filteredDevices.length === 0) {
       throw ErrorModel.unprocessable({ message: 'No tokens to send' });
     }
 
-    return tokens;
+    return filteredDevices;
   }
 }
 

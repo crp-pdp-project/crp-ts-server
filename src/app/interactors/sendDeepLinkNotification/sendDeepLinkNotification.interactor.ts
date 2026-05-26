@@ -2,6 +2,7 @@ import type {
   SendDeepLinkNotificationBodyDTO,
   SendDeepLinkNotificationParamsDTO,
 } from 'src/app/entities/dtos/input/sendDeepLinkNotification.input.dto';
+import type { DeviceDTO } from 'src/app/entities/dtos/service/device.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { PushConfigModel } from 'src/app/entities/models/pushConfig/pushConfig.model';
 import type { IGetDeviceTokensRepository } from 'src/app/repositories/database/getDeviceTokens.repository';
@@ -23,27 +24,27 @@ export class SendDeepLinkNotificationInteractor implements ISendDeepLinkNotifica
   ) {}
 
   async send(params: SendDeepLinkNotificationParamsDTO, body: SendDeepLinkNotificationBodyDTO): Promise<void> {
-    const tokens = await this.getTokenArray(body);
+    const devices = await this.getDeviceArray(body);
     const validatedParams = await this.validateBoryParams(params, body);
-    await this.sendPushNotification.execute(body.device, {
+    await this.sendPushNotification.execute({
       title: body.title,
       body: body.body,
       baseRoute: params.screen,
       params: validatedParams,
-      tokens,
+      devices,
     });
   }
 
-  private async getTokenArray(body: SendDeepLinkNotificationBodyDTO): Promise<string[]> {
+  private async getDeviceArray(body: SendDeepLinkNotificationBodyDTO): Promise<DeviceDTO[]> {
     const devices = await this.getDeviceTokens.execute(body.documentType, body.documentNumber);
 
-    const tokens = devices.flatMap(({ pushToken }) => pushToken ?? []);
+    const filteredDevices = body.device ? devices.filter((device) => device.os === body.device) : devices;
 
-    if (tokens.length === 0) {
+    if (filteredDevices.length === 0) {
       throw ErrorModel.unprocessable({ message: 'No tokens to send' });
     }
 
-    return tokens;
+    return filteredDevices;
   }
 
   private async validateBoryParams(

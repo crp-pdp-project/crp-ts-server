@@ -1,16 +1,15 @@
-import type { DeviceDM } from 'src/app/entities/dms/devices.dm';
 import type { PushNotificationDTO } from 'src/app/entities/dtos/service/pushNotification.dto';
 import { PushClient } from 'src/clients/push/push.client';
 
 export interface ISendPushNotificationRepository {
-  execute(device: DeviceDM['os'], notification: PushNotificationDTO): Promise<void>;
+  execute(notification: PushNotificationDTO): Promise<void>;
 }
 
 export class SendPushNotificationRepository implements ISendPushNotificationRepository {
   private readonly client = PushClient.instance;
 
-  async execute(device: DeviceDM['os'], notification: PushNotificationDTO): Promise<void> {
-    await this.client.send(device, notification);
+  async execute(notification: PushNotificationDTO): Promise<void> {
+    await this.client.send(notification);
   }
 }
 

@@ -1,7 +1,7 @@
 import 'dotenv/config';
 
 import type { Kysely } from 'kysely';
-import { Migrator } from 'kysely';
+import { Migrator } from 'kysely/migration';
 
 import { LoggerClient } from 'src/clients/logger/logger.client';
 import type { Database } from 'src/clients/mysql/mysql.client';
