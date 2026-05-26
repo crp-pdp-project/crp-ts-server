@@ -1,6 +1,7 @@
 import type { PushNotificationDTO } from 'src/app/entities/dtos/service/pushNotification.dto';
 import { Devices } from 'src/app/entities/models/device/device.model';
-import { ErrorModel } from 'src/app/entities/models/error/error.model';
+
+import { LoggerClient } from '../logger/logger.client';
 
 import { FcmPushStrategy } from './strategies/fcmPush.strategy';
 
@@ -22,11 +23,8 @@ export class PushStrategyFactory {
     [Devices.ANDROID]: new FcmPushStrategy(),
   };
 
-  static getStrategy(device: Devices): PushStrategy {
+  static getStrategy(device: Devices): PushStrategy | undefined {
     const strategy = this.strategyMap[device];
-    if (!strategy) {
-      throw ErrorModel.notFound({ message: 'Device not found' });
-    }
 
     return strategy;
   }
@@ -34,11 +32,34 @@ export class PushStrategyFactory {
 
 export class PushClient {
   static readonly instance = new PushClient();
+  readonly logger = LoggerClient.instance;
 
-  async send(device: Devices, raw: PushNotificationDTO): Promise<void> {
-    const strategy = PushStrategyFactory.getStrategy(device);
-    const payload = this.generatePayload(raw);
-    await strategy.sendPush(payload, raw.tokens);
+  async send(raw: PushNotificationDTO): Promise<void> {
+    const groupedByDevice = raw.devices.reduce(
+      (acc, device) => {
+        if (device.os) {
+          if (!acc[device.os]) {
+            acc[device.os] = [];
+          }
+          if (device.pushToken) {
+            acc[device.os].push(device.pushToken);
+          }
+        }
+        return acc;
+      },
+      {} as Record<Devices, Tokens>,
+    );
+
+    this.logger.info('Grouped tokens by device', { groupedByDevice });
+
+    for (const [device, tokens] of Object.entries(groupedByDevice)) {
+      const strategy = PushStrategyFactory.getStrategy(device as Devices);
+      if (strategy) {
+        this.logger.info('Sending push notification', { device, tokens });
+        const payload = this.generatePayload(raw);
+        await strategy.sendPush(payload, tokens);
+      }
+    }
   }
 
   private generatePayload(raw: PushNotificationDTO): PushPayload {

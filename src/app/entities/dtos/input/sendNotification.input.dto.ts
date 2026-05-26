@@ -12,7 +12,7 @@ export const SendNotificationBodyDTOSchema = PatientDMSchema.pick({
   documentNumber: true,
 })
   .extend({
-    device: DeviceDMSchema.shape.os,
+    device: DeviceDMSchema.shape.os.optional(),
     title: z.string().openapi({
       description: 'Title of the push notification',
       example: 'Titulo',
@@ -21,10 +21,11 @@ export const SendNotificationBodyDTOSchema = PatientDMSchema.pick({
       description: 'Body of the push notification',
       example: 'Mensaje del push',
     }),
-    url: z.url().optional().openapi({
-      description: 'External url to redirect on push click',
-      example: 'https://google.com/',
-    }),
+    //NOSONAR
+    // url: z.url().optional().openapi({
+    //   description: 'External url to redirect on push click',
+    //   example: 'https://google.com/',
+    // }),
   })
   .strict()
   .openapi({

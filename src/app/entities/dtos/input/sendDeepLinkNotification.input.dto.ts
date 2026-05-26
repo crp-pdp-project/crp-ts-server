@@ -24,7 +24,7 @@ export const SendDeepLinkNotificationBodyDTOSchema = PatientDMSchema.pick({
   documentNumber: true,
 })
   .extend({
-    device: DeviceDMSchema.shape.os,
+    device: DeviceDMSchema.shape.os.optional(),
     title: z.string().openapi({
       description: 'Title of the push notification',
       example: 'Titulo',

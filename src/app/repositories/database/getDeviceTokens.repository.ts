@@ -15,7 +15,7 @@ export class GetDeviceTokensRepository implements IGetDeviceTokensRepository {
     const result = await db
       .selectFrom('Devices')
       .innerJoin('Patients', 'Devices.patientId', 'Patients.id')
-      .select(['pushToken'])
+      .select(['os', 'pushToken'])
       .where('Patients.documentType', '=', documentType)
       .where('Patients.documentNumber', '=', documentNumber)
       .execute();

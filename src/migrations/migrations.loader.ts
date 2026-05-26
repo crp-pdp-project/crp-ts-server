@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs';
 import fs from 'node:fs/promises';
 import path, { resolve } from 'node:path';
 
-import { FileMigrationProvider } from 'kysely';
+import { FileMigrationProvider } from 'kysely/migration';
 
 import { LoggerClient } from 'src/clients/logger/logger.client';
 
