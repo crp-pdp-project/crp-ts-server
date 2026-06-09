@@ -4,4 +4,5 @@ export const AppointmentConstants = {
   HISTORIC_MONTHS_LIST: -12,
   REASON_ID: '21',
   DEFAULT_REPORT_COUNT: '0',
+  APPLICATION_AUTHOR_ID: '2',
 } as const;

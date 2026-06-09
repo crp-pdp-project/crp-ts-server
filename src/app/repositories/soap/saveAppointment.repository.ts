@@ -26,6 +26,7 @@ type SaveAppointmentInput = {
     HoraCita: string;
     CodInspeccion: string;
     CanalEntrada: string;
+    AplicacionAutora?: string;
   };
 };
 
@@ -87,6 +88,7 @@ export class SaveAppointmentRepository implements ISaveAppointmentRepository {
         HoraCita: DateHelper.toDate('inetumTime', payload.date),
         CodInspeccion: payload.inspectionId ?? '',
         CanalEntrada: CRPConstants.ORIGIN,
+        AplicacionAutora: AppointmentConstants.APPLICATION_AUTHOR_ID,
       },
     };
   }
