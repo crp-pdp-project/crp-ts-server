@@ -1,5 +1,6 @@
 import type { AppointmentTransactionResultDTO } from 'src/app/entities/dtos/service/appointmentTransactionResult.dto';
 import { InetumAppointmentServices, InetumClient } from 'src/clients/inetum/inetum.client';
+import { AppointmentConstants } from 'src/general/contants/appointment.constants';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';
@@ -20,6 +21,7 @@ type RescheduleAppointmentInput = {
     HoraNuevaCita: string;
     IdPaciente: string;
     CanalEntrada: string;
+    AplicacionAutora?: string;
   };
 };
 
@@ -78,6 +80,7 @@ export class RescheduleAppointmentRepository implements IRescheduleAppointmentRe
         HoraNuevaCita: DateHelper.toDate('inetumTime', payload.date),
         IdPaciente: payload.fmpId,
         CanalEntrada: CRPConstants.ORIGIN,
+        AplicacionAutora: AppointmentConstants.APPLICATION_AUTHOR_ID,
       },
     };
   }

@@ -16,6 +16,7 @@ type CancelAppointmentInput = {
     IdMotivo: string;
     FechaCita: string;
     CanalEntrada: string;
+    AplicacionAutora?: string;
   };
 };
 
@@ -59,6 +60,7 @@ export class CancelAppointmentRepository implements ICancelAppointmentRepository
         IdMotivo: AppointmentConstants.REASON_ID,
         FechaCita: DateHelper.toDate('inetumDate', date),
         CanalEntrada: CRPConstants.ORIGIN,
+        AplicacionAutora: AppointmentConstants.APPLICATION_AUTHOR_ID,
       },
     };
   }
