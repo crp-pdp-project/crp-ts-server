@@ -30,6 +30,7 @@ export class AppointmentModel extends BaseModel {
   readonly date?: string;
   readonly status?: AppointmentStates;
   readonly mode?: string;
+  readonly office?: string;
   readonly specialty?: SpecialtyModel;
   readonly insurance?: InsuranceModel;
   readonly appointmentType?: AppointmentTypeModel;
@@ -50,6 +51,7 @@ export class AppointmentModel extends BaseModel {
     this.episodeId = appointment.episodeId;
     this.date = appointment.date ? DateHelper.toDate('spanishDateTime', appointment.date) : undefined;
     this.mode = appointment.mode ?? undefined;
+    this.office = appointment.office ?? undefined;
     this.#doctor = appointment.doctor ? new DoctorModel(appointment.doctor) : undefined;
     this.specialty = appointment.specialty ? new SpecialtyModel(appointment.specialty) : undefined;
     this.insurance = appointment.insurance ? new InsuranceModel(appointment.insurance) : undefined;

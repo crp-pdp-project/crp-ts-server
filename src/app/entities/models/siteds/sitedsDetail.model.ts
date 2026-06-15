@@ -1,5 +1,5 @@
 import { LoggerClient } from 'src/clients/logger/logger.client';
-import { SitedsConstants } from 'src/general/contants/siteds.constants';
+import { SitedsConstants } from 'src/general/constants/siteds.constants';
 
 import type { ConAse270DTO } from '../../dtos/service/conAse270.dto';
 import type { ConCod271DTO } from '../../dtos/service/conCod271.dto';
@@ -21,6 +21,7 @@ export class SitedsDetailModel extends BaseModel {
   readonly patientSecondLastName?: string;
   readonly patientDocumentType?: string;
   readonly patientDocumentNumber?: string;
+  readonly patientContractNumber?: string;
   readonly patientStatusCode?: string;
   readonly productCode?: string;
   readonly productDescription?: string;
@@ -29,7 +30,7 @@ export class SitedsDetailModel extends BaseModel {
   readonly contractorDocumentType?: string;
   readonly contractorIdQualifier?: string;
   readonly contractorId?: string;
-
+  readonly planNumber?: string;
   #coverages?: SitedsCoverageModel[];
 
   constructor(sitedsDetail: ConNom271DetailDTO) {
@@ -43,6 +44,7 @@ export class SitedsDetailModel extends BaseModel {
     this.patientSecondLastName = sitedsDetail.patientSecondLastName;
     this.patientDocumentType = sitedsDetail.patientDocumentType;
     this.patientDocumentNumber = sitedsDetail.patientDocumentNumber;
+    this.patientContractNumber = sitedsDetail.patientContractNumber;
     this.patientStatusCode = sitedsDetail.patientStatusCode;
     this.productCode = sitedsDetail.productCode;
     this.productDescription = sitedsDetail.productDescription;
@@ -51,6 +53,7 @@ export class SitedsDetailModel extends BaseModel {
     this.contractorIdQualifier = sitedsDetail.contractorIdQualifier;
     this.contractorId = sitedsDetail.contractorId;
     this.contractorDocumentType = sitedsDetail.contractorDocumentType;
+    this.planNumber = sitedsDetail.planNumber;
     this.#coverages = sitedsDetail.coverages ? this.resolveValidCoverages(sitedsDetail.coverages) : undefined;
   }
 

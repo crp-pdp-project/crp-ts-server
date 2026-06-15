@@ -1,4 +1,4 @@
-import { LogConstants } from 'src/general/contants/log.constants';
+import { LogConstants } from 'src/general/constants/log.constants';
 import { TextHelper } from 'src/general/helpers/text.helper';
 
 type LogObject = Record<string, unknown>;

@@ -1,9 +1,9 @@
 import type { PatientDM } from 'src/app/entities/dms/patients.dm';
 import type { PatientReportDTO } from 'src/app/entities/dtos/service/patientReport.dto';
 import { InetumClient, InetumHistoryServices } from 'src/clients/inetum/inetum.client';
-import { AppointmentConstants } from 'src/general/contants/appointment.constants';
-import { CRPConstants } from 'src/general/contants/crp.constants';
-import { ResultConstants } from 'src/general/contants/result.constants';
+import { AppointmentConstants } from 'src/general/constants/appointment.constants';
+import { CRPConstants } from 'src/general/constants/crp.constants';
+import { ResultConstants } from 'src/general/constants/result.constants';
 import type { Months } from 'src/general/helpers/date.helper';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';

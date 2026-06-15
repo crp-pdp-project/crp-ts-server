@@ -2,7 +2,7 @@ import type { Transporter } from 'nodemailer';
 import nodemailer from 'nodemailer';
 
 import { LoggerClient } from 'src/clients/logger/logger.client';
-import { EmailConstants } from 'src/general/contants/email.constants';
+import { EmailConstants } from 'src/general/constants/email.constants';
 import type { EmailSubjects } from 'src/general/enums/emailSubject.enum';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 

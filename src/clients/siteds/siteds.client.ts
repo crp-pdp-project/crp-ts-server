@@ -1,4 +1,4 @@
-import { CRPConstants } from 'src/general/contants/crp.constants';
+import { CRPConstants } from 'src/general/constants/crp.constants';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 import { SoapHelper } from 'src/general/helpers/soap.helper';
 

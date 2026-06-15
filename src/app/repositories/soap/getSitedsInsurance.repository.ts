@@ -2,7 +2,7 @@ import type { ConAse270DTO } from 'src/app/entities/dtos/service/conAse270.dto';
 import type { ConCod271DTO } from 'src/app/entities/dtos/service/conCod271.dto';
 import { LoggerClient } from 'src/clients/logger/logger.client';
 import { SitedsClient, SitedsServices } from 'src/clients/siteds/siteds.client';
-import { SitedsConstants } from 'src/general/contants/siteds.constants';
+import { SitedsConstants } from 'src/general/constants/siteds.constants';
 import { X12ManagerBuild } from 'src/general/managers/x12/x12.manager';
 
 type GetSitedsInsuranceInput = {

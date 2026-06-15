@@ -1,7 +1,7 @@
 import type { PatientDM } from 'src/app/entities/dms/patients.dm';
 import type { PatientLegalGuardianDTO } from 'src/app/entities/dtos/service/patientLegalGuardian.dto';
 import { InetumClient, InetumUserServices } from 'src/clients/inetum/inetum.client';
-import { CRPConstants } from 'src/general/contants/crp.constants';
+import { CRPConstants } from 'src/general/constants/crp.constants';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 
 type GetLegalGuardiansInput = {

@@ -1,5 +1,5 @@
 import { BaseModel } from 'src/app/entities/models/base.model';
-import { HealthInsuranceConstants } from 'src/general/contants/healthInsurance.constants';
+import { HealthInsuranceConstants } from 'src/general/constants/healthInsurance.constants';
 import { TextHelper } from 'src/general/helpers/text.helper';
 
 import type { InsuranceDueDTO } from '../../dtos/service/insuranceDue.dto';

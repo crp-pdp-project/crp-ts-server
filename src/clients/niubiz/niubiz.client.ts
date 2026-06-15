@@ -5,7 +5,7 @@ import type { POSConfigDTO } from 'src/app/entities/dtos/service/posConfig.dto';
 import { POSConfigDTOSchema } from 'src/app/entities/dtos/service/posConfig.dto';
 import { Devices } from 'src/app/entities/models/device/device.model';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
-import { PosConstants } from 'src/general/contants/pos.constants';
+import { PosConstants } from 'src/general/constants/pos.constants';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 import { ResponseType, RestHelper } from 'src/general/helpers/rest.helper';
 import { TextHelper } from 'src/general/helpers/text.helper';

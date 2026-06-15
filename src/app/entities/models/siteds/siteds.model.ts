@@ -1,5 +1,5 @@
 import { LoggerClient } from 'src/clients/logger/logger.client';
-import { SitedsConstants } from 'src/general/contants/siteds.constants';
+import { SitedsConstants } from 'src/general/constants/siteds.constants';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import type { SitedsDocumentType } from 'src/general/enums/patientInfo.enum';
 import { DocumentTypeMapper } from 'src/general/enums/patientInfo.enum';
@@ -157,6 +157,7 @@ export class SitedsModel extends BaseModel {
       patientSecondLastName: detail?.patientSecondLastName ?? '',
       patientDocumentType: detail?.patientDocumentType ?? '',
       patientDocumentNumber: detail?.patientDocumentNumber ?? '',
+      patientContractNumber: detail?.patientContractNumber ?? '',
       clientLastName: client.lastName,
       clientFirstName: client.firstName,
       clientDocumentType: client.documentType,
@@ -177,6 +178,8 @@ export class SitedsModel extends BaseModel {
       copayVariable: coverage?.copayVariable ?? 0,
       taxAmount: coverage?.taxAmount ?? 0,
       preTaxAmount: coverage?.preTaxAmount ?? 0,
+      planNumber: detail?.planNumber ?? '',
+      serviceQuantity: coverage?.serviceQuantity ?? 0,
     };
 
     return AxionalPayloadDTOSchema.parse(payload);

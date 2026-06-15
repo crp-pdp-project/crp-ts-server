@@ -1,4 +1,4 @@
-import { CRPConstants } from 'src/general/contants/crp.constants';
+import { CRPConstants } from 'src/general/constants/crp.constants';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';

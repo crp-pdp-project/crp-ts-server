@@ -3,8 +3,8 @@ import type { AxionalPayloadDTO } from 'src/app/entities/dtos/service/axionalPay
 import type { POSAuthorizationDTO } from 'src/app/entities/dtos/service/posAuthorization.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { CRPClient, CRPServicePaths } from 'src/clients/crp/crp.client';
-import { CRPConstants } from 'src/general/contants/crp.constants';
-import { PosConstants } from 'src/general/contants/pos.constants';
+import { CRPConstants } from 'src/general/constants/crp.constants';
+import { PosConstants } from 'src/general/constants/pos.constants';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 import { DocumentTypeMapper } from 'src/general/enums/patientInfo.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
@@ -69,6 +69,11 @@ type PayAppointmentInput = {
     imCopagoFij: number;
     dvCopagoFij: string;
     prCopagoVar: number;
+    origentrans: string;
+    stContrato: string;
+    stPlan: string;
+    stTipoPago: number;
+    coContratanteNo: string;
   };
 };
 
@@ -158,6 +163,11 @@ export class PayAppointmentRepository implements IPayAppointmentRepository {
         imCopagoFij: axional.copayFixed,
         dvCopagoFij: currencyTypeMap.encode[axional.currencyCode] ?? axional.currencyCode,
         prCopagoVar: axional.copayVariable,
+        origentrans: CRPConstants.DEFAULT_TRANSACTION_ORIGIN,
+        stContrato: axional.patientContractNumber,
+        stPlan: axional.planNumber,
+        stTipoPago: axional.serviceQuantity,
+        coContratanteNo: axional.contractorId,
       },
     };
   }

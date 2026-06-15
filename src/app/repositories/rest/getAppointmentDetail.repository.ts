@@ -107,6 +107,7 @@ export class GetAppointmentDetailRepository implements IGetAppointmentDetailRepo
       rescheduleAction: data.reprogramacion,
       payAction: data.pago,
       payState: data.estadoPago,
+      office: data.consultorio,
     };
 
     return result;

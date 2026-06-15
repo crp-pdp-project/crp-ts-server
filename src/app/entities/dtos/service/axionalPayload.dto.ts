@@ -14,6 +14,7 @@ export const AxionalPayloadDTOSchema = z.object({
   patientSecondLastName: z.string().nullable().optional(),
   patientDocumentType: z.string(),
   patientDocumentNumber: z.string(),
+  patientContractNumber: z.string(),
   clientLastName: z.string(),
   clientFirstName: z.string(),
   clientSecondLastName: z.string().nullable().optional(),
@@ -35,6 +36,8 @@ export const AxionalPayloadDTOSchema = z.object({
   copayVariable: z.number(),
   taxAmount: z.number(),
   preTaxAmount: z.number(),
+  planNumber: z.string(),
+  serviceQuantity: z.number(),
 });
 
 export type AxionalPayloadDTO = z.infer<typeof AxionalPayloadDTOSchema>;

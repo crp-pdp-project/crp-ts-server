@@ -3,7 +3,7 @@ import type { PatientExternalDTO } from 'src/app/entities/dtos/service/patientEx
 import type { PatientLegalGuardianDTO } from 'src/app/entities/dtos/service/patientLegalGuardian.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { InetumClient, InetumUserServices } from 'src/clients/inetum/inetum.client';
-import { CRPConstants } from 'src/general/contants/crp.constants';
+import { CRPConstants } from 'src/general/constants/crp.constants';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';

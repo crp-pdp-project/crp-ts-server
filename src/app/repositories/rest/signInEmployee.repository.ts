@@ -1,7 +1,7 @@
 import type { EmployeeDTO } from 'src/app/entities/dtos/service/employee.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { CRPClient, CRPServicePaths } from 'src/clients/crp/crp.client';
-import { EmployeeConstants } from 'src/general/contants/employee.constants';
+import { EmployeeConstants } from 'src/general/constants/employee.constants';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 

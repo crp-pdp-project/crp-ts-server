@@ -1,5 +1,5 @@
 import type { DoctorDTO } from 'src/app/entities/dtos/service/doctor.dto';
-import { DoctorConstants } from 'src/general/contants/doctor.constants';
+import { DoctorConstants } from 'src/general/constants/doctor.constants';
 
 import { BaseModel } from '../base.model';
 

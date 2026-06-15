@@ -3,7 +3,7 @@ import type { ConNom271DTO } from 'src/app/entities/dtos/service/conNom271.dto';
 import type { PatientDTO } from 'src/app/entities/dtos/service/patient.dto';
 import { LoggerClient } from 'src/clients/logger/logger.client';
 import { SitedsClient, SitedsServices } from 'src/clients/siteds/siteds.client';
-import { SitedsConstants } from 'src/general/contants/siteds.constants';
+import { SitedsConstants } from 'src/general/constants/siteds.constants';
 import { DocumentTypeMapper, SitedsDocumentType } from 'src/general/enums/patientInfo.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { TextHelper } from 'src/general/helpers/text.helper';
