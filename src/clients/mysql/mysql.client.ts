@@ -34,14 +34,14 @@ class KyselyLogger {
   static logQuery(event: QueryLogEvent): void {
     this.logger.info('SQL Query Executed', {
       query: event.query.sql,
-      parameters: event.query.parameters,
+      parameterCount: event.query.parameters.length,
     });
   }
 
   static logQueryError(event: ErrorLogEvent): void {
     this.logger.error('SQL Query Failed', {
       query: event.query.sql,
-      parameters: event.query.parameters,
+      parameterCount: event.query.parameters.length,
       error: event.error,
     });
   }

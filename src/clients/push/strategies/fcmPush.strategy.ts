@@ -39,6 +39,7 @@ export class FcmPushStrategy implements PushStrategy {
     const rejectedResults = results.filter((result) => result.status === 'rejected');
 
     this.logger.info('FCM push queued', {
+      total: tokens.length,
       fulfilled: fulfilledResults.length,
       rejected: rejectedResults.length,
       payload,
@@ -103,7 +104,7 @@ export class FcmPushStrategy implements PushStrategy {
         });
       } catch (error) {
         const formattedError = ErrorModel.fromError(error);
-        this.logger.error('FCM push failed', { token: deviceToken, message: formattedError.message });
+        this.logger.error('FCM push failed', { message: formattedError.message });
 
         throw formattedError;
       }

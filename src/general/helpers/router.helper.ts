@@ -6,7 +6,9 @@ export class RouterHelper {
   private static preHandler(controller: GenericHandler): preHandlerHookHandler {
     return (input: FastifyRequest, reply: FastifyReply, done: HookHandlerDoneFunction): void => {
       controller(input, reply)
-        .then(() => done())
+        .then(() => {
+          if (!reply.sent) done();
+        })
         .catch(done);
     };
   }

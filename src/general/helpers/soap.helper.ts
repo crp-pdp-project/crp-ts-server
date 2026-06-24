@@ -44,10 +44,6 @@ export class SoapHelper<TInput> {
         client.setSecurity(new WSSecurity(username, password, { passwordType, hasTimeStamp }));
       }
 
-      client.on('request', (xml: string) => {
-        LoggerClient.instance.debug('SOAP Raw Request Sent', { xml });
-      });
-
       return new SoapHelper<TInput>(client, timeoutMs);
     } catch (error) {
       throw this.mapTimeoutError(error);
@@ -67,9 +63,8 @@ export class SoapHelper<TInput> {
     this.logger.info(`Calling SOAP method "${String(methodName)}"`, { payload });
 
     try {
-      const [result, rawResponse] = await fn(payload, { timeout: this.timeoutMs });
+      const [result] = await fn(payload, { timeout: this.timeoutMs });
       this.logger.info('SOAP Response Received', { result });
-      this.logger.debug('SOAP Raw Response Received', { rawResponse });
 
       return result;
     } catch (error) {

@@ -50,12 +50,12 @@ export class PushClient {
       {} as Record<Devices, Tokens>,
     );
 
-    this.logger.info('Grouped tokens by device', { groupedByDevice });
+    this.logger.info('Grouped tokens by device', { groupedByDevice: this.summarizeGroupedTokens(groupedByDevice) });
 
     for (const [device, tokens] of Object.entries(groupedByDevice)) {
       const strategy = PushStrategyFactory.getStrategy(device as Devices);
       if (strategy) {
-        this.logger.info('Sending push notification', { device, tokens });
+        this.logger.info('Sending push notification', { device, tokenCount: tokens.length });
         const payload = this.generatePayload(raw);
         await strategy.sendPush(payload, tokens);
       }
@@ -80,5 +80,9 @@ export class PushClient {
     );
 
     return `?${queryParams.join('&')}`;
+  }
+
+  private summarizeGroupedTokens(groupedByDevice: Record<Devices, Tokens>): Partial<Record<Devices, number>> {
+    return Object.fromEntries(Object.entries(groupedByDevice).map(([device, tokens]) => [device, tokens.length]));
   }
 }

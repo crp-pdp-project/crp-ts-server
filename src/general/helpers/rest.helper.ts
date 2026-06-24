@@ -39,6 +39,7 @@ export class RestHelper {
     const url = TextHelper.joinHostPath(this.host, path);
 
     const fullUrl = this.buildUrlWithQuery(url, query);
+    const logUrl = TextHelper.stripQueryString(url);
     const headersBase: Record<string, string> = {
       Connection: 'keep-alive',
       Accept: '*/*',
@@ -48,9 +49,9 @@ export class RestHelper {
 
     this.logger.info('HTTP Request Sent', {
       method,
-      url: fullUrl,
-      ...(body && { body }),
-      ...(query && { query }),
+      url: logUrl,
+      ...(body ?? {}),
+      ...(query ?? {}),
     });
 
     const response = await this.handleRequest(fullUrl, headersBase, method, body);
@@ -59,14 +60,15 @@ export class RestHelper {
       const errorText = response.body ? await response.body.text() : '';
       this.logger.error('Error HTTP Status Code', {
         method,
-        url: fullUrl,
+        url: logUrl,
+        ...(query ?? {}),
         statusCode: response.statusCode,
-        result: errorText.slice(0, 2000),
+        result: errorText,
       });
       throw ErrorModel.server({ message: `HTTP ${response.statusCode} error` });
     }
 
-    return this.handleResponse<T>(response, method, fullUrl, responseType);
+    return this.handleResponse<T>(response, method, logUrl, responseType, query);
   }
 
   private async handleRequest(
@@ -103,6 +105,7 @@ export class RestHelper {
     method: HttpMethod,
     url: string,
     responseType: ResponseType = ResponseType.JSON,
+    query?: RestRequestOptions['query'],
   ): Promise<T> {
     let responseData: T;
     let logResponse = false;
@@ -137,6 +140,7 @@ export class RestHelper {
     this.logger.info('HTTP Response Received', {
       method,
       url,
+      ...(query ?? {}),
       statusCode: response.statusCode,
       response: logResponse ? responseData : {},
     });

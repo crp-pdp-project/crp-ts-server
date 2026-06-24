@@ -76,6 +76,13 @@ export class TextHelper {
     }
   }
 
+  static stripQueryString(url: string): string {
+    const queryStartIndex = url.indexOf('?');
+    if (queryStartIndex === -1) return url;
+
+    return url.slice(0, queryStartIndex);
+  }
+
   static normalizeAppointmentId(appointmentId: string): string {
     const cleaned = appointmentId.toUpperCase().startsWith('C') ? appointmentId : `C${appointmentId}`;
     return cleaned;
@@ -103,7 +110,25 @@ export class TextHelper {
   }
 
   static normalizeSearch(raw: string): string {
-    return raw.trim().replace(/\s+/g, ' ').toLowerCase();
+    return this.compactWhitespace(raw).toLowerCase();
+  }
+
+  static compactWhitespace(text: string, replacement = ' '): string {
+    let normalized = '';
+    let previousWasWhitespace = false;
+
+    for (const char of text.trim()) {
+      if (this.isWhitespace(char)) {
+        if (!previousWasWhitespace) normalized += replacement;
+        previousWasWhitespace = true;
+        continue;
+      }
+
+      normalized += char;
+      previousWasWhitespace = false;
+    }
+
+    return normalized;
   }
 
   static padTextLength(text: string | number, length = 9, char = '0'): string {
@@ -154,5 +179,9 @@ export class TextHelper {
 
   static genUniqueName(): string {
     return randomUUID();
+  }
+
+  private static isWhitespace(value: string): boolean {
+    return value.trim() === '';
   }
 }

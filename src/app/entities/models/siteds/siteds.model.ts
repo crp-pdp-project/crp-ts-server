@@ -49,7 +49,7 @@ export class SitedsModel extends BaseModel {
     this.time = sitedsResult.time ? DateHelper.toDate('spanishTime', sitedsResult.time) : undefined;
     this.#details = this.resolveValidDetails(sitedsResult.details ?? [], sitedsResult.iafaId);
 
-    this.#logger.info('Siteds Detail Data', this.#rawData);
+    this.#logger.info('Siteds Detail Data', this.buildLogSummary());
   }
 
   get details(): SitedsDetailModel[] {
@@ -202,5 +202,33 @@ export class SitedsModel extends BaseModel {
     });
 
     return filteredModels;
+  }
+
+  private buildLogSummary(): Record<string, unknown> {
+    const [firstDetail] = this.#rawData.details ?? [];
+
+    return {
+      ipressId: this.#rawData.ipressId,
+      iafaId: this.#rawData.iafaId,
+      correlative: this.#rawData.correlative,
+      transactionId: this.#rawData.transactionId,
+      groupControlNumber: this.#rawData.groupControlNumber,
+      transactionSetControlNumber: this.#rawData.transactionSetControlNumber,
+      documentNumber: this.#documentNumber,
+      documentType: this.#documentType,
+      detailCount: this.#rawData.details?.length ?? 0,
+      validDetailCount: this.#details.length,
+      firstDetail: firstDetail
+        ? {
+            patientFirstName: firstDetail.patientFirstName,
+            patientDocumentNumber: firstDetail.patientDocumentNumber,
+            patientMemberId: firstDetail.patientMemberId,
+            patientStatusCode: firstDetail.patientStatusCode,
+            productCode: firstDetail.productCode,
+            planNumber: firstDetail.planNumber,
+            coverageCount: firstDetail.coverages?.length ?? 0,
+          }
+        : null,
+    };
   }
 }

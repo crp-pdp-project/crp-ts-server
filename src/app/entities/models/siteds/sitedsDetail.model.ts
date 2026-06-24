@@ -81,8 +81,8 @@ export class SitedsDetailModel extends BaseModel {
   }
 
   inyectCoverages(coverageInfo: ConCod271DTO): this {
-    this.#logger.info(`Siteds Coverage Data for ${this.patientMemberId}`, this.#rawData);
     this.#coverages = this.resolveValidCoverages(coverageInfo.details ?? []);
+    this.#logger.info('Siteds Coverage Data', this.buildCoverageLogSummary(coverageInfo));
 
     return this;
   }
@@ -109,5 +109,33 @@ export class SitedsDetailModel extends BaseModel {
     });
 
     return filteredModels;
+  }
+
+  private buildCoverageLogSummary(coverageInfo: ConCod271DTO): Record<string, unknown> {
+    const [firstCoverage] = coverageInfo.details ?? [];
+
+    return {
+      patientFirstName: this.patientFirstName,
+      patientDocumentNumber: this.patientDocumentNumber,
+      patientMemberId: this.patientMemberId,
+      productCode: this.productCode,
+      planNumber: this.#rawData.planNumber,
+      correlationId: coverageInfo.correlationId,
+      transactionId: coverageInfo.transactionId,
+      controlNumber: coverageInfo.controlNumber,
+      coverageCount: coverageInfo.details?.length ?? 0,
+      validCoverageCount: this.#coverages?.length ?? 0,
+      firstCoverage: firstCoverage
+        ? {
+            coverageNumber: firstCoverage.coverageNumber,
+            coverageTypeCode: firstCoverage.coverageTypeCode,
+            coverageSubtypeCode: firstCoverage.coverageSubtypeCode,
+            productId: firstCoverage.productId,
+            currencyCode: firstCoverage.currencyCode,
+            copayFixed: firstCoverage.copayFixed,
+            copayVariable: firstCoverage.copayVariable,
+          }
+        : null,
+    };
   }
 }
