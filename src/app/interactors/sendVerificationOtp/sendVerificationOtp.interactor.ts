@@ -59,7 +59,7 @@ export class SendVerificationOTPInteractor implements ISendVerificationOTPIntera
     if (!this.dryRun) {
       await this.executeSend(patient, otp);
     } else {
-      this.logger.info('dry run otp', { otp });
+      this.logger.info('dry run otp', { dryRunOTP: otp });
     }
   }
 

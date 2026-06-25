@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import https from 'https';
+import { randomUUID } from 'node:crypto';
 
 import { OpenAPIRegistry, OpenApiGeneratorV3 } from '@asteasolutions/zod-to-openapi';
 import cors from '@fastify/cors';
@@ -15,8 +16,11 @@ import { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { LoggerClient } from 'src/clients/logger/logger.client';
 import { CRPConstants } from 'src/general/contants/crp.constants';
 import { Environments } from 'src/general/enums/environments.enum';
+import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';
+import { TextHelper } from 'src/general/helpers/text.helper';
 import { OpenApiManager } from 'src/general/managers/openapi/openapi.manager';
+import { RequestContextManager } from 'src/general/managers/requestContext/requestContext.manager';
 import swaggerMeta from 'src/general/static/swaggerMeta.static';
 import swaggerTemplate from 'src/general/templates/swagger.template';
 
@@ -77,30 +81,15 @@ export class Server {
   }
 
   private static registerHooks(): void {
-    this.app.addHook('preHandler', async (request: FastifyRequest) => {
-      this.logger.info('Incoming Request', {
-        method: request.method,
-        url: request.url,
-        ip: request.ip,
-        body: request.body ?? {},
-        query: request.query ?? {},
-        path: request.params ?? {},
-        headers: request.headers ?? {},
-      });
-    });
+    this.app.addHook('onRequest', async (request: FastifyRequest, reply: FastifyReply) => {
+      request.requestContext = {
+        requestId: randomUUID(),
+        requestMethod: request.method,
+        requestUrl: TextHelper.stripQueryString(request.url),
+        startedAt: DateHelper.toDate('none').valueOf(),
+      };
+      RequestContextManager.enter(request.requestContext);
 
-    this.app.addHook('onSend', async (request: FastifyRequest, reply: FastifyReply, payload) => {
-      this.logger.info('Response Sent', {
-        method: request.method,
-        url: request.url,
-        statusCode: reply.statusCode,
-        response: this.parseResponsePayload(payload),
-      });
-
-      return payload;
-    });
-
-    this.app.addHook('onRequest', async (_, reply) => {
       const timer = setTimeout(() => {
         if (!reply.sent) {
           const error = ErrorModel.timeout({ message: 'Request timeout' });
@@ -110,6 +99,32 @@ export class Server {
       }, CRPConstants.REQUEST_TIMEOUT);
       reply.raw.once('close', () => clearTimeout(timer));
       reply.raw.once('finish', () => clearTimeout(timer));
+    });
+
+    this.app.addHook('preHandler', async (request: FastifyRequest) => {
+      this.ensureRequestContext(request);
+      this.logger.info('Incoming Request', {
+        method: request.method,
+        url: TextHelper.stripQueryString(request.url),
+        ip: request.ip,
+        body: request.body ?? {},
+        query: request.query ?? {},
+        path: request.params ?? {},
+        headers: request.headers ?? {},
+      });
+    });
+
+    this.app.addHook('onSend', async (request: FastifyRequest, reply: FastifyReply, payload) => {
+      this.ensureRequestContext(request);
+      this.logger.info('Response Sent', {
+        method: request.method,
+        url: TextHelper.stripQueryString(request.url),
+        statusCode: reply.statusCode,
+        durationMs: this.resolveDurationMs(request),
+        response: this.parseResponsePayload(payload),
+      });
+
+      return payload;
     });
   }
 
@@ -150,6 +165,18 @@ export class Server {
     }
 
     return null;
+  }
+
+  private static ensureRequestContext(request: FastifyRequest): void {
+    if (request.requestContext) RequestContextManager.enter(request.requestContext);
+  }
+
+  private static resolveDurationMs(request: FastifyRequest): number | undefined {
+    const durationMs = RequestContextManager.getDurationMs();
+    if (durationMs !== undefined) return durationMs;
+    if (!request.requestContext) return undefined;
+
+    return DateHelper.toDate('none').valueOf() - request.requestContext.startedAt;
   }
 }
 
