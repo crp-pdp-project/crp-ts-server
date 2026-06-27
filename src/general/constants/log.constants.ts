@@ -1,5 +1,5 @@
 export const LogConstants = {
-  MAX_VALUE_LENGTH: 2000,
+  MAX_VALUE_LENGTH: 2500,
   REDACTED_VALUE: '[Redacted]',
   CIRCULAR_VALUE: '[Circular]',
   SENSITIVE_KEYS: [
@@ -47,9 +47,16 @@ export const LogConstants = {
     'contractorsecondlastname',
     'address',
     'siteds',
+    'txpeticion',
+    'txrespuesta',
     'requesttext',
     'encodedpayload',
     'decodedpayload',
     'base64',
+    'patientfirstname',
+    'patientdocumentnumber',
+    'holderfirstname',
+    'holderdocumentnumber',
+    'contractorfirstname',
   ],
 } as const;

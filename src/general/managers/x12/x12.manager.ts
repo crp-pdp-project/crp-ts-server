@@ -1,4 +1,5 @@
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
+import { LoggerClient } from 'src/clients/logger/logger.client';
 
 import { ConAse270Config } from './config/270ConAse.config';
 import { ConCod271Config } from './config/271ConCod.config';
@@ -50,14 +51,24 @@ export class X12Manager<
   private readonly encodeConfig: EncodeConf;
   private readonly decodeConfig: DecodeConf;
   private readonly rawValues?: boolean;
+  private readonly logger = LoggerClient.instance;
 
-  constructor(encodeConfig: EncodeConf, decodeConfig?: DecodeConf, rawValues = false) {
+  constructor(
+    encodeConfig: EncodeConf,
+    decodeConfig?: DecodeConf,
+    rawValues = false,
+    private readonly logOperations = true,
+  ) {
     this.encodeConfig = encodeConfig;
     this.decodeConfig = (decodeConfig ?? encodeConfig) as DecodeConf;
     this.rawValues = rawValues;
   }
 
   encode(payload: InferType<EncodeConf>): string {
+    if (this.logOperations) {
+      this.logger.info('Encoding X12 payload', { payload });
+    }
+
     const segmentStore: SegmentStore = this.buildSegmentStore(payload);
     const preEncodedX12: string = this.serializeStoreToX12(segmentStore);
     const encodedX12: string = this.serializeChildsToX12(payload, preEncodedX12);
@@ -73,6 +84,10 @@ export class X12Manager<
 
     for (const [key, child] of Object.entries(decodedChildren)) {
       decodedX12[key] = child;
+    }
+
+    if (this.logOperations) {
+      this.logger.info('Decoded X12 response', { result: decodedX12 });
     }
 
     return decodedX12 as InferType<DecodeConf>;
@@ -213,7 +228,7 @@ export class X12Manager<
 
       if (childItemChunks.length === 0) continue;
 
-      const childManager = new X12Manager(mapping.config, mapping.config, this.rawValues);
+      const childManager = new X12Manager(mapping.config, mapping.config, this.rawValues, false);
       const decodedArray: unknown[] = [];
 
       for (const chunk of childItemChunks) {
@@ -276,7 +291,7 @@ export class X12Manager<
       const childItems = Array.isArray(childPayloadAny) ? childPayloadAny : [childPayloadAny];
       if (childItems.length === 0) continue;
 
-      const childManager = new X12Manager(mapping.config, mapping.config, this.rawValues);
+      const childManager = new X12Manager(mapping.config, mapping.config, this.rawValues, false);
 
       let childFragment = '';
       for (const item of childItems) {
