@@ -23,6 +23,7 @@ export class SoapHelper<TInput> {
   private constructor(
     private readonly client: Client,
     private readonly timeoutMs: number,
+    private readonly bindingUrl: string,
   ) {}
 
   static async initClient<TInput>(
@@ -44,7 +45,7 @@ export class SoapHelper<TInput> {
         client.setSecurity(new WSSecurity(username, password, { passwordType, hasTimeStamp }));
       }
 
-      return new SoapHelper<TInput>(client, timeoutMs);
+      return new SoapHelper<TInput>(client, timeoutMs, bindingUrl);
     } catch (error) {
       throw this.mapTimeoutError(error);
     }
@@ -54,17 +55,17 @@ export class SoapHelper<TInput> {
     const rawFn = this.client[`${String(methodName)}Async`] as unknown;
 
     if (typeof rawFn !== 'function') {
-      this.logger.error('SOAP Method Not Found', { methodName });
+      this.logger.error('SOAP Method Not Found', { methodName, bindingUrl: this.bindingUrl });
       throw ErrorModel.notFound({ message: 'SOAP Method Not Found' });
     }
 
     const fn = rawFn as GenericSoapFunction<T>;
 
-    this.logger.info(`Calling SOAP method "${String(methodName)}"`, { payload });
+    this.logger.info(`Calling SOAP method "${String(methodName)}"`, { bindingUrl: this.bindingUrl, payload });
 
     try {
       const [result] = await fn(payload, { timeout: this.timeoutMs });
-      this.logger.info('SOAP Response Received', { result });
+      this.logger.info('SOAP Response Received', { bindingUrl: this.bindingUrl, result });
 
       return result;
     } catch (error) {

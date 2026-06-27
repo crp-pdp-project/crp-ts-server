@@ -1,7 +1,7 @@
 import type { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExternal.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { CRPClient, CRPServicePaths } from 'src/clients/crp/crp.client';
-import { HealthInsuranceConstants } from 'src/general/contants/healthInsurance.constants';
+import { HealthInsuranceConstants } from 'src/general/constants/healthInsurance.constants';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 import type { CRPShortDocumentType } from 'src/general/enums/patientInfo.enum';
 import { DocumentTypeMapper, PatientDocumentType } from 'src/general/enums/patientInfo.enum';

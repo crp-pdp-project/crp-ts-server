@@ -1,4 +1,4 @@
-import { PosConstants } from 'src/general/contants/pos.constants';
+import { PosConstants } from 'src/general/constants/pos.constants';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 import { TextHelper } from 'src/general/helpers/text.helper';
 

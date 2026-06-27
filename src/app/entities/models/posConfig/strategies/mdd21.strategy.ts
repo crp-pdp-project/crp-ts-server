@@ -1,4 +1,4 @@
-import { PosConstants } from 'src/general/contants/pos.constants';
+import { PosConstants } from 'src/general/constants/pos.constants';
 
 import type { GenerateMDDStrategy } from '../posConfig.model';
 import { MDDVariants } from '../posConfig.model';

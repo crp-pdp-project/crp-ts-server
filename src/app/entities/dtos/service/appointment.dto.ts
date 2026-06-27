@@ -22,6 +22,7 @@ export const AppointmentDTOSchema = z.object({
   rescheduleAction: z.string().optional(),
   payAction: z.string().optional(),
   payState: z.string().optional(),
+  office: z.string().optional(),
 });
 
 export type AppointmentDTO = z.infer<typeof AppointmentDTOSchema>;

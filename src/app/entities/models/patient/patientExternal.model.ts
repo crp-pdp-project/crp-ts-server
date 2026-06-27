@@ -7,7 +7,7 @@ import type { RecoverSessionPayloadDTO } from 'src/app/entities/dtos/service/rec
 import { RecoverSessionPayloadDTOSchema } from 'src/app/entities/dtos/service/recoverSessionPayload.dto';
 import type { SessionPayloadDTO } from 'src/app/entities/dtos/service/sessionPayload.dto';
 import { BaseModel } from 'src/app/entities/models/base.model';
-import { CRPConstants } from 'src/general/contants/crp.constants';
+import { CRPConstants } from 'src/general/constants/crp.constants';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { PatientDocumentType } from 'src/general/enums/patientInfo.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';

@@ -1,6 +1,6 @@
 import type { DeviceDTO } from 'src/app/entities/dtos/service/device.dto';
 import { BaseModel } from 'src/app/entities/models/base.model';
-import { DeviceConstants } from 'src/general/contants/device.constants';
+import { DeviceConstants } from 'src/general/constants/device.constants';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 

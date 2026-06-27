@@ -1,4 +1,4 @@
-import { SitedsConstants } from 'src/general/contants/siteds.constants';
+import { SitedsConstants } from 'src/general/constants/siteds.constants';
 
 import type { ConCod271DetailDTO } from '../../dtos/service/conCod271Detail.dto';
 import { BaseModel } from '../base.model';
@@ -8,6 +8,7 @@ export class SitedsCoverageModel extends BaseModel {
   readonly coverageSubtypeCode?: string;
   readonly currencyCode?: string;
   readonly copayFixed?: number;
+  readonly serviceQuantity?: number;
   readonly serviceCalcCode?: string;
   readonly serviceCalcQuantity?: number;
   readonly copayVariable?: number;
@@ -18,6 +19,7 @@ export class SitedsCoverageModel extends BaseModel {
     this.coverageSubtypeCode = sitedsCoverage.coverageSubtypeCode;
     this.currencyCode = sitedsCoverage.currencyCode;
     this.copayFixed = sitedsCoverage.copayFixed ? Number(sitedsCoverage.copayFixed) : undefined;
+    this.serviceQuantity = sitedsCoverage.serviceQuantity ? Number(sitedsCoverage.serviceQuantity) : undefined;
     this.serviceCalcCode = sitedsCoverage.serviceCalcCode;
     this.serviceCalcQuantity = sitedsCoverage.serviceCalcQuantity
       ? Number(sitedsCoverage.serviceCalcQuantity)

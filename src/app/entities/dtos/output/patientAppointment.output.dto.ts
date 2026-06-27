@@ -30,6 +30,10 @@ export const PatientAppointmentOutputDTOSchema = z
       description: 'Appointment mode',
       example: 'Presencial',
     }),
+    office: z.string().optional().openapi({
+      description: 'Office where the appointment will take place',
+      example: 'Consultorio 1',
+    }),
     status: z.enum(AppointmentStates).optional().openapi({
       description: 'Appointment status, either 1 2 or 3. By default 1 is sent',
       example: AppointmentStates.PROGRAMMED,

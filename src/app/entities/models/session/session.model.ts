@@ -1,5 +1,5 @@
 import { BaseModel } from 'src/app/entities/models/base.model';
-import { OTPConstants } from 'src/general/contants/otp.constants';
+import { OTPConstants } from 'src/general/constants/otp.constants';
 import type { Audiences } from 'src/general/enums/audience.enum';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 

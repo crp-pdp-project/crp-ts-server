@@ -2,7 +2,7 @@ import type { InsuranceDueDTO } from 'src/app/entities/dtos/service/insuranceDue
 import type { POSAuthorizationDTO } from 'src/app/entities/dtos/service/posAuthorization.dto';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { CRPClient, CRPServicePaths } from 'src/clients/crp/crp.client';
-import { PosConstants } from 'src/general/contants/pos.constants';
+import { PosConstants } from 'src/general/constants/pos.constants';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 
 type PayHealthInsuranceInput = {

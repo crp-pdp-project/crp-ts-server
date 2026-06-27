@@ -9,7 +9,7 @@ import { UpdateSessionOTPRepository } from 'src/app/repositories/database/update
 import { EmailClient } from 'src/clients/email/email.client';
 import { InfobipClient } from 'src/clients/infobip/infobip.client';
 import { LoggerClient } from 'src/clients/logger/logger.client';
-import { InfobipConstants } from 'src/general/contants/infobip.constants';
+import { InfobipConstants } from 'src/general/constants/infobip.constants';
 import type { EmailSubjects } from 'src/general/enums/emailSubject.enum';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 import { TextHelper } from 'src/general/helpers/text.helper';

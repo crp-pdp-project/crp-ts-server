@@ -2,7 +2,7 @@ import dayjs, { isDayjs, extend } from 'dayjs';
 import type { Dayjs, ManipulateType, UnitType } from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
-import { allConstants } from '../contants/date.constants';
+import { allConstants } from '../constants/date.constants';
 
 extend(customParseFormat);
 

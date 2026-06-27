@@ -10,4 +10,5 @@ export const CRPConstants = {
   TOKEN_TIMEOUT: 55,
   UNDER_AGE_LIMIT: -18,
   EARLIEST_SLOT_LIMIT: 3,
+  DEFAULT_TRANSACTION_ORIGIN: '01',
 } as const;

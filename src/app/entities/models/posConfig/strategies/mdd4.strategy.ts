@@ -1,5 +1,5 @@
 import type { PatientExternalDTO } from 'src/app/entities/dtos/service/patientExternal.dto';
-import { PosConstants } from 'src/general/contants/pos.constants';
+import { PosConstants } from 'src/general/constants/pos.constants';
 import { EnvHelper } from 'src/general/helpers/env.helper';
 
 import type { SignInSessionModel } from '../../session/signInSession.model';

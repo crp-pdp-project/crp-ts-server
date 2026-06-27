@@ -14,7 +14,7 @@ import { RouterBuilder } from 'src/app/controllers/router.builder';
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { ResponseModel } from 'src/app/entities/models/response/response.model';
 import { LoggerClient } from 'src/clients/logger/logger.client';
-import { CRPConstants } from 'src/general/contants/crp.constants';
+import { CRPConstants } from 'src/general/constants/crp.constants';
 import { Environments } from 'src/general/enums/environments.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';

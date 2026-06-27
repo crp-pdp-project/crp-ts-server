@@ -7,7 +7,7 @@ import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { LoggerClient } from 'src/clients/logger/logger.client';
 import type { HttpMethod } from 'src/general/enums/methods.enum';
 
-import { CRPConstants } from '../contants/crp.constants';
+import { CRPConstants } from '../constants/crp.constants';
 
 import { TextHelper } from './text.helper';
 

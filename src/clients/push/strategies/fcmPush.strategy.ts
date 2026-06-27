@@ -2,7 +2,7 @@ import { JWT } from 'google-auth-library';
 
 import { ErrorModel } from 'src/app/entities/models/error/error.model';
 import { LoggerClient } from 'src/clients/logger/logger.client';
-import { FirebaseConstants } from 'src/general/contants/firebase.constants';
+import { FirebaseConstants } from 'src/general/constants/firebase.constants';
 import { HttpMethod } from 'src/general/enums/methods.enum';
 import { DateHelper } from 'src/general/helpers/date.helper';
 import { EnvHelper } from 'src/general/helpers/env.helper';

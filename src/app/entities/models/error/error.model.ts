@@ -2,7 +2,7 @@ import { errors as joseErrors } from 'jose';
 import { ZodError } from 'zod';
 
 import { LoggerClient } from 'src/clients/logger/logger.client';
-import { ErrorConstants } from 'src/general/contants/error.contants';
+import { ErrorConstants } from 'src/general/constants/error.contants';
 import { ClientErrorMessages } from 'src/general/enums/clientErrorMessages.enum';
 import { StatusCode } from 'src/general/enums/status.enum';
 
