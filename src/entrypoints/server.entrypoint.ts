@@ -24,15 +24,24 @@ import { RequestContextManager } from 'src/general/managers/requestContext/reque
 import swaggerMeta from 'src/general/static/swaggerMeta.static';
 import swaggerTemplate from 'src/general/templates/swagger.template';
 
+type ShutdownContext = {
+  fatal?: boolean;
+  reason?: string;
+  details?: Record<string, unknown>;
+};
+
 export class Server {
   private static readonly app: FastifyInstance = Fastify({ logger: false, trustProxy: true });
   private static readonly registry: OpenAPIRegistry = new OpenAPIRegistry();
   private static readonly manager: OpenApiManager = new OpenApiManager(this.registry);
   private static readonly logger: LoggerClient = LoggerClient.instance;
   private static readonly port: number = Number(EnvHelper.get('NODE_PORT'));
+  private static readonly startedAt: number = Date.now();
+  private static isShuttingDown = false;
 
   static async start(): Promise<void> {
     try {
+      this.logRuntimeDiagnostics();
       await this.setup();
       await this.app.listen({ host: '0.0.0.0', port: this.port });
       this.logger.info(`Server running on port ${this.port}`);
@@ -45,10 +54,29 @@ export class Server {
     }
   }
 
-  static async shutdown(fatal = false): Promise<void> {
+  static async shutdown(context: ShutdownContext = {}): Promise<void> {
+    const { fatal = false, reason = 'unknown', details = {} } = context;
+
+    if (this.isShuttingDown) {
+      this.logger.warn('Shutdown already in progress', {
+        fatal,
+        reason,
+        ...details,
+        ...this.getProcessDiagnostics(),
+      });
+      return;
+    }
+
+    this.isShuttingDown = true;
+
     try {
       await this.app.close();
-      this.logger.info('Server closed gracefully');
+      this.logger.info('Server closed gracefully', {
+        fatal,
+        reason,
+        ...details,
+        ...this.getProcessDiagnostics(),
+      });
       process.exit(fatal ? 1 : 0);
     } catch (error) {
       this.logger.error('Error during shutdown', {
@@ -57,6 +85,28 @@ export class Server {
       });
       process.exit(1);
     }
+  }
+
+  private static logRuntimeDiagnostics(): void {
+    this.logger.info('Server runtime diagnostics', {
+      nodeEnv: EnvHelper.getCurrentEnv(),
+      nodeVersion: process.version,
+      pid: process.pid,
+      ppid: process.ppid,
+      pmId: process.env.pm_id,
+      pmExecPath: process.env.pm_exec_path,
+      nodeAppInstance: process.env.NODE_APP_INSTANCE,
+    });
+  }
+
+  private static getProcessDiagnostics(): Record<string, unknown> {
+    return {
+      pid: process.pid,
+      uptimeSeconds: Math.round(process.uptime()),
+      processAgeMs: Date.now() - this.startedAt,
+      memoryUsage: process.memoryUsage(),
+      resourceUsage: process.resourceUsage(),
+    };
   }
 
   private static async setup(): Promise<void> {
@@ -182,8 +232,13 @@ export class Server {
 
 void Server.start();
 
-process.once('SIGINT', () => Server.shutdown());
-process.once('SIGTERM', () => Server.shutdown());
+process.once('SIGINT', (signal) => {
+  void Server.shutdown({ reason: 'signal', details: { signal } });
+});
+
+process.once('SIGTERM', (signal) => {
+  void Server.shutdown({ reason: 'signal', details: { signal } });
+});
 
 process.on('unhandledRejection', (err) => {
   LoggerClient.instance.error('Unhandled promise rejection', {
@@ -197,5 +252,27 @@ process.on('uncaughtException', (err) => {
     message: err.message,
     stack: err.stack,
   });
-  setImmediate(() => Server.shutdown(true));
+  setImmediate(() => {
+    void Server.shutdown({
+      fatal: true,
+      reason: 'uncaughtException',
+      details: { name: err.name, message: err.message, stack: err.stack },
+    });
+  });
+});
+
+process.on('warning', (warning) => {
+  LoggerClient.instance.warn('Process warning', {
+    name: warning.name,
+    message: warning.message,
+    stack: warning.stack,
+  });
+});
+
+process.on('beforeExit', (code) => {
+  LoggerClient.instance.warn('Process beforeExit', { code });
+});
+
+process.on('exit', (code) => {
+  LoggerClient.instance.warn('Process exit', { code });
 });
